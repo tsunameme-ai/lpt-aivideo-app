@@ -114,6 +114,9 @@ export class API {
         })
         const data = await response.json()
         console.log(data)
+        if (data.status === 'error') {
+            throw new Error(data.message)
+        }
         return {
             id: vid.toString(),
             status: data.status,
