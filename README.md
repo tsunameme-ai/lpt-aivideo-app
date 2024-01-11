@@ -11,9 +11,9 @@
 - Client app.
 - Text to video flow is working with modelslab api. Their model is using `zeroscope`.
 ## Outstanding Todos
-- Store media and data on AWS.
 - Text to image 
 - Image to video
+- Deploy app on heroku
 - Gallery
 - Our own backend service.
-- Deploy app on heroku
+- Store media and data on AWS.
