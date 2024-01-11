@@ -36,7 +36,7 @@ export default function Page() {
 
     }
 
-    const generateVideo = async (e: PressEvent) => {
+    const generateVideo = async (e: any) => {
         setErrorMessage('')
         setIsLoading(false)
         setVidOutput(null)

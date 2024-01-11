@@ -33,7 +33,7 @@ export default function Page() {
         }
     ]
 
-    const renderCell = React.useCallback((videoItem: any, columnKey: string) => {
+    const renderCell = React.useCallback((videoItem: any, columnKey: any) => {
         switch (columnKey) {
             case "input":
                 return (

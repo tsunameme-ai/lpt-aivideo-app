@@ -54,48 +54,6 @@ export class API {
             eta: data.eta
         }
     }
-    public static async txt2vid1(): Promise<string> {
-        // await this.delay(1000)
-        console.log(`????? ${process.env.NEXT_PUBLIC_TXT2VID_ENDPOINT}`)
-        // throw new Error('API Error')
-        const url = process.env.NEXT_PUBLIC_ENDPOINT_TXT2VID!
-        const postData = {
-            'key': process.env.NEXT_PUBLIC_TXT2VID_APIKEY!,
-            'prompt': 'a cat fighting a dog, ultra HD video',
-            'negative_prompt': 'Low Quality',
-            'scheduler': 'DDPMScheduler',
-            'seconds': 3
-        }
-        const headers = {
-            'Content-Type': 'application/json'
-        }
-        console.log('??? sending')
-        // const axiosConfig = {
-        //     method: 'post',
-        //     url: url,
-        //     data: postData,
-        //     headers: headers,
-        // };
-        // try {
-        //     const { status, data } = await axios(url, axiosConfig)
-        //     console.log(status)
-        //     console.log(data)
-        // }
-        // catch (e) {
-        //     console.error(e)
-        // }
-        // console.log('??? sent')
-        const response = await fetch(url, reuqestOptions)
-        if (!response.ok) {
-            console.log(`!!ERROR`)
-            console.log(response)
-            throw new Error('Network response was not ok');
-        }
-        console.log(response)
-        const data = await response.json();
-        console.log('Data:');
-        return 'hello'
-    }
 
     public static async fetchVideo(vid: string): Promise<Txt2vidOutput> {
         const headers = new Headers();
