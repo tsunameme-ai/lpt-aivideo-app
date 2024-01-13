@@ -1,11 +1,13 @@
-import { Txt2vidInput, Txt2vidOutput } from './types';
+import { ModelsLabAPI } from './external/modelslab';
+import { Img2vidInput, Txt2vidInput, VideoGenerationOutput } from './types';
 
 export class API {
 
     public static delay(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    public static async txt2vid2(params: Txt2vidInput): Promise<Txt2vidOutput> {
+
+    public static async txt2vid2(params: Txt2vidInput): Promise<VideoGenerationOutput> {
         await this.delay(1000)
         return {
             id: '65704373',
@@ -17,69 +19,23 @@ export class API {
         }
     }
 
-    public static async txt2vid(params: Txt2vidInput): Promise<Txt2vidOutput> {
-        const url = process.env.NEXT_PUBLIC_TXT2VID_ENDPOINT!
-
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-
-        const raw = JSON.stringify({
-            'key': process.env.NEXT_PUBLIC_TXT2VID_APIKEY!,
-            'prompt': params.pPrompt,
-            'negative_prompt': params.nPrompt,
-            'scheduler': 'UniPCMultistepScheduler',
-            'seconds': params.seconds
-        });
-
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: headers,
-            body: raw,
-            redirect: 'follow'
-        })
-        console.log(response)
-        const data = await response.json()
-        if (data.status === 'error') {
-            throw new Error(data.message || 'Unable to process txt2vid request.')
-        }
-        console.log(data)
-        // return data.id
-        // return 'hello'
-        return {
-            id: data.id.toString(),
-            status: data.status,
-            width: data.meta.W,
-            height: data.meta.H,
-            mediaUrl: decodeURI(data.future_links[0]),
-            eta: data.eta
-        }
+    public static async txt2vid(params: Txt2vidInput): Promise<VideoGenerationOutput> {
+        return ModelsLabAPI.txt2vid(params)
     }
 
-    public static async fetchVideo(vid: string): Promise<Txt2vidOutput> {
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
+    public static async img2vid(params: Img2vidInput): Promise<VideoGenerationOutput> {
+        return ModelsLabAPI.img2vid(params)
+    }
 
-        const raw = JSON.stringify({
-            'key': process.env.NEXT_PUBLIC_TXT2VID_APIKEY!,
-            'request_id': vid
-        });
-
-        const response = await fetch(process.env.NEXT_PUBLIC_FETCHVIDEO_ENDPOINT!, {
-            method: 'POST',
-            headers: headers,
-            body: raw,
-            redirect: 'follow'
-        })
-        const data = await response.json()
-        console.log(data)
-        if (data.status === 'error') {
-            throw new Error(data.message)
-        }
+    public static async fetchVideoStatic(vid: string): Promise<VideoGenerationOutput> {
+        await this.delay(1000)
         return {
             id: vid.toString(),
-            status: data.status,
-            mediaUrl: decodeURI(data.output[0])
-
+            status: 'success',
+            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/37c09e3e-c1a4-4786-b211-934a84aadb27.gif'
         }
+    }
+    public static async fetchVideo(vid: string): Promise<VideoGenerationOutput> {
+        return await ModelsLabAPI.fetchVideo(vid)
     }
 }
