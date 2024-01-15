@@ -7,6 +7,9 @@ export default function Home() {
   const handleTxt2vid = (e: any) => {
     router.push('/txt2vid')
   }
+  const handleTxt2img = (e: any) => {
+    router.push('/txt2img')
+  }
   return (
     <section className="flex min-h-screen flex-col items-center justify-between p-24">
       <Card>
@@ -14,7 +17,7 @@ export default function Home() {
           <Spacer y={4} />
           <Button color='primary' onPress={handleTxt2vid}>{"Text to Video"}</Button>
           <Spacer y={4} />
-          <Button color='primary' isDisabled>{"Text to Image maybe to Video"}</Button>
+          <Button color='primary' onPress={handleTxt2img}>{"Text to Image maybe to Video"}</Button>
           <Spacer y={4} />
           <Button color='primary' isDisabled>Gallery</Button>
           <Spacer y={4} />

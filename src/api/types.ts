@@ -2,33 +2,34 @@ export type Txt2vidInput = {
     pPrompt: string,
     nPrompt: string,
     seconds: number,
-    scheduler: Txt2VidSchedulers,
+    seed?: number
 }
-export enum Txt2VidSchedulers {
-    DDPMScheduler = 'DDPMScheduler',
-    DDIMScheduler = 'DDIMScheduler',
-    PNDMScheduler = 'PNDMScheduler',
-    LMSDiscreteScheduler = 'LMSDiscreteScheduler',
-    EulerDiscreteScheduler = 'EulerDiscreteScheduler',
-    EulerAncestralDiscreteScheduler = 'EulerAncestralDiscreteScheduler',
-    DPMSolverMultistepScheduler = 'DPMSolverMultistepScheduler',
-    HeunDiscreteScheduler = 'HeunDiscreteScheduler',
-    KDPM2DiscreteScheduler = 'KDPM2DiscreteScheduler',
-    DPMSolverSinglestepScheduler = 'DPMSolverSinglestepScheduler',
-    KDPM2AncestralDiscreteScheduler = 'KDPM2AncestralDiscreteScheduler',
-    UniPCMultistepScheduler = 'UniPCMultistepScheduler',
-    DDIMInverseScheduler = 'DDIMInverseScheduler',
-    DEISMultistepScheduler = 'DEISMultistepScheduler',
-    IPNDMScheduler = 'IPNDMScheduler',
-    KarrasVeScheduler = 'KarrasVeScheduler',
-    ScoreSdeVeScheduler = 'ScoreSdeVeScheduler',
-    LCMScheduler = 'LCMScheduler'
+export type Img2vidInput = {
+    image: string
+    nPrompt: string,
+    seconds: number,
+    motionButcketId: number,
+    seed?: number
 }
-export type Txt2vidOutput = {
+export type Txt2imgInput = {
+    pPrompt: string,
+    nPrompt: string,
+    modelId: string,
+    steps?: number,
+    seed?: number
+}
+export type VideoGenerationOutput = {
     id: string,
     status: string,
     mediaUrl: string,
+    seed?: number
     width?: number,
     height?: number,
     eta?: number
 }
+
+export const SDModels = [
+    { value: 'sd-1.5', label: 'Stable Diffusion v1.5' },
+    { value: 'stable-diffu', label: 'Stable Diffusion 2.0' },
+    { value: 'midjourney', label: 'MidJourney V4' },
+]

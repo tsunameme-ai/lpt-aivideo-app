@@ -4,23 +4,23 @@ import { Card, CardBody, CardHeader, Divider, Input, Modal, ModalBody, ModalCont
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { API } from '@/api/api'
-import { Txt2vidInput, VideoGenerationOutput } from '@/api/types'
+import { Img2vidInput, VideoGenerationOutput } from '@/api/types'
 
 export default function Page() {
     const router = useRouter()
-    const [pPromptValue, setPPromptValue] = useState<string>('')
+    const [imageUrl, setImageUrl] = useState<string>('')
     const [nPromptValue, setNPromptValue] = useState<string>('low quality, watermark, watermark, copyright, blurry, nsfw')
     const [secondsValue, setSecondsValue] = useState<string>('3')
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [nPromoptErrorMessage, setNPromoptErrorMessage] = useState<string>('')
     const [secondsErrorMessage, setSecondsErrorMessage] = useState<string>('')
+    const [imgErrorMessage, setImgErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [vidOutput, setVidOutput] = useState<VideoGenerationOutput | null>(null)
 
 
-    const handlePPromptValueChange = (value: string) => {
-        setPPromptValue(value)
-        setNPromoptErrorMessage('')
+    const handleImageUrlChange = (value: string) => {
+        setImageUrl(value)
+        setImgErrorMessage('')
     }
 
     const handleNPromptValueChange = (value: string) => {
@@ -40,9 +40,8 @@ export default function Page() {
         setIsLoading(false)
         setVidOutput(null)
 
-        const pPrompt = pPromptValue
-        if (pPrompt.length === 0) {
-            setNPromoptErrorMessage('Please set prompt message')
+        if (imageUrl.length === 0) {
+            setImgErrorMessage('Please input a valid img url')
             return
         }
         const seconds = parseInt(secondsValue)
@@ -52,14 +51,15 @@ export default function Page() {
         }
 
         setIsLoading(true)
-        const params: Txt2vidInput = {
-            pPrompt: pPrompt,
+        const params: Img2vidInput = {
+            image: imageUrl,
             nPrompt: nPromptValue,
+            motionButcketId: 127,
             seconds: seconds
         }
 
         try {
-            const vid = await API.txt2vid(params)
+            const vid = await API.img2vid(params)
             setVidOutput(vid)
         }
         catch (error: any) {
@@ -75,17 +75,17 @@ export default function Page() {
             <section>
                 <Card>
                     <CardHeader>
-                        <h1>Text to Video</h1>
+                        <h1>Image to Video</h1>
                     </CardHeader>
                     <Divider />
                     <CardBody>
-                        <Textarea
-                            label='Prompt'
+                        <Input
+                            label='Image Url'
                             placeholder=''
                             className='max-w'
-                            value={pPromptValue}
-                            errorMessage={nPromoptErrorMessage}
-                            onValueChange={handlePPromptValueChange}
+                            value={imageUrl}
+                            errorMessage={imgErrorMessage}
+                            onValueChange={handleImageUrlChange}
                         />
                         <Spacer y={4} />
                         <Textarea
