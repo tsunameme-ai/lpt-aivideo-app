@@ -79,9 +79,8 @@ export class ModelsLabAPI {
             'width': '512',
             'height': '512',
             // 'samples': '1',
-            // 'num_inference_steps': '30',
             // 'seed': null,
-            // 'guidance_scale': 7.5,
+            'guidance_scale': 7.5,
             // 'webhook': null,
             // 'track_id': null
         }
