@@ -59,3 +59,53 @@ const FETCH_FAILED_RESPONSE = {
     "output": "",
     "tip": "Get 20x faster image generation using enterprise plan. Click here : https:\/\/modelslab.com\/enterprise"
 }
+
+const TXT2IMG_SUCCESS = {
+    "status": "success",
+    "generationTime": 1.96,
+    "id": 66752945,
+    "output": [
+        "https:\/\/pub-3626123a908346a7a8be8d9295f44e26.r2.dev\/generations\/0-1ec64a77-ef0f-4ccf-932b-0c70e917e526.png"
+    ],
+    "proxy_links": [
+        "https:\/\/cdn2.stablediffusionapi.com\/generations\/0-1ec64a77-ef0f-4ccf-932b-0c70e917e526.png"
+    ],
+    "nsfw_content_detected": false,
+    "webhook_status": "",
+    "meta": {
+        "prompt": "mdjrny-v4 style ultra realistic close up portrait ((beautiful pale cyberpunk female with heavy black eyeliner)), blue eyes, shaved side haircut, hyper detail, cinematic lighting, magic neon, dark red city, Canon EOS R3, nikon, f\/1.4, ISO 200, 1\/160s, 8K, RAW, unedited, symmetrical balance, in-frame, 8K hyperrealistic, full body, detailed clothing, highly detailed, cinematic lighting, stunningly beautiful, intricate, sharp focus, f\/1. 8, 85mm, (centered image composition), (professionally color graded), ((bright soft diffused light)), volumetric fog, trending on instagram, trending on tumblr, HDR 4K, 8K",
+        "model_id": "midjourney",
+        "negative_prompt": "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime (child:1.5), ((((underage)))), ((((child)))), (((kid))), (((preteen))), (teen:1.5) ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, bad anatomy, watermark, signature, cut off, low contrast, underexposed, overexposed, bad art, beginner, amateur, distorted face, blurry, draft, grainy",
+        "scheduler": "UniPCMultistepScheduler",
+        "safety_checker": "no",
+        "W": 512,
+        "H": 512,
+        "guidance_scale": 7.5,
+        "seed": 3166507472,
+        "steps": 20,
+        "n_samples": 1,
+        "full_url": "no",
+        "instant_response": "no",
+        "tomesd": "yes",
+        "ip_adapter_id": null,
+        "ip_adapter_scale": 0.6,
+        "ip_adapter_image": null,
+        "free_u": "no",
+        "upscale": "no",
+        "multi_lingual": "no",
+        "panorama": "no",
+        "self_attention": "no",
+        "use_karras_sigmas": "no",
+        "algorithm_type": "no",
+        "safety_checker_type": "sensitive_content_text",
+        "embeddings": null,
+        "vae": null,
+        "lora": null,
+        "lora_strength": 1,
+        "clip_skip": 1,
+        "temp": "no",
+        "base64": "no",
+        "file_prefix": "1ec64a77-ef0f-4ccf-932b-0c70e917e526.png"
+    },
+    "tip": "Get 20x faster image generation using enterprise plan. Click here : https:\/\/modelslab.com\/enterprise"
+}
