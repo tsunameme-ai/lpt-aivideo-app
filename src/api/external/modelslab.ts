@@ -71,7 +71,7 @@ export class ModelsLabAPI {
     // https://docs.modelslab.com/stable-diffusion-api/text2img
     public static async txt2img(params: Txt2imgInput) {
         const url = 'https://modelslab.com/api/v6/images/text2img'
-        const postBody = {
+        const postBody: any = {
             'model_id': params.modelId,
             'prompt': params.pPrompt,
             'negative_prompt': params.nPrompt,
@@ -79,10 +79,16 @@ export class ModelsLabAPI {
             'width': '512',
             'height': '512',
             // 'samples': '1',
-            // 'seed': null,
+            'seed': params.seed || null,
             'guidance_scale': 7.5,
+            // 'lora_model': params.lora_model || null,
+            // 'lora_strength': params.lora_strength || null,
             // 'webhook': null,
             // 'track_id': null
+        }
+        if (params.loraModel) {
+            postBody['lora_model'] = params.loraModel
+            postBody['lora_strength'] = params.loraStrength
         }
 
         const data = await ModelsLabAPI.makePostAPICall(url, postBody)

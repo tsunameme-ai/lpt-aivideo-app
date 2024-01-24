@@ -16,7 +16,9 @@ export type Txt2imgInput = {
     nPrompt: string,
     modelId: string,
     steps?: number,
-    seed?: number
+    seed?: number,
+    loraModel?: string
+    loraStrength?: number
 }
 export type VideoGenerationOutput = {
     id: string,
@@ -30,6 +32,11 @@ export type VideoGenerationOutput = {
 
 export const SDModels = [
     { value: 'sd-1.5', label: 'Stable Diffusion v1.5' },
-    { value: 'stable-diffu', label: 'Stable Diffusion 2.0' },
+    { value: 'sdxl', label: 'SDXL 1.0' },
     { value: 'midjourney', label: 'MidJourney V4' },
+]
+export const Loras = [
+    { value: 'hunter-x-hunter-lora-styl', label: 'Hunter X Hunter' },
+    { value: 'sci-fi-environments', label: 'Sci-fi Environments' },
+    { value: 'linkedin-diffusion', label: 'Linkedin Photoshoot' },
 ]
