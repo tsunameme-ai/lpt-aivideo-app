@@ -4,7 +4,7 @@ import { Card, CardBody, CardHeader, Divider, Input, Modal, ModalBody, ModalCont
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { API } from '@/api/api'
-import { Txt2vidInput, VideoGenerationOutput } from '@/api/types'
+import { Txt2vidInput, GenerationOutput } from '@/api/types'
 
 export default function Page() {
     const router = useRouter()
@@ -15,7 +15,7 @@ export default function Page() {
     const [nPromoptErrorMessage, setNPromoptErrorMessage] = useState<string>('')
     const [secondsErrorMessage, setSecondsErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
-    const [vidOutput, setVidOutput] = useState<VideoGenerationOutput | null>(null)
+    const [vidOutput, setVidOutput] = useState<GenerationOutput | null>(null)
 
 
     const handlePPromptValueChange = (value: string) => {
