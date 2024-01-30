@@ -1,6 +1,7 @@
 import { NextApiRequest } from 'next'
+import { NextRequest } from 'next/server'
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: Request | NextRequest) {
     try {
         const body = await (req as any).json()
         const url = body.url

@@ -52,7 +52,7 @@ export default function Page() {
 
         setIsLoading(true)
         const params: Img2vidInput = {
-            image: imageUrl,
+            imageUrl: imageUrl,
             nPrompt: nPromptValue,
             motionButcketId: 127,
             seconds: seconds
