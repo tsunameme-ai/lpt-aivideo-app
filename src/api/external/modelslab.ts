@@ -1,8 +1,8 @@
-import { Img2vidInput, Txt2imgInput, Txt2vidInput, VideoGenerationOutput } from '../types'
+import { Img2vidInput, Txt2imgInput, Txt2vidInput, GenerationOutput } from '../types'
 
 export class ModelsLabAPI {
     // https://docs.modelslab.com/text-to-video/texttovideo
-    public static async txt2vid(params: Txt2vidInput): Promise<VideoGenerationOutput> {
+    public static async txt2vid(params: Txt2vidInput): Promise<GenerationOutput> {
         const url = 'https://stablediffusionapi.com/api/v5/text2video'
         const postBody = {
             'prompt': params.pPrompt,
@@ -22,7 +22,7 @@ export class ModelsLabAPI {
         //     // 'seed': params.seed || -1,
         // }
         const data = await ModelsLabAPI.makePostAPICall(url, postBody)
-        console.log(data)
+        // console.log(data)
         return {
             id: data.id,
             status: data.status,
@@ -31,7 +31,7 @@ export class ModelsLabAPI {
     }
 
     // https://docs.modelslab.com/text-to-video/imgtovideo
-    public static async img2vid(params: Img2vidInput): Promise<VideoGenerationOutput> {
+    public static async img2vid(params: Img2vidInput): Promise<GenerationOutput> {
         const url = 'https://modelslab.com/api/v6/video/img2video'
         // const postBody = {
         //     'model_id': 'svd',
@@ -60,7 +60,7 @@ export class ModelsLabAPI {
         }
 
         const data = await ModelsLabAPI.makePostAPICall(url, postBody)
-        console.log(data)
+        // console.log(data)
         return {
             id: data.id,
             status: data.status,
@@ -71,22 +71,23 @@ export class ModelsLabAPI {
     // https://docs.modelslab.com/stable-diffusion-api/text2img
     public static async txt2img(params: Txt2imgInput) {
         const url = 'https://modelslab.com/api/v6/images/text2img'
-        const postBody = {
+        const postBody: any = {
             'model_id': params.modelId,
             'prompt': params.pPrompt,
             'negative_prompt': params.nPrompt,
             'num_inference_steps': params.steps,
             'width': '512',
             'height': '512',
-            // 'samples': '1',
-            // 'seed': null,
-            'guidance_scale': 7.5,
+            'seed': params.seed || null,
+            'guidance_scale': params.guidanceScale,
+            'lora_model': params.loraModel,
+            'lora_strength': params.loraModel === undefined ? undefined : params.loraStrength
             // 'webhook': null,
             // 'track_id': null
         }
 
         const data = await ModelsLabAPI.makePostAPICall(url, postBody)
-        console.log(data)
+        // console.log(data)
         return {
             id: data.id,
             status: data.status,
@@ -94,10 +95,10 @@ export class ModelsLabAPI {
         }
     }
 
-    public static async fetchAsset(vid: string): Promise<VideoGenerationOutput> {
+    public static async fetchAsset(vid: string): Promise<GenerationOutput> {
         const url = `https://modelslab.com/api/v6/video/fetch/${vid}`
         const data = await ModelsLabAPI.makePostAPICall(url, { 'request_id': vid })
-        console.log(data)
+        // console.log(data)
         if (data.status === 'error') {
             throw new Error(data.message)
         }

@@ -1,3 +1,2 @@
-NEXT_PUBLIC_TXT2VID_ENDPOINT='https://stablediffusionapi.com/api/v5/text2video'
 NEXT_PUBLIC_TXT2VID_APIKEY='MY-KEY'
-NEXT_PUBLIC_FETCHVIDEO_ENDPOINT='https://stablediffusionapi.com/api/v4/dreambooth/fetch'
+NEXT_PUBLIC_LIVEPEER_ENDPOINT='http://207.189.112.60:48211'

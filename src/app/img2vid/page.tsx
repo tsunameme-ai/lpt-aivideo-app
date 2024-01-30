@@ -4,7 +4,7 @@ import { Card, CardBody, CardHeader, Divider, Input, Modal, ModalBody, ModalCont
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { API } from '@/api/api'
-import { Img2vidInput, VideoGenerationOutput } from '@/api/types'
+import { Img2vidInput, GenerationOutput } from '@/api/types'
 
 export default function Page() {
     const router = useRouter()
@@ -15,7 +15,7 @@ export default function Page() {
     const [secondsErrorMessage, setSecondsErrorMessage] = useState<string>('')
     const [imgErrorMessage, setImgErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
-    const [vidOutput, setVidOutput] = useState<VideoGenerationOutput | null>(null)
+    const [vidOutput, setVidOutput] = useState<GenerationOutput | null>(null)
 
 
     const handleImageUrlChange = (value: string) => {
