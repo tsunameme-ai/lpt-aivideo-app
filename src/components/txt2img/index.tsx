@@ -1,5 +1,5 @@
 import { API } from "@/api/api";
-import { Loras, SDModels, Txt2imgInput, GenerationOutput } from "@/api/types";
+import { Loras, SDModels, Txt2imgInput, GenerationOutput, Schedulers } from "@/api/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Slider } from '@nextui-org/react'
@@ -11,6 +11,7 @@ interface Txt2ImgComponentProps {
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
     const defaultBaseModel = 'sd-1.5'
+    const defaultScheduler = 'EulerAncestralDiscreteScheduler'
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
     const [pPromptValue, setPPromptValue] = useState<string>('')
     const [nPromptValue, setNPromptValue] = useState<string>('lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
@@ -20,10 +21,12 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [pPromptErrorMessage, setPPromptErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [stepErrorMessage, setStepErrorMessage] = useState<string>('')
-    const [lora, setLora] = useState<string | null>(null)
+    const [lora, setLora] = useState<string | undefined>(undefined)
+    const [scheduler, setScheduler] = useState<string>(defaultScheduler)
     const [loraStrength, setLoraStrength] = useState<number | number[]>(1.0)
     const [guidanceScale, setGuidanceScale] = useState<number | number[]>(7.5)
-    const [generationOutput, setGenerationOutput] = useState<GenerationOutput | null>(null)
+    const [clipSkip, setClipSkip] = useState<number | number[]>(1)
+    const [generationOutput, setGenerationOutput] = useState<GenerationOutput | undefined>(undefined)
 
     const handlePPromptValueChange = (value: string) => {
         setPPromptValue(value)
@@ -31,16 +34,20 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     }
 
     const handleSetBaseModel = (key: any) => {
-        setBaseModel(key.size === 0 ? null : key.currentKey)
+        setBaseModel(key.size === 0 ? defaultBaseModel : key.currentKey)
     }
     const handleSetLora = (key: any) => {
-        setLora(key.size === 0 ? null : key.currentKey)
+        setLora(key.size === 0 ? undefined : key.currentKey)
+    }
+    const handleSetScheduler = (key: any) => {
+        setScheduler(key.size === 0 ? defaultScheduler : key.currentKey)
     }
 
-    const generateVideo = async () => {
+    const generateImage = async () => {
+        console.log('??? generateImage')
         setErrorMessage('')
         setIsLoading(false)
-        setGenerationOutput(null)
+        setGenerationOutput(undefined)
 
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
@@ -48,7 +55,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             return
         }
 
-        setIsLoading(true)
         const stepCount = parseInt(stepsValue)
         if (isNaN(stepCount) || stepCount < 1 || stepCount > 50) {
             setStepErrorMessage('Wrong steps value.')
@@ -60,12 +66,13 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             modelId: baseModel,
             steps: stepCount,
             seed: seedValue.length > 0 ? seedValue : undefined,
-            guidanceScale: guidanceScale as number
+            guidanceScale: guidanceScale as number,
+            clipSkip: clipSkip as number,
+            loraModel: lora === undefined ? undefined : lora,
+            loraStrength: lora === undefined ? undefined : loraStrength as number,
+            scheduler: scheduler
         }
-        if (lora) {
-            params.loraModel = lora
-            params.loraStrength = loraStrength as number
-        }
+        setIsLoading(true)
         try {
             const output = await API.txt2img(params)
             setGenerationOutput(output)
@@ -90,7 +97,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 defaultSelectedKeys={[baseModel]}
                 onSelectionChange={handleSetBaseModel}
                 label="Base Model"
-                errorMessage={baseModel === null ? `Must select base model` : ''}
+                errorMessage={baseModel === undefined ? `Must select base model` : ''}
             >
                 {SDModels.map((model) => (
                     <SelectItem key={model.value} value={model.value}>
@@ -152,6 +159,19 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 onValueChange={setSeedValue}
             />
             <Spacer y={4} />
+            <Select
+                defaultSelectedKeys={[defaultScheduler]}
+                value={[scheduler]}
+                onSelectionChange={handleSetScheduler}
+                label='Scheduler'
+            >
+                {Schedulers.map((model) => (
+                    <SelectItem key={model.value} value={model.value}>
+                        {model.label}
+                    </SelectItem>
+                ))}
+            </Select>
+            <Spacer y={4} />
             <Slider
                 label='Guidance Scale'
                 step={0.1}
@@ -161,10 +181,19 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 onChange={setGuidanceScale}
             />
             <Spacer y={4} />
+            <Slider
+                label='Clip Skip'
+                step={1}
+                maxValue={8}
+                minValue={1}
+                value={clipSkip}
+                onChange={setClipSkip}
+            />
+            <Spacer y={4} />
 
             <Button
                 color='primary' variant='solid'
-                onPress={generateVideo}
+                onPress={generateImage}
                 isLoading={isLoading}
             >
                 Generate Image
