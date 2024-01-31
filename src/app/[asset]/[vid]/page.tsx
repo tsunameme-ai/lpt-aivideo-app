@@ -4,9 +4,25 @@ import { useState } from "react"
 import { GenerationOutput } from "@/api/types"
 import Img2VidComponent from "@/components/img2vid"
 import GenerationStatusComponent from "@/components/generation-status"
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function Page({ params }: { params: { vid: string, asset: string } }) {
+
+    const router = useRouter()
+    const searchParams = useSearchParams()
+
+    const vid = process.env.NEXT_PUBLIC_API === 'modelslab' ? params.vid : searchParams.get('media')
+
     const [generationOutput, setGenerationOutput] = useState<GenerationOutput | null>(null)
+
+    const onVideo = async (output: GenerationOutput) => {
+        if (process.env.NEXT_PUBLIC_API === 'modelslab') {
+            router.push(`/video/${output?.id}`)
+        }
+        else {
+            router.push(`/video/${output?.id}?media=${output?.mediaUrl}`)
+        }
+    }
     const previewRender = (): any => {
         if (generationOutput?.status === 'success') {
             const segs = generationOutput.mediaUrl.split('.')
@@ -14,21 +30,21 @@ export default function Page({ params }: { params: { vid: string, asset: string 
             const isVideo = ['mp4'].includes(surfix)
             return isVideo ?
                 <video width={520} loop controls autoPlay src={generationOutput?.mediaUrl} />
-                : <Img2VidComponent imageOutput={generationOutput!} />
+                : <Img2VidComponent imageOutput={generationOutput!} onVideo={onVideo} />
         }
         return ''
     }
     return (
         <section>
-            <Card>
+            {vid && <Card>
                 <CardBody>
                     <GenerationStatusComponent
                         onOutputFetched={setGenerationOutput}
                         assetType={params.asset}
-                        generationId={params.vid} />
+                        generationId={vid!} />
                     {previewRender()}
                 </CardBody>
-            </Card>
+            </Card>}
 
         </section >
     )

@@ -69,7 +69,7 @@ export class ModelsLabAPI {
     }
 
     // https://docs.modelslab.com/stable-diffusion-api/text2img
-    public static async txt2img(params: Txt2imgInput) {
+    public static async txt2img(params: Txt2imgInput): Promise<GenerationOutput> {
         const url = 'https://modelslab.com/api/v6/images/text2img'
         const postBody: any = {
             'model_id': params.modelId,
@@ -78,7 +78,7 @@ export class ModelsLabAPI {
             'num_inference_steps': params.steps,
             'width': '512',
             'height': '512',
-            'seed': params.seed || null,
+            'seed': params.seed ? parseInt(params.seed) : undefined,
             'clip_skip': params.clipSkip,
             'guidance_scale': params.guidanceScale,
             'lora_model': params.loraModel,

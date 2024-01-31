@@ -13,16 +13,19 @@ interface Img2VidComponentProps {
 
 const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidComponentProps) => {
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
+    const [motionBucketId, setMotionBucketId] = useState<number | number[]>(127)
     const [imageFile, setImageFile] = useState<File | null>(null)
+    const [imageBlobUrl, setImageBlobUrl] = useState<string | null>(null)
     const [errorMessage, setErrorMessage] = useState<string>('')
 
     const fetchImageAsFile = async (url: string): Promise<File> => {
         const response = await fetch(`http://localhost:3000/api/image`, { method: 'POST', body: JSON.stringify({ url }) });
         if (response.ok) {
             const blob = await response.blob()
+            // return blob
             const file = new File([blob], 'image.png', { type: 'image/png' })
-            console.log('fetchImageAsFile ???')
-            console.log(file)
+            // console.log('fetchImageAsFile ???')
+            // console.log(file)
             return file
         }
         throw new Error(`Fetch image failed`)
@@ -51,13 +54,17 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
             setIsGeneratingVideo(false)
             return
         }
+
         try {
-            const res = await API.img2vid({
+            const output = await API.img2vid({
                 imageFile: imgFile,
-                motionButcketId: 127
+                motionButcketId: motionBucketId as number
             })
+            if (props.onVideo) {
+                props.onVideo(output)
+            }
             //TODO goto video once res is successful
-            setErrorMessage(JSON.stringify(res))
+            // setErrorMessage(JSON.stringify(res))
         }
         catch (e: any) {
             setErrorMessage(`Unable to generatet video: ${e.message}`)
@@ -77,6 +84,8 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                 maxValue={255}
                 minValue={0}
                 defaultValue={127}
+                value={motionBucketId}
+                onChange={setMotionBucketId}
             />
             <Spacer y={4} />
             <Button
@@ -86,6 +95,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                 Generate Video
             </Button>
             <ErrorComponent errorMessage={errorMessage} />
+            {imageBlobUrl && <img src={imageBlobUrl!} width={512} />}
         </div>
     );
 };

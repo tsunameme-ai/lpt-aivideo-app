@@ -93,19 +93,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     }
     return (
         <>
-            <Select
-                defaultSelectedKeys={[baseModel]}
-                onSelectionChange={handleSetBaseModel}
-                label="Base Model"
-                errorMessage={baseModel === undefined ? `Must select base model` : ''}
-            >
-                {SDModels.map((model) => (
-                    <SelectItem key={model.value} value={model.value}>
-                        {model.label}
-                    </SelectItem>
-                ))}
-            </Select>
-            <Spacer y={4} />
             <Textarea
                 label='Prompt'
                 className='max-w'
@@ -114,82 +101,97 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 onValueChange={handlePPromptValueChange}
             />
             <Spacer y={4} />
-            <Textarea
-                label='Negative Prompt'
-                placeholder=''
-                value={nPromptValue}
-                onValueChange={setNPromptValue}
-            />
-            <Spacer y={4} />
-            <Input
-                label='Steps'
-                type='number'
-                placeholder='1 to 50'
-                value={stepsValue}
-                errorMessage={stepErrorMessage}
-                onValueChange={setStepsValue}
-            />
-            <Spacer y={4} />
-            <Select
-                value={[lora || '']}
-                onSelectionChange={handleSetLora}
-                label="Lora"
-            >
-                {Loras.map((model) => (
-                    <SelectItem key={model.value} value={model.value}>
-                        {model.label}
-                    </SelectItem>
-                ))}
-            </Select>
-            <Spacer y={4} />
-            <Slider
-                label='Lora Strength'
-                step={0.1}
-                maxValue={1}
-                minValue={0}
-                value={loraStrength}
-                onChange={setLoraStrength}
-            />
-            <Spacer y={4} />
-            <Input
-                label='Seed'
-                type='number'
-                placeholder=''
-                value={seedValue}
-                onValueChange={setSeedValue}
-            />
-            <Spacer y={4} />
-            <Select
-                defaultSelectedKeys={[defaultScheduler]}
-                value={[scheduler]}
-                onSelectionChange={handleSetScheduler}
-                label='Scheduler'
-            >
-                {Schedulers.map((model) => (
-                    <SelectItem key={model.value} value={model.value}>
-                        {model.label}
-                    </SelectItem>
-                ))}
-            </Select>
-            <Spacer y={4} />
-            <Slider
-                label='Guidance Scale'
-                step={0.1}
-                maxValue={20}
-                minValue={1}
-                value={guidanceScale}
-                onChange={setGuidanceScale}
-            />
-            <Spacer y={4} />
-            <Slider
-                label='Clip Skip'
-                step={1}
-                maxValue={8}
-                minValue={1}
-                value={clipSkip}
-                onChange={setClipSkip}
-            />
-            <Spacer y={4} />
+            <div hidden>
+                <Textarea
+                    label='Negative Prompt'
+                    placeholder=''
+                    value={nPromptValue}
+                    onValueChange={setNPromptValue}
+                />
+                <Spacer y={4} />
+                <Select
+                    defaultSelectedKeys={[baseModel]}
+                    onSelectionChange={handleSetBaseModel}
+                    label="Base Model"
+                    errorMessage={baseModel === undefined ? `Must select base model` : ''}
+                >
+                    {SDModels.map((model) => (
+                        <SelectItem key={model.value} value={model.value}>
+                            {model.label}
+                        </SelectItem>
+                    ))}
+                </Select>
+                <Spacer y={4} />
+                <Input
+                    label='Steps'
+                    type='number'
+                    placeholder='1 to 50'
+                    value={stepsValue}
+                    errorMessage={stepErrorMessage}
+                    onValueChange={setStepsValue}
+                />
+                <Spacer y={4} />
+                <Select
+                    value={[lora || '']}
+                    onSelectionChange={handleSetLora}
+                    label="Lora"
+                >
+                    {Loras.map((model) => (
+                        <SelectItem key={model.value} value={model.value}>
+                            {model.label}
+                        </SelectItem>
+                    ))}
+                </Select>
+                <Spacer y={4} />
+                <Slider
+                    label='Lora Strength'
+                    step={0.1}
+                    maxValue={1}
+                    minValue={0}
+                    value={loraStrength}
+                    onChange={setLoraStrength}
+                />
+                <Spacer y={4} />
+                <Input
+                    label='Seed'
+                    type='number'
+                    placeholder=''
+                    value={seedValue}
+                    onValueChange={setSeedValue}
+                />
+                <Spacer y={4} />
+                <Select
+                    defaultSelectedKeys={[defaultScheduler]}
+                    value={[scheduler]}
+                    onSelectionChange={handleSetScheduler}
+                    label='Scheduler'
+                >
+                    {Schedulers.map((model) => (
+                        <SelectItem key={model.value} value={model.value}>
+                            {model.label}
+                        </SelectItem>
+                    ))}
+                </Select>
+                <Spacer y={4} />
+                <Slider
+                    label='Guidance Scale'
+                    step={0.1}
+                    maxValue={20}
+                    minValue={1}
+                    value={guidanceScale}
+                    onChange={setGuidanceScale}
+                />
+                <Spacer y={4} />
+                <Slider
+                    label='Clip Skip'
+                    step={1}
+                    maxValue={8}
+                    minValue={1}
+                    value={clipSkip}
+                    onChange={setClipSkip}
+                />
+                <Spacer y={4} />
+            </div>
 
             <Button
                 color='primary' variant='solid'
