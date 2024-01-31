@@ -91,6 +91,8 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const handleGotoAsset = async () => {
         props.onGenerationRequested(generationOutput!)
     }
+
+
     return (
         <>
             <Textarea
@@ -101,7 +103,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 onValueChange={handlePPromptValueChange}
             />
             <Spacer y={4} />
-            <div hidden>
+            <div hidden={process.env.NEXT_PUBLIC_API !== 'modelslab'}>
                 <Textarea
                     label='Negative Prompt'
                     placeholder=''

@@ -75,7 +75,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     }
 
     return (
-        <div>
+        <>
             <Image width={520} src={props.imageOutput.mediaUrl} />
             <Spacer y={4} />
             <Slider
@@ -96,7 +96,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
             </Button>
             <ErrorComponent errorMessage={errorMessage} />
             {imageBlobUrl && <img src={imageBlobUrl!} width={512} />}
-        </div>
+        </>
     );
 };
 

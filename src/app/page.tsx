@@ -14,13 +14,13 @@ export default function Home() {
     <section className="flex min-h-screen flex-col items-center justify-between p-24">
       <Card>
         <CardBody>
+          {/* <Spacer y={4} />
+          <Button color='primary' onPress={handleTxt2vid}>{"Text to Video"}</Button> */}
           <Spacer y={4} />
-          <Button color='primary' onPress={handleTxt2vid}>{"Text to Video"}</Button>
+          <Button color='primary' onPress={handleTxt2img}>{"Text to Image to Video"}</Button>
           <Spacer y={4} />
-          <Button color='primary' onPress={handleTxt2img}>{"Text to Image maybe to Video"}</Button>
-          <Spacer y={4} />
-          <Button color='primary' isDisabled>Gallery</Button>
-          <Spacer y={4} />
+          {/* <Button color='primary' isDisabled>Gallery</Button>
+          <Spacer y={4} /> */}
         </CardBody>
       </Card>
     </section>

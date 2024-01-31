@@ -9,7 +9,9 @@ export class LivepeerAPI {
             'prompt': params.pPrompt,
             'negative_prompt': params.nPrompt,
             'guidance_scale': params.guidanceScale,
-            'seed': params.seed
+            'seed': params.seed,
+            'width': 1024,
+            'height': 576
         }
 
         const headers = new Headers()
@@ -28,7 +30,7 @@ export class LivepeerAPI {
         const data = {
             "images": [
                 {
-                    "url": "https://storage.googleapis.com/livepeer-ai-video-dev/3f1795d7/bdc1d7b8.png"
+                    "url": "https://storage.googleapis.com/livepeer-ai-video-dev/32fc381d/e0253869.png"
                 }
             ]
         }
@@ -47,7 +49,7 @@ export class LivepeerAPI {
         }
     }
     public static async img2vid(params: Img2vidInput): Promise<GenerationOutput> {
-        const data = { "images": [{ "url": "https://storage.googleapis.com/livepeer-ai-video-dev/698da978/41a81130.mp4" }] }
+        const data = { "images": [{ "url": "https://storage.googleapis.com/livepeer-ai-video-dev/70f27081/3406d352.mp4" }] }
         await API.delay(1000)
         return {
             id: 'sync',
