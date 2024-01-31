@@ -79,9 +79,11 @@ export class ModelsLabAPI {
             'width': '512',
             'height': '512',
             'seed': params.seed || null,
+            'clip_skip': params.clipSkip,
             'guidance_scale': params.guidanceScale,
             'lora_model': params.loraModel,
-            'lora_strength': params.loraModel === undefined ? undefined : params.loraStrength
+            'lora_strength': params.loraModel === undefined ? undefined : params.loraStrength,
+            'scheduler': params.scheduler
             // 'webhook': null,
             // 'track_id': null
         }

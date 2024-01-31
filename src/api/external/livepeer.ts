@@ -14,6 +14,7 @@ export class LivepeerAPI {
         const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/image-to-video`
         const headers = new Headers()
         headers.append('Access-Control-Allow-Origin', '*')
+        headers.append('Prefer', 'respond-async')
         console.log(`???? post livepeer ${url}`)
         const res = await fetch(url, {
             method: 'POST',
