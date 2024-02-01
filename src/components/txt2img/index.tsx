@@ -1,17 +1,19 @@
-import { Loras, SDModels, Txt2imgInput, GenerationOutput, Schedulers } from "@/api/types";
+import { Txt2imgInput, GenerationOutput, SDProvider } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Slider } from '@nextui-org/react'
-import { txt2img } from "@/api/txt2img";
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Slider, Divider } from '@nextui-org/react'
+import { txt2img } from "@/actions/txt2img";
 
 
 interface Txt2ImgComponentProps {
+    sdProvider: SDProvider
+    isAdvancedView: boolean
     onGenerationRequested: (generationOutput: GenerationOutput) => void
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
-    const defaultBaseModel = 'sd-1.5'
-    const defaultScheduler = 'EulerAncestralDiscreteScheduler'
+    const defaultBaseModel = props.sdProvider.models.find(item => { return item.default === true })?.value!
+    const defaultScheduler = props.sdProvider.schedulers?.find(item => { return item.default === true })?.value!
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
     const [pPromptValue, setPPromptValue] = useState<string>('')
     const [nPromptValue, setNPromptValue] = useState<string>('lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
@@ -22,10 +24,12 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [stepErrorMessage, setStepErrorMessage] = useState<string>('')
     const [lora, setLora] = useState<string | undefined>(undefined)
-    const [scheduler, setScheduler] = useState<string>(defaultScheduler)
-    const [loraStrength, setLoraStrength] = useState<number | number[]>(1.0)
-    const [guidanceScale, setGuidanceScale] = useState<number | number[]>(7.5)
-    const [clipSkip, setClipSkip] = useState<number | number[]>(1)
+    const [scheduler, setScheduler] = useState<string | undefined>(undefined)
+    const [loraStrength, setLoraStrength] = useState<string>('1.0')
+    const [guidanceScale, setGuidanceScale] = useState<string>('7')
+    const [clipSkip, setClipSkip] = useState<string>('1')
+    const [width, setWidth] = useState<string>('768')
+    const [height, setHeight] = useState<string>('512')
     const [generationOutput, setGenerationOutput] = useState<GenerationOutput | undefined>(undefined)
 
     const handlePPromptValueChange = (value: string) => {
@@ -40,11 +44,10 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         setLora(key.size === 0 ? undefined : key.currentKey)
     }
     const handleSetScheduler = (key: any) => {
-        setScheduler(key.size === 0 ? defaultScheduler : key.currentKey)
+        setScheduler(key.size === 0 ? undefined : key.currentKey)
     }
 
     const generateImage = async () => {
-        console.log('??? generateImage')
         setErrorMessage('')
         setIsLoading(false)
         setGenerationOutput(undefined)
@@ -66,11 +69,13 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             modelId: baseModel,
             steps: stepCount,
             seed: seedValue.length > 0 ? seedValue : undefined,
-            guidanceScale: guidanceScale as number,
-            clipSkip: clipSkip as number,
-            loraModel: lora === undefined ? undefined : lora,
-            loraStrength: lora === undefined ? undefined : loraStrength as number,
-            scheduler: scheduler
+            guidanceScale: parseFloat(guidanceScale),
+            clipSkip: parseInt(clipSkip),
+            loraModel: lora,
+            loraStrength: lora === undefined ? undefined : parseFloat(loraStrength),
+            scheduler: scheduler,
+            width: parseInt(width),
+            height: parseInt(height)
         }
         setIsLoading(true)
         try {
@@ -103,7 +108,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 onValueChange={handlePPromptValueChange}
             />
             <Spacer y={4} />
-            <div hidden={process.env.NEXT_PUBLIC_API !== 'modelslab'}>
+            <div hidden={!props.isAdvancedView}>
                 <Textarea
                     label='Negative Prompt'
                     placeholder=''
@@ -111,87 +116,104 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                     onValueChange={setNPromptValue}
                 />
                 <Spacer y={4} />
-                <Select
-                    defaultSelectedKeys={[baseModel]}
-                    onSelectionChange={handleSetBaseModel}
-                    label="Base Model"
-                    errorMessage={baseModel === undefined ? `Must select base model` : ''}
-                >
-                    {SDModels.map((model) => (
-                        <SelectItem key={model.value} value={model.value}>
-                            {model.label}
-                        </SelectItem>
-                    ))}
-                </Select>
-                <Spacer y={4} />
-                <Input
-                    label='Steps'
-                    type='number'
-                    placeholder='1 to 50'
-                    value={stepsValue}
-                    errorMessage={stepErrorMessage}
-                    onValueChange={setStepsValue}
-                />
-                <Spacer y={4} />
-                <Select
-                    value={[lora || '']}
-                    onSelectionChange={handleSetLora}
-                    label="Lora"
-                >
-                    {Loras.map((model) => (
-                        <SelectItem key={model.value} value={model.value}>
-                            {model.label}
-                        </SelectItem>
-                    ))}
-                </Select>
-                <Spacer y={4} />
-                <Slider
-                    label='Lora Strength'
-                    step={0.1}
-                    maxValue={1}
-                    minValue={0}
-                    value={loraStrength}
-                    onChange={setLoraStrength}
-                />
-                <Spacer y={4} />
-                <Input
-                    label='Seed'
-                    type='number'
-                    placeholder=''
-                    value={seedValue}
-                    onValueChange={setSeedValue}
-                />
-                <Spacer y={4} />
-                <Select
-                    defaultSelectedKeys={[defaultScheduler]}
-                    value={[scheduler]}
-                    onSelectionChange={handleSetScheduler}
-                    label='Scheduler'
-                >
-                    {Schedulers.map((model) => (
-                        <SelectItem key={model.value} value={model.value}>
-                            {model.label}
-                        </SelectItem>
-                    ))}
-                </Select>
-                <Spacer y={4} />
-                <Slider
-                    label='Guidance Scale'
-                    step={0.1}
-                    maxValue={20}
-                    minValue={1}
-                    value={guidanceScale}
-                    onChange={setGuidanceScale}
-                />
-                <Spacer y={4} />
-                <Slider
-                    label='Clip Skip'
-                    step={1}
-                    maxValue={8}
-                    minValue={1}
-                    value={clipSkip}
-                    onChange={setClipSkip}
-                />
+                <div className='grid grid-cols-2 gap-4'>
+                    <Input
+                        label='Width'
+                        type='number'
+                        value={width}
+                        onValueChange={setWidth}
+                    />
+                    <Input
+                        label='Height'
+                        type='number'
+                        value={height}
+                        onValueChange={setHeight}
+                    />
+
+
+
+                    <Select
+                        defaultSelectedKeys={[baseModel]}
+                        onSelectionChange={handleSetBaseModel}
+                        label="Base Model"
+                        errorMessage={baseModel === undefined ? `Must select base model` : ''}
+                    >
+                        {props.sdProvider.models.map((model) => (
+                            <SelectItem key={model.value} value={model.value}>
+                                {model.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+
+                    {props.sdProvider.schedulers &&
+                        <Select
+                            defaultSelectedKeys={[defaultScheduler]}
+                            value={[scheduler || '']}
+                            onSelectionChange={handleSetScheduler}
+                            label='Scheduler'>
+                            {props.sdProvider.schedulers.map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </Select>}
+
+                    <Input
+                        label='Steps'
+                        type='number'
+                        placeholder='1 to 50'
+                        value={stepsValue}
+                        errorMessage={stepErrorMessage}
+                        onValueChange={setStepsValue}
+                    />
+
+                    <Input
+                        label='Seed'
+                        type='number'
+                        placeholder=''
+                        value={seedValue}
+                        onValueChange={setSeedValue}
+                    />
+
+                    <Input
+                        label='CFG Scale'
+                        description='1 - 20'
+                        value={guidanceScale}
+                        onValueChange={setGuidanceScale} />
+
+                    <Input
+                        label='Clip Skip'
+                        description='1 - 8'
+                        value={clipSkip}
+                        onValueChange={setClipSkip} />
+                </div>
+
+                {props.sdProvider.loras && <>
+                    <Spacer y={4} />
+                    <Divider />
+                    <Spacer y={4} />
+                    <div className='columns-2'>
+                        <Select
+                            value={[lora || '']}
+                            onSelectionChange={handleSetLora}
+                            label="Lora">
+                            {props.sdProvider.loras.map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </Select>
+
+                        <Input
+                            label='Lora Strength'
+                            type='number'
+                            placeholder='0 to 1'
+                            value={loraStrength.toString()}
+                            errorMessage={stepErrorMessage}
+                            onValueChange={setLoraStrength}
+                        />
+                    </div>
+                </>}
                 <Spacer y={4} />
             </div>
 

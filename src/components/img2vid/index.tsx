@@ -1,8 +1,8 @@
-import { GenerationOutput } from "@/api/types";
+import { GenerationOutput } from "@/libs/types";
 import { Button, Slider, Spacer, Image } from "@nextui-org/react";
 import { useState } from "react";
 import ErrorComponent, { ErrorComponentStyle } from "../error"
-import { img2vid } from "@/api/img2vid";
+import { img2vid } from "@/actions/img2vid";
 
 
 interface Img2VidComponentProps {
@@ -20,12 +20,10 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     const handleGenerateVideoClick = async () => {
         setIsGeneratingVideo(true)
         try {
-            console.log('??? about to call')
             const output = await img2vid({
                 imageUrl: props.imageOutput.mediaUrl,
                 motionButcketId: motionBucketId as number
             })
-            console.log(output)
             if (props.onVideo) {
                 props.onVideo(output)
             }

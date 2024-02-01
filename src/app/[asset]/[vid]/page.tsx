@@ -1,7 +1,7 @@
 'use client'
 import { Card, CardBody } from "@nextui-org/react"
 import { useState } from "react"
-import { GenerationOutput } from "@/api/types"
+import { GenerationOutput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
 import GenerationStatusComponent from "@/components/generation-status"
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -11,12 +11,12 @@ export default function Page({ params }: { params: { vid: string, asset: string 
     const router = useRouter()
     const searchParams = useSearchParams()
 
-    const vid = process.env.NEXT_PUBLIC_API === 'modelslab' ? params.vid : searchParams.get('media')
+    const vid = process.env.NEXT_PUBLIC_SD_PROVIDER === 'modelslab' ? params.vid : searchParams.get('media')
 
     const [generationOutput, setGenerationOutput] = useState<GenerationOutput | null>(null)
 
     const onVideo = async (output: GenerationOutput) => {
-        if (process.env.NEXT_PUBLIC_API === 'modelslab') {
+        if (process.env.NEXT_PUBLIC_SD_PROVIDER === 'modelslab') {
             router.push(`/video/${output?.id}`)
         }
         else {
