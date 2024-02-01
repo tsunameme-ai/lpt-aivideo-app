@@ -29,7 +29,7 @@ export default function Page({ params }: { params: { vid: string, asset: string 
             const surfix = segs[segs.length - 1].toLowerCase()
             const isVideo = ['mp4'].includes(surfix)
             return isVideo ?
-                <div className="items-center "><video width={520} loop controls autoPlay src={generationOutput?.mediaUrl} /></div>
+                <div className="flex justify-center items-center"><video width={520} loop controls autoPlay src={generationOutput?.mediaUrl} /></div>
                 : <Img2VidComponent imageOutput={generationOutput!} onVideo={onVideo} />
         }
         return ''

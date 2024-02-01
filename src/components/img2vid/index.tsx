@@ -1,4 +1,4 @@
-import { GenerationOutput } from "@/libs/types";
+import { GenerationOutput } from "@/api/types";
 import { Button, Slider, Spacer, Image } from "@nextui-org/react";
 import { useState } from "react";
 import ErrorComponent, { ErrorComponentStyle } from "../error"
@@ -24,6 +24,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                 imageUrl: props.imageOutput.mediaUrl,
                 motionButcketId: motionBucketId as number
             })
+            console.log(output)
             if (props.onVideo) {
                 props.onVideo(output)
             }
@@ -38,7 +39,9 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
 
     return (
         <>
-            <Image max-width={520} src={props.imageOutput.mediaUrl} />
+            <div className="flex justify-center items-center">
+                <Image max-width={520} src={props.imageOutput.mediaUrl} />
+            </div>
             <Spacer y={4} />
             <Slider
                 label='Motion Bucket Id'
