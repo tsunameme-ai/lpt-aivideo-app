@@ -1,4 +1,4 @@
-import { GenerationOutput } from "@/api/types";
+import { GenerationOutput } from "@/libs/types"
 import { Button, Slider, Spacer, Image } from "@nextui-org/react";
 import { useState } from "react";
 import ErrorComponent, { ErrorComponentStyle } from "../error"
