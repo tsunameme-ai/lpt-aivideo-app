@@ -40,7 +40,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     return (
         <>
             <div className="flex justify-center items-center">
-                <Image max-width={520} src={props.imageOutput.mediaUrl} />
+                <Image src={props.imageOutput.mediaUrl} />
             </div>
             <Spacer y={4} />
             <Slider
