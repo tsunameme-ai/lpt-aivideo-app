@@ -11,7 +11,7 @@ export default function Home() {
     router.push('/txt2img')
   }
   return (
-    <section className="flex min-h-screen flex-col items-center justify-between p-24">
+    <section>
       <Card>
         <CardBody>
           {/* <Spacer y={4} />
