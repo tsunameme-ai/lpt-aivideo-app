@@ -3,8 +3,8 @@ import { Button } from '@nextui-org/button'
 import { Card, CardBody, CardHeader, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { API } from '@/api/api'
-import { Txt2vidInput, GenerationOutput } from '@/api/types'
+import { API } from '@/libs/api'
+import { Txt2vidInput, GenerationOutput } from '@/libs/types'
 
 export default function Page() {
     const router = useRouter()

@@ -1,13 +1,22 @@
 'use client'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardBody, CardHeader, Divider, Spacer } from '@nextui-org/react'
-import { GenerationOutput } from '@/api/types'
+import { GenerationOutput, SDProvider } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
+import getSDProvider from '@/libs/sd-provider'
+import { useEffect, useState } from 'react'
 
 export default function Page() {
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const [sdProvider, setSdProvider] = useState<SDProvider>()
+    useEffect(() => {
+        const sdProvider = getSDProvider(process.env.NEXT_PUBLIC_SD_PROVIDER)
+        setSdProvider(sdProvider)
+    }, [])
+
     const onGenerationRequested = (output: GenerationOutput) => {
-        if (process.env.NEXT_PUBLIC_API === 'modelslab') {
+        if (process.env.NEXT_PUBLIC_SD_PROVIDER === 'modelslab') {
             router.push(`/image/${output?.id}`)
         }
         else {
@@ -24,9 +33,11 @@ export default function Page() {
                     </CardHeader>
                     <Divider />
                     <CardBody>
-                        <Txt2ImgComponent
+                        {sdProvider && <Txt2ImgComponent
+                            sdProvider={sdProvider}
+                            isAdvancedView={searchParams.get('view') === 'advanced'}
                             onGenerationRequested={onGenerationRequested}
-                        />
+                        />}
                     </CardBody>
                 </Card>
             </section>

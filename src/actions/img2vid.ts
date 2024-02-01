@@ -1,8 +1,8 @@
 'use server'
 
-import { LivepeerAPI } from "./external/livepeer";
-import { ModelsLabAPI } from "./external/modelslab";
-import { GenerationOutput, Img2vidInput } from "./types";
+import { LivepeerAPI } from "../libs/external/livepeer";
+import { ModelsLabAPI } from "../libs/external/modelslab";
+import { GenerationOutput, Img2vidInput } from "../libs/types";
 
 const fetchImageAsFile = async (url: string): Promise<File> => {
     const response = await fetch(url)
@@ -24,7 +24,7 @@ export async function img2vid(params: Img2vidInput): Promise<GenerationOutput> {
     params.imageFile = imgFile
 
 
-    if (process.env.NEXT_PUBLIC_API === 'modelslab') {
+    if (process.env.NEXT_PUBLIC_SD_PROVIDER === 'modelslab') {
         return await ModelsLabAPI.img2vid(params)
 
     }

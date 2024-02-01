@@ -1,8 +1,8 @@
-import { GenerationOutput } from "@/api/types";
+import { GenerationOutput } from "@/libs/types";
 import { Button, Spacer } from "@nextui-org/react"
 import { useEffect, useState } from "react";
 import ErrorComponent from "../error";
-import { fetchAsset } from "@/api/fetch-asset";
+import { fetchAsset } from "@/actions/fetch-asset";
 
 interface GenerationStatusComponentProps {
     assetType: string

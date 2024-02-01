@@ -1,17 +1,16 @@
-import { API } from "../api"
 import { GenerationOutput, Img2vidInput, Txt2imgInput } from "../types"
 
 export class LivepeerAPI {
     public async txt2img(params: Txt2imgInput): Promise<GenerationOutput> {
         const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/text-to-image`
         const postBody = {
-            'model_id': 'stabilityai/stable-diffusion-xl-base-1.0',
+            'model_id': params.modelId,
             'prompt': params.pPrompt,
             'negative_prompt': params.nPrompt,
             'guidance_scale': params.guidanceScale,
             'seed': params.seed,
-            'width': 1024,
-            'height': 576
+            'width': params.width,
+            'height': params.height
         }
 
         const res = await fetch(url, {
