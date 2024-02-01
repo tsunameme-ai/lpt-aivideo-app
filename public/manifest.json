@@ -1,0 +1,17 @@
+{
+    "id": "ai-video-livepeer",
+    "name": "AI Creations Studio",
+    "short_name": "AI Creations Studio",
+    "description": "AI Creations Studio is a cutting-edge platform that leverages the power of Livepeer and AI technology to seamlessly generate stunning images and videos, empowering users to bring their creative visions to life with ease and precision.",
+    "icons": [
+        {
+            "src": "./icons-256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/",
+    "scope": ".",
+    "display": "standalone",
+    "orientation": "portrait"
+}
