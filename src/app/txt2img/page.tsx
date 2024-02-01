@@ -7,7 +7,12 @@ import Txt2ImgComponent from '@/components/txt2img'
 export default function Page() {
     const router = useRouter()
     const onGenerationRequested = (output: GenerationOutput) => {
-        router.push(`/image/${output?.id}`)
+        if (process.env.NEXT_PUBLIC_API === 'modelslab') {
+            router.push(`/image/${output?.id}`)
+        }
+        else {
+            router.push(`/image/${output?.id}?media=${output?.mediaUrl}`)
+        }
     }
     return (
         <>

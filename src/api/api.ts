@@ -13,20 +13,14 @@ export class API {
     }
 
     public static async img2vid(params: Img2vidInput): Promise<GenerationOutput> {
-        return await LivepeerAPI.img2vid(params)
-    }
-    public static async txt2img(params: Txt2imgInput): Promise<GenerationOutput> {
-        return await ModelsLabAPI.txt2img(params)
-        // await this.delay(1000)
-        // return {
-        //     id: '70879411',
-        //     status: 'processing',
-        //     mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-42616bb3-e082-4cac-8629-4373651f33c0.png'
-        // }
+        return await new LivepeerAPI().img2vid(params)
     }
 
-    public static async fetchAsset(vid: string): Promise<GenerationOutput> {
-        return await ModelsLabAPI.fetchAsset(vid)
+    public static async txt2img(params: Txt2imgInput): Promise<GenerationOutput> {
+        if (process.env.NEXT_PUBLIC_API === 'modelslab') {
+            return await ModelsLabAPI.txt2img(params)
+        }
+        return await new LivepeerAPI().txt2img(params)
     }
 
     public static async fetchRemoteFile(url: string): Promise<File> {

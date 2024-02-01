@@ -1,7 +1,44 @@
-import { Img2vidInput } from "../types"
+import { API } from "../api"
+import { GenerationOutput, Img2vidInput, Txt2imgInput } from "../types"
 
 export class LivepeerAPI {
-    public static async img2vid(params: Img2vidInput) {
+    public async txt2img(params: Txt2imgInput): Promise<GenerationOutput> {
+        const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/text-to-image`
+        const postBody = {
+            'model_id': 'stabilityai/stable-diffusion-xl-base-1.0',
+            'prompt': params.pPrompt,
+            'negative_prompt': params.nPrompt,
+            'guidance_scale': params.guidanceScale,
+            'seed': params.seed,
+            'width': 1024,
+            'height': 576
+        }
+
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postBody)
+        })
+
+        const data = await res.json()
+        return {
+            id: 'sync',
+            status: 'success',
+            mediaUrl: data.images[0].url
+        }
+
+    }
+    public async fetchAsset(mediaUrl: string): Promise<GenerationOutput> {
+        return {
+            id: 'sync',
+            status: 'success',
+            mediaUrl: mediaUrl
+        }
+    }
+
+    public async img2vid(params: Img2vidInput): Promise<GenerationOutput> {
         const imageFile = params.imageFile
         if (!imageFile) {
             throw new Error(`Livepeer API: image file does not exist.`)
@@ -13,17 +50,18 @@ export class LivepeerAPI {
 
         const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/image-to-video`
         const headers = new Headers()
-        headers.append('Access-Control-Allow-Origin', '*')
-        headers.append('Prefer', 'respond-async')
-        console.log(`???? post livepeer ${url}`)
         const res = await fetch(url, {
             method: 'POST',
             headers: headers,
-            mode: 'no-cors',
             body: fd,
         })
-        console.log(res)
 
-        return await res.json()
+        const data = await res.json()
+        console.log(data)
+        return {
+            id: 'sync',
+            status: 'success',
+            mediaUrl: data.images[0].url
+        }
     }
 }

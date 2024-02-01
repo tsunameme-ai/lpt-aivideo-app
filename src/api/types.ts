@@ -39,11 +39,13 @@ export const SDModels = [
     { value: 'sdxl', label: 'SDXL 1.0' },
     { value: 'midjourney', label: 'MidJourney V4' },
     { value: 'anything-v45-pruned-merge', label: 'Anything-v4.5-pruned-mergedVae' },
+    // { value: 'lexica-aperture-v35-commu', label: 'Lexica Aperture V3.5 (Community Edition)8' },
 ]
 export const Loras = [
     { value: 'hunter-x-hunter-lora-styl', label: 'Hunter X Hunter' },//https://modelslab.com/models/hunter-x-hunter-lora-styl
     { value: 'superhero-comic', label: 'superhero-comic', baseModel: 'sd-1.5' }, //https://modelslab.com/models/superhero-comic https://civitai.com/models/189634/superheroamerican-comic
     { value: 'creature-vase-v10', label: 'Creature Vase v1.0' }, //https://modelslab.com/models/creature-vase-v10
+    { value: 'better_face_xl', label: 'Better Face XL' }, //https://modelslab.com/models/better_face_xl https://civitai.com/models/126343/better-picture-more-details-lora
 ]
 // https://blog.segmind.com/what-are-schedulers-in-stable-diffusion/
 // https://huggingface.co/docs/diffusers/using-diffusers/schedulers
