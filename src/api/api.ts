@@ -13,20 +13,14 @@ export class API {
     }
 
     public static async img2vid(params: Img2vidInput): Promise<GenerationOutput> {
-        return await LivepeerAPI.img2vid(params)
+        return await new LivepeerAPI().img2vid(params)
     }
+
     public static async txt2img(params: Txt2imgInput): Promise<GenerationOutput> {
         if (process.env.NEXT_PUBLIC_API === 'modelslab') {
             return await ModelsLabAPI.txt2img(params)
         }
-        return await LivepeerAPI.txt2img(params)
-    }
-
-    public static async fetchAsset(vid: string): Promise<GenerationOutput> {
-        if (process.env.NEXT_PUBLIC_API === 'modelslab') {
-            return await ModelsLabAPI.fetchAsset(vid)
-        }
-        return await LivepeerAPI.fetchAsset(vid)
+        return await new LivepeerAPI().txt2img(params)
     }
 
     public static async fetchRemoteFile(url: string): Promise<File> {

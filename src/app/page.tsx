@@ -19,8 +19,6 @@ export default function Home() {
           <Spacer y={4} />
           <Button color='primary' onPress={handleTxt2img}>{"Text to Image to Video"}</Button>
           <Spacer y={4} />
-          {/* <Button color='primary' isDisabled>Gallery</Button>
-          <Spacer y={4} /> */}
         </CardBody>
       </Card>
     </section>

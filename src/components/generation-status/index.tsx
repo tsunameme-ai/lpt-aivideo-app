@@ -1,8 +1,9 @@
-import { API } from "@/api/api";
 import { GenerationOutput } from "@/api/types";
 import { Button, Spacer } from "@nextui-org/react"
 import { useEffect, useState } from "react";
 import ErrorComponent from "../error";
+import { fetchAsset } from "@/api/fetch-asset";
+
 interface GenerationStatusComponentProps {
     assetType: string
     generationId: string
@@ -14,16 +15,16 @@ const GenerationStatusComponent: React.FC<GenerationStatusComponentProps> = (pro
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [generationOutput, setGenerationOutput] = useState<GenerationOutput | null>(null)
     useEffect(() => {
-        fetchAsset()
+        fetchAssetCall()
             .catch(console.error)
     }, [])
 
-    const fetchAsset = async () => {
+    const fetchAssetCall = async () => {
         setIsFetching(true)
         setErrorMessage('')
 
         try {
-            const output = await API.fetchAsset(props.generationId)
+            const output = await fetchAsset(props.generationId)
             setGenerationOutput(output)
             setErrorMessage('')
             props.onOutputFetched(output)
@@ -36,7 +37,7 @@ const GenerationStatusComponent: React.FC<GenerationStatusComponentProps> = (pro
         }
     }
     const handleFetchClick = async (e: any) => {
-        fetchAsset()
+        fetchAssetCall()
     }
     return (
         <div hidden={generationOutput?.status === 'success'}>

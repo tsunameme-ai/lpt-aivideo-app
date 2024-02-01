@@ -1,8 +1,8 @@
-import { API } from "@/api/api";
 import { Loras, SDModels, Txt2imgInput, GenerationOutput, Schedulers } from "@/api/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Slider } from '@nextui-org/react'
+import { txt2img } from "@/api/txt2img";
 
 
 interface Txt2ImgComponentProps {
@@ -74,7 +74,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         }
         setIsLoading(true)
         try {
-            const output = await API.txt2img(params)
+            const output = await txt2img(params)
             setGenerationOutput(output)
             if (output?.status === 'success') {
                 props.onGenerationRequested(output)
