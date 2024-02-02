@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import type { Viewport } from 'next'
+import { Link } from "@nextui-org/link"
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
@@ -22,10 +23,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className='dark'>
+    <html lang="en" className='comfort'>
       <body>
         <Providers>
+          <header className='py-10'></header>
+
           {children}
+
+          <footer className="w-full flex items-center justify-center py-3 bottom-0 absolute">
+            <span className="text-blue-100">Powered by &nbsp;</span>
+            <p className="text-red-300">Sleepy Dao</p>
+          </footer>
         </Providers>
       </body>
     </html>

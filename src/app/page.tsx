@@ -1,6 +1,8 @@
 'use client'
 import { Button, Card, CardBody, Spacer } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
+import Page from './txt2img/page'
+
 
 export default function Home() {
   const router = useRouter()
@@ -11,16 +13,17 @@ export default function Home() {
     router.push('/txt2img')
   }
   return (
-    <section>
-      <Card>
-        <CardBody>
-          {/* <Spacer y={4} />
-          <Button color='primary' onPress={handleTxt2vid}>{"Text to Video"}</Button> */}
-          <Spacer y={4} />
-          <Button color='primary' onPress={handleTxt2img}>{"Text to Image to Video"}</Button>
-          <Spacer y={4} />
-        </CardBody>
-      </Card>
+    <section className='flex flex-col items-center justify-center'>
+      <div className="text-center">
+
+        <h1>Make insanely beautiful ecards regardless of your design experience.</h1>
+        <h4>An AI powered visual expression.</h4>
+      </div>
+      <Spacer y={20}></Spacer>
+      <div>
+        <Button color='primary' onPress={handleTxt2img}>{"Get Started"}</Button>
+      </div>
     </section>
+
   )
 }
