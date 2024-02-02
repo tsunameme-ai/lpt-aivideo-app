@@ -16,11 +16,12 @@ export default function Page() {
     }, [])
 
     const onGenerationRequested = (output: GenerationOutput) => {
+        const isAdvanced = searchParams.get('view') === 'advanced'
         if (process.env.NEXT_PUBLIC_SD_PROVIDER === 'modelslab') {
-            router.push(`/image/${output?.id}`)
+            router.push(`/image/${output?.id}${isAdvanced ? '?view=advanced' : ''}`)
         }
         else {
-            router.push(`/image/${output?.id}?media=${output?.mediaUrl}`)
+            router.push(`/image/${output?.id}?${isAdvanced ? 'view=advanced&' : ''}media=${output?.mediaUrl}`)
         }
     }
     return (

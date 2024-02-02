@@ -5,8 +5,8 @@ export default function getSDProvider(providerId: string | undefined): SDProvide
         'livepeer': {
             'models': [
                 { value: 'stabilityai/sd-turbo', label: 'Stable Diffusion Turbo' },
-                { value: 'runwayml/stable-diffusion-v1-5', label: 'Stable Diffusion v1.5' },
-                { value: 'stabilityai/stable-diffusion-xl-base-1.0', label: 'SDXL 1.0', default: true },
+                { value: 'runwayml/stable-diffusion-v1-5', label: 'Stable Diffusion v1.5', default: true },
+                { value: 'stabilityai/stable-diffusion-xl-base-1.0', label: 'SDXL 1.0' },
                 { value: 'prompthero/openjourney-v4', label: 'MidJourney V4' }
             ]
         },

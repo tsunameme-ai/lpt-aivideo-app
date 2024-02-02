@@ -18,15 +18,8 @@ const fetchImageAsFile = async (url: string): Promise<File> => {
     throw new Error(`Fetch image failed ${response.status}`)
 }
 export async function img2vid(params: Img2vidInput): Promise<GenerationOutput> {
-
     //Download image
     const imgFile = await fetchImageAsFile(params.imageUrl!)
     params.imageFile = imgFile
-
-
-    if (process.env.NEXT_PUBLIC_SD_PROVIDER === 'modelslab') {
-        return await ModelsLabAPI.img2vid(params)
-
-    }
     return await new LivepeerAPI().img2vid(params)
 }

@@ -1,19 +1,22 @@
 import { GenerationOutput } from "@/libs/types"
-import { Button, Slider, Spacer, Image } from "@nextui-org/react";
+import { Button, Slider, Spacer, Image, Input } from "@nextui-org/react";
 import { useState } from "react";
 import ErrorComponent, { ErrorComponentStyle } from "../error"
 import { img2vid } from "@/actions/img2vid";
 
 
 interface Img2VidComponentProps {
+    isAdvancedView: boolean
+    imageOutput: GenerationOutput
     onError?: (error: any) => void
     onVideo?: (videoOutput: GenerationOutput) => void
-    imageOutput: GenerationOutput
 }
 
 const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidComponentProps) => {
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
-    const [motionBucketId, setMotionBucketId] = useState<number | number[]>(127)
+    const [motionBucketId, setMotionBucketId] = useState<string>('127')
+    const [noiseAugStrength, setNoiseAugStrength] = useState<string>('0.05')
+    const [seed, setSeed] = useState<string>()
     const [errorMessage, setErrorMessage] = useState<string>('')
 
 
@@ -22,7 +25,9 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
         try {
             const output = await img2vid({
                 imageUrl: props.imageOutput.mediaUrl,
-                motionButcketId: motionBucketId as number
+                motionButcketId: parseInt(motionBucketId),
+                noiseAugStrength: parseFloat(noiseAugStrength),
+                seed: seed
             })
             console.log(output)
             if (props.onVideo) {
@@ -43,15 +48,27 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                 <Image src={props.imageOutput.mediaUrl} />
             </div>
             <Spacer y={4} />
-            <Slider
-                label='Motion Bucket Id'
-                step={1}
-                maxValue={255}
-                minValue={0}
-                defaultValue={127}
-                value={motionBucketId}
-                onChange={setMotionBucketId}
-            />
+            {props.isAdvancedView ??
+                <div className='grid grid-cols-2 gap-4'>
+                    <Input
+                        label='Motion Bucket Id'
+                        type='number'
+                        value={motionBucketId}
+                        onValueChange={setMotionBucketId}
+                    />
+                    <Input
+                        label='Noise Aug Strength'
+                        type='number'
+                        value={noiseAugStrength}
+                        onValueChange={setNoiseAugStrength}
+                    />
+                    <Input
+                        label='Seed'
+                        type='number'
+                        value={seed}
+                        onValueChange={setSeed}
+                    />
+                </div>}
             <ErrorComponent errorMessage="Video generation will take a few minutes. Please wait patiently. Don't close the tab." style={ErrorComponentStyle.Warning} />
             <Button
                 color="primary"
