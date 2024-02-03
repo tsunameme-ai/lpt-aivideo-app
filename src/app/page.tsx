@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <section className='flex flex-col items-center justify-center'>
       <div className={styles.title}>
-        <h2>Make insanely creative e-cards</h2>
+        <h2>Make insanely <span className={styles.red}> creative</span> e-cards</h2>
         <Spacer y={2}></Spacer>
         <h5>An AI powered e-card creator</h5>
       </div>

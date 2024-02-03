@@ -26,10 +26,10 @@ export default function Page() {
     }
     return (
         <>
-            <section>
+            <section className='flex flex-col items-center justify-center'>
                 <Card>
                     <CardHeader>
-                        <h1>Text to Image</h1>
+                        <h3>Step 1: Describe the cover of your ecard</h3>
                         <Spacer y={4} />
                     </CardHeader>
                     <Divider />
