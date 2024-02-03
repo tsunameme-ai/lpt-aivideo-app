@@ -13,17 +13,16 @@ export default function Home() {
     router.push('/txt2img')
   }
   return (
-    <section className='flex flex-col items-center justify-center'>
-      <div className={styles.title}>
-        <h2>Make insanely creative e-cards</h2>
-        <Spacer y={2}></Spacer>
-        <h5>An AI powered e-card creator</h5>
-      </div>
-      <Spacer y={16}></Spacer>
-      <div>
-        <Button color='primary' onPress={handleTxt2img}>{"Get Started"}</Button>
-      </div>
-    </section >
-
+    <section>
+      <Card>
+        <CardBody>
+          {/* <Spacer y={4} />
+          <Button color='primary' onPress={handleTxt2vid}>{"Text to Video"}</Button> */}
+          <Spacer y={4} />
+          <Button color='primary' onPress={handleTxt2img}>{"Text to Image to Video"}</Button>
+          <Spacer y={4} />
+        </CardBody>
+      </Card>
+    </section>
   )
 }
