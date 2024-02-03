@@ -2,7 +2,7 @@
 import { Button, Card, CardBody, Spacer } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import Page from './txt2img/page'
-
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const router = useRouter()
@@ -14,16 +14,16 @@ export default function Home() {
   }
   return (
     <section className='flex flex-col items-center justify-center'>
-      <div className="text-center">
-
-        <h1>Make insanely beautiful ecards regardless of your design experience.</h1>
-        <h4>An AI powered visual expression.</h4>
+      <div className={styles.title}>
+        <h2>Make insanely creative e-cards</h2>
+        <Spacer y={2}></Spacer>
+        <h5>An AI powered e-card creator</h5>
       </div>
-      <Spacer y={20}></Spacer>
+      <Spacer y={16}></Spacer>
       <div>
         <Button color='primary' onPress={handleTxt2img}>{"Get Started"}</Button>
       </div>
-    </section>
+    </section >
 
   )
 }
