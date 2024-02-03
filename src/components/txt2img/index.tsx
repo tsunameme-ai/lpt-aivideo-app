@@ -192,7 +192,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                     <Spacer y={4} />
                     <Divider />
                     <Spacer y={4} />
-                    <div className='columns-2'>
+                    <div className='grid grid-cols-2 gap-4'>
                         <Select
                             value={[lora || '']}
                             onSelectionChange={handleSetLora}
