@@ -2,7 +2,7 @@
 import { Button, Card, CardBody, Spacer } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import Page from './txt2img/page'
-import styles from '../styles/Home.module.css';
+import styles from '../styles/home.module.css';
 
 export default function Home() {
   const router = useRouter()
