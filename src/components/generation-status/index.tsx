@@ -36,7 +36,7 @@ const GenerationStatusComponent: React.FC<GenerationStatusComponentProps> = (pro
             setIsFetching(false)
         }
     }
-    const handleFetchClick = async (e: any) => {
+    const handleFetchClick = async () => {
         fetchAssetCall()
     }
     return (
