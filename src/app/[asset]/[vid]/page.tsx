@@ -1,5 +1,4 @@
 'use client'
-import { Card, CardBody } from "@nextui-org/react"
 import { useState } from "react"
 import { GenerationOutput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
