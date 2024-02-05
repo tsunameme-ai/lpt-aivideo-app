@@ -16,7 +16,6 @@ jobs:
        - uses: actions/setup-node@v3
          with:
            node-version: 20  # Adjust if needed
-       - run: npm cache clean --force #Clear npm cache
        - run: npm ci
        - run: npm run build
        - run: npm run test
