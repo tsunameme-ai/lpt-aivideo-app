@@ -2,7 +2,7 @@ name: Next.js CI/CD Workflow
 
 on:
   push:
-    branches: [*]  # Run on pushes to any branch
+    branches: ['*']  # Run on pushes to any branch
   pull_request:
     branches: [main]  # Run on pull requests merging to main
     types: [closed]  # Only run when PR is merged
