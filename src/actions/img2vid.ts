@@ -1,8 +1,7 @@
 'use server'
 
-import { LivepeerAPI } from "../libs/external/livepeer";
-import { ModelsLabAPI } from "../libs/external/modelslab";
-import { GenerationOutput, Img2vidInput } from "../libs/types";
+import { LivepeerAPI } from "@/libs/external/livepeer";
+import { GenerationOutput, Img2vidInput } from "@/libs/types";
 
 const fetchImageAsFile = async (url: string): Promise<File> => {
     const response = await fetch(url)
