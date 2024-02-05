@@ -1,5 +1,4 @@
 'use client'
-import { Card, CardBody } from "@nextui-org/react"
 import { useState } from "react"
 import { GenerationOutput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
@@ -39,15 +38,13 @@ export default function Page({ params }: { params: { vid: string, asset: string 
     }
     return (
         <section>
-            {vid && <Card>
-                <CardBody>
-                    <GenerationStatusComponent
-                        onOutputFetched={setGenerationOutput}
-                        assetType={params.asset}
-                        generationId={vid!} />
-                    {previewRender()}
-                </CardBody>
-            </Card>}
+            {vid && <div>
+                <GenerationStatusComponent
+                    onOutputFetched={setGenerationOutput}
+                    assetType={params.asset}
+                    generationId={vid!} />
+                {previewRender()}
+            </div>}
 
         </section >
     )

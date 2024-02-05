@@ -3,6 +3,7 @@ import { Button, Spacer, Image, Input } from "@nextui-org/react";
 import { useState } from "react";
 import ErrorComponent, { ErrorComponentStyle } from "../error"
 import { img2vid } from "@/actions/img2vid";
+import styles from '../../styles/home.module.css'
 
 
 interface Img2VidComponentProps {
@@ -44,40 +45,44 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
 
     return (
         <>
-            <div className="flex justify-center items-center">
-                <Image src={props.imageOutput.mediaUrl} />
-            </div>
-            <Spacer y={4} />
-            {props.isAdvancedView ??
-                <div className='grid grid-cols-2 gap-4'>
-                    <Input
-                        label='Motion Bucket Id'
-                        type='number'
-                        value={motionBucketId}
-                        onValueChange={setMotionBucketId}
-                    />
-                    <Input
-                        label='Noise Aug Strength'
-                        type='number'
-                        value={noiseAugStrength}
-                        onValueChange={setNoiseAugStrength}
-                    />
-                    <Input
-                        label='Seed'
-                        type='number'
-                        value={seed}
-                        onValueChange={setSeed}
-                    />
-                </div>}
-            <ErrorComponent errorMessage="Video generation will take a few minutes. Please wait patiently. Don't close the tab." style={ErrorComponentStyle.Warning} />
-            <Button
-                color="primary"
-                isLoading={isGeneratingVideo}
-                onPress={handleGenerateVideoClick}>
-                Generate Video
-            </Button>
-            {/* <small>Video generation will take a few minutes. Please wait patiently. Don't close the tab.</small> */}
-            <ErrorComponent errorMessage={errorMessage} />
+            <section className='flex flex-col items-center justify-center'>
+                <div className={styles.centerSection}>
+                    <Image alt='preview' src={props.imageOutput.mediaUrl} />
+
+                    <Spacer y={4} />
+                    {props.isAdvancedView ??
+                        <div className='grid grid-cols-2 gap-4'>
+                            <Input
+                                label='Motion Bucket Id'
+                                type='number'
+                                value={motionBucketId}
+                                onValueChange={setMotionBucketId}
+                            />
+                            <Input
+                                label='Noise Aug Strength'
+                                type='number'
+                                value={noiseAugStrength}
+                                onValueChange={setNoiseAugStrength}
+                            />
+                            <Input
+                                label='Seed'
+                                type='number'
+                                value={seed}
+                                onValueChange={setSeed}
+                            />
+                        </div>}
+
+                    <ErrorComponent errorMessage="Video generation will take a few minutes. Please wait patiently. Don't close the tab." style={ErrorComponentStyle.Warning} />
+                    <Button
+                        color="primary"
+                        isLoading={isGeneratingVideo}
+                        onPress={handleGenerateVideoClick}>
+                        Generate Video
+                    </Button>
+                    {/* <small>Video generation will take a few minutes. Please wait patiently. Don't close the tab.</small> */}
+                    <ErrorComponent errorMessage={errorMessage} />
+                </div>
+            </section>
         </>
     );
 };

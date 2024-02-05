@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import './globals.css'
+import '../styles/globals.css'
 import { Providers } from './providers'
 import type { Viewport } from 'next'
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
-  title: 'AI Creations Studio',
-  description: 'AI Creations Studio is a cutting-edge platform that leverages the power of Livepeer and AI technology to seamlessly generate stunning images and videos, empowering users to bring their creative visions to life with ease and precision.'
+  title: 'Sleepy Dao',
+  description: 'Sleepy Dao is a cutting-edge platform that leverages the power of Livepeer and AI technology to seamlessly generate stunning images and videos, empowering users to bring their creative visions to life with ease and precision.'
 }
 
 export const viewport: Viewport = {
@@ -21,10 +21,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className='dark'>
+    <html lang="en" className='comfort'>
       <body>
         <Providers>
+          <header className='py-10'></header>
           {children}
+
+          <footer className="w-full flex items-center justify-center py-3 bottom-0 relative">
+            <span className="text-blue-100">Powered by &nbsp;</span>
+            <p className="text-red-300">Sleepy Dao</p>
+          </footer>
         </Providers>
       </body>
     </html>
