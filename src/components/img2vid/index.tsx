@@ -1,5 +1,5 @@
 import { GenerationOutput } from "@/libs/types"
-import { Button, Slider, Spacer, Image, Input } from "@nextui-org/react";
+import { Button, Spacer, Image, Input } from "@nextui-org/react";
 import { useState } from "react";
 import ErrorComponent, { ErrorComponentStyle } from "../error"
 import { img2vid } from "@/actions/img2vid";

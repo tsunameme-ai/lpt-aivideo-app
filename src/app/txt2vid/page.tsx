@@ -35,7 +35,7 @@ export default function Page() {
         router.push(`/video/${vidOutput?.id}`)
     }
 
-    const generateVideo = async (e: any) => {
+    const generateVideo = async () => {
         setErrorMessage('')
         setIsLoading(false)
         setVidOutput(null)
