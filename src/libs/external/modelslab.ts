@@ -1,4 +1,4 @@
-import { Img2vidInput, Txt2imgInput, Txt2vidInput, GenerationOutput } from '../types'
+import { Txt2imgInput, Txt2vidInput, GenerationOutput } from '../types'
 
 export class ModelsLabAPI {
     // https://docs.modelslab.com/text-to-video/texttovideo
@@ -21,44 +21,6 @@ export class ModelsLabAPI {
         //     'num_inference_steps': 20,
         //     // 'seed': params.seed || -1,
         // }
-        const data = await ModelsLabAPI.makePostAPICall(url, postBody)
-        // console.log(data)
-        return {
-            id: data.id,
-            status: data.status,
-            mediaUrl: decodeURI(data.output[0])
-        }
-    }
-
-    // https://docs.modelslab.com/text-to-video/imgtovideo
-    public static async img2vid(params: Img2vidInput): Promise<GenerationOutput> {
-        const url = 'https://modelslab.com/api/v6/video/img2video'
-        // const postBody = {
-        //     'model_id': 'svd',
-        //     'init_image': params.image,
-        //     'heigh': 320,
-        //     'width': 576,
-        //     'num_frames': params.seconds * 6,
-        //     'num_inference_steps': 20,
-        //     'motion_bucket_id': params.motionButcketId,
-        //     'noise_aug_strength': 0.02
-        // }
-        const postBody = {
-            'model_id': 'svd',
-            'init_image': 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/2231684321704267390.png',
-            'num_frames': 100,
-            'num_inference_steps': 20,
-            'fps': 10,
-            'output_type': 'mp4',
-            'min_guidance_scale': 1,
-            'max_guidance_scale': 3,
-            'motion_bucket_id': 200,
-            'noise_aug_strength': 0.02,
-            'base64': false,
-            'webhook': null,
-            'track_id': null
-        }
-
         const data = await ModelsLabAPI.makePostAPICall(url, postBody)
         // console.log(data)
         return {
