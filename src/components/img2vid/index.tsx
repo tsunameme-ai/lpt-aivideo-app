@@ -47,7 +47,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <Image src={props.imageOutput.mediaUrl} />
+                    <Image alt='preview' src={props.imageOutput.mediaUrl} />
 
                     <Spacer y={4} />
                     {props.isAdvancedView ??
