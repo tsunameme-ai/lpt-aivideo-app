@@ -27,7 +27,7 @@ export default function RootLayout({
           <header className='py-10'></header>
           {children}
 
-          <footer className="w-full flex items-center justify-center py-3 bottom-0 absolute">
+          <footer className="w-full flex items-center justify-center py-3 bottom-0 relative">
             <span className="text-blue-100">Powered by &nbsp;</span>
             <p className="text-red-300">Sleepy Dao</p>
           </footer>

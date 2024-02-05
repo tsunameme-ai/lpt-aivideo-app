@@ -39,15 +39,13 @@ export default function Page({ params }: { params: { vid: string, asset: string 
     }
     return (
         <section>
-            {vid && <Card>
-                <CardBody>
-                    <GenerationStatusComponent
-                        onOutputFetched={setGenerationOutput}
-                        assetType={params.asset}
-                        generationId={vid!} />
-                    {previewRender()}
-                </CardBody>
-            </Card>}
+            {vid && <div>
+                <GenerationStatusComponent
+                    onOutputFetched={setGenerationOutput}
+                    assetType={params.asset}
+                    generationId={vid!} />
+                {previewRender()}
+            </div>}
 
         </section >
     )
