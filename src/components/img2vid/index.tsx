@@ -73,7 +73,9 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
 
                     <Spacer y={1}></Spacer>
 
-                    <p className="text-base">Video generation will take a few minutes. Please do not close the tab while waiting for the video.</p>
+                    <p className="text-base">
+                        Video generation will take a few minutes. Please do not close the tab while waiting for the video.
+                    </p>
                     <Spacer y={5}></Spacer>
 
                     <Button
