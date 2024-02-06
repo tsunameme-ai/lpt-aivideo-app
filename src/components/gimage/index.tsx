@@ -1,7 +1,6 @@
-import { Button, Spinner, Image } from "@nextui-org/react"
-import { useEffect, useState } from "react"
+import { Image } from "@nextui-org/react"
+import { useState } from "react"
 import ErrorComponent from "../error"
-import { fetchImageAsBlobToLocalUrl } from "@/actions/img2vid"
 
 
 interface GImageProps {
