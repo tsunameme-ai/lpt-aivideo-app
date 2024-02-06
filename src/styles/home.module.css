@@ -1,9 +1,10 @@
 .centerSection {
     color: #f1faee;
     text-align: center;
-    max-width: 100%;
-    margin-left: 10px;
-    margin-right: 10px;
+    min-width: 200px;
+    max-width: 800px;
+    min-height: 100px;
+    width: 70%;
 }
 
 .red {

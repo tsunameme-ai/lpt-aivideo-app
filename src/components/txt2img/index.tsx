@@ -3,7 +3,7 @@ import { useState } from "react";
 import ErrorComponent from "../error";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Divider } from '@nextui-org/react'
 import { txt2img } from "@/actions/txt2img";
-
+import styles from "../../styles/home.module.css"
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
@@ -101,7 +101,8 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     return (
         <>
             <Textarea
-                label='Prompt'
+                label=''
+                placeholder='Try something like "a cat drinks water on the beach"'
                 className='max-w'
                 value={pPromptValue}
                 errorMessage={pPromptErrorMessage}

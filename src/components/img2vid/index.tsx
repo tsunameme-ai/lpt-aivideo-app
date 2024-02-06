@@ -1,9 +1,9 @@
 import { GenerationOutput } from "@/libs/types"
-import { Button, Spacer, Image, Input } from "@nextui-org/react";
-import { useState } from "react";
-import ErrorComponent, { ErrorComponentStyle } from "../error"
-import { img2vid } from "@/actions/img2vid";
-import styles from '../../styles/home.module.css'
+import { Button, Spacer, Image, Input } from "@nextui-org/react"
+import { useState } from "react"
+import ErrorComponent from "../error"
+import { img2vid } from "@/actions/img2vid"
+import styles from "../../styles/home.module.css"
 
 
 interface Img2VidComponentProps {
@@ -48,7 +48,6 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
                     <Image alt='preview' src={props.imageOutput.mediaUrl} />
-
                     <Spacer y={4} />
                     {props.isAdvancedView ??
                         <div className='grid grid-cols-2 gap-4'>
@@ -72,16 +71,25 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                             />
                         </div>}
 
-                    <ErrorComponent errorMessage="Video generation will take a few minutes. Please wait patiently. Don't close the tab." style={ErrorComponentStyle.Warning} />
+                    <Spacer y={1}></Spacer>
+
+                    <p className="text-base">
+                        Video generation will take a few minutes. Please don't close the tab while waiting for the video.
+                    </p>
+                    <Spacer y={5}></Spacer>
+
                     <Button
                         color="primary"
                         isLoading={isGeneratingVideo}
                         onPress={handleGenerateVideoClick}>
                         Generate Video
                     </Button>
-                    {/* <small>Video generation will take a few minutes. Please wait patiently. Don't close the tab.</small> */}
-                    <ErrorComponent errorMessage={errorMessage} />
                 </div>
+
+
+                {/* <small>Video generation will take a few minutes. Please wait patiently. Don't close the tab.</small> */}
+                <ErrorComponent errorMessage={errorMessage} />
+
             </section>
         </>
     );

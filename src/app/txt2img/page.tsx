@@ -1,10 +1,11 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Card, CardBody, CardHeader, Divider, Spacer } from '@nextui-org/react'
+import { Spacer } from '@nextui-org/react'
 import { GenerationOutput, SDProvider } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import getSDProvider from '@/libs/sd-provider'
 import { useEffect, useState } from 'react'
+import styles from '../../styles/home.module.css'
 
 export default function Page() {
     const router = useRouter()
@@ -27,20 +28,17 @@ export default function Page() {
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
-                <Card>
-                    <CardHeader>
-                        <h3>Step 1: Describe the cover of your ecard</h3>
-                        <Spacer y={4} />
-                    </CardHeader>
-                    <Divider />
-                    <CardBody>
-                        {sdProvider && <Txt2ImgComponent
-                            sdProvider={sdProvider}
-                            isAdvancedView={searchParams.get('view') === 'advanced'}
-                            onGenerationRequested={onGenerationRequested}
-                        />}
-                    </CardBody>
-                </Card>
+                <div className={styles.centerSection}>
+
+                    <h3>Step 1: Describe the cover of your ecard</h3>
+                    <Spacer y={4} />
+
+                    {sdProvider && <Txt2ImgComponent
+                        sdProvider={sdProvider}
+                        isAdvancedView={searchParams.get('view') === 'advanced'}
+                        onGenerationRequested={onGenerationRequested}
+                    />}
+                </div>
             </section>
         </>
     )
