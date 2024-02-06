@@ -5,7 +5,7 @@ import { GenerationOutput, SDProvider } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import getSDProvider from '@/libs/sd-provider'
 import { useEffect, useState } from 'react'
-import styles from '../../styles/home.module.css'
+import styles from '@/styles/home.module.css'
 
 export default function Page() {
     const router = useRouter()
@@ -32,7 +32,6 @@ export default function Page() {
 
                     <h3>Step 1: Describe the cover of your ecard</h3>
                     <Spacer y={4} />
-
                     {sdProvider && <Txt2ImgComponent
                         sdProvider={sdProvider}
                         isAdvancedView={searchParams.get('view') === 'advanced'}

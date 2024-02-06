@@ -3,7 +3,7 @@ import { Button, Spacer, Image, Input } from "@nextui-org/react"
 import { useState } from "react"
 import ErrorComponent from "../error"
 import { img2vid } from "@/actions/img2vid"
-import styles from "../../styles/home.module.css"
+import styles from "@/styles/home.module.css"
 
 
 interface Img2VidComponentProps {
@@ -77,7 +77,6 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                         Video generation will take a few minutes. Please do not close the tab while waiting for the video.
                     </p>
                     <Spacer y={5}></Spacer>
-
                     <Button
                         color="primary"
                         isLoading={isGeneratingVideo}
