@@ -4,6 +4,9 @@ import { GenerationOutput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
 import GenerationStatusComponent from "@/components/generation-status"
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Spacer } from "@nextui-org/react"
+//import styles from "../../styles/home.module.css"
+
 
 export default function Page({ params }: { params: { vid: string, asset: string } }) {
 
@@ -37,15 +40,17 @@ export default function Page({ params }: { params: { vid: string, asset: string 
         return ''
     }
     return (
-        <section>
-            {vid && <div>
+        <>
+            {vid && <section className='flex flex-col items-center justify-center'>
+                <div>Step 2: Make it into a video</div>
+                <Spacer y={4}></Spacer>
                 <GenerationStatusComponent
                     onOutputFetched={setGenerationOutput}
                     assetType={params.asset}
                     generationId={vid!} />
                 {previewRender()}
-            </div>}
+            </section>}
 
-        </section >
+        </>
     )
 }
