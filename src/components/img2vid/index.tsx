@@ -36,7 +36,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
             }
         }
         catch (e: any) {
-            setErrorMessage(`Unable to generatet video: ${e.message}`)
+            setErrorMessage(`Unable to generate video: ${e.message}`)
         }
         finally {
             setIsGeneratingVideo(false)
