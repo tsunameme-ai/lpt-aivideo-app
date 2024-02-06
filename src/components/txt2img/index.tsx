@@ -3,7 +3,6 @@ import { useState } from "react";
 import ErrorComponent from "../error";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Divider } from '@nextui-org/react'
 import { txt2img } from "@/actions/txt2img";
-import styles from "../../styles/home.module.css"
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
