@@ -7,6 +7,16 @@
     width: 88%;
 }
 
+.centerLanding {
+    color: #f1faee;
+    text-align: center;
+    min-width: 200px;
+    max-width: 800px;
+    min-height: 100px;
+    width: 88%;
+    padding: 100px 0;
+}
+
 .red {
     color: #e63946
 }
