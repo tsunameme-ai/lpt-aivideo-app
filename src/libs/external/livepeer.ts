@@ -14,6 +14,7 @@ export class LivepeerAPI {
         }
         return await this.sendRequest(url, {
             method: 'POST',
+            cache: 'no-cache',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -43,6 +44,7 @@ export class LivepeerAPI {
         const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/image-to-video`
         return await this.sendRequest(url, {
             method: 'POST',
+            cache: 'no-cache',
             body: fd,
         })
     }
