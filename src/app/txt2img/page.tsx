@@ -12,18 +12,13 @@ export default function Page() {
     const searchParams = useSearchParams()
     const [sdProvider, setSdProvider] = useState<SDProvider>()
     useEffect(() => {
-        const sdProvider = getSDProvider(process.env.NEXT_PUBLIC_SD_PROVIDER)
+        const sdProvider = getSDProvider()
         setSdProvider(sdProvider)
     }, [])
 
     const onGenerationRequested = (output: GenerationOutput) => {
         const isAdvanced = searchParams.get('view') === 'advanced'
-        if (process.env.NEXT_PUBLIC_SD_PROVIDER === 'modelslab') {
-            router.push(`/image/${output?.id}${isAdvanced ? '?view=advanced' : ''}`)
-        }
-        else {
-            router.push(`/image/${output?.id}?${isAdvanced ? 'view=advanced&' : ''}media=${output?.mediaUrl}`)
-        }
+        router.push(`/image/${output?.id}?${isAdvanced ? 'view=advanced&' : ''}media=${output?.mediaUrl}`)
     }
     return (
         <>

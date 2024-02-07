@@ -48,19 +48,22 @@ export class LivepeerAPI {
     }
     private async sendRequest(url: string, init?: RequestInit): Promise<GenerationOutput> {
         const t = new Date().getTime()
-        const res = await fetch(url, init)
         let resError = null
         let resOutput = null
+        let status = null
         try {
+            const res = await fetch(url, init)
+            status = res.status
             resOutput = await this.parseResponse(res)
         }
-        catch (e) {
+        catch (e: any) {
             resError = e
+            status = e.status || 'ERROR'
         }
         finally {
             const dur = (new Date().getTime() - t) / 1000
             const segs = url.split('/')
-            console.log(`LIVEPEER REQ ${res.status} ${segs[segs.length - 1]} ${dur}`)
+            console.log(`LIVEPEER REQ ${status} ${segs[segs.length - 1]} ${dur}`)
             if (resError) {
                 throw resError
             }
