@@ -1,9 +1,10 @@
 import { GenerationOutput } from "@/libs/types"
-import { Button, Spacer, Image, Input } from "@nextui-org/react"
+import { Button, Spacer, Input } from "@nextui-org/react"
 import { useState } from "react"
 import ErrorComponent from "../error"
 import { img2vid } from "@/actions/img2vid"
 import styles from "@/styles/home.module.css"
+import GImage from "../gimage"
 
 
 interface Img2VidComponentProps {
@@ -47,7 +48,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <Image alt='preview' src={props.imageOutput.mediaUrl} />
+                    <GImage alt='preview' src={props.imageOutput.mediaUrl} />
                     <Spacer y={4} />
                     {props.isAdvancedView ??
                         <div className='grid grid-cols-2 gap-4'>
