@@ -6,5 +6,5 @@ export async function POST(req: Request | NextRequest): Promise<Response> {
     if (!url || typeof url !== 'string') {
         return new Response(JSON.stringify({ error: 'Invalid image URL' }), { status: 400, headers: { 'Content-Type': 'application/json' } })
     }
-    return await fetch(url)
+    return await fetch(url, { cache: 'no-cache' })
 }

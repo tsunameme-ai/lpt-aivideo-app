@@ -4,9 +4,7 @@ import { LivepeerAPI } from "@/libs/external/livepeer";
 import { GenerationOutput, Img2vidInput } from "@/libs/types";
 
 const fetchImageAsFile = async (url: string): Promise<File> => {
-    const response = await fetch(url)
-    if (response.status !== 200) {
-    }
+    const response = await fetch(url, { cache: 'no-cache' })
     if (response.ok) {
         const blob = await response.blob()
         const file = new File([blob], 'image.png', { type: 'image/png' })
