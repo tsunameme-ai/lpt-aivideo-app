@@ -15,7 +15,7 @@ const GImage: React.FC<GImageProps> = (props: GImageProps) => {
     useEffect(() => {
         downloadImage()
             .catch(console.error)
-    }, [])
+    }, [props.src])
 
     const downloadImage = async () => {
         setIsFetching(true)
@@ -44,14 +44,15 @@ const GImage: React.FC<GImageProps> = (props: GImageProps) => {
         }
     }
     return (
-        <>
+        <div style={{ border: '1px solid #f00' }}>
+            <small>{props.src}</small>
             {imageFileUrl && <Image alt={props.alt} src={imageFileUrl} />}
             {isFetching && <Spinner />}
             {errorMessage.length > 0 && <>
                 <ErrorComponent errorMessage={errorMessage} />
                 <Button onClick={downloadImage}>Retry</Button>
             </>}
-        </>
+        </div>
     )
 }
 export default GImage

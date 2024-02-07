@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { vid: string, asset: string 
 
     const [generationOutput, setGenerationOutput] = useState<GenerationOutput | null>(null)
 
-    const onVideo = async (output: GenerationOutput) => {
+    const onVideoGenerated = async (output: GenerationOutput) => {
         if (output) {
             router.push(`/video/${output.id}?media=${output.mediaUrl}`)
         }
@@ -31,8 +31,8 @@ export default function Page({ params }: { params: { vid: string, asset: string 
                 <div className="flex justify-center items-center"><video loop controls autoPlay src={generationOutput?.mediaUrl} /></div>
                 : <Img2VidComponent
                     isAdvancedView={searchParams.get('view') === 'advanced'}
-                    imageOutput={generationOutput!}
-                    onVideo={onVideo} />
+                    imageUrl={generationOutput.mediaUrl}
+                    onVideoGenerated={onVideoGenerated} />
         }
         return ''
     }
