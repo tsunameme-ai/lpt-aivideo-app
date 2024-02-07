@@ -22,6 +22,7 @@ const GImage: React.FC<GImageProps> = (props: GImageProps) => {
         try {
             const res = await fetch('/api/image', {
                 method: 'POST',
+                cache: 'no-cache',
                 body: JSON.stringify({ url: props.src }),
             });
 
