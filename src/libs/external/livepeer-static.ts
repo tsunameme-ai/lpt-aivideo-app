@@ -23,7 +23,7 @@ export class LivepeerStaticAPI {
         await Utils.delay(1000)
         return {
             id: 'static',
-            status: 'sucuess',
+            status: 'success',
             mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/56e47db3/da5d6de0.mp4'
         }
     }
