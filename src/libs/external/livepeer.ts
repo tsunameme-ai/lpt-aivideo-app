@@ -46,15 +46,22 @@ export class LivepeerAPI {
             cache: 'no-cache',
             method: 'POST',
             body: fd,
-        })
+        }, 600000)
     }
-    private async sendRequest(url: string, init?: RequestInit): Promise<GenerationOutput> {
+
+    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 30000): Promise<GenerationOutput> {
         const t = new Date().getTime()
         let resError = null
         let resOutput = null
         let status = null
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
         try {
-            const res = await fetch(url, init)
+            const res = await fetch(url, { ...init, signal: controller.signal })
+            clearTimeout(timeoutId)
+            // const res = await fetch(url, init)
             status = res.status
             resOutput = await this.parseResponse(res)
         }
@@ -63,6 +70,7 @@ export class LivepeerAPI {
             status = e.status || 'ERROR'
         }
         finally {
+            clearTimeout(timeoutId)
             const dur = (new Date().getTime() - t) / 1000
             const segs = url.split('/')
             console.log(`LIVEPEER REQ ${status} ${segs[segs.length - 1]} ${dur}`)
