@@ -13,17 +13,12 @@ export default function Page({ params }: { params: { vid: string, asset: string 
     const router = useRouter()
     const searchParams = useSearchParams()
 
-    const vid = process.env.NEXT_PUBLIC_SD_PROVIDER === 'modelslab' ? params.vid : searchParams.get('media')
+    const vid = searchParams.get('media')
 
     const [generationOutput, setGenerationOutput] = useState<GenerationOutput | null>(null)
 
     const onVideo = async (output: GenerationOutput) => {
-        if (process.env.NEXT_PUBLIC_SD_PROVIDER === 'modelslab') {
-            router.push(`/video/${output?.id}`)
-        }
-        else {
-            router.push(`/video/${output?.id}?media=${output?.mediaUrl}`)
-        }
+        router.push(`/video/${output?.id}?media=${output?.mediaUrl}`)
     }
     const previewRender = (): any => {
         if (generationOutput?.status === 'success') {
