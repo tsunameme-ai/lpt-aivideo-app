@@ -24,7 +24,7 @@ export class API {
     }
 
     public static async fetchRemoteFile(url: string): Promise<File> {
-        const response = await fetch(url)
+        const response = await fetch(url, { cache: 'no-cache' })
         const blob = await response.blob()
         const file = new File([blob], 'image.jpg', { type: 'image/jpeg' })
         return file
