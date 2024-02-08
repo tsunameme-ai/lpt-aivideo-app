@@ -1,27 +1,22 @@
-// File: app/api/stream/route.js
-
 import { img2vid, txt2img } from "@/actions/stable-diffusion";
 import { GenerationManager } from "@/libs/generation-manager";
 import { GenerationRequest, GenerationType } from "@/libs/types";
 import { NextRequest } from "next/server";
 
-// Prevents this route's response from being cached on Vercel
 export const dynamic = 'force-dynamic'
 
 interface Notify {
     log: (message: string) => void;
     complete: (message: string) => void;
-    error: (error: Error | any) => void;
+    error: (error: Error) => void;
     close: () => void;
 }
-// const longRunning1 = async (notify: Notify, exec: Function, gr: GenerationRequest) => {
+// const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest) => {
 //     notify.log(JSON.stringify({ "data": "Started" }))
-//     const output = await exec(gr.input)
-//     console.log('~~~~~ long run output~~~~')
-//     output.id = gr.id
-//     console.log(output)
-//     // notify.error(new Error('Something went wrong'))
-//     notify.complete(JSON.stringify({ "data": output, complete: true }))
+//     // const output = await exec(gr.input)
+//     await Utils.delay(2000)
+//     notify.error(new Error('Something went wrong'))
+//     // notify.complete(JSON.stringify({ "data": output, complete: true }))
 // }
 
 const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest) => {

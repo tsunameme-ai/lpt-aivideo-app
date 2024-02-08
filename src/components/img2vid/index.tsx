@@ -4,7 +4,7 @@ import { useState } from "react"
 import ErrorComponent from "../error"
 import styles from "@/styles/home.module.css"
 import GImage from "../gimage"
-import LongrunListener from "../longrun-listener"
+import LongrunIndicator from "../longrun-indicator"
 
 
 interface Img2VidComponentProps {
@@ -28,10 +28,10 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
         if (props.onVideoGenerated) {
             props.onVideoGenerated(output)
         }
-
     }
     const onError = (e: Error) => {
         setErrorMessage(e.message)
+        setIsGeneratingVideo(false)
     }
 
     const handleGenerateVideoClick = async () => {
@@ -52,25 +52,14 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
             const generationRequest = await response.json()
             if (generationRequest) {
                 setImg2VidRequest(generationRequest)
+                setIsGeneratingVideo(true)
             }
             else {
                 throw new Error('Unable to generate request')
             }
-            // const output = await img2vid({
-            //     imageUrl: props.imageUrl,
-            //     motionButcketId: parseInt(motionBucketId),
-            //     noiseAugStrength: parseFloat(noiseAugStrength),
-            //     seed: seed
-            // })
-            // // console.log(output)
-            // if (props.onVideoGenerated) {
-            //     props.onVideoGenerated(output)
-            // }
         }
         catch (e: any) {
             setErrorMessage(`Unable to generate video: ${e.message}`)
-        }
-        finally {
             setIsGeneratingVideo(false)
         }
     }
@@ -79,7 +68,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
         <>
             <section className='flex flex-col items-center justify-center'>
                 {img2VidRequest &&
-                    <LongrunListener request={img2VidRequest}
+                    <LongrunIndicator request={img2VidRequest}
                         onError={onError}
                         onComplete={onVideoGenerated}
                     />}
