@@ -2,16 +2,16 @@ import { GenerationOutput } from "@/libs/types"
 import { Button, Spacer, Input } from "@nextui-org/react"
 import { useState } from "react"
 import ErrorComponent from "../error"
-import { img2vid } from "@/actions/img2vid"
+import { img2vid } from "@/actions/stable-diffusion"
 import styles from "@/styles/home.module.css"
 import GImage from "../gimage"
 
 
 interface Img2VidComponentProps {
     isAdvancedView: boolean
-    imageOutput: GenerationOutput
+    imageUrl: string
     onError?: (error: any) => void
-    onVideo?: (videoOutput: GenerationOutput) => void
+    onVideoGenerated?: (videoOutput: GenerationOutput) => void
 }
 
 const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidComponentProps) => {
@@ -26,14 +26,14 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
         setIsGeneratingVideo(true)
         try {
             const output = await img2vid({
-                imageUrl: props.imageOutput.mediaUrl,
+                imageUrl: props.imageUrl,
                 motionButcketId: parseInt(motionBucketId),
                 noiseAugStrength: parseFloat(noiseAugStrength),
                 seed: seed
             })
-            console.log(output)
-            if (props.onVideo) {
-                props.onVideo(output)
+            // console.log(output)
+            if (props.onVideoGenerated) {
+                props.onVideoGenerated(output)
             }
         }
         catch (e: any) {
@@ -48,9 +48,9 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <GImage alt='preview' src={props.imageOutput.mediaUrl} />
+                    <GImage alt='preview' src={props.imageUrl} />
                     <Spacer y={4} />
-                    {props.isAdvancedView ??
+                    {props.isAdvancedView &&
                         <div className='grid grid-cols-2 gap-4'>
                             <Input
                                 label='Motion Bucket Id'

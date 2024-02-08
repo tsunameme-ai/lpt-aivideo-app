@@ -2,12 +2,12 @@ import { Txt2imgInput, GenerationOutput, SDProvider } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Divider } from '@nextui-org/react'
-import { txt2img } from "@/actions/txt2img";
+import { txt2img } from "@/actions/stable-diffusion";
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
     isAdvancedView: boolean
-    onGenerationRequested: (generationOutput: GenerationOutput) => void
+    onImageGenerated: (generationOutput: GenerationOutput) => void
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
@@ -81,7 +81,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             const output = await txt2img(params)
             setGenerationOutput(output)
             if (output?.status === 'success') {
-                props.onGenerationRequested(output)
+                props.onImageGenerated(output)
             }
         }
         catch (error: any) {
@@ -93,7 +93,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     }
 
     const handleGotoAsset = async () => {
-        props.onGenerationRequested(generationOutput!)
+        props.onImageGenerated(generationOutput!)
     }
 
 
