@@ -12,8 +12,8 @@ export class GenerationManager {
     }
 
 
-    public addGenerationRequest(type: GenerationType, input: Txt2imgInput | Img2vidInput) {
-
+    public async addGenerationRequest(type: GenerationType, input: Txt2imgInput | Img2vidInput) {
+        await Utils.delay(200)
         const id = new Date().getTime().toString()
         this.generations.set(id, {
             id: id,
@@ -23,8 +23,13 @@ export class GenerationManager {
         return this.generations.get(id)
     }
 
+    public async removeGenerationRequest(id: string) {
+        await Utils.delay(200)
+        this.generations.delete(id)
+    }
+
     public async fetchPendingRequests(): Promise<Map<string, GenerationRequest>> {
-        await Utils.delay(500)
+        await Utils.delay(200)
         return this.generations
     }
 }

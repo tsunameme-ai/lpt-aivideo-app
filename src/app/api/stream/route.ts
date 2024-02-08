@@ -30,18 +30,15 @@ const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest
 
     const intervalId = setInterval(() => {
         count += 1
-        notify.log(JSON.stringify({ "data": `Running ${count}s` }))
-        //   notify.log(`Still working... Progress: ${// Your update logic}`);
-    }, 1000); // Interval in milliseconds
+        notify.log(JSON.stringify({ "data": `PING ${count}s` }))
+    }, 1000);
 
     try {
-        const output = await exec(gr.input);
-        console.log('~~~~~ long run output~~~~');
-        output.id = gr.id;
-        console.log(output);
-        notify.complete(JSON.stringify({ "data": output, complete: true }));
+        const output = await exec(gr.input)
+        output.id = gr.id
+        notify.complete(JSON.stringify({ "data": output, complete: true }))
+        GenerationManager.getInstance().removeGenerationRequest(gr.id)
     } catch (error) {
-        // Handle error and potentially call notify.error here
         console.error(error);
     } finally {
         clearInterval(intervalId); // Clear the interval when finished
