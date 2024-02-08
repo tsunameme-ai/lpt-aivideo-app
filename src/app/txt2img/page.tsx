@@ -29,18 +29,19 @@ export default function Page() {
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <h4>Step 1: Describe the expression</h4>
-                    <Spacer y={4} />
+                    <div>Step 1: Write prompt </div>
+                    <Spacer y={2} />
                     {sdProvider && <Txt2ImgComponent
                         sdProvider={sdProvider}
                         isAdvancedView={searchParams.get('view') === 'advanced'}
                         onImageGenerated={onImageGenerated}
                     />}
+
                     {imageOutput && <>
-                        <Spacer y={4} />
+                        <Spacer y={1} />
                         <GImage src={imageOutput.mediaUrl} alt='preview' />
                         <Spacer y={4} />
-                        <Button color="primary" onPress={handleClickNext}>Next</Button>
+                        <Button className="w-full" color="primary" onPress={handleClickNext}>Next step</Button>
                     </>}
                 </div>
             </section>
