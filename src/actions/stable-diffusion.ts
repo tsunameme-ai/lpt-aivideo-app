@@ -23,6 +23,7 @@ const fetchImageAsFile = async (url: string): Promise<File> => {
     console.log(response)
     throw new Error(`Fetch image failed ${response.status}`)
 }
+
 export async function img2vid(params: Img2vidInput): Promise<GenerationOutput> {
     if (process.env.NEXT_PUBLIC_LIVEPEER_STATIC) {
         return await new LivepeerStaticAPI().img2vid()

@@ -35,6 +35,17 @@ export type GenerationOutput = {
     height?: number,
     eta?: number
 }
+export enum GenerationType {
+    TXT2IMG = 'txt2img',
+    IMG2VID = 'img2vid'
+}
+export type GenerationRequest = {
+    id: string,
+    type: GenerationType,
+    input: Txt2imgInput | Img2vidInput
+    output?: GenerationOutput
+}
+
 export type SDProvider = {
     models: Array<{ value: string, label: string, default?: boolean }>
     loras?: Array<{ value: string, label: string, baseModel?: string }>

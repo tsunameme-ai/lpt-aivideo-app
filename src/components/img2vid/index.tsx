@@ -1,10 +1,10 @@
-import { GenerationOutput } from "@/libs/types"
+import { GenerationOutput, GenerationRequest, GenerationType } from "@/libs/types"
 import { Button, Spacer, Input } from "@nextui-org/react"
 import { useState } from "react"
 import ErrorComponent from "../error"
-import { img2vid } from "@/actions/stable-diffusion"
 import styles from "@/styles/home.module.css"
 import GImage from "../gimage"
+import LongrunListener from "../longrun-listener"
 
 
 interface Img2VidComponentProps {
@@ -20,21 +20,52 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     const [noiseAugStrength, setNoiseAugStrength] = useState<string>('0.05')
     const [seed, setSeed] = useState<string>()
     const [errorMessage, setErrorMessage] = useState<string>('')
+    const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
 
+    const onVideoGenerated = (output: GenerationOutput) => {
+        setIsGeneratingVideo(false)
+        setErrorMessage('')
+        if (props.onVideoGenerated) {
+            props.onVideoGenerated(output)
+        }
+
+    }
+    const onError = (e: Error) => {
+        setErrorMessage(e.message)
+    }
 
     const handleGenerateVideoClick = async () => {
         setIsGeneratingVideo(true)
         try {
-            const output = await img2vid({
-                imageUrl: props.imageUrl,
-                motionButcketId: parseInt(motionBucketId),
-                noiseAugStrength: parseFloat(noiseAugStrength),
-                seed: seed
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                cache: 'no-cache',
+                body: JSON.stringify({
+                    type: GenerationType.IMG2VID, input: {
+                        imageUrl: props.imageUrl,
+                        motionButcketId: parseInt(motionBucketId),
+                        noiseAugStrength: parseFloat(noiseAugStrength),
+                        seed: seed
+                    }
+                }),
             })
-            // console.log(output)
-            if (props.onVideoGenerated) {
-                props.onVideoGenerated(output)
+            const generationRequest = await response.json()
+            if (generationRequest) {
+                setImg2VidRequest(generationRequest)
             }
+            else {
+                throw new Error('Unable to generate request')
+            }
+            // const output = await img2vid({
+            //     imageUrl: props.imageUrl,
+            //     motionButcketId: parseInt(motionBucketId),
+            //     noiseAugStrength: parseFloat(noiseAugStrength),
+            //     seed: seed
+            // })
+            // // console.log(output)
+            // if (props.onVideoGenerated) {
+            //     props.onVideoGenerated(output)
+            // }
         }
         catch (e: any) {
             setErrorMessage(`Unable to generate video: ${e.message}`)
@@ -47,6 +78,11 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
+                {img2VidRequest &&
+                    <LongrunListener request={img2VidRequest}
+                        onError={onError}
+                        onComplete={onVideoGenerated}
+                    />}
                 <div className={styles.centerSection}>
                     <GImage alt='preview' src={props.imageUrl} />
                     <Spacer y={4} />
