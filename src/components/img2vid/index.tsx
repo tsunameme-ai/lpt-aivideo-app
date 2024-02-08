@@ -3,7 +3,6 @@ import { Button, Spacer, Input } from "@nextui-org/react"
 import { useState } from "react"
 import ErrorComponent from "../error"
 import { img2vid } from "@/actions/stable-diffusion"
-import styles from "@/styles/home.module.css"
 import GImage from "../gimage"
 
 
