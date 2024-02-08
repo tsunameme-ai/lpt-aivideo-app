@@ -30,8 +30,8 @@ export default function Page() {
         <>
             {imageUrl && <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <h3>Step 2: Make it into a video</h3>
-                    <Spacer y={4} />
+                    <h4>Step 2: Make it into a video</h4>
+                    <Spacer y={3} />
                     <Img2VidComponent
                         isAdvancedView={searchParams.get('view') === 'advanced'}
                         imageUrl={imageUrl}

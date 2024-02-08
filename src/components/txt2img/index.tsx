@@ -107,7 +107,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 errorMessage={pPromptErrorMessage}
                 onValueChange={handlePPromptValueChange}
             />
-            <Spacer y={4} />
+            <Spacer y={1} />
             <div hidden={!props.isAdvancedView}>
                 <Textarea
                     label='Negative Prompt'
@@ -219,11 +219,12 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
 
             <Button
                 color='primary' variant='solid'
+                fullWidth={true}
                 onPress={generateImage}
                 isLoading={isLoading}
             >
                 Generate Image
-            </Button>
+            </Button >
             <ErrorComponent errorMessage={errorMessage} />
             <Modal isOpen={generationOutput?.status === 'processing'} isDismissable={false}>
                 <ModalContent>

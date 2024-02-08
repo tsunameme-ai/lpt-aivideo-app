@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en" className='comfort'>
       <body>
         <Providers>
-          <header className='py-10'></header>
+          <header className='py-3'></header>
           {children}
 
           <footer className="w-full flex items-center justify-center py-3 bottom-0 absolute">

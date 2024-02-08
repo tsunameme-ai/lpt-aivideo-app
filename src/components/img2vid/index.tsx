@@ -46,51 +46,56 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
 
     return (
         <>
-            <section className='flex flex-col items-center justify-center'>
-                <div className={styles.centerSection}>
-                    <GImage alt='preview' src={props.imageUrl} />
-                    <Spacer y={4} />
-                    {props.isAdvancedView &&
-                        <div className='grid grid-cols-2 gap-4'>
-                            <Input
-                                label='Motion Bucket Id'
-                                type='number'
-                                value={motionBucketId}
-                                onValueChange={setMotionBucketId}
-                            />
-                            <Input
-                                label='Noise Aug Strength'
-                                type='number'
-                                value={noiseAugStrength}
-                                onValueChange={setNoiseAugStrength}
-                            />
-                            <Input
-                                label='Seed'
-                                type='number'
-                                value={seed}
-                                onValueChange={setSeed}
-                            />
-                        </div>}
 
-                    <Spacer y={1}></Spacer>
+            <div >
+                <GImage alt='preview' src={props.imageUrl} />
+                <Spacer y={3} />
+                {props.isAdvancedView &&
+                    <div className='grid grid-cols-2 gap-4'>
+                        <Input
+                            label='Motion Bucket Id'
+                            type='number'
+                            value={motionBucketId}
+                            onValueChange={setMotionBucketId}
+                        />
+                        <Input
+                            label='Noise Aug Strength'
+                            type='number'
+                            value={noiseAugStrength}
+                            onValueChange={setNoiseAugStrength}
+                        />
+                        <Input
+                            label='Seed'
+                            type='number'
+                            value={seed}
+                            onValueChange={setSeed}
+                        />
+                    </div>}
+                <Spacer y={1}></Spacer>
+                <p className="text-base">
+                    Video generation will take a few minutes. Please do not close the tab while waiting for the video.
+                </p>
+                <Spacer y={3}></Spacer>
+                <Button
+                    size="lg"
+                    color="primary"
+                    isLoading={isGeneratingVideo}
+                    onPress={handleGenerateVideoClick}>
+                    Go Back
+                </Button>
 
-                    <p className="text-base">
-                        Video generation will take a few minutes. Please do not close the tab while waiting for the video.
-                    </p>
-                    <Spacer y={5}></Spacer>
-                    <Button
-                        color="primary"
-                        isLoading={isGeneratingVideo}
-                        onPress={handleGenerateVideoClick}>
-                        Generate Video
-                    </Button>
-                </div>
-
+                <Button
+                    size="lg"
+                    color="primary"
+                    isLoading={isGeneratingVideo}
+                    onPress={handleGenerateVideoClick}>
+                    Generate Video
+                </Button>
 
                 {/* <small>Video generation will take a few minutes. Please wait patiently. Don't close the tab.</small> */}
                 <ErrorComponent errorMessage={errorMessage} />
+            </div>
 
-            </section>
         </>
     );
 };

@@ -43,9 +43,11 @@ const GImage: React.FC<GImageProps> = (props: GImageProps) => {
             setIsFetching(false)
         }
     }
+    //<small>{props.src}</small>
+    //style={{ border: '1px solid #f00' }}
     return (
-        <div style={{ border: '1px solid #f00' }}>
-            <small>{props.src}</small>
+        <div >
+
             {imageFileUrl && <Image alt={props.alt} src={imageFileUrl} />}
             {isFetching && <Spinner />}
             {errorMessage.length > 0 && <>

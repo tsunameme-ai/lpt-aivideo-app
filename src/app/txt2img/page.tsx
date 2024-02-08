@@ -29,8 +29,7 @@ export default function Page() {
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-
-                    <h3>Step 1: Describe the cover of your ecard</h3>
+                    <h4>Step 1: Describe the expression</h4>
                     <Spacer y={4} />
                     {sdProvider && <Txt2ImgComponent
                         sdProvider={sdProvider}
