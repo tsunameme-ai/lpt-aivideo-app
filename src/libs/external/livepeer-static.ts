@@ -20,7 +20,7 @@ export class LivepeerStaticAPI {
     }
 
     public async img2vid(): Promise<GenerationOutput> {
-        await Utils.delay(1000)
+        await Utils.delay(10000)
         return {
             id: 'static',
             status: 'success',

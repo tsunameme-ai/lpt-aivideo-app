@@ -27,7 +27,7 @@ const LongrunListener: React.FC<LongrunListenerProps> = (props: LongrunListenerP
         eventSource.onmessage = (ev: MessageEvent) => {
             console.log(`eventSource.onmessage`)
             console.log(ev)
-            let data = JSON.parse(ev.data)
+            const data = JSON.parse(ev.data)
             console.log(data)
             if (data.complete === true) {
                 eventSource.close()
@@ -35,6 +35,9 @@ const LongrunListener: React.FC<LongrunListenerProps> = (props: LongrunListenerP
                 if (props.onComplete) {
                     props.onComplete(data.data)
                 }
+            }
+            else {
+                setConnectStatus(`🟢 ${data.data}`)
             }
         }
         eventSource.onopen = (ev: Event) => {

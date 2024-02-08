@@ -14,16 +14,39 @@ interface Notify {
     error: (error: Error | any) => void;
     close: () => void;
 }
+// const longRunning1 = async (notify: Notify, exec: Function, gr: GenerationRequest) => {
+//     notify.log(JSON.stringify({ "data": "Started" }))
+//     const output = await exec(gr.input)
+//     console.log('~~~~~ long run output~~~~')
+//     output.id = gr.id
+//     console.log(output)
+//     // notify.error(new Error('Something went wrong'))
+//     notify.complete(JSON.stringify({ "data": output, complete: true }))
+// }
+
 const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest) => {
-    notify.log(JSON.stringify({ "data": "Started" }))
-    // await delay(10000)
-    const output = await exec(gr.input)
-    console.log('~~~~~ long run output~~~~')
-    output.id = gr.id
-    console.log(output)
-    // notify.error(new Error('Something went wrong'))
-    notify.complete(JSON.stringify({ "data": output, complete: true }))
-}
+    notify.log(JSON.stringify({ "data": "Started" }));
+    let count = 0
+
+    const intervalId = setInterval(() => {
+        count += 1
+        notify.log(JSON.stringify({ "data": `Running ${count}s` }))
+        //   notify.log(`Still working... Progress: ${// Your update logic}`);
+    }, 1000); // Interval in milliseconds
+
+    try {
+        const output = await exec(gr.input);
+        console.log('~~~~~ long run output~~~~');
+        output.id = gr.id;
+        console.log(output);
+        notify.complete(JSON.stringify({ "data": output, complete: true }));
+    } catch (error) {
+        // Handle error and potentially call notify.error here
+        console.error(error);
+    } finally {
+        clearInterval(intervalId); // Clear the interval when finished
+    }
+};
 // export async function GET(req: NextApiRequest, res: NextApiResponse)
 
 export async function GET(req: Request | NextRequest) {
@@ -34,8 +57,9 @@ export async function GET(req: Request | NextRequest) {
         return new Response(JSON.stringify({ error: `Request Id doesn't exist` }), { status: 400, headers: { 'Content-Type': 'application/json' } })
     }
     console.log(id)
-    console.log(GenerationManager.getInstance().generations)
-    const generationRequest = GenerationManager.getInstance().generations.get(id)
+    const pendingRqs = await GenerationManager.getInstance().fetchPendingRequests()
+    console.log(`api/stream/route ${pendingRqs.size} ${pendingRqs.keys()}`)
+    const generationRequest = pendingRqs.get(id)
     if (!generationRequest) {
         return new Response(JSON.stringify({ error: `Request ${id} doesn't exist` }), { status: 400, headers: { 'Content-Type': 'application/json' } })
     }
