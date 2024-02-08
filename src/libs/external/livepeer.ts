@@ -14,6 +14,7 @@ export class LivepeerAPI {
         }
         return await this.sendRequest(url, {
             method: 'POST',
+            cache: 'no-cache',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -42,25 +43,37 @@ export class LivepeerAPI {
 
         const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/image-to-video`
         return await this.sendRequest(url, {
+            cache: 'no-cache',
             method: 'POST',
             body: fd,
-        })
+        }, 600000)
     }
-    private async sendRequest(url: string, init?: RequestInit): Promise<GenerationOutput> {
+
+    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 30000): Promise<GenerationOutput> {
         const t = new Date().getTime()
-        const res = await fetch(url, init)
         let resError = null
         let resOutput = null
+        let status = null
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
         try {
+            const res = await fetch(url, { ...init, signal: controller.signal })
+            clearTimeout(timeoutId)
+            // const res = await fetch(url, init)
+            status = res.status
             resOutput = await this.parseResponse(res)
         }
-        catch (e) {
+        catch (e: any) {
             resError = e
+            status = e.status || 'ERROR'
         }
         finally {
+            clearTimeout(timeoutId)
             const dur = (new Date().getTime() - t) / 1000
             const segs = url.split('/')
-            console.log(`LIVEPEER REQ ${res.status} ${segs[segs.length - 1]} ${dur}`)
+            console.log(`LIVEPEER REQ ${status} ${segs[segs.length - 1]} ${dur}`)
             if (resError) {
                 throw resError
             }
