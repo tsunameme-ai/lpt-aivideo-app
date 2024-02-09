@@ -23,7 +23,7 @@ export default function Page() {
     }
     const handleClickNext = () => {
         const isAdvanced = searchParams.get('view') === 'advanced'
-        router.push(`/img2vid/?imgurl=${imageOutput?.mediaUrl}${isAdvanced ? '&view=advanced' : ''}`)
+        router.push(`/add-text/?imgurl=${imageOutput?.mediaUrl}${isAdvanced ? '&view=advanced' : ''}`)
     }
     return (
         <>
