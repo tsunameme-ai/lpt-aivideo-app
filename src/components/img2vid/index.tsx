@@ -3,7 +3,6 @@ import { Button, Spacer, Input } from "@nextui-org/react"
 import { useState } from "react"
 import ErrorComponent from "../error"
 import styles from "@/styles/home.module.css"
-import GImage from "../gimage"
 import LongrunIndicator from "../longrun-indicator"
 
 
@@ -67,14 +66,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
-                {img2VidRequest &&
-                    <LongrunIndicator request={img2VidRequest}
-                        onError={onError}
-                        onComplete={onVideoGenerated}
-                    />}
                 <div className={styles.centerSection}>
-                    <GImage alt='preview' src={props.imageUrl} />
-                    <Spacer y={4} />
                     {props.isAdvancedView &&
                         <div className='grid grid-cols-2 gap-4'>
                             <Input
@@ -109,10 +101,12 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                         onPress={handleGenerateVideoClick}>
                         Generate Video
                     </Button>
+                    {img2VidRequest &&
+                        <LongrunIndicator request={img2VidRequest}
+                            onError={onError}
+                            onComplete={onVideoGenerated}
+                        />}
                 </div>
-
-
-                {/* <small>Video generation will take a few minutes. Please wait patiently. Don't close the tab.</small> */}
                 <ErrorComponent errorMessage={errorMessage} />
 
             </section>

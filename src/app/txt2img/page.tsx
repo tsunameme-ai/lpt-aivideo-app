@@ -23,7 +23,7 @@ export default function Page() {
     }
     const handleClickNext = () => {
         const isAdvanced = searchParams.get('view') === 'advanced'
-        router.push(`/img2vid/?imgurl=${imageOutput?.mediaUrl}${isAdvanced ? '&&view=advanced' : ''}`)
+        router.push(`/img2vid/?imgurl=${imageOutput?.mediaUrl}${isAdvanced ? '&view=advanced' : ''}`)
     }
     return (
         <>
@@ -39,7 +39,7 @@ export default function Page() {
                     />}
                     {imageOutput && <>
                         <Spacer y={4} />
-                        <GImage src={imageOutput.mediaUrl} alt='preview' />
+                        <GImage src={imageOutput.mediaUrl} alt={imageOutput.mediaUrl} />
                         <Spacer y={4} />
                         <Button color="primary" onPress={handleClickNext}>Next</Button>
                     </>}
