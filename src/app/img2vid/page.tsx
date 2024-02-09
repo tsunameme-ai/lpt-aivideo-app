@@ -5,7 +5,7 @@ import Img2VidComponent from "@/components/img2vid"
 import { useSearchParams } from 'next/navigation'
 import { Spacer } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
-import ImageWithTextOverlay from "../../components/image-text-overlay"
+import ImageWithTextOverlay from "@/components/image-text-overlay"
 import React from "react"
 
 
