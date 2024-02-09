@@ -29,26 +29,28 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         if (image && canvas) {
             const ctx = canvas.getContext("2d");
             if (ctx) {
-                ctx.drawImage(image, 0, 0);
+                ctx.drawImage(image, 0, 0)
 
                 const lines = text.split('\n')
-                const lineHeight = parseInt(ctx.font, 10) * 1.2; // Adjust line spacing
+                if (lines.length > 0) {
+                    const lineHeight = parseInt(ctx.font, 10) * 1.2; // Adjust line spacing
 
-                ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
-                const rectH = lineHeight * (lines.length + 2)
-                ctx.fillRect(0, canvas.height - rectH, canvas.width, rectH)
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
+                    const rectH = lineHeight * (lines.length + 2)
+                    ctx.fillRect(0, canvas.height - rectH, canvas.width, rectH)
 
 
-                // Add your text drawing logic here
-                ctx.font = "20px Arial"
-                ctx.fillStyle = "black"
-                ctx.textAlign = "center"
-                ctx.textBaseline = "bottom"
+                    // Add your text drawing logic here
+                    ctx.font = "20px Arial"
+                    ctx.fillStyle = "black"
+                    ctx.textAlign = "center"
+                    ctx.textBaseline = "bottom"
 
-                let cy = canvas.height - lineHeight;
-                for (let i = lines.length - 1; i >= 0; i--) {
-                    ctx.fillText(lines[i], canvas.width / 2, cy);
-                    cy -= lineHeight
+                    let cy = canvas.height - lineHeight;
+                    for (let i = lines.length - 1; i >= 0; i--) {
+                        ctx.fillText(lines[i], canvas.width / 2, cy);
+                        cy -= lineHeight
+                    }
                 }
 
                 const dataURL = canvas.toDataURL("image/png");
