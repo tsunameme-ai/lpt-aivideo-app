@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import '../styles/globals.css'
 import { Providers } from './providers'
 import type { Viewport } from 'next'
+import GenerationContextProvider from '@/context/generation-context'
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
@@ -25,7 +26,9 @@ export default function RootLayout({
       <body>
         <Providers>
           <header className='py-10'></header>
-          {children}
+          <GenerationContextProvider>
+            {children}
+          </GenerationContextProvider>
 
           <footer className="w-full flex items-center justify-center py-3 bottom-0 absolute">
             <span className="text-blue-100">Powered by &nbsp;</span>

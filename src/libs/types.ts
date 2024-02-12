@@ -16,24 +16,19 @@ export type Txt2imgInput = {
     pPrompt: string,
     nPrompt: string,
     modelId: string,
-    steps?: number,
     seed?: string
-    scheduler?: string
-    loraModel?: string
-    loraStrength?: number
     guidanceScale?: number
-    clipSkip?: number
     width: number,
     height: number
+
+    steps?: number,
+    scheduler?: string
 }
 export type GenerationOutput = {
     id: string,
     status: string,
     mediaUrl: string,
     seed?: number
-    width?: number,
-    height?: number,
-    eta?: number
 }
 export enum GenerationType {
     TXT2IMG = 'txt2img',

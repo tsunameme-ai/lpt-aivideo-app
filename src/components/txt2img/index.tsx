@@ -1,8 +1,9 @@
 import { Txt2imgInput, GenerationOutput, SDProvider } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Divider } from '@nextui-org/react'
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
 import { txt2img } from "@/actions/stable-diffusion";
+import { useGenerationContext } from "@/context/generation-context";
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
@@ -11,24 +12,22 @@ interface Txt2ImgComponentProps {
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
+    const gContext = useGenerationContext()
     const defaultBaseModel = props.sdProvider.models.find(item => { return item.default === true })?.value!
     const defaultScheduler = props.sdProvider.schedulers?.find(item => { return item.default === true })?.value!
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
-    const [pPromptValue, setPPromptValue] = useState<string>('')
-    const [nPromptValue, setNPromptValue] = useState<string>('lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
-    const [stepsValue, setStepsValue] = useState<string>('20')
-    const [seedValue, setSeedValue] = useState<string>('')
+    const [pPromptValue, setPPromptValue] = useState<string>(gContext.t2iInput?.pPrompt || '')
+    const [nPromptValue, setNPromptValue] = useState<string>(gContext.t2iInput?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
+    const [stepsValue, setStepsValue] = useState<string>((gContext.t2iInput?.steps || 20).toString())
+    const [seedValue, setSeedValue] = useState<string>(gContext.t2iInput?.seed || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [pPromptErrorMessage, setPPromptErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [stepErrorMessage, setStepErrorMessage] = useState<string>('')
-    const [lora, setLora] = useState<string | undefined>(undefined)
     const [scheduler, setScheduler] = useState<string | undefined>(undefined)
-    const [loraStrength, setLoraStrength] = useState<string>('1.0')
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
-    const [clipSkip, setClipSkip] = useState<string>('1')
-    const [width, setWidth] = useState<string>('768')
-    const [height, setHeight] = useState<string>('512')
+    const [width, setWidth] = useState<string>((gContext.t2iInput?.width || 768).toString())
+    const [height, setHeight] = useState<string>((gContext.t2iInput?.height || 512).toString())
     const [generationOutput, setGenerationOutput] = useState<GenerationOutput | undefined>(undefined)
 
     const handlePPromptValueChange = (value: string) => {
@@ -39,9 +38,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const handleSetBaseModel = (key: any) => {
         setBaseModel(key.size === 0 ? defaultBaseModel : key.currentKey)
     }
-    const handleSetLora = (key: any) => {
-        setLora(key.size === 0 ? undefined : key.currentKey)
-    }
+
     const handleSetScheduler = (key: any) => {
         setScheduler(key.size === 0 ? undefined : key.currentKey)
     }
@@ -62,6 +59,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             setStepErrorMessage('Wrong steps value.')
             return
         }
+
         const params: Txt2imgInput = {
             pPrompt: pPrompt,
             nPrompt: nPromptValue,
@@ -69,13 +67,11 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             steps: stepCount,
             seed: seedValue.length > 0 ? seedValue : undefined,
             guidanceScale: parseFloat(guidanceScale),
-            clipSkip: parseInt(clipSkip),
-            loraModel: lora,
-            loraStrength: lora === undefined ? undefined : parseFloat(loraStrength),
             scheduler: scheduler,
             width: parseInt(width),
             height: parseInt(height)
         }
+        gContext.setT2iInput(params)
         setIsLoading(true)
         try {
             const output = await txt2img(params)
@@ -180,40 +176,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         description='1 - 20'
                         value={guidanceScale}
                         onValueChange={setGuidanceScale} />
-
-                    <Input
-                        label='Clip Skip'
-                        description='1 - 8'
-                        value={clipSkip}
-                        onValueChange={setClipSkip} />
                 </div>
-
-                {props.sdProvider.loras && <>
-                    <Spacer y={4} />
-                    <Divider />
-                    <Spacer y={4} />
-                    <div className='grid grid-cols-2 gap-4'>
-                        <Select
-                            value={[lora || '']}
-                            onSelectionChange={handleSetLora}
-                            label="Lora">
-                            {props.sdProvider.loras.map((item) => (
-                                <SelectItem key={item.value} value={item.value}>
-                                    {item.label}
-                                </SelectItem>
-                            ))}
-                        </Select>
-
-                        <Input
-                            label='Lora Strength'
-                            type='number'
-                            placeholder='0 to 1'
-                            value={loraStrength.toString()}
-                            errorMessage={stepErrorMessage}
-                            onValueChange={setLoraStrength}
-                        />
-                    </div>
-                </>}
                 <Spacer y={4} />
             </div>
 
