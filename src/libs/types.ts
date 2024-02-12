@@ -24,7 +24,8 @@ export type Txt2imgInput = {
     guidanceScale?: number
     clipSkip?: number
     width: number,
-    height: number
+    height: number,
+    numOutput: number
 }
 export type GenerationOutput = {
     id: string,

@@ -1,13 +1,13 @@
 import { Txt2imgInput, GenerationOutput, SDProvider } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Divider } from '@nextui-org/react'
+import { Button, Input, Spacer, Textarea, SelectItem, Select, Divider } from '@nextui-org/react'
 import { txt2img } from "@/actions/stable-diffusion";
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
     isAdvancedView: boolean
-    onImageGenerated: (generationOutput: GenerationOutput) => void
+    onImagesGenerated: (generationOutput: Array<GenerationOutput>) => void
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
@@ -27,9 +27,10 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [loraStrength, setLoraStrength] = useState<string>('1.0')
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
     const [clipSkip, setClipSkip] = useState<string>('1')
+    const [numOutput, setNumOutput] = useState<string>('1')
     const [width, setWidth] = useState<string>('768')
     const [height, setHeight] = useState<string>('512')
-    const [generationOutput, setGenerationOutput] = useState<GenerationOutput | undefined>(undefined)
+    const [generationOutputs, setGenerationOutputs] = useState<GenerationOutput | undefined>(undefined)
 
     const handlePPromptValueChange = (value: string) => {
         setPPromptValue(value)
@@ -49,7 +50,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const generateImage = async () => {
         setErrorMessage('')
         setIsLoading(false)
-        setGenerationOutput(undefined)
+        setGenerationOutputs(undefined)
 
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
@@ -74,14 +75,15 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             loraStrength: lora === undefined ? undefined : parseFloat(loraStrength),
             scheduler: scheduler,
             width: parseInt(width),
-            height: parseInt(height)
+            height: parseInt(height),
+            numOutput: parseInt(numOutput)
         }
         setIsLoading(true)
         try {
-            const output = await txt2img(params)
-            setGenerationOutput(output)
-            if (output?.status === 'success') {
-                props.onImageGenerated(output)
+            const outputs = await txt2img(params)
+            if (outputs.length > 0) {
+                setGenerationOutputs(outputs)
+                props.onImagesGenerated(outputs)
             }
         }
         catch (error: any) {
@@ -90,10 +92,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         finally {
             setIsLoading(false)
         }
-    }
-
-    const handleGotoAsset = async () => {
-        props.onImageGenerated(generationOutput!)
     }
 
 
@@ -186,6 +184,10 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         description='1 - 8'
                         value={clipSkip}
                         onValueChange={setClipSkip} />
+                    <Input
+                        label='Num of Images'
+                        value={numOutput}
+                        onValueChange={setNumOutput} />
                 </div>
 
                 {props.sdProvider.loras && <>
@@ -225,19 +227,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 Generate Image
             </Button>
             <ErrorComponent errorMessage={errorMessage} />
-            <Modal isOpen={generationOutput?.status === 'processing'} isDismissable={false}>
-                <ModalContent>
-                    <ModalHeader>Cooking</ModalHeader>
-                    <ModalBody>
-                        Your creation is in the works!
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onPress={handleGotoAsset}>
-                            Check it out
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
         </>
 
     )

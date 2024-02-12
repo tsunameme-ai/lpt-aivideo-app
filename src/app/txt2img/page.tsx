@@ -1,29 +1,38 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Button, Spacer } from '@nextui-org/react'
+import { Button, Radio, RadioGroup, Spacer } from '@nextui-org/react'
 import { GenerationOutput, SDProvider } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import getSDProvider from '@/libs/sd-provider'
 import { useEffect, useState } from 'react'
 import styles from '@/styles/home.module.css'
 import GImage from '@/components/gimage'
+import React from 'react'
 
 export default function Page() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [sdProvider, setSdProvider] = useState<SDProvider>()
-    const [imageOutput, setImageOutput] = useState<GenerationOutput>()
+    const [imageOutputs, setImageOutputs] = useState<GenerationOutput>()
+    const [imageURL, setImageURL] = useState<string>()
     useEffect(() => {
         const sdProvider = getSDProvider()
         setSdProvider(sdProvider)
     }, [])
 
-    const onImageGenerated = (output: GenerationOutput) => {
-        setImageOutput(output)
+    const onImagesGenerated = (outputs: Array<GenerationOutput>) => {
+        setImageOutputs(outputs)
+    }
+    const onImageOutputSelected = (value: string) => {
+        setImageURL(value)
+
     }
     const handleClickNext = () => {
-        const isAdvanced = searchParams.get('view') === 'advanced'
-        router.push(`/add-text/?imgurl=${imageOutput?.mediaUrl}${isAdvanced ? '&view=advanced' : ''}`)
+        const imgurl = imageURL || imageOutputs?.[0].mediaUrl
+        if (imgurl) {
+            const isAdvanced = searchParams.get('view') === 'advanced'
+            router.push(`/add-text/?imgurl=${imgurl}${isAdvanced ? '&view=advanced' : ''}`)
+        }
     }
     return (
         <>
@@ -35,13 +44,22 @@ export default function Page() {
                     {sdProvider && <Txt2ImgComponent
                         sdProvider={sdProvider}
                         isAdvancedView={searchParams.get('view') === 'advanced'}
-                        onImageGenerated={onImageGenerated}
+                        onImagesGenerated={onImagesGenerated}
                     />}
-                    {imageOutput && <>
+                    {imageOutputs && <>
                         <Spacer y={4} />
-                        <GImage src={imageOutput.mediaUrl} alt={imageOutput.mediaUrl} />
+                        <RadioGroup
+                            label="Select an image"
+                            color="secondary"
+                            defaultValue={imageOutputs[0].mediaUrl}
+                            onValueChange={onImageOutputSelected}
+                        >
+                            {imageOutputs.map((item) => (
+                                <Radio value={item.mediaUrl}><GImage src={item.mediaUrl} alt={item.mediaUrl} /> </Radio>
+                            ))}
+                        </RadioGroup>
                         <Spacer y={4} />
-                        <Button color="primary" onPress={handleClickNext}>Next</Button>
+                        <Button color='primary' onPress={handleClickNext}>Next</Button>
                     </>}
                 </div>
             </section>

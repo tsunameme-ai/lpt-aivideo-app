@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
 interface RemoteImageProps {
-    hidden: boolean
     src: string
     alt?: string
     onError?: (error: any) => void
@@ -10,8 +9,6 @@ interface RemoteImageProps {
 }
 
 const RemoteImage: React.FC<RemoteImageProps> = (props: RemoteImageProps) => {
-    const [imageFileUrl, setImageFileUrl] = useState<string | undefined>(undefined)
-
     useEffect(() => {
         downloadImage()
             .catch()
@@ -33,9 +30,6 @@ const RemoteImage: React.FC<RemoteImageProps> = (props: RemoteImageProps) => {
 
             const blob = await res.blob();
             const fileUrl = URL.createObjectURL(blob)
-            console.log('???? generate file url')
-            console.log(fileUrl)
-            setImageFileUrl(fileUrl);
             if (props.onComplete) {
                 props.onComplete(fileUrl)
             }
@@ -52,13 +46,6 @@ const RemoteImage: React.FC<RemoteImageProps> = (props: RemoteImageProps) => {
             }
         }
     }
-    return (
-        <>
-            {!props.hidden && imageFileUrl && <img alt={props.alt} src={imageFileUrl} />}
-        </>
-        // <>
-        //     {imageFileUrl && <img alt={props.alt} src={imageFileUrl} />}
-        // </>
-    )
+    return (<></>)
 }
 export default RemoteImage

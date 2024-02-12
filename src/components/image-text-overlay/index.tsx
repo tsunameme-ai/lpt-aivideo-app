@@ -61,8 +61,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
 
     return (
         <div>
-            {/* Render the canvas element here */}
-            <RemoteImage hidden={true} src={imageUrl} onComplete={onImageLoad} />
+            <RemoteImage src={imageUrl} onComplete={onImageLoad} />
             {image && (
                 <canvas ref={(ref) => setCanvas(ref)} width={image?.width || 0} height={image?.height || 0} />
             )}
