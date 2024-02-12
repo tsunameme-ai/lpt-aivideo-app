@@ -2,7 +2,6 @@ import { GenerationOutput, GenerationRequest, GenerationType } from "@/libs/type
 import { Button, Spacer, Input } from "@nextui-org/react"
 import { useState } from "react"
 import ErrorComponent from "../error"
-import GImage from "../gimage"
 import styles from "@/styles/home.module.css"
 import LongrunIndicator from "../longrun-indicator"
 
