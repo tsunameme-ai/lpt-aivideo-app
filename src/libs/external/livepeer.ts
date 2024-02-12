@@ -88,7 +88,7 @@ export class LivepeerAPI {
     private async parseResponse(res: Response): Promise<Array<GenerationOutput>> {
         if (res.ok) {
             const data = await res.json()
-            return data.images.map(item => {
+            return data.images.map((item: { url: string, seed?: number }) => {
                 return {
                     id: 'sync',
                     status: 'success',

@@ -30,7 +30,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [numOutput, setNumOutput] = useState<string>('1')
     const [width, setWidth] = useState<string>('768')
     const [height, setHeight] = useState<string>('512')
-    const [generationOutputs, setGenerationOutputs] = useState<GenerationOutput | undefined>(undefined)
 
     const handlePPromptValueChange = (value: string) => {
         setPPromptValue(value)
@@ -50,7 +49,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const generateImage = async () => {
         setErrorMessage('')
         setIsLoading(false)
-        setGenerationOutputs(undefined)
 
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
@@ -82,7 +80,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         try {
             const outputs = await txt2img(params)
             if (outputs.length > 0) {
-                setGenerationOutputs(outputs)
                 props.onImagesGenerated(outputs)
             }
         }

@@ -13,7 +13,7 @@ export default function Page() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [sdProvider, setSdProvider] = useState<SDProvider>()
-    const [imageOutputs, setImageOutputs] = useState<GenerationOutput>()
+    const [imageOutputs, setImageOutputs] = useState<Array<GenerationOutput>>()
     const [imageURL, setImageURL] = useState<string>()
     useEffect(() => {
         const sdProvider = getSDProvider()
@@ -25,8 +25,8 @@ export default function Page() {
     }
     const onImageOutputSelected = (value: string) => {
         setImageURL(value)
-
     }
+
     const handleClickNext = () => {
         const imgurl = imageURL || imageOutputs?.[0].mediaUrl
         if (imgurl) {
