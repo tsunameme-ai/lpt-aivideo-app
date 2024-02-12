@@ -28,6 +28,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
             props.onVideoGenerated(output)
         }
     }
+
     const onError = (e: Error) => {
         setErrorMessage(e.message)
         setIsGeneratingVideo(false)
@@ -108,8 +109,8 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                         />}
                 </div>
                 <ErrorComponent errorMessage={errorMessage} />
-
             </section>
+
         </>
     );
 };

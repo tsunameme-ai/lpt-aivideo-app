@@ -1,6 +1,6 @@
 .centerSection {
     color: #f1faee;
-    text-align: center;
+    text-align: left;
     min-width: 200px;
     max-width: 800px;
     min-height: 100px;
@@ -16,6 +16,36 @@
     width: 88%;
     padding: 100px 0;
 }
+
+.textPrompt {
+    width: 100%;
+}
+
+.renderBtn {
+    width: 30%;
+    float: left;
+    vertical-align: middle;
+    text-align: left;
+    margin-top: 8px;
+}
+
+.modelSelect {
+    width: 60%;
+    float: right;
+    text-align: right;
+}
+
+.promptControls {
+    width: 100%;
+    height: 56px;
+}
+
+.centerCanvas {
+    text-align: center;
+    min-height: 100px;
+    width: 100%;
+}
+
 
 .red {
     color: #e63946

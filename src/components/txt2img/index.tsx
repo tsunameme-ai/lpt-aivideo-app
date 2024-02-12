@@ -3,6 +3,7 @@ import { useState } from "react";
 import ErrorComponent from "../error";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Divider } from '@nextui-org/react'
 import { txt2img } from "@/actions/stable-diffusion";
+import styles from "@/styles/home.module.css";
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
@@ -102,12 +103,12 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             <Textarea
                 label=''
                 placeholder='Try something like "a cat drinks water on the beach"'
-                className='max-w'
+                className={styles.textPrompt}
                 value={pPromptValue}
                 errorMessage={pPromptErrorMessage}
                 onValueChange={handlePPromptValueChange}
             />
-            <Spacer y={4} />
+            <Spacer y={1} />
             <div hidden={!props.isAdvancedView}>
                 <Textarea
                     label='Negative Prompt'
@@ -216,14 +217,27 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 </>}
                 <Spacer y={4} />
             </div>
-
-            <Button
-                color='primary' variant='solid'
-                onPress={generateImage}
-                isLoading={isLoading}
-            >
-                Generate Image
-            </Button>
+            <div className={styles.promptControls}>
+                <div className={styles.modelSelect}>
+                    <Select
+                        defaultSelectedKeys={[baseModel]}
+                        onSelectionChange={handleSetBaseModel}
+                        label="Use a model"
+                        errorMessage={baseModel === undefined ? `Must select base model` : ''}
+                    >
+                        {props.sdProvider.models.map((model) => (
+                            <SelectItem key={model.value} value={model.value}>
+                                {model.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                </div >
+                <div className={styles.renderBtn}>
+                    <Button color='secondary' variant='solid' size="md" onPress={generateImage} isLoading={isLoading}>
+                        Generate
+                    </Button >
+                </div>
+            </div>
             <ErrorComponent errorMessage={errorMessage} />
             <Modal isOpen={generationOutput?.status === 'processing'} isDismissable={false}>
                 <ModalContent>

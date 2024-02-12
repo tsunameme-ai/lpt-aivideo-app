@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import RemoteImage from "../remote-image";
 import ErrorComponent from "../error";
+import styles from "@/styles/home.module.css";
 
 interface ImageWithTextOverlayProps {
     imageUrl: string;
@@ -41,7 +42,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
 
 
                     // Add your text drawing logic here
-                    ctx.font = "20px Arial"
+                    ctx.font = "30px Arial"
                     ctx.fillStyle = "black"
                     ctx.textAlign = "center"
                     ctx.textBaseline = "bottom"
@@ -60,11 +61,11 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
     }, [image, canvas, text]);
 
     return (
-        <div>
+        <div >
             {/* Render the canvas element here */}
             <RemoteImage hidden={true} src={imageUrl} onComplete={onImageLoad} />
             {image && (
-                <canvas ref={(ref) => setCanvas(ref)} width={image?.width || 0} height={image?.height || 0} />
+                <canvas className={styles.centerCanvas} ref={(ref) => setCanvas(ref)} width={image?.width || 0} height={image?.height || 0} />
             )}
             <ErrorComponent errorMessage={errorMessage} />
         </div>

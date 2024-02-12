@@ -24,9 +24,8 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
     }
 
     return (<>
-        <small>{props.src}</small>
         <Textarea
-            label='Cover Text'
+            label='Try something sassy'
             placeholder=''
             value={text}
             onValueChange={setText}

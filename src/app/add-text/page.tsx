@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button, Spacer } from "@nextui-org/react"
 import TextOverlay from "@/components/text-overlay"
-
+import styles from '@/styles/home.module.css'
 
 export default function Page() {
     const router = useRouter()
@@ -34,13 +34,17 @@ export default function Page() {
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
-                {imageUrl && <>
-                    <TextOverlay
-                        src={imageUrl}
-                        onChange={onTextOverlayChange} />
-                    <Spacer y={4} />
-                    <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
-                </>}
+                <div className={styles.centerSection}>
+                    <div>Step 2: Add your copy</div>
+                    <Spacer y={2}></Spacer>
+                    {imageUrl && <>
+                        <TextOverlay
+                            src={imageUrl}
+                            onChange={onTextOverlayChange} />
+                        <Spacer y={4} />
+                        <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
+                    </>}
+                </div>
             </section>
         </>
     )
