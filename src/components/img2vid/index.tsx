@@ -24,9 +24,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     const onVideoGenerated = (outputs: Array<GenerationOutput>) => {
         setIsGeneratingVideo(false)
         setErrorMessage('')
-        if (props.onVideoGenerated) {
-            props.onVideoGenerated(outputs)
-        }
+        props.onVideoGenerated?.(outputs)
     }
     const onError = (e: Error) => {
         setErrorMessage(e.message)
