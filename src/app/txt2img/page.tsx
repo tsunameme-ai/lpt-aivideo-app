@@ -55,7 +55,7 @@ export default function Page() {
                             onValueChange={onImageOutputSelected}
                         >
                             {imageOutputs.map((item) => (
-                                <Radio value={item.mediaUrl}><GImage src={item.mediaUrl} alt={item.mediaUrl} /> </Radio>
+                                <Radio key={item.mediaUrl} value={item.mediaUrl}><GImage src={item.mediaUrl} alt={item.mediaUrl} /> </Radio>
                             ))}
                         </RadioGroup>
                         <Spacer y={4} />

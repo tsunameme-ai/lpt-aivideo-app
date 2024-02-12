@@ -50,7 +50,7 @@ export async function GET(req: Request | NextRequest) {
     }
     console.log(id)
     const pendingRqs = await GenerationManager.getInstance().fetchPendingRequests()
-    console.log(`api/stream/route ${pendingRqs.size} ${pendingRqs.keys()}`)
+    console.log(`api/stream/route ${pendingRqs.size}`)
     const generationRequest = pendingRqs.get(id)
     if (!generationRequest) {
         return new Response(JSON.stringify({ error: `Request ${id} doesn't exist` }), { status: 400, headers: { 'Content-Type': 'application/json' } })

@@ -28,9 +28,9 @@ export default function Page() {
     }, [])
 
 
-    const onVideoGenerated = async (output: GenerationOutput) => {
-        if (output) {
-            setVideoOutput(output)
+    const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
+        if (outputs.length > 0) {
+            setVideoOutput(outputs[0])
         }
     }
     return (

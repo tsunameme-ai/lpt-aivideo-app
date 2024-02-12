@@ -10,7 +10,7 @@ interface Img2VidComponentProps {
     isAdvancedView: boolean
     imageUrl: string
     onError?: (error: any) => void
-    onVideoGenerated?: (videoOutput: GenerationOutput) => void
+    onVideoGenerated?: (videoOutputs: Array<GenerationOutput>) => void
 }
 
 const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidComponentProps) => {
@@ -21,11 +21,11 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
 
-    const onVideoGenerated = (output: GenerationOutput) => {
+    const onVideoGenerated = (outputs: Array<GenerationOutput>) => {
         setIsGeneratingVideo(false)
         setErrorMessage('')
         if (props.onVideoGenerated) {
-            props.onVideoGenerated(output)
+            props.onVideoGenerated(outputs)
         }
     }
     const onError = (e: Error) => {
@@ -35,6 +35,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
 
     const handleGenerateVideoClick = async () => {
         setIsGeneratingVideo(true)
+        setErrorMessage('')
         try {
             const response = await fetch('/api/generate', {
                 method: 'POST',
