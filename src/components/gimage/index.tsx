@@ -5,6 +5,8 @@ import ErrorComponent from "../error"
 interface GImageProps {
     src: string
     alt?: string
+    onError?: (error: any) => void
+    onComplete?: (output: Blob) => void
 }
 
 const GImage: React.FC<GImageProps> = (props: GImageProps) => {
@@ -14,7 +16,7 @@ const GImage: React.FC<GImageProps> = (props: GImageProps) => {
 
     useEffect(() => {
         downloadImage()
-            .catch(console.error)
+            .catch()
     }, [props.src])
 
     const downloadImage = async () => {
@@ -22,7 +24,6 @@ const GImage: React.FC<GImageProps> = (props: GImageProps) => {
         try {
             const res = await fetch('/api/image', {
                 method: 'POST',
-                cache: 'no-cache',
                 body: JSON.stringify({ url: props.src }),
             });
 
@@ -34,10 +35,12 @@ const GImage: React.FC<GImageProps> = (props: GImageProps) => {
             const fileUrl = URL.createObjectURL(blob);
             setImageFileUrl(fileUrl);
             setErrorMessage('');
+            props.onComplete?.(blob)
 
         } catch (error: any) {
             console.error(error);
             setErrorMessage(error.message);
+            props.onError?.(error)
         }
         finally {
             setIsFetching(false)

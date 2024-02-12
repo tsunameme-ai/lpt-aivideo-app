@@ -49,7 +49,7 @@ export class LivepeerAPI {
         }, 600000)
     }
 
-    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 30000): Promise<GenerationOutput> {
+    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<GenerationOutput> {
         const t = new Date().getTime()
         let resError = null
         let resOutput = null
@@ -60,12 +60,14 @@ export class LivepeerAPI {
 
         try {
             const res = await fetch(url, { ...init, signal: controller.signal })
+            console.log(res)
             clearTimeout(timeoutId)
             // const res = await fetch(url, init)
             status = res.status
             resOutput = await this.parseResponse(res)
         }
         catch (e: any) {
+            console.log(e)
             resError = e
             status = e.status || 'ERROR'
         }

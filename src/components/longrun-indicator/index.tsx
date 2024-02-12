@@ -18,18 +18,14 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
         eventSource.onerror = () => {
             eventSource.close()
             setConnectStatus('🔴')
-            if (props.onError) {
-                props.onError(new Error('Error occured while fething generation result'))
-            }
+            props.onError?.(new Error('Error occured while fething generation result'))
         }
         eventSource.onmessage = (ev: MessageEvent) => {
             const data = JSON.parse(ev.data)
             if (data.complete === true) {
                 eventSource.close()
                 setConnectStatus('✅')
-                if (props.onComplete) {
-                    props.onComplete(data.data)
-                }
+                props.onComplete?.(data.data)
             }
             else {
                 setConnectStatus(`🟢 ${data.data}`)
