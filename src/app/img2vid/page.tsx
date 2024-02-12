@@ -5,18 +5,25 @@ import Img2VidComponent from "@/components/img2vid"
 import { useSearchParams } from 'next/navigation'
 import { Spacer } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
+import ImageWithTextOverlay from "@/components/image-text-overlay"
+import React from "react"
 
 
 export default function Page() {
     const searchParams = useSearchParams()
 
     const [imageUrl, setImageUrl] = useState<string>()
+    const [coverText, setCoverText] = useState<string>()
     const [videoOutput, setVideoOutput] = useState<GenerationOutput | null>(null)
 
     useEffect(() => {
         const imgurl = searchParams.get('imgurl')
         if (imgurl) {
             setImageUrl(imgurl)
+        }
+        const cover = searchParams.get('cover')
+        if (cover) {
+            setCoverText(cover)
         }
     }, [])
 
@@ -30,8 +37,11 @@ export default function Page() {
         <>
             {imageUrl && <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <h4>Step 2: Make it into a video</h4>
-                    <Spacer y={3} />
+                    <h3>Step 2: Make it into a video</h3>
+                    <Spacer y={4} />
+                    <ImageWithTextOverlay
+                        imageUrl={imageUrl}
+                        text={coverText || ''} />
                     <Img2VidComponent
                         isAdvancedView={searchParams.get('view') === 'advanced'}
                         imageUrl={imageUrl}

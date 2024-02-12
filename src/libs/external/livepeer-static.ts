@@ -7,7 +7,7 @@ export class LivepeerStaticAPI {
         return {
             id: 'static',
             status: 'success',
-            mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/9b5b84ca/ddb52e75.png'
+            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/2-35da8614-aadf-4e43-bf1f-e7c0daca0fb7.png'
         }
     }
 

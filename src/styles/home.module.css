@@ -40,6 +40,13 @@
     height: 56px;
 }
 
+.centerCanvas {
+    text-align: center;
+    min-height: 100px;
+    width: 100%;
+}
+
+
 .red {
     color: #e63946
 }
