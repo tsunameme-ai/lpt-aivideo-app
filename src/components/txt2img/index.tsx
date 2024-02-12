@@ -233,11 +233,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                     </Select>
                 </div >
                 <div className={styles.renderBtn}>
-                    <Button
-                        color='secondary' variant='solid'
-                        onPress={generateImage}
-                        isLoading={isLoading}
-                    >
+                    <Button color='secondary' variant='solid' size="md" onPress={generateImage} isLoading={isLoading}>
                         Generate
                     </Button >
                 </div>
