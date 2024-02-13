@@ -92,10 +92,10 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
 
                     <Spacer y={1}></Spacer>
 
-                    <p className="text-base">
-                        Video generation will take a few minutes. Please do not leave the app.
-                    </p>
-                    <Spacer y={2}></Spacer>
+                    <div>
+                        The video generation will take a few minutes. Please do not leave the app.
+                    </div>
+                    <Spacer y={4}></Spacer>
                     <Button
                         className="w-full"
                         color="primary"

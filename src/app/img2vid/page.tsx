@@ -35,8 +35,8 @@ export default function Page() {
     }
     return (
         <>
-            {imageUrl && <section className='flex flex-col items-center justify-center'>
-                <div className={styles.centerSection}>
+            <section className='flex flex-col items-center justify-center'>
+                {imageUrl && <div className={styles.centerSection}>
                     <div>Step 3: Turn it into a video</div>
                     <Spacer y={4} />
                     <ImageWithTextOverlay
@@ -47,14 +47,15 @@ export default function Page() {
                         imageUrl={imageUrl}
                         onVideoGenerated={onVideoGenerated} />
                 </div>
-            </section>}
-            {videoOutput && <>
-                <Spacer y={4} />
-                <div className="flex justify-center items-center" >
-                    <video loop controls autoPlay src={videoOutput.mediaUrl} />
-                </div>
-                <Spacer y={4} />
-            </>}
+                }
+                {videoOutput && <>
+                    <Spacer y={4} />
+                    <div className="flex justify-center items-center" >
+                        <video loop controls autoPlay src={videoOutput.mediaUrl} />
+                    </div>
+                    <Spacer y={4} />
+                </>}
+            </section>
         </>
     )
 }
