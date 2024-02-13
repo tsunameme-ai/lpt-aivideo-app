@@ -17,9 +17,9 @@ export default function Page({ params }: { params: { vid: string, asset: string 
 
     const [generationOutput, setGenerationOutput] = useState<GenerationOutput | null>(null)
 
-    const onVideoGenerated = async (output: GenerationOutput) => {
-        if (output) {
-            router.push(`/video/${output.id}?media=${output.mediaUrl}`)
+    const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
+        if (outputs.length > 0) {
+            router.push(`/video/${outputs[0].id}?media=${outputs[0].mediaUrl}`)
         }
     }
     const previewRender = (): any => {

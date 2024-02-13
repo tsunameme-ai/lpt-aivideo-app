@@ -1,34 +1,34 @@
 'use client'
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Button, Spacer } from "@nextui-org/react"
 import TextOverlay from "@/components/text-overlay"
+import { useGenerationContext } from "@/context/generation-context"
+import ErrorComponent from "@/components/error"
+import Link from "next/link"
 
 
 export default function Page() {
     const router = useRouter()
-    const searchParams = useSearchParams()
+    const gContext = useGenerationContext()
     const [imageUrl, setImageUrl] = useState<string>()
-    const [coverText, setCoverText] = useState<string>('')
+    const [coverImageDataURL, setCoverImageDataURL] = useState<string | undefined>(gContext.coverImageDataURL)
     useEffect(() => {
-        const imgurl = searchParams.get('imgurl')
-        if (imgurl) {
-            setImageUrl(imgurl)
+        const output = gContext.t2iOutputs[gContext.t2iOutputSelectedIndex]
+        if (output) {
+            setImageUrl(output.mediaUrl)
         }
     }, [])
 
     const handleClickToVideo = () => {
-        const segs = [
-            `imgurl=${imageUrl}`,
-            `cover=${encodeURI(coverText)}`
-        ]
-        if (searchParams.get('view') === 'advanced') {
-            segs.push('view=advanced')
-        }
-        router.push(`/img2vid/?${segs.join('&')}`)
+        gContext.setCoverImageDataURL(coverImageDataURL)
+        console.log('?????handleClickToVideo')
+        console.log(coverImageDataURL)
+        router.push('img2vid')
     }
-    const onTextOverlayChange = (text: string) => {
-        setCoverText(text)
+
+    const onTextOverlayChange = (imgDataURL: string) => {
+        setCoverImageDataURL(imgDataURL)
     }
 
     return (
@@ -40,6 +40,10 @@ export default function Page() {
                         onChange={onTextOverlayChange} />
                     <Spacer y={4} />
                     <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
+                </>}
+                {!imageUrl && <>
+                    <ErrorComponent errorMessage="No image" />
+                    <Link href={'/txt2img'}>Generate Image</Link>
                 </>}
             </section>
         </>

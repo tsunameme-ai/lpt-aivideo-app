@@ -1,14 +1,14 @@
 import { Txt2imgInput, GenerationOutput, SDProvider } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
+import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
 import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
     isAdvancedView: boolean
-    onImageGenerated: (generationOutput: GenerationOutput) => void
+    onImagesGenerated: (generationOutput: Array<GenerationOutput>) => void
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
@@ -26,9 +26,10 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [stepErrorMessage, setStepErrorMessage] = useState<string>('')
     const [scheduler, setScheduler] = useState<string | undefined>(undefined)
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
-    const [width, setWidth] = useState<string>((gContext.t2iInput?.width || 768).toString())
-    const [height, setHeight] = useState<string>((gContext.t2iInput?.height || 512).toString())
-    const [generationOutput, setGenerationOutput] = useState<GenerationOutput | undefined>(undefined)
+    const [clipSkip, setClipSkip] = useState<string>('1')
+    const [numOutput, setNumOutput] = useState<string>('1')
+    const [width, setWidth] = useState<string>('768')
+    const [height, setHeight] = useState<string>('512')
 
     const handlePPromptValueChange = (value: string) => {
         setPPromptValue(value)
@@ -46,7 +47,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const generateImage = async () => {
         setErrorMessage('')
         setIsLoading(false)
-        setGenerationOutput(undefined)
 
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
@@ -69,15 +69,16 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             guidanceScale: parseFloat(guidanceScale),
             scheduler: scheduler,
             width: parseInt(width),
-            height: parseInt(height)
+            height: parseInt(height),
+            numOutput: parseInt(numOutput)
         }
         gContext.setT2iInput(params)
         setIsLoading(true)
         try {
-            const output = await txt2img(params)
-            setGenerationOutput(output)
-            if (output?.status === 'success') {
-                props.onImageGenerated(output)
+            const outputs = await txt2img(params)
+            if (outputs.length > 0) {
+                gContext.setT2iOutputs(outputs)
+                props.onImagesGenerated(outputs)
             }
         }
         catch (error: any) {
@@ -86,10 +87,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         finally {
             setIsLoading(false)
         }
-    }
-
-    const handleGotoAsset = async () => {
-        props.onImageGenerated(generationOutput!)
     }
 
 
@@ -176,6 +173,16 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         description='1 - 20'
                         value={guidanceScale}
                         onValueChange={setGuidanceScale} />
+
+                    <Input
+                        label='Clip Skip'
+                        description='1 - 8'
+                        value={clipSkip}
+                        onValueChange={setClipSkip} />
+                    <Input
+                        label='Num of Images'
+                        value={numOutput}
+                        onValueChange={setNumOutput} />
                 </div>
                 <Spacer y={4} />
             </div>
@@ -188,19 +195,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 Generate Image
             </Button>
             <ErrorComponent errorMessage={errorMessage} />
-            <Modal isOpen={generationOutput?.status === 'processing'} isDismissable={false}>
-                <ModalContent>
-                    <ModalHeader>Cooking</ModalHeader>
-                    <ModalBody>
-                        Your creation is in the works!
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onPress={handleGotoAsset}>
-                            Check it out
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
         </>
 
     )

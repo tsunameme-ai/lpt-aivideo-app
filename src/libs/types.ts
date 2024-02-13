@@ -19,9 +19,10 @@ export type Txt2imgInput = {
     seed?: string
     guidanceScale?: number
     width: number,
-    height: number
+    height: number,
+    numOutput: number,
 
-    steps?: number,
+    steps?: number
     scheduler?: string
 }
 export type GenerationOutput = {
