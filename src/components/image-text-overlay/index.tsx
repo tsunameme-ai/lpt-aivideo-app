@@ -30,6 +30,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         if (image && canvas) {
             const ctx = canvas.getContext("2d");
             if (ctx) {
+                ctx.font = "35px Arial"
                 ctx.drawImage(image, 0, 0)
 
                 const lines = text.split('\n')
@@ -42,7 +43,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
 
 
                     // Add your text drawing logic here
-                    ctx.font = "30px Arial"
+
                     ctx.fillStyle = "black"
                     ctx.textAlign = "center"
                     ctx.textBaseline = "bottom"
