@@ -8,12 +8,15 @@ import ErrorComponent from "@/components/error"
 import Link from "next/link"
 import { LocalImageData } from "@/libs/types"
 
+import styles from '@/styles/home.module.css'
 
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const [imageUrl, setImageUrl] = useState<string>()
     const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(gContext.coverImageData)
+    const [coverText, setCoverText] = useState<string>(gContext.coverText)
+
     useEffect(() => {
         const output = gContext.t2iOutputs[gContext.t2iOutputSelectedIndex]
         if (output) {
@@ -22,11 +25,13 @@ export default function Page() {
     }, [])
 
     const handleClickToVideo = () => {
+        gContext.setCoverText(coverText)
         gContext.setCoverImageData(coverImageData)
         router.push('img2vid')
     }
 
-    const onTextOverlayChange = (imgDataUrl: string, width: number, height: number) => {
+    const onTextOverlayChange = (text: string, imgDataUrl: string, width: number, height: number) => {
+        setCoverText(text)
         setCoverImageData({
             remoteURL: imageUrl!,
             dataURL: imgDataUrl,
@@ -34,21 +39,42 @@ export default function Page() {
             height
         })
     }
+    const handleClickDownload = () => {
+        if (coverImageData) {
+            const link = document.createElement("a");
+            link.href = coverImageData.dataURL;
+            link.download = "image.png";
+            link.click();
+        }
+    }
 
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
-                {imageUrl && <>
-                    <TextOverlay
-                        src={imageUrl}
-                        onImageData={onTextOverlayChange} />
-                    <Spacer y={4} />
-                    <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
-                </>}
-                {!imageUrl && <>
-                    <ErrorComponent errorMessage="No image" />
-                    <Link href={'/txt2img'}>Generate Image</Link>
-                </>}
+                <div className={styles.centerSection}>
+                    <div>Step 2: Add your copy</div>
+                    <Spacer y={2}></Spacer>
+                    {imageUrl && <>
+                        <TextOverlay
+                            src={imageUrl}
+                            text={coverText}
+                            onImageData={onTextOverlayChange} />
+                        <Spacer y={2} />
+                        <div className="promptControls">
+                            <div className={styles.downloadImageBtn}>
+                                <Button color='primary' onPress={handleClickDownload}>Download Image</Button>
+                            </div>
+                            <div className={styles.makeVideoBtn}>
+                                <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
+                            </div>
+                        </div>
+                    </>}
+
+                    {!imageUrl && <>
+                        <ErrorComponent errorMessage="No image" />
+                        <Link href={'/txt2img'}>Generate Image</Link>
+                    </>}
+                </div>
             </section>
         </>
     )

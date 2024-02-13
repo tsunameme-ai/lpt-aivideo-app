@@ -4,6 +4,7 @@ import ErrorComponent from "../error";
 import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
 import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
+import styles from "@/styles/home.module.css";
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
@@ -51,6 +52,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         //Clear context for future steps
         gContext.setT2iOutputSelectedIndex(0)
         gContext.setCoverImageData(undefined)
+        gContext.setCoverText('')
         gContext.setT2iInput(undefined)
         gContext.setT2iOutputs([])
 
@@ -101,12 +103,12 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             <Textarea
                 label=''
                 placeholder='Try something like "a cat drinks water on the beach"'
-                className='max-w'
+                className={styles.textPrompt}
                 value={pPromptValue}
                 errorMessage={pPromptErrorMessage}
                 onValueChange={handlePPromptValueChange}
             />
-            <Spacer y={4} />
+            <Spacer y={1} />
             <div hidden={!props.isAdvancedView}>
                 <Textarea
                     label='Negative Prompt'
@@ -128,21 +130,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         value={height}
                         onValueChange={setHeight}
                     />
-
-
-
-                    <Select
-                        defaultSelectedKeys={[baseModel]}
-                        onSelectionChange={handleSetBaseModel}
-                        label="Base Model"
-                        errorMessage={baseModel === undefined ? `Must select base model` : ''}
-                    >
-                        {props.sdProvider.models.map((model) => (
-                            <SelectItem key={model.value} value={model.value}>
-                                {model.label}
-                            </SelectItem>
-                        ))}
-                    </Select>
 
                     {props.sdProvider.schedulers &&
                         <Select
@@ -192,14 +179,27 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 </div>
                 <Spacer y={4} />
             </div>
-
-            <Button
-                color='primary' variant='solid'
-                onPress={generateImage}
-                isLoading={isLoading}
-            >
-                Generate Image
-            </Button>
+            <div className={styles.promptControls}>
+                <div className={styles.modelSelect}>
+                    <Select
+                        defaultSelectedKeys={[baseModel]}
+                        onSelectionChange={handleSetBaseModel}
+                        label="Use a model"
+                        errorMessage={baseModel === undefined ? `Must select base model` : ''}
+                    >
+                        {props.sdProvider.models.map((model) => (
+                            <SelectItem key={model.value} value={model.value}>
+                                {model.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                </div >
+                <div className={styles.renderBtn}>
+                    <Button color='secondary' variant='solid' size="md" onPress={generateImage} isLoading={isLoading}>
+                        Generate
+                    </Button >
+                </div>
+            </div>
             <ErrorComponent errorMessage={errorMessage} />
         </>
 

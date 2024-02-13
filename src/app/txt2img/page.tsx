@@ -38,16 +38,15 @@ export default function Page() {
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-
-                    <h3>Step 1: Describe the cover of your ecard</h3>
-
+                    <div>Step 1: Write prompt </div>
                     <AdvancedIndicator />
-                    <Spacer y={4} />
+                    <Spacer y={2} />
                     {sdProvider && <Txt2ImgComponent
                         sdProvider={sdProvider}
                         isAdvancedView={gContext.isAdvancedView}
                         onImagesGenerated={onImagesGenerated}
                     />}
+
                     {imageOutputs.length > 0 && <>
                         <Spacer y={4} />
                         <RadioGroup
@@ -61,7 +60,7 @@ export default function Page() {
                             ))}
                         </RadioGroup>
                         <Spacer y={4} />
-                        <Button color='primary' onPress={handleClickNext}>Next</Button>
+                        <Button className="w-full" color="primary" onPress={handleClickNext}>Next step</Button>
                     </>}
                 </div>
             </section>

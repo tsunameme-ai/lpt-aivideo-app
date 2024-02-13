@@ -21,13 +21,13 @@ export default function Page() {
     }
     return (
         <>
-            <AdvancedIndicator />
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <h3>Step 2: Make it into a video</h3>
+                    <div>Step 3: Turn it into a video</div>
                     <Spacer y={4} />
                     {gContext.coverImageData && <>
                         <Image src={gContext.coverImageData.dataURL} />
+                        <AdvancedIndicator />
                         <Img2VidComponent
                             isAdvancedView={gContext.isAdvancedView}
                             width={gContext.coverImageData.width}

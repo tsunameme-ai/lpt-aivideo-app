@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
 import RemoteImage from "../remote-image";
 import ErrorComponent from "../error";
+import styles from "@/styles/home.module.css";
 
 interface ImageWithTextOverlayProps {
     imageUrl: string;
     text: string;
-    onImageData?: (url: string, width: number, height: number) => void
+    onImageData?: (text: string, url: string, width: number, height: number) => void
 }
 
 const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, text, onImageData }) => {
@@ -29,6 +30,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         if (image && canvas) {
             const ctx = canvas.getContext("2d");
             if (ctx) {
+                ctx.font = "35px Arial"
                 ctx.drawImage(image, 0, 0)
 
                 const lines = text.split('\n')
@@ -41,7 +43,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
 
 
                     // Add your text drawing logic here
-                    ctx.font = "20px Arial"
+
                     ctx.fillStyle = "black"
                     ctx.textAlign = "center"
                     ctx.textBaseline = "bottom"
@@ -54,7 +56,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
                 }
                 if (onImageData) {
                     const dataURL = canvas.toDataURL("image/png");
-                    onImageData?.(dataURL, image.width, image.height)
+                    onImageData?.(text, dataURL, image.width, image.height)
                 }
             }
         }
@@ -64,7 +66,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         <div>
             <RemoteImage src={imageUrl} onComplete={onImageLoad} />
             {image && (
-                <canvas ref={(ref) => setCanvas(ref)} width={image?.width || 0} height={image?.height || 0} />
+                <canvas className={styles.centerCanvas} ref={(ref) => setCanvas(ref)} width={image?.width || 0} height={image?.height || 0} />
             )}
             <ErrorComponent errorMessage={errorMessage} />
         </div>

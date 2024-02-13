@@ -40,6 +40,8 @@ export class LivepeerAPI {
         const fd = new FormData()
         fd.append('image', imageFile)
         fd.append('model_id', 'stabilityai/stable-video-diffusion-img2vid-xt')
+        fd.append('width', params.width)
+        fd.append('height', params.height)
         fd.append('motion_bucket_id', params.motionButcketId.toString())
         fd.append('noise_aug_strength', params.noiseAugStrength.toString())
 

@@ -1,32 +1,25 @@
 
 
-import { Button, Spacer, Textarea } from "@nextui-org/react"
+import { Spacer, Textarea } from "@nextui-org/react"
 import { useState } from "react"
 import ImageWithTextOverlay from "../image-text-overlay"
 interface TextOverlayProps {
     src: string
-    onImageData: (imgDataURL: string, width: number, height: number) => void
+    text: string,
+    onImageData: (text: string, imgDataURL: string, width: number, height: number) => void
 }
 const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
-    const [text, setText] = useState<string>('')
+    const [text, setText] = useState<string>(props.text)
     const [imageDataURL, setImageDataURL] = useState<string>()
-    const handleClickDownload = () => {
-        if (imageDataURL) {
-            const link = document.createElement("a");
-            link.href = imageDataURL;
-            link.download = "image.png";
-            link.click();
-        }
-    }
-    const onImageData = (url: string, width: number, height: number) => {
+
+    const onImageData = (text: string, url: string, width: number, height: number) => {
         setImageDataURL(url)
-        props.onImageData?.(url, width, height)
+        props.onImageData?.(text, url, width, height)
     }
 
     return (<>
-        <small>{props.src}</small>
         <Textarea
-            label='Cover Text'
+            label='Try something sassy'
             placeholder=''
             value={text}
             onValueChange={setText}
@@ -39,7 +32,7 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
         {imageDataURL &&
             <>
                 <Spacer y={4} />
-                <Button color='primary' onPress={handleClickDownload}>Download Image</Button>
+
             </>}
     </>)
 }

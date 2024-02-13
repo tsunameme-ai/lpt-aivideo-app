@@ -6,9 +6,10 @@ export type Txt2vidInput = {
 }
 export type Img2vidInput = {
     imageUrl?: string,
-    seconds?: number,
     motionButcketId: number,
     noiseAugStrength: number,
+    width: number,
+    height: number,
     seed?: number | string,
     imageFile?: File
 }

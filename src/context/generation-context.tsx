@@ -13,6 +13,8 @@ interface GenerationContextType {
     // get t2iSelectedOutput(): GenerationOutput | undefined
     t2iOutputSelectedIndex: number
     setT2iOutputSelectedIndex: (value: number) => void
+    coverText: string,
+    setCoverText: (value: string) => void
     coverImageData: LocalImageData | undefined,
     setCoverImageData: (value: LocalImageData | undefined) => void
 }
@@ -24,6 +26,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [t2iInput, setT2iInput] = useState<Txt2imgInput | undefined>(undefined)
     const [t2iOutputs, setT2iOutputs] = useState<Array<GenerationOutput>>([])
     const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useState<number>(0)
+    const [coverText, setCoverText] = useState<string>('')
     const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(undefined)
 
     useEffect(() => {
@@ -48,6 +51,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 // get selectedOutput() {
                 //     return calculateSelectedOutput();
                 // },
+                coverText, setCoverText,
                 coverImageData, setCoverImageData,
             }}>
             {children}

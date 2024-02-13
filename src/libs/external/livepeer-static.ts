@@ -7,19 +7,19 @@ export class LivepeerStaticAPI {
         return [{
             id: 'static',
             status: 'success',
-            mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/d29f83fe/33761a91.png'
+            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
         }, {
             id: 'static',
             status: 'success',
-            mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/d29f83fe/19004b0a.png'
+            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/1-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
         }, {
             id: 'static',
             status: 'success',
-            mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/d29f83fe/90b6f235.png'
+            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/2-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
         }, {
             id: 'static',
             status: 'success',
-            mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/d29f83fe/61ab99bd.png'
+            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/3-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
         }]
     }
 
@@ -36,7 +36,7 @@ export class LivepeerStaticAPI {
         return [{
             id: 'static',
             status: 'success',
-            mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/56e47db3/da5d6de0.mp4'
+            mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/682fb4f9/962d54e5.mp4'
         }]
     }
 }
