@@ -52,7 +52,7 @@ const GImage: React.FC<GImageProps> = (props: GImageProps) => {
     return (
         <div >
 
-            {imageFileUrl && <Image width={200} height={100} alt={props.alt} src={imageFileUrl} />}
+            {imageFileUrl && <Image alt={props.alt} src={imageFileUrl} />}
             {isFetching && <Spinner />}
             {errorMessage.length > 0 && <>
                 <ErrorComponent errorMessage={errorMessage} />

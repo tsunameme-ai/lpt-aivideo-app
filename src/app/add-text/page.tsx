@@ -27,6 +27,15 @@ export default function Page() {
         }
         router.push(`/img2vid/?${segs.join('&')}`)
     }
+
+    const handleClickDownload = () => {
+        if (imageUrl) {
+            const link = document.createElement("a");
+            link.href = imageUrl;
+            link.download = "image.png";
+            link.click();
+        }
+    }
     const onTextOverlayChange = (text: string) => {
         setCoverText(text)
     }
@@ -41,8 +50,15 @@ export default function Page() {
                         <TextOverlay
                             src={imageUrl}
                             onChange={onTextOverlayChange} />
-                        <Spacer y={4} />
-                        <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
+                        <Spacer y={2} />
+                        <div className="promptControls">
+                            <div className={styles.downloadImageBtn}>
+                                <Button color='primary' onPress={handleClickDownload}>Download Image</Button>
+                            </div>
+                            <div className={styles.makeVideoBtn}>
+                                <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
+                            </div>
+                        </div>
                     </>}
                 </div>
             </section>
