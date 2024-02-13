@@ -1,5 +1,5 @@
 'use client'
-import { GenerationOutput, Txt2imgInput } from '@/libs/types';
+import { LocalImageData, GenerationOutput, Txt2imgInput } from '@/libs/types';
 import { createContext, useState, useEffect, useContext } from 'react';
 
 interface GenerationContextType {
@@ -9,11 +9,12 @@ interface GenerationContextType {
     t2iInput: Txt2imgInput | undefined
     setT2iInput: (value: Txt2imgInput | undefined) => void
     t2iOutputs: Array<GenerationOutput>
-    setTi2Outputs: (outputs: Array<GenerationOutput>) => void
+    setT2iOutputs: (outputs: Array<GenerationOutput>) => void
+    // get t2iSelectedOutput(): GenerationOutput | undefined
     t2iOutputSelectedIndex: number
     setT2iOutputSelectedIndex: (value: number) => void
-    coverImageDataURL: string | undefined,
-    setCoverImageDataURL: (value: string | undefined) => void
+    coverImageData: LocalImageData | undefined,
+    setCoverImageData: (value: LocalImageData | undefined) => void
 }
 
 const GenerationContext = createContext<GenerationContextType | undefined>(undefined);
@@ -23,7 +24,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [t2iInput, setT2iInput] = useState<Txt2imgInput | undefined>(undefined)
     const [t2iOutputs, setT2iOutputs] = useState<Array<GenerationOutput>>([])
     const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useState<number>(0)
-    const [coverImageDataURL, setCoverImageDataURL] = useState<string | undefined>(undefined)
+    const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(undefined)
 
     useEffect(() => {
         // Optional: Clear context on unmount (comment out if not needed)
@@ -32,6 +33,11 @@ export default function GenerationContextProvider({ children }: { children: Reac
             setT2iInput(undefined)
         };
     }, []);
+
+    // const calculateSelectedOutput = (): GenerationOutput | undefined => {
+    //     return t2iOutputs.length > t2iOutputSelectedIndex ? t2iOutputs[t2iOutputSelectedIndex] : undefined
+    // };
+
     return (
         <GenerationContext.Provider
             value={{
@@ -39,7 +45,10 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 t2iInput, setT2iInput,
                 t2iOutputs, setT2iOutputs,
                 t2iOutputSelectedIndex, setT2iOutputSelectedIndex,
-                coverImageDataURL, setCoverImageDataURL
+                // get selectedOutput() {
+                //     return calculateSelectedOutput();
+                // },
+                coverImageData, setCoverImageData,
             }}>
             {children}
         </GenerationContext.Provider>

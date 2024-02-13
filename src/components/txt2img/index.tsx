@@ -48,6 +48,12 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         setErrorMessage('')
         setIsLoading(false)
 
+        //Clear context for future steps
+        gContext.setT2iOutputSelectedIndex(0)
+        gContext.setCoverImageData(undefined)
+        gContext.setT2iInput(undefined)
+        gContext.setT2iOutputs([])
+
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
             setPPromptErrorMessage('Please set prompt message')

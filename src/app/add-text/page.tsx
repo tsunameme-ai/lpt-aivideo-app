@@ -6,13 +6,14 @@ import TextOverlay from "@/components/text-overlay"
 import { useGenerationContext } from "@/context/generation-context"
 import ErrorComponent from "@/components/error"
 import Link from "next/link"
+import { LocalImageData } from "@/libs/types"
 
 
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const [imageUrl, setImageUrl] = useState<string>()
-    const [coverImageDataURL, setCoverImageDataURL] = useState<string | undefined>(gContext.coverImageDataURL)
+    const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(gContext.coverImageData)
     useEffect(() => {
         const output = gContext.t2iOutputs[gContext.t2iOutputSelectedIndex]
         if (output) {
@@ -21,14 +22,17 @@ export default function Page() {
     }, [])
 
     const handleClickToVideo = () => {
-        gContext.setCoverImageDataURL(coverImageDataURL)
-        console.log('?????handleClickToVideo')
-        console.log(coverImageDataURL)
+        gContext.setCoverImageData(coverImageData)
         router.push('img2vid')
     }
 
-    const onTextOverlayChange = (imgDataURL: string) => {
-        setCoverImageDataURL(imgDataURL)
+    const onTextOverlayChange = (imgDataUrl: string, width: number, height: number) => {
+        setCoverImageData({
+            remoteURL: imageUrl!,
+            dataURL: imgDataUrl,
+            width,
+            height
+        })
     }
 
     return (
@@ -37,7 +41,7 @@ export default function Page() {
                 {imageUrl && <>
                     <TextOverlay
                         src={imageUrl}
-                        onChange={onTextOverlayChange} />
+                        onImageData={onTextOverlayChange} />
                     <Spacer y={4} />
                     <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
                 </>}

@@ -5,15 +5,15 @@ import ErrorComponent from "../error";
 interface ImageWithTextOverlayProps {
     imageUrl: string;
     text: string;
-    onDataURL?: (url: string) => void
+    onImageData?: (url: string, width: number, height: number) => void
 }
 
-const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, text, onDataURL }) => {
+const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, text, onImageData }) => {
     const [image, setImage] = useState<HTMLImageElement | null>(null);
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
     const [errorMessage, setErrorMessage] = useState<string>('')
 
-    const onImageLoad = (imageFileUrl: string) => {
+    const onImageLoad = (imageDataURL: string) => {
         const img = new Image();
         img.onload = () => {
             setImage(img)
@@ -22,7 +22,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         img.onerror = (e: any) => {
             setErrorMessage(e.message || 'Unable to read image')
         }
-        img.src = imageFileUrl;
+        img.src = imageDataURL;
     }
 
     useEffect(() => {
@@ -52,9 +52,10 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
                         cy -= lineHeight
                     }
                 }
-
-                const dataURL = canvas.toDataURL("image/png");
-                onDataURL?.(dataURL);
+                if (onImageData) {
+                    const dataURL = canvas.toDataURL("image/png");
+                    onImageData?.(dataURL, image.width, image.height)
+                }
             }
         }
     }, [image, canvas, text]);

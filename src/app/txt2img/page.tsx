@@ -1,5 +1,5 @@
 'use client'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Button, Radio, RadioGroup, Spacer } from '@nextui-org/react'
 import { GenerationOutput, SDProvider } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
@@ -9,27 +9,23 @@ import styles from '@/styles/home.module.css'
 import GImage from '@/components/gimage'
 import React from 'react'
 import { useGenerationContext } from '@/context/generation-context'
+import AdvancedIndicator from '@/components/advanced-indicator'
 
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
-    const searchParams = useSearchParams()
     const [sdProvider, setSdProvider] = useState<SDProvider>()
     const [imageOutputs, setImageOutputs] = useState<Array<GenerationOutput>>(gContext.t2iOutputs)
     const [selectedOutputIndex, setSeelectedOutputIndex] = useState<number>(gContext.t2iOutputSelectedIndex)
     useEffect(() => {
         const sdProvider = getSDProvider()
         setSdProvider(sdProvider)
-
-        // const isAdvanced = searchParams.get('view') === 'advanced'
     }, [])
 
     const onImagesGenerated = (outputs: Array<GenerationOutput>) => {
         setImageOutputs(outputs)
     }
     const onImageOutputSelected = (value: string) => {
-        console.log(`onImageOutputSelected ${value}`)
-        // setImageURL(value)
         const num = parseInt(value)
         setSeelectedOutputIndex(num)
     }
@@ -37,11 +33,6 @@ export default function Page() {
     const handleClickNext = () => {
         gContext.setT2iOutputSelectedIndex(selectedOutputIndex)
         router.push('/add-text')
-        // const imgurl = imageURL || imageOutputs?.[0].mediaUrl
-        // if (imgurl) {
-        //     const isAdvanced = searchParams.get('view') === 'advanced'
-        //     router.push(`/ add - text /? imgurl = ${ imgurl }${ isAdvanced? '&view=advanced': '' }`)
-        // }
     }
     return (
         <>
@@ -49,10 +40,12 @@ export default function Page() {
                 <div className={styles.centerSection}>
 
                     <h3>Step 1: Describe the cover of your ecard</h3>
+
+                    <AdvancedIndicator />
                     <Spacer y={4} />
                     {sdProvider && <Txt2ImgComponent
                         sdProvider={sdProvider}
-                        isAdvancedView={searchParams.get('view') === 'advanced'}
+                        isAdvancedView={gContext.isAdvancedView}
                         onImagesGenerated={onImagesGenerated}
                     />}
                     {imageOutputs.length > 0 && <>

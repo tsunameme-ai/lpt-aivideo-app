@@ -41,6 +41,12 @@ export type GenerationRequest = {
     input: Txt2imgInput | Img2vidInput
     output?: GenerationOutput
 }
+export type LocalImageData = {
+    remoteURL: string,
+    dataURL: string,
+    width: number,
+    height: number
+}
 
 export type SDProvider = {
     models: Array<{ value: string, label: string, default?: boolean }>

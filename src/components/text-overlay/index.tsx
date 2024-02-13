@@ -5,7 +5,7 @@ import { useState } from "react"
 import ImageWithTextOverlay from "../image-text-overlay"
 interface TextOverlayProps {
     src: string
-    onChange: (imgDataURL: string) => void
+    onImageData: (imgDataURL: string, width: number, height: number) => void
 }
 const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
     const [text, setText] = useState<string>('')
@@ -18,9 +18,9 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
             link.click();
         }
     }
-    const onImageDataURL = (url: string) => {
+    const onImageData = (url: string, width: number, height: number) => {
         setImageDataURL(url)
-        props.onChange?.(url)
+        props.onImageData?.(url, width, height)
     }
 
     return (<>
@@ -33,7 +33,7 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
         />
         <Spacer y={4} />
         <ImageWithTextOverlay
-            onDataURL={onImageDataURL}
+            onImageData={onImageData}
             imageUrl={props.src}
             text={text} />
         {imageDataURL &&
