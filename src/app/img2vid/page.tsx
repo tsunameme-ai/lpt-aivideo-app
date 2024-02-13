@@ -37,7 +37,7 @@ export default function Page() {
         <>
             {imageUrl && <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <h3>Step 2: Make it into a video</h3>
+                    <div>Step 3: Turn it into a video</div>
                     <Spacer y={4} />
                     <ImageWithTextOverlay
                         imageUrl={imageUrl}
