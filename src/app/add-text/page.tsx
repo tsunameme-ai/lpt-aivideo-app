@@ -10,6 +10,7 @@ export default function Page() {
     const searchParams = useSearchParams()
     const [imageUrl, setImageUrl] = useState<string>()
     const [coverText, setCoverText] = useState<string>('')
+    const [imageDataUrl, setImageDataUrl] = useState<string>()
     useEffect(() => {
         const imgurl = searchParams.get('imgurl')
         if (imgurl) {
@@ -29,15 +30,17 @@ export default function Page() {
     }
 
     const handleClickDownload = () => {
-        if (imageUrl) {
+        if (imageDataUrl) {
             const link = document.createElement("a");
-            link.href = imageUrl;
+            link.href = imageDataUrl;
             link.download = "image.png";
             link.click();
         }
     }
-    const onTextOverlayChange = (text: string) => {
+    const onTextOverlayChange = (text: string, imgurl: string) => {
         setCoverText(text)
+        setImageDataUrl(imgurl)
+
     }
 
     return (
