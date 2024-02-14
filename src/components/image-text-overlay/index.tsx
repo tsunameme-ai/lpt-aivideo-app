@@ -34,7 +34,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
                 ctx.drawImage(image, 0, 0)
 
                 const lines = text.split('\n')
-                if (lines.length > 0) {
+                if (text.length > 0 && lines.length > 0) {
                     const lineHeight = parseInt(ctx.font, 10) * 1.2; // Adjust line spacing
 
                     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"

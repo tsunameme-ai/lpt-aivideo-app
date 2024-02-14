@@ -84,8 +84,6 @@ export class LivepeerAPI {
             const data = await res.json()
             return data.images.map((item: { url: string, seed?: number }) => {
                 return {
-                    id: 'sync',
-                    status: 'success',
                     mediaUrl: item.url,
                     seed: item.seed
                 }

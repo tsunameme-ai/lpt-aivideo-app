@@ -12,7 +12,7 @@ import ErrorComponent from "@/components/error"
 
 export default function Page() {
     const gContext = useGenerationContext()
-    const [videoOutput, setVideoOutput] = useState<GenerationOutput | null>(null)
+    const [videoOutput, setVideoOutput] = useState<GenerationOutput | undefined>(undefined)
 
     const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
         if (outputs.length > 0) {

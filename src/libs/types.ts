@@ -27,8 +27,6 @@ export type Txt2imgInput = {
     scheduler?: string
 }
 export type GenerationOutput = {
-    id: string,
-    status: string,
     mediaUrl: string,
     seed?: number
 }
