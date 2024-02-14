@@ -17,6 +17,8 @@ export default function Page() {
     const [sdProvider, setSdProvider] = useState<SDProvider>()
     const [imageOutputs, setImageOutputs] = useState<Array<GenerationOutput>>(gContext.t2iOutputs)
     const [selectedOutputIndex, setSeelectedOutputIndex] = useState<number>(gContext.t2iOutputSelectedIndex)
+    const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
+
     useEffect(() => {
         const sdProvider = getSDProvider()
         setSdProvider(sdProvider)
@@ -39,7 +41,7 @@ export default function Page() {
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
                     <div>Step 1: Write prompt </div>
-                    <AdvancedIndicator />
+                    {showAdvIndicator && <AdvancedIndicator />}
                     <Spacer y={2} />
                     {sdProvider && <Txt2ImgComponent
                         sdProvider={sdProvider}
