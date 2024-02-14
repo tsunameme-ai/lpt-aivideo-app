@@ -25,8 +25,16 @@ export default function Page() {
                 <div className={styles.centerSection}>
                     <div>Step 3: Turn it into a video</div>
                     <Spacer y={4} />
+
+                    {videoOutput && <>
+                        <Spacer y={4} />
+                        <div className="flex justify-center items-center" >
+                            <video loop controls autoPlay src={videoOutput.mediaUrl} />
+                        </div>
+                        <Spacer y={4} />
+                    </>}
                     {gContext.coverImageData && <>
-                        <Image src={gContext.coverImageData.dataURL} />
+                        {!videoOutput && <Image src={gContext.coverImageData.dataURL} />}
                         <AdvancedIndicator />
                         <Img2VidComponent
                             isAdvancedView={gContext.isAdvancedView}
@@ -41,13 +49,6 @@ export default function Page() {
                     </>}
                 </div>
             </section>
-            {videoOutput && <>
-                <Spacer y={4} />
-                <div className="flex justify-center items-center" >
-                    <video loop controls autoPlay src={videoOutput.mediaUrl} />
-                </div>
-                <Spacer y={4} />
-            </>}
         </>
     )
 }
