@@ -24,14 +24,6 @@ export class LivepeerAPI {
         })
     }
 
-    public async fetchAsset(mediaUrl: string): Promise<GenerationOutput> {
-        return {
-            id: 'sync',
-            status: 'success',
-            mediaUrl: mediaUrl
-        }
-    }
-
     public async img2vid(params: Img2vidInput): Promise<Array<GenerationOutput>> {
         const imageFile = params.imageFile
         if (!imageFile) {
