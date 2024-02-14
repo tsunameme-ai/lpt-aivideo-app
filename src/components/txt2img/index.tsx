@@ -1,36 +1,36 @@
 import { Txt2imgInput, GenerationOutput, SDProvider } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spacer, Textarea, SelectItem, Select, Divider } from '@nextui-org/react'
+import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
 import { txt2img } from "@/actions/stable-diffusion";
+import { useGenerationContext } from "@/context/generation-context";
 import styles from "@/styles/home.module.css";
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
     isAdvancedView: boolean
-    onImageGenerated: (generationOutput: GenerationOutput) => void
+    onImagesGenerated: (generationOutput: Array<GenerationOutput>) => void
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
+    const gContext = useGenerationContext()
     const defaultBaseModel = props.sdProvider.models.find(item => { return item.default === true })?.value!
     const defaultScheduler = props.sdProvider.schedulers?.find(item => { return item.default === true })?.value!
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
-    const [pPromptValue, setPPromptValue] = useState<string>('')
-    const [nPromptValue, setNPromptValue] = useState<string>('lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
-    const [stepsValue, setStepsValue] = useState<string>('20')
-    const [seedValue, setSeedValue] = useState<string>('')
+    const [pPromptValue, setPPromptValue] = useState<string>(gContext.t2iInput?.pPrompt || '')
+    const [nPromptValue, setNPromptValue] = useState<string>(gContext.t2iInput?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
+    const [stepsValue, setStepsValue] = useState<string>((gContext.t2iInput?.steps || 20).toString())
+    const [seedValue, setSeedValue] = useState<string>(gContext.t2iInput?.seed || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [pPromptErrorMessage, setPPromptErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [stepErrorMessage, setStepErrorMessage] = useState<string>('')
-    const [lora, setLora] = useState<string | undefined>(undefined)
     const [scheduler, setScheduler] = useState<string | undefined>(undefined)
-    const [loraStrength, setLoraStrength] = useState<string>('1.0')
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
     const [clipSkip, setClipSkip] = useState<string>('1')
+    const [numOutput, setNumOutput] = useState<string>('1')
     const [width, setWidth] = useState<string>('768')
     const [height, setHeight] = useState<string>('512')
-    const [generationOutput, setGenerationOutput] = useState<GenerationOutput | undefined>(undefined)
 
     const handlePPromptValueChange = (value: string) => {
         setPPromptValue(value)
@@ -40,9 +40,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const handleSetBaseModel = (key: any) => {
         setBaseModel(key.size === 0 ? defaultBaseModel : key.currentKey)
     }
-    const handleSetLora = (key: any) => {
-        setLora(key.size === 0 ? undefined : key.currentKey)
-    }
+
     const handleSetScheduler = (key: any) => {
         setScheduler(key.size === 0 ? undefined : key.currentKey)
     }
@@ -50,7 +48,13 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const generateImage = async () => {
         setErrorMessage('')
         setIsLoading(false)
-        setGenerationOutput(undefined)
+
+        //Clear context for future steps
+        gContext.setT2iOutputSelectedIndex(0)
+        gContext.setCoverImageData(undefined)
+        gContext.setCoverText('')
+        gContext.setT2iInput(undefined)
+        gContext.setT2iOutputs([])
 
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
@@ -63,6 +67,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             setStepErrorMessage('Wrong steps value.')
             return
         }
+
         const params: Txt2imgInput = {
             pPrompt: pPrompt,
             nPrompt: nPromptValue,
@@ -70,19 +75,18 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             steps: stepCount,
             seed: seedValue.length > 0 ? seedValue : undefined,
             guidanceScale: parseFloat(guidanceScale),
-            clipSkip: parseInt(clipSkip),
-            loraModel: lora,
-            loraStrength: lora === undefined ? undefined : parseFloat(loraStrength),
             scheduler: scheduler,
             width: parseInt(width),
-            height: parseInt(height)
+            height: parseInt(height),
+            numOutput: parseInt(numOutput)
         }
+        gContext.setT2iInput(params)
         setIsLoading(true)
         try {
-            const output = await txt2img(params)
-            setGenerationOutput(output)
-            if (output?.status === 'success') {
-                props.onImageGenerated(output)
+            const outputs = await txt2img(params)
+            if (outputs.length > 0) {
+                gContext.setT2iOutputs(outputs)
+                props.onImagesGenerated(outputs)
             }
         }
         catch (error: any) {
@@ -91,10 +95,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         finally {
             setIsLoading(false)
         }
-    }
-
-    const handleGotoAsset = async () => {
-        props.onImageGenerated(generationOutput!)
     }
 
 
@@ -130,21 +130,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         value={height}
                         onValueChange={setHeight}
                     />
-
-
-
-                    <Select
-                        defaultSelectedKeys={[baseModel]}
-                        onSelectionChange={handleSetBaseModel}
-                        label="Base Model"
-                        errorMessage={baseModel === undefined ? `Must select base model` : ''}
-                    >
-                        {props.sdProvider.models.map((model) => (
-                            <SelectItem key={model.value} value={model.value}>
-                                {model.label}
-                            </SelectItem>
-                        ))}
-                    </Select>
 
                     {props.sdProvider.schedulers &&
                         <Select
@@ -187,34 +172,11 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         description='1 - 8'
                         value={clipSkip}
                         onValueChange={setClipSkip} />
+                    <Input
+                        label='Num of Images'
+                        value={numOutput}
+                        onValueChange={setNumOutput} />
                 </div>
-
-                {props.sdProvider.loras && <>
-                    <Spacer y={4} />
-                    <Divider />
-                    <Spacer y={4} />
-                    <div className='grid grid-cols-2 gap-4'>
-                        <Select
-                            value={[lora || '']}
-                            onSelectionChange={handleSetLora}
-                            label="Lora">
-                            {props.sdProvider.loras.map((item) => (
-                                <SelectItem key={item.value} value={item.value}>
-                                    {item.label}
-                                </SelectItem>
-                            ))}
-                        </Select>
-
-                        <Input
-                            label='Lora Strength'
-                            type='number'
-                            placeholder='0 to 1'
-                            value={loraStrength.toString()}
-                            errorMessage={stepErrorMessage}
-                            onValueChange={setLoraStrength}
-                        />
-                    </div>
-                </>}
                 <Spacer y={4} />
             </div>
             <div className={styles.promptControls}>
@@ -239,19 +201,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 </div>
             </div>
             <ErrorComponent errorMessage={errorMessage} />
-            <Modal isOpen={generationOutput?.status === 'processing'} isDismissable={false}>
-                <ModalContent>
-                    <ModalHeader>Cooking</ModalHeader>
-                    <ModalBody>
-                        Your creation is in the works!
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onPress={handleGotoAsset}>
-                            Check it out
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
         </>
 
     )

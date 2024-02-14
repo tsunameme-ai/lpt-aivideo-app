@@ -4,7 +4,7 @@ import { LivepeerAPI } from "@/libs/external/livepeer";
 import { LivepeerStaticAPI } from "@/libs/external/livepeer-static";
 import { GenerationOutput, Img2vidInput, Txt2imgInput } from "@/libs/types";
 
-export async function txt2img(params: Txt2imgInput): Promise<GenerationOutput> {
+export async function txt2img(params: Txt2imgInput): Promise<Array<GenerationOutput>> {
     if (process.env.NEXT_PUBLIC_LIVEPEER === 'static') {
         return await new LivepeerStaticAPI().txt2img()
     }
@@ -24,7 +24,7 @@ const fetchImageAsFile = async (url: string): Promise<File> => {
     throw new Error(`Fetch image failed ${response.status}`)
 }
 
-export async function img2vid(params: Img2vidInput): Promise<GenerationOutput> {
+export async function img2vid(params: Img2vidInput): Promise<Array<GenerationOutput>> {
     if (process.env.NEXT_PUBLIC_LIVEPEER === 'static') {
         return await new LivepeerStaticAPI().img2vid()
     }

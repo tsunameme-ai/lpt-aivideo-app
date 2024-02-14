@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import '../styles/globals.css'
 import { Providers } from './providers'
 import type { Viewport } from 'next'
+import GenerationContextProvider from '@/context/generation-context'
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
@@ -24,8 +25,10 @@ export default function RootLayout({
     <html lang="en" className='comfort'>
       <body>
         <Providers>
-          <header className='py-3'></header>
-          {children}
+          <GenerationContextProvider>
+            <header className='py-3'></header>
+            {children}
+          </GenerationContextProvider>
         </Providers>
       </body>
     </html >

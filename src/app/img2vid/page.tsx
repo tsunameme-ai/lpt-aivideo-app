@@ -1,60 +1,53 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { GenerationOutput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
-import { useSearchParams } from 'next/navigation'
-import { Spacer } from "@nextui-org/react"
+import { Spacer, Image, Link } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
-import ImageWithTextOverlay from "@/components/image-text-overlay"
 import React from "react"
+import { useGenerationContext } from "@/context/generation-context"
+import AdvancedIndicator from "@/components/advanced-indicator"
+import ErrorComponent from "@/components/error"
 
 
 export default function Page() {
-    const searchParams = useSearchParams()
+    const gContext = useGenerationContext()
+    const [videoOutput, setVideoOutput] = useState<GenerationOutput | undefined>(undefined)
 
-    const [imageUrl, setImageUrl] = useState<string>()
-    const [coverText, setCoverText] = useState<string>()
-    const [videoOutput, setVideoOutput] = useState<GenerationOutput | null>(null)
-
-    useEffect(() => {
-        const imgurl = searchParams.get('imgurl')
-        if (imgurl) {
-            setImageUrl(imgurl)
-        }
-        const cover = searchParams.get('cover')
-        if (cover) {
-            setCoverText(cover)
-        }
-    }, [])
-
-
-    const onVideoGenerated = async (output: GenerationOutput) => {
-        if (output) {
-            setVideoOutput(output)
+    const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
+        if (outputs.length > 0) {
+            setVideoOutput(outputs[0])
         }
     }
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
-                {imageUrl && <div className={styles.centerSection}>
+                <div className={styles.centerSection}>
                     <div>Step 3: Turn it into a video</div>
                     <Spacer y={4} />
-                    <ImageWithTextOverlay
-                        imageUrl={imageUrl}
-                        text={coverText || ''} />
-                    <Img2VidComponent
-                        isAdvancedView={searchParams.get('view') === 'advanced'}
-                        imageUrl={imageUrl}
-                        onVideoGenerated={onVideoGenerated} />
+
+                    {videoOutput && <>
+                        <Spacer y={4} />
+                        <div className="flex justify-center items-center" >
+                            <video loop controls autoPlay src={videoOutput.mediaUrl} />
+                        </div>
+                        <Spacer y={4} />
+                    </>}
+                    {gContext.coverImageData && <>
+                        {!videoOutput && <Image src={gContext.coverImageData.dataURL} />}
+                        <AdvancedIndicator />
+                        <Img2VidComponent
+                            isAdvancedView={gContext.isAdvancedView}
+                            width={gContext.coverImageData.width}
+                            height={gContext.coverImageData.height}
+                            imageUrl={gContext.coverImageData.remoteURL}
+                            onVideoGenerated={onVideoGenerated} />
+                    </>}
+                    {!gContext.coverImageData && <>
+                        <ErrorComponent errorMessage="No Image" />
+                        <Link href='/txt2vid'>Generate Image</Link>
+                    </>}
                 </div>
-                }
-                {videoOutput && <>
-                    <Spacer y={4} />
-                    <div className="flex justify-center items-center" >
-                        <video loop controls autoPlay src={videoOutput.mediaUrl} />
-                    </div>
-                    <Spacer y={4} />
-                </>}
             </section>
         </>
     )

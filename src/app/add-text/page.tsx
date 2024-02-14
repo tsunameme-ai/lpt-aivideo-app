@@ -1,46 +1,51 @@
 'use client'
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Button, Spacer } from "@nextui-org/react"
 import TextOverlay from "@/components/text-overlay"
+import { useGenerationContext } from "@/context/generation-context"
+import ErrorComponent from "@/components/error"
+import Link from "next/link"
+import { LocalImageData } from "@/libs/types"
+
 import styles from '@/styles/home.module.css'
 
 export default function Page() {
     const router = useRouter()
-    const searchParams = useSearchParams()
+    const gContext = useGenerationContext()
     const [imageUrl, setImageUrl] = useState<string>()
-    const [coverText, setCoverText] = useState<string>('')
-    const [imageDataUrl, setImageDataUrl] = useState<string>()
+    const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(gContext.coverImageData)
+    const [coverText, setCoverText] = useState<string>(gContext.coverText)
+
     useEffect(() => {
-        const imgurl = searchParams.get('imgurl')
-        if (imgurl) {
-            setImageUrl(imgurl)
+        const output = gContext.t2iOutputs[gContext.t2iOutputSelectedIndex]
+        if (output) {
+            setImageUrl(output.mediaUrl)
         }
     }, [])
 
     const handleClickToVideo = () => {
-        const segs = [
-            `imgurl=${imageUrl}`,
-            `cover=${encodeURI(coverText)}`
-        ]
-        if (searchParams.get('view') === 'advanced') {
-            segs.push('view=advanced')
-        }
-        router.push(`/img2vid/?${segs.join('&')}`)
+        gContext.setCoverText(coverText)
+        gContext.setCoverImageData(coverImageData)
+        router.push('img2vid')
     }
 
+    const onTextOverlayChange = (text: string, imgDataUrl: string, width: number, height: number) => {
+        setCoverText(text)
+        setCoverImageData({
+            remoteURL: imageUrl!,
+            dataURL: imgDataUrl,
+            width,
+            height
+        })
+    }
     const handleClickDownload = () => {
-        if (imageDataUrl) {
+        if (coverImageData) {
             const link = document.createElement("a");
-            link.href = imageDataUrl;
+            link.href = coverImageData.dataURL;
             link.download = "image.png";
             link.click();
         }
-    }
-    const onTextOverlayChange = (text: string, imgurl: string) => {
-        setCoverText(text)
-        setImageDataUrl(imgurl)
-
     }
 
     return (
@@ -52,7 +57,8 @@ export default function Page() {
                     {imageUrl && <>
                         <TextOverlay
                             src={imageUrl}
-                            onChange={onTextOverlayChange} />
+                            text={coverText}
+                            onImageData={onTextOverlayChange} />
                         <Spacer y={2} />
                         <div className="promptControls">
                             <div className={styles.downloadImageBtn}>
@@ -62,6 +68,11 @@ export default function Page() {
                                 <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
                             </div>
                         </div>
+                    </>}
+
+                    {!imageUrl && <>
+                        <ErrorComponent errorMessage="No image" />
+                        <Link href={'/txt2img'}>Generate Image</Link>
                     </>}
                 </div>
             </section>

@@ -9,24 +9,26 @@ import LongrunIndicator from "../longrun-indicator"
 interface Img2VidComponentProps {
     isAdvancedView: boolean
     imageUrl: string
+    width: number,
+    height: number
     onError?: (error: any) => void
-    onVideoGenerated?: (videoOutput: GenerationOutput) => void
+    onVideoGenerated?: (videoOutputs: Array<GenerationOutput>) => void
 }
 
 const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidComponentProps) => {
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
+    const [width, setWidth] = useState<string>(props.width.toString())
+    const [height, setHeight] = useState<string>(props.height.toString())
     const [motionBucketId, setMotionBucketId] = useState<string>('127')
     const [noiseAugStrength, setNoiseAugStrength] = useState<string>('0.05')
     const [seed, setSeed] = useState<string>()
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
 
-    const onVideoGenerated = (output: GenerationOutput) => {
+    const onVideoGenerated = (outputs: Array<GenerationOutput>) => {
         setIsGeneratingVideo(false)
         setErrorMessage('')
-        if (props.onVideoGenerated) {
-            props.onVideoGenerated(output)
-        }
+        props.onVideoGenerated?.(outputs)
     }
 
     const onError = (e: Error) => {
@@ -36,6 +38,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
 
     const handleGenerateVideoClick = async () => {
         setIsGeneratingVideo(true)
+        setErrorMessage('')
         try {
             const response = await fetch('/api/generate', {
                 method: 'POST',
@@ -43,6 +46,8 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                 body: JSON.stringify({
                     type: GenerationType.IMG2VID, input: {
                         imageUrl: props.imageUrl,
+                        width: parseInt(width),
+                        height: parseInt(height),
                         motionButcketId: parseInt(motionBucketId),
                         noiseAugStrength: parseFloat(noiseAugStrength),
                         seed: seed
@@ -71,17 +76,25 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
                     {props.isAdvancedView &&
                         <div className='grid grid-cols-2 gap-4'>
                             <Input
+                                label='Width'
+                                type='number'
+                                value={width}
+                                onValueChange={setWidth} />
+                            <Input
+                                label='Height'
+                                type='number'
+                                value={height}
+                                onValueChange={setHeight} />
+                            <Input
                                 label='Motion Bucket Id'
                                 type='number'
                                 value={motionBucketId}
-                                onValueChange={setMotionBucketId}
-                            />
+                                onValueChange={setMotionBucketId} />
                             <Input
                                 label='Noise Aug Strength'
                                 type='number'
                                 value={noiseAugStrength}
-                                onValueChange={setNoiseAugStrength}
-                            />
+                                onValueChange={setNoiseAugStrength} />
                             <Input
                                 label='Seed'
                                 type='number'
@@ -92,10 +105,10 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
 
                     <Spacer y={1}></Spacer>
 
-                    <div>
-                        The video generation will take a few minutes. Please do not leave the app.
-                    </div>
-                    <Spacer y={4}></Spacer>
+                    <p className="text-base">
+                        Video generation will take a few minutes. Please do not close the tab while waiting for the video.
+                    </p>
+                    <Spacer y={5}></Spacer>
                     <Button
                         className="w-full"
                         color="primary"

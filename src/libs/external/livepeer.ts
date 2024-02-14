@@ -1,7 +1,8 @@
 import { GenerationOutput, Img2vidInput, Txt2imgInput } from '../types'
 
 export class LivepeerAPI {
-    public async txt2img(params: Txt2imgInput): Promise<GenerationOutput> {
+
+    public async txt2img(params: Txt2imgInput): Promise<Array<GenerationOutput>> {
         const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/text-to-image`
         const postBody = {
             'model_id': params.modelId,
@@ -10,7 +11,8 @@ export class LivepeerAPI {
             'guidance_scale': params.guidanceScale,
             'seed': params.seed,
             'width': params.width,
-            'height': params.height
+            'height': params.height,
+            'num_images_per_prompt': params.numOutput
         }
         return await this.sendRequest(url, {
             method: 'POST',
@@ -22,15 +24,7 @@ export class LivepeerAPI {
         })
     }
 
-    public async fetchAsset(mediaUrl: string): Promise<GenerationOutput> {
-        return {
-            id: 'sync',
-            status: 'success',
-            mediaUrl: mediaUrl
-        }
-    }
-
-    public async img2vid(params: Img2vidInput): Promise<GenerationOutput> {
+    public async img2vid(params: Img2vidInput): Promise<Array<GenerationOutput>> {
         const imageFile = params.imageFile
         if (!imageFile) {
             throw new Error(`SD Provider Error: image file does not exist.`)
@@ -38,6 +32,8 @@ export class LivepeerAPI {
         const fd = new FormData()
         fd.append('image', imageFile)
         fd.append('model_id', 'stabilityai/stable-video-diffusion-img2vid-xt')
+        fd.append('width', params.width.toString())
+        fd.append('height', params.height.toString())
         fd.append('motion_bucket_id', params.motionButcketId.toString())
         fd.append('noise_aug_strength', params.noiseAugStrength.toString())
 
@@ -49,18 +45,18 @@ export class LivepeerAPI {
         }, 600000)
     }
 
-    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<GenerationOutput> {
+    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<Array<GenerationOutput>> {
         const t = new Date().getTime()
-        let resError = null
-        let resOutput = null
-        let status = null
+        let resError
+        let resOutput
+        let status
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
         try {
             const res = await fetch(url, { ...init, signal: controller.signal })
-            console.log(res)
+            // console.log(res)
             clearTimeout(timeoutId)
             // const res = await fetch(url, init)
             status = res.status
@@ -83,14 +79,15 @@ export class LivepeerAPI {
         }
     }
 
-    private async parseResponse(res: Response): Promise<GenerationOutput> {
+    private async parseResponse(res: Response): Promise<Array<GenerationOutput>> {
         if (res.ok) {
             const data = await res.json()
-            return {
-                id: 'sync',
-                status: 'success',
-                mediaUrl: data.images[0].url
-            }
+            return data.images.map((item: { url: string, seed?: number }) => {
+                return {
+                    mediaUrl: item.url,
+                    seed: item.seed
+                }
+            })
         }
         let errorMessage = ''
         try {

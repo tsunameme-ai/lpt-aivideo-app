@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 interface LongrunIndicatorProps {
     request: GenerationRequest
     onError?: (error: any) => void
-    onComplete?: (output: GenerationOutput) => void
+    onComplete?: (outputs: Array<GenerationOutput>) => void
 }
 
 const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicatorProps) => {

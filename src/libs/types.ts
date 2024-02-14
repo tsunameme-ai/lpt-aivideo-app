@@ -6,9 +6,10 @@ export type Txt2vidInput = {
 }
 export type Img2vidInput = {
     imageUrl?: string,
-    seconds?: number,
     motionButcketId: number,
     noiseAugStrength: number,
+    width: number,
+    height: number,
     seed?: number | string,
     imageFile?: File
 }
@@ -16,24 +17,18 @@ export type Txt2imgInput = {
     pPrompt: string,
     nPrompt: string,
     modelId: string,
-    steps?: number,
     seed?: string
-    scheduler?: string
-    loraModel?: string
-    loraStrength?: number
     guidanceScale?: number
-    clipSkip?: number
     width: number,
-    height: number
+    height: number,
+    numOutput: number,
+
+    steps?: number
+    scheduler?: string
 }
 export type GenerationOutput = {
-    id: string,
-    status: string,
     mediaUrl: string,
     seed?: number
-    width?: number,
-    height?: number,
-    eta?: number
 }
 export enum GenerationType {
     TXT2IMG = 'txt2img',
@@ -44,6 +39,12 @@ export type GenerationRequest = {
     type: GenerationType,
     input: Txt2imgInput | Img2vidInput
     output?: GenerationOutput
+}
+export type LocalImageData = {
+    remoteURL: string,
+    dataURL: string,
+    width: number,
+    height: number
 }
 
 export type SDProvider = {

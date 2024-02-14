@@ -6,15 +6,15 @@ import styles from "@/styles/home.module.css";
 interface ImageWithTextOverlayProps {
     imageUrl: string;
     text: string;
-    onDataURL?: (url: string) => void
+    onImageData?: (text: string, url: string, width: number, height: number) => void
 }
 
-const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, text, onDataURL }) => {
+const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, text, onImageData }) => {
     const [image, setImage] = useState<HTMLImageElement | null>(null);
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
     const [errorMessage, setErrorMessage] = useState<string>('')
 
-    const onImageLoad = (imageFileUrl: string) => {
+    const onImageLoad = (imageDataURL: string) => {
         const img = new Image();
         img.onload = () => {
             setImage(img)
@@ -23,7 +23,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         img.onerror = (e: any) => {
             setErrorMessage(e.message || 'Unable to read image')
         }
-        img.src = imageFileUrl;
+        img.src = imageDataURL;
     }
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
                 ctx.drawImage(image, 0, 0)
 
                 const lines = text.split('\n')
-                if (lines.length > 0) {
+                if (text.length > 0 && lines.length > 0) {
                     const lineHeight = parseInt(ctx.font, 10) * 1.2; // Adjust line spacing
 
                     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
@@ -54,17 +54,17 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
                         cy -= lineHeight
                     }
                 }
-
-                const dataURL = canvas.toDataURL("image/png");
-                onDataURL?.(dataURL);
+                if (onImageData) {
+                    const dataURL = canvas.toDataURL("image/png");
+                    onImageData?.(text, dataURL, image.width, image.height)
+                }
             }
         }
     }, [image, canvas, text]);
 
     return (
-        <div >
-            {/* Render the canvas element here */}
-            <RemoteImage hidden={true} src={imageUrl} onComplete={onImageLoad} />
+        <div>
+            <RemoteImage src={imageUrl} onComplete={onImageLoad} />
             {image && (
                 <canvas className={styles.centerCanvas} ref={(ref) => setCanvas(ref)} width={image?.width || 0} height={image?.height || 0} />
             )}
