@@ -13,7 +13,7 @@ import ErrorComponent from "@/components/error"
 export default function Page() {
     const gContext = useGenerationContext()
     const [videoOutput, setVideoOutput] = useState<GenerationOutput | undefined>(undefined)
-
+    const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
     const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
         if (outputs.length > 0) {
             setVideoOutput(outputs[0])
@@ -35,7 +35,7 @@ export default function Page() {
                     </>}
                     {gContext.coverImageData && <>
                         {!videoOutput && <Image src={gContext.coverImageData.dataURL} />}
-                        <AdvancedIndicator />
+                        {showAdvIndicator && <AdvancedIndicator />}
                         <Img2VidComponent
                             isAdvancedView={gContext.isAdvancedView}
                             width={gContext.coverImageData.width}
