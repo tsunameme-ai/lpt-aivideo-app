@@ -7,7 +7,7 @@ export class LivepeerStaticAPI {
         return [{
             id: 'static',
             status: 'success',
-            mediaUrl: 'https://1pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
+            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
         }, {
             id: 'static',
             status: 'success',
