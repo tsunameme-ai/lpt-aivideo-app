@@ -1,15 +1,18 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { Button, Radio, RadioGroup, Spacer } from '@nextui-org/react'
+import { Button, Spacer } from '@nextui-org/react'
 import { GenerationOutput, SDProvider } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import getSDProvider from '@/libs/sd-provider'
 import { useEffect, useState } from 'react'
 import styles from '@/styles/home.module.css'
-import GImage from '@/components/gimage'
 import React from 'react'
 import { useGenerationContext } from '@/context/generation-context'
 import AdvancedIndicator from '@/components/advanced-indicator'
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 export default function Page() {
     const router = useRouter()
@@ -27,15 +30,16 @@ export default function Page() {
     const onImagesGenerated = (outputs: Array<GenerationOutput>) => {
         setImageOutputs(outputs)
     }
-    const onImageOutputSelected = (value: string) => {
-        const num = parseInt(value)
-        setSeelectedOutputIndex(num)
+
+    const onImageOutputSelected = (value: number) => {
+        setSeelectedOutputIndex(value)
     }
 
     const handleClickNext = () => {
         gContext.setT2iOutputSelectedIndex(selectedOutputIndex)
         router.push('/add-text')
     }
+
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
@@ -51,17 +55,14 @@ export default function Page() {
 
                     {imageOutputs.length > 0 && <>
                         <Spacer y={4} />
-                        <RadioGroup
-                            label="Select an image"
-                            color="secondary"
-                            defaultValue={selectedOutputIndex.toString()}
-                            onValueChange={onImageOutputSelected}
-                        >
-                            {imageOutputs.map((item: GenerationOutput, index: number) => (
-                                <Radio key={`output${index.toString()}`} value={index.toString()}><GImage src={item.mediaUrl} alt={item.mediaUrl} /> </Radio>
+                        <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} afterChange={onImageOutputSelected}>
+                            {imageOutputs.map((item: GenerationOutput, key: number) => (
+                                <div key={key}>
+                                    <img className={styles.center} src={item.mediaUrl} alt={item.mediaUrl} />
+                                </div>
                             ))}
-                        </RadioGroup>
-                        <Spacer y={4} />
+                        </Slider>
+                        <Spacer y={16} />
                         <Button className="w-full" color="primary" onPress={handleClickNext}>Next step</Button>
                     </>}
                 </div>
