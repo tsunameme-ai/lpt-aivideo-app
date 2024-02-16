@@ -28,7 +28,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [scheduler, setScheduler] = useState<string | undefined>(undefined)
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
     const [clipSkip, setClipSkip] = useState<string>('1')
-    const [numOutput, setNumOutput] = useState<string>('3')
+    const [numOutput, setNumOutput] = useState<string>('1')
     const [width, setWidth] = useState<string>('768')
     const [height, setHeight] = useState<string>('512')
 

@@ -45,8 +45,7 @@ export default function Page() {
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <div>Step 1: Write prompt </div>
-                    {showAdvIndicator && <AdvancedIndicator />}
+                    <div>Step 1: Write prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={2} />
                     {sdProvider && <Txt2ImgComponent
                         sdProvider={sdProvider}
