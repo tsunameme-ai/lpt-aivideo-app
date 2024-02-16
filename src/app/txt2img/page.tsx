@@ -40,6 +40,7 @@ export default function Page() {
         router.push('/add-text')
     }
 
+    console.log(imageOutputs)
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
@@ -52,21 +53,28 @@ export default function Page() {
                         isAdvancedView={gContext.isAdvancedView}
                         onImagesGenerated={onImagesGenerated}
                     />}
+                    <Spacer y={14} />
 
-                    {imageOutputs.length > 0 && <>
-                        <Spacer y={4} />
-                        <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} afterChange={onImageOutputSelected}>
+                    {imageOutputs.length == 1 && <>
+                        <img className={styles.center} src={imageOutputs[0].mediaUrl} alt={imageOutputs[0].mediaUrl} />
+                        <Spacer y={14} />
+                        <Button className="w-full" color="primary" onPress={handleClickNext}>Next step</Button>
+                    </>}
+
+                    {imageOutputs.length > 1 && <>
+
+                        <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false} afterChange={onImageOutputSelected}>
                             {imageOutputs.map((item: GenerationOutput, key: number) => (
-                                <div key={key}>
+                                < div key={key} >
                                     <img className={styles.center} src={item.mediaUrl} alt={item.mediaUrl} />
                                 </div>
                             ))}
                         </Slider>
-                        <Spacer y={16} />
+                        <Spacer y={14} />
                         <Button className="w-full" color="primary" onPress={handleClickNext}>Next step</Button>
                     </>}
                 </div>
-            </section>
+            </section >
         </>
     )
 }
