@@ -7,7 +7,7 @@ import { useGenerationContext } from "@/context/generation-context"
 import ErrorComponent from "@/components/error"
 import Link from "next/link"
 import { LocalImageData } from "@/libs/types"
-
+import { BsCloudArrowDownFill } from "react-icons/bs";
 import styles from '@/styles/home.module.css'
 
 export default function Page() {
@@ -55,15 +55,17 @@ export default function Page() {
                     <div>Step 2: Add your copy</div>
                     <Spacer y={2}></Spacer>
                     {imageUrl && <>
-                        <TextOverlay
-                            src={imageUrl}
-                            text={coverText}
-                            onImageData={onTextOverlayChange} />
+                        <div>
+                            <BsCloudArrowDownFill className={styles.downloadIcon} onClick={handleClickDownload} />
+                            <TextOverlay
+                                src={imageUrl}
+                                text={coverText}
+                                onImageData={onTextOverlayChange} />
+                        </div>
                         <Spacer y={2} />
+
                         <div className="promptControls">
-                            <div className={styles.downloadImageBtn}>
-                                <Button color='primary' onPress={handleClickDownload}>Download Image</Button>
-                            </div>
+
                             <div className={styles.makeVideoBtn}>
                                 <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
                             </div>
