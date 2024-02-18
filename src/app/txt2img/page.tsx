@@ -40,7 +40,6 @@ export default function Page() {
         router.push('/add-text')
     }
 
-    console.log(imageOutputs)
     return (
         <>
             <section className='flex flex-col items-center justify-center'>

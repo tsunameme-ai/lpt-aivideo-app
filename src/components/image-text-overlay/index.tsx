@@ -3,6 +3,7 @@ import RemoteImage from "../remote-image";
 import ErrorComponent from "../error";
 import styles from "@/styles/home.module.css";
 
+
 interface ImageWithTextOverlayProps {
     imageUrl: string;
     text: string;
@@ -65,11 +66,13 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
     return (
         <div>
             <RemoteImage src={imageUrl} onComplete={onImageLoad} />
-            {image && (
+
+            {image && <>
                 <canvas className={styles.centerCanvas} ref={(ref) => setCanvas(ref)} width={image?.width || 0} height={image?.height || 0} />
-            )}
+            </>}
+
             <ErrorComponent errorMessage={errorMessage} />
-        </div>
+        </div >
     );
 };
 
