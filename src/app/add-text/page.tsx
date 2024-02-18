@@ -7,7 +7,7 @@ import { useGenerationContext } from "@/context/generation-context"
 import ErrorComponent from "@/components/error"
 import Link from "next/link"
 import { LocalImageData } from "@/libs/types"
-import { BsCloudArrowDownFill } from "react-icons/bs";
+
 import styles from '@/styles/home.module.css'
 
 export default function Page() {
@@ -39,6 +39,7 @@ export default function Page() {
             height
         })
     }
+
     const handleClickDownload = () => {
         if (coverImageData) {
             const link = document.createElement("a");
@@ -48,6 +49,7 @@ export default function Page() {
         }
     }
 
+
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
@@ -56,11 +58,11 @@ export default function Page() {
                     <Spacer y={2}></Spacer>
                     {imageUrl && <>
                         <div>
-                            <BsCloudArrowDownFill className={styles.downloadIcon} onClick={handleClickDownload} />
                             <TextOverlay
                                 src={imageUrl}
                                 text={coverText}
-                                onImageData={onTextOverlayChange} />
+                                onImageData={onTextOverlayChange}
+                                onDownloadClick={handleClickDownload} />
                         </div>
                         <Spacer y={2} />
 

@@ -1,20 +1,28 @@
-
-
 import { Spacer, Textarea } from "@nextui-org/react"
 import { useState } from "react"
 import ImageWithTextOverlay from "../image-text-overlay"
+import { FaFileDownload, FaShare } from "react-icons/fa";
+import styles from "@/styles/home.module.css";
+
 interface TextOverlayProps {
     src: string
     text: string,
     onImageData: (text: string, imgDataURL: string, width: number, height: number) => void
+    onDownloadClick: () => void
 }
 const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
     const [text, setText] = useState<string>(props.text)
     const [imageDataURL, setImageDataURL] = useState<string>()
+    const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
     const onImageData = (text: string, url: string, width: number, height: number) => {
         setImageDataURL(url)
         props.onImageData?.(text, url, width, height)
+        setImageLoaded(true)
+    }
+
+    const onDownloadClick = () => {
+        props.onDownloadClick()
     }
 
     return (<>
@@ -25,15 +33,21 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
             onValueChange={setText}
         />
         <Spacer y={4} />
-        <ImageWithTextOverlay
-            onImageData={onImageData}
-            imageUrl={props.src}
-            text={text} />
+        <div className={styles.containerRelative}>
+            {imageLoaded &&
+                <>
+                    <FaFileDownload className={styles.downloadIcon} onClick={onDownloadClick} />
+                    <FaShare className={styles.shareIcon} />
+                </>
+            }
+            <ImageWithTextOverlay
+                onImageData={onImageData}
+                imageUrl={props.src}
+                text={text} />
+        </div>
         {imageDataURL &&
-            <>
-                <Spacer y={4} />
-
-            </>}
+            <><Spacer y={4} /></>
+        }
     </>)
 }
 
