@@ -7,9 +7,9 @@ const NavigationComponent: React.FC = () => {
 
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const menuItems = [
-        "Create",
-        "Gallery",
-        "About Us"
+        ['Create', '/txt2img'],
+        ['Gallery', '/gallery'],
+        ['About', '/about']
     ];
 
     return (<>
@@ -22,21 +22,20 @@ const NavigationComponent: React.FC = () => {
             </NavbarContent>
             <NavbarMenu>
                 {menuItems.map((item, index) => (
-                    <NavbarMenuItem key={`${item}-${index}`}>
+
+                    < NavbarMenuItem key={`${item}-${index}`}>
                         <Link
-                            color={
-                                index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-                            }
+                            color="foreground"
                             className="w-full"
-                            href="#"
+                            href={item[1]}
                             size="lg"
                         >
-                            {item}
+                            {item[0]}
                         </Link>
                     </NavbarMenuItem>
                 ))}
             </NavbarMenu>
-        </Navbar>
+        </Navbar >
     </>)
 };
 
