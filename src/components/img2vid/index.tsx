@@ -1,6 +1,6 @@
 import { GenerationOutput, GenerationRequest, GenerationType } from "@/libs/types"
 import { Button, Spacer, Input } from "@nextui-org/react"
-import { useState, forwardRef, useImperativeHandle } from "react"
+import { useState } from "react"
 import ErrorComponent from "../error"
 import styles from "@/styles/home.module.css"
 import LongrunIndicator from "../longrun-indicator"
@@ -15,7 +15,7 @@ interface Img2VidComponentProps {
     onVideoGenerated?: (videoOutputs: Array<GenerationOutput>) => void
 }
 
-const Img2VidComponent: React.FC<Img2VidComponentProps> = forwardRef((props: Img2VidComponentProps, ref) => {
+const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidComponentProps) => {
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
     const [width, setWidth] = useState<string>(props.width.toString())
     const [height, setHeight] = useState<string>(props.height.toString())
@@ -24,12 +24,6 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = forwardRef((props: Img
     const [seed, setSeed] = useState<string>()
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
-
-    useImperativeHandle(ref, () => {
-        return {
-            // ... your methods ...
-        };
-    }, []);
 
     const onVideoGenerated = (outputs: Array<GenerationOutput>) => {
         setIsGeneratingVideo(false)
@@ -111,7 +105,9 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = forwardRef((props: Img
 
                     <Spacer y={1}></Spacer>
 
-                    <p className="text-base">Video generation will take a few minutes. Do not close the app while waiting.</p>
+                    <p className="text-base">
+                        Video generation will take a few minutes. Please do not close the tab while waiting for the video.
+                    </p>
                     <Spacer y={5}></Spacer>
                     <Button
                         className="w-full"
@@ -131,6 +127,6 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = forwardRef((props: Img
 
         </>
     );
-});
+};
 
 export default Img2VidComponent

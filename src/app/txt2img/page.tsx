@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { Button, Spacer } from '@nextui-org/react'
+import { Button, Spacer, Image } from '@nextui-org/react'
 import { GenerationOutput, SDProvider } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import getSDProvider from '@/libs/sd-provider'
@@ -64,7 +64,7 @@ export default function Page() {
                         <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false} afterChange={onImageOutputSelected}>
                             {imageOutputs.map((item: GenerationOutput, key: number) => (
                                 < div key={key} >
-                                    <img className={styles.center} src={item.mediaUrl} alt={item.mediaUrl} />
+                                    <Image className={styles.center} src={item.mediaUrl} alt={item.mediaUrl} />
                                 </div>
                             ))}
                         </Slider>

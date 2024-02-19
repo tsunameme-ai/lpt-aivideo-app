@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from "react"
+import { useState } from "react"
 import { GenerationOutput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
 import { Spacer, Image, Link } from "@nextui-org/react"
@@ -34,7 +34,7 @@ export default function Page() {
                         </>}
 
                         {gContext.coverImageData && <>
-                            {!videoOutput && <Image className={styles.imagePreview} src={gContext.coverImageData.dataURL} />}
+                            {!videoOutput && <Image className={styles.imagePreview} src={gContext.coverImageData.dataURL} alt={gContext.coverImageData.dataURL} />}
 
                             <Img2VidComponent
                                 isAdvancedView={gContext.isAdvancedView}
