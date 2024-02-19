@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { Button, Spacer } from '@nextui-org/react'
+import { Button, Spacer, Image } from '@nextui-org/react'
 import { GenerationOutput, SDProvider } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import getSDProvider from '@/libs/sd-provider'
@@ -51,12 +51,12 @@ export default function Page() {
                         isAdvancedView={gContext.isAdvancedView}
                         onImagesGenerated={onImagesGenerated}
                     />}
-                    <Spacer y={14} />
+                    <Spacer y={8} />
 
                     {imageOutputs.length == 1 && <>
                         <img className={styles.center} src={imageOutputs[0].mediaUrl} alt={imageOutputs[0].mediaUrl} />
-                        <Spacer y={14} />
-                        <Button className="w-full" color="primary" onPress={handleClickNext}>Next step</Button>
+                        <Spacer y={8} />
+                        <Button className="w-full" color="primary" onPress={handleClickNext}>Next</Button>
                     </>}
 
                     {imageOutputs.length > 1 && <>
@@ -64,12 +64,12 @@ export default function Page() {
                         <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false} afterChange={onImageOutputSelected}>
                             {imageOutputs.map((item: GenerationOutput, key: number) => (
                                 < div key={key} >
-                                    <img className={styles.center} src={item.mediaUrl} alt={item.mediaUrl} />
+                                    <Image className={styles.center} src={item.mediaUrl} alt={item.mediaUrl} />
                                 </div>
                             ))}
                         </Slider>
                         <Spacer y={14} />
-                        <Button className="w-full" color="primary" onPress={handleClickNext}>Next step</Button>
+                        <Button className="w-full" color="primary" onPress={handleClickNext}>Next</Button>
                     </>}
                 </div>
             </section >

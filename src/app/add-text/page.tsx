@@ -69,7 +69,10 @@ export default function Page() {
                         <div className="promptControls">
 
                             <div className={styles.makeVideoBtn}>
-                                <Button color='primary' onPress={handleClickToVideo}>Make a Video</Button>
+                                <Button color='primary' onPress={handleClickToVideo}>Next</Button>
+                            </div>
+                            <div className={styles.backBtn}>
+                                <Button color="primary" onClick={() => router.back()}>Back</Button>
                             </div>
                         </div>
                     </>}
