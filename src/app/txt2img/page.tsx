@@ -51,11 +51,11 @@ export default function Page() {
                         isAdvancedView={gContext.isAdvancedView}
                         onImagesGenerated={onImagesGenerated}
                     />}
-                    <Spacer y={14} />
+                    <Spacer y={8} />
 
                     {imageOutputs.length == 1 && <>
                         <img className={styles.center} src={imageOutputs[0].mediaUrl} alt={imageOutputs[0].mediaUrl} />
-                        <Spacer y={14} />
+                        <Spacer y={8} />
                         <Button className="w-full" color="primary" onPress={handleClickNext}>Next</Button>
                     </>}
 

@@ -92,6 +92,15 @@
     position: relative;
 }
 
+.videoPreview {
+    position: absolute;
+    width: 100%;
+}
+
+.imagePreview {
+    width: 100%;
+}
+
 .red {
     color: #e63946
 }
