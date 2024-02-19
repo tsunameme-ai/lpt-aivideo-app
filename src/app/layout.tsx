@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import { Providers } from './providers'
 import type { Viewport } from 'next'
 import GenerationContextProvider from '@/context/generation-context'
+import NavigationComponent from "@/components/navigation"
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
@@ -26,7 +27,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <GenerationContextProvider>
-            <header className='py-3'></header>
+            <header className='py-3'><NavigationComponent /></header>
             {children}
           </GenerationContextProvider>
         </Providers>

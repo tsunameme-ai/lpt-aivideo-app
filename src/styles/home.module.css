@@ -50,6 +50,12 @@
     text-align: right;
 }
 
+.backBtn {
+    width: 50%;
+    float: left;
+    text-align: left;
+}
+
 .slider {
     width: 90%;
     display: block;
