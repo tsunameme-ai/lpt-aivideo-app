@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import RemoteImage from "../remote-image";
 import ErrorComponent from "../error";
 import styles from "@/styles/home.module.css";
+import { Button } from "@nextui-org/react";
 
 interface ImageWithTextOverlayProps {
     imageUrl: string;
@@ -11,7 +12,7 @@ interface ImageWithTextOverlayProps {
 
 const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, text, onImageData }) => {
     const [image, setImage] = useState<HTMLImageElement | null>(null);
-    const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
+    const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
     const [errorMessage, setErrorMessage] = useState<string>('')
 
     const onImageLoad = (imageDataURL: string) => {
@@ -25,39 +26,58 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         }
         img.src = imageDataURL;
     }
+    const handleClickDownloadCoverImage = () => {
+        if (canvas && image) {
+            drawImage(canvas, null)
+            const dataURL = canvas.toDataURL("image/png")
+            const link = document.createElement("a");
+            link.href = dataURL
+            link.download = "cover.png";
+            link.click();
+
+            drawImage(canvas, image)
+        }
+
+    }
+    const drawImage = (cvs: HTMLCanvasElement, img: HTMLImageElement | null) => {
+        const ctx = cvs.getContext("2d");
+        if (ctx) {
+            ctx.clearRect(0, 0, cvs.width, cvs.height)
+            ctx.font = "35px Arial"
+            if (img) {
+                ctx.drawImage(img, 0, 0)
+            }
+
+            const lines = text.split('\n')
+            if (text.length > 0 && lines.length > 0) {
+                const lineHeight = parseInt(ctx.font, 10) * 1.2; // Adjust line spacing
+
+                ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
+                const rectH = lineHeight * (lines.length + 2)
+                ctx.fillRect(0, cvs.height - rectH, cvs.width, rectH)
+
+
+                // Add your text drawing logic here
+
+                ctx.fillStyle = "black"
+                ctx.textAlign = "center"
+                ctx.textBaseline = "bottom"
+
+                let cy = cvs.height - lineHeight;
+                for (let i = lines.length - 1; i >= 0; i--) {
+                    ctx.fillText(lines[i], cvs.width / 2, cy);
+                    cy -= lineHeight
+                }
+            }
+        }
+    }
 
     useEffect(() => {
         if (image && canvas) {
-            const ctx = canvas.getContext("2d");
-            if (ctx) {
-                ctx.font = "35px Arial"
-                ctx.drawImage(image, 0, 0)
-
-                const lines = text.split('\n')
-                if (text.length > 0 && lines.length > 0) {
-                    const lineHeight = parseInt(ctx.font, 10) * 1.2; // Adjust line spacing
-
-                    ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
-                    const rectH = lineHeight * (lines.length + 2)
-                    ctx.fillRect(0, canvas.height - rectH, canvas.width, rectH)
-
-
-                    // Add your text drawing logic here
-
-                    ctx.fillStyle = "black"
-                    ctx.textAlign = "center"
-                    ctx.textBaseline = "bottom"
-
-                    let cy = canvas.height - lineHeight;
-                    for (let i = lines.length - 1; i >= 0; i--) {
-                        ctx.fillText(lines[i], canvas.width / 2, cy);
-                        cy -= lineHeight
-                    }
-                }
-                if (onImageData) {
-                    const dataURL = canvas.toDataURL("image/png");
-                    onImageData?.(text, dataURL, image.width, image.height)
-                }
+            drawImage(canvas, image)
+            if (onImageData) {
+                const dataURL = canvas.toDataURL("image/png");
+                onImageData?.(text, dataURL, image.width, image.height)
             }
         }
     }, [image, canvas, text]);
@@ -66,8 +86,9 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         <div>
             <RemoteImage src={imageUrl} onComplete={onImageLoad} />
             {image && (
-                <canvas className={styles.centerCanvas} ref={(ref) => setCanvas(ref)} width={image?.width || 0} height={image?.height || 0} />
+                <canvas className={styles.centerCanvas} ref={(ref) => setCanvas(ref)} width={image.width} height={image.height} />
             )}
+            <Button color="primary" onPress={handleClickDownloadCoverImage}>Debug:Download Cover Image</Button>
             <ErrorComponent errorMessage={errorMessage} />
         </div>
     );

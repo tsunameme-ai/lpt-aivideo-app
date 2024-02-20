@@ -36,6 +36,7 @@ export class LivepeerAPI {
         fd.append('height', params.height.toString())
         fd.append('motion_bucket_id', params.motionButcketId.toString())
         fd.append('noise_aug_strength', params.noiseAugStrength.toString())
+        console.log(`dimension ${fd.get('width')} ${fd.get('height')}`)
 
         const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/image-to-video`
         return await this.sendRequest(url, {
