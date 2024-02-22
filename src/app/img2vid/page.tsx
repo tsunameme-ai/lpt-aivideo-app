@@ -1,19 +1,22 @@
 'use client'
 import { useState } from "react"
-import { GenerationOutput } from "@/libs/types"
+import { GenerationOutput, GenerationRequest } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
-import { Spacer, Image, Link } from "@nextui-org/react"
+import { Spacer, Image, Link, Button } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
 import React from "react"
 import { useGenerationContext } from "@/context/generation-context"
 import AdvancedIndicator from "@/components/advanced-indicator"
 import ErrorComponent from "@/components/error"
-
+import { LivepeerAPI } from "@/libs/external/livepeer";
 
 
 export default function Page() {
     const gContext = useGenerationContext()
     const [videoOutput, setVideoOutput] = useState<GenerationOutput | undefined>(undefined)
+    const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
+    const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
+
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
     const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
         if (outputs.length > 0) {
@@ -21,7 +24,31 @@ export default function Page() {
         }
     }
 
-    //const Img2VidComponentRef = useRef()
+    const handleGenerateVideoClick = async () => {
+        console.log(gContext.isAdvancedView)
+        if (gContext.coverImageData) {
+            console.log(gContext.coverImageData.width)
+            console.log(gContext.coverImageData.height)
+            console.log(gContext.coverImageData.remoteURL)
+            /*
+            try {
+                setIsGeneratingVideo(true)
+                const generationRequest = await new LivepeerAPI().generateVideo(
+                    gContext.coverImageData.remoteURL, gContext.coverImageData.width,
+                    gContext.coverImageData.height, 1, 0.05, 2233)
+
+                if (generationRequest)
+                    setImg2VidRequest(generationRequest)
+
+            } catch (e) {
+                setIsGeneratingVideo(false)
+            }*/
+
+        }
+
+
+    }
+
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
@@ -41,9 +68,17 @@ export default function Page() {
                                 width={gContext.coverImageData.width}
                                 height={gContext.coverImageData.height}
                                 imageUrl={gContext.coverImageData.remoteURL}
-                                onVideoGenerated={onVideoGenerated} />
+                                onVideoGenerated={onVideoGenerated}
+                                isGeneratingVideo={isGeneratingVideo}
+                                img2VidRequest={img2VidRequest}
+                            />
                         </>}
-
+                        <Button
+                            className="w-full"
+                            color="secondary"
+                            onPress={handleGenerateVideoClick}>
+                            Generate Video Main
+                        </Button>
                         {!gContext.coverImageData && <>
                             <ErrorComponent errorMessage="No Image" />
                             <Link href='/txt2vid'>Generate Image</Link>
