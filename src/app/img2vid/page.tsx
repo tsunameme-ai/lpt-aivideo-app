@@ -41,6 +41,8 @@ export default function Page() {
                             width={gContext.coverImageData.width}
                             height={gContext.coverImageData.height}
                             imageUrl={gContext.coverImageData.remoteURL}
+                            textImageDataURL={gContext.coverImageData.textImageDataURL}
+                            coverImageDataURL={gContext.coverImageData.dataURL}
                             onVideoGenerated={onVideoGenerated} />
                     </>}
                     {!gContext.coverImageData && <>

@@ -29,7 +29,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
     const [clipSkip, setClipSkip] = useState<string>('1')
     const [numOutput, setNumOutput] = useState<string>('1')
-    const [width, setWidth] = useState<string>('768')
+    const [width, setWidth] = useState<string>('512')
     const [height, setHeight] = useState<string>('512')
 
     const handlePPromptValueChange = (value: string) => {

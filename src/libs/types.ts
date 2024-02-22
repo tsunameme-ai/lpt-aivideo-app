@@ -43,6 +43,7 @@ export type GenerationRequest = {
 export type LocalImageData = {
     remoteURL: string,
     dataURL: string,
+    textImageDataURL?: string,
     width: number,
     height: number
 }

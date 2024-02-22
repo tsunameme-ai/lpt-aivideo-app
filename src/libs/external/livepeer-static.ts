@@ -18,7 +18,8 @@ export class LivepeerStaticAPI {
     public async img2vid(): Promise<Array<GenerationOutput>> {
         await Utils.delay(10000)
         return [{
-            mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/682fb4f9/962d54e5.mp4'
+            mediaUrl: 'https://storage.googleapis.com/livepeer-ai-video-dev/85cefa4c/236fe9c1.mp4'
+            // mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/944fd9f2-74d6-4367-b6ff-8ffb6c3a1482.mp4'
         }]
     }
 }

@@ -7,7 +7,7 @@ import { Button } from "@nextui-org/react";
 interface ImageWithTextOverlayProps {
     imageUrl: string;
     text: string;
-    onImageData?: (text: string, url: string, width: number, height: number) => void
+    onImageData?: (text: string, imageDataURL: string, textImageDataURL: string | undefined, width: number, height: number) => void
 }
 
 const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, text, onImageData }) => {
@@ -26,14 +26,33 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         }
         img.src = imageDataURL;
     }
-    const handleClickDownloadCoverImage = () => {
+    const handleClickDownloadCoverImage = async () => {
         if (canvas && image) {
             drawImage(canvas, null)
             const dataURL = canvas.toDataURL("image/png")
-            const link = document.createElement("a");
-            link.href = dataURL
-            link.download = "cover.png";
-            link.click();
+            // const link = document.createElement("a");
+            // link.href = dataURL
+            // link.download = "cover.png";
+            // link.click();
+            const body = {
+                'video_url': 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/944fd9f2-74d6-4367-b6ff-8ffb6c3a1482.mp4',
+                'image_data': dataURL
+            }
+            const response = await fetch('/api/image-over-text', {
+                method: "POST",
+                body: JSON.stringify(body)
+            })
+            console.log(JSON.stringify(body, null, 2))
+            if (response.ok) {
+                const data = await response.json()
+                console.log(data)
+            }
+            else {
+                console.log(response.status)
+                console.log(response)
+            }
+
+
 
             drawImage(canvas, image)
         }
@@ -74,11 +93,16 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
 
     useEffect(() => {
         if (image && canvas) {
-            drawImage(canvas, image)
-            if (onImageData) {
-                const dataURL = canvas.toDataURL("image/png");
-                onImageData?.(text, dataURL, image.width, image.height)
+            // drawImage(canvas, image)
+            let txtURL = undefined
+            if (text.length > 0) {
+                drawImage(canvas, null)
+                txtURL = canvas.toDataURL("image/png");
+
             }
+            drawImage(canvas, image)
+            const dataURL = canvas.toDataURL("image/png");
+            onImageData?.(text, dataURL, txtURL, image.width, image.height)
         }
     }, [image, canvas, text]);
 

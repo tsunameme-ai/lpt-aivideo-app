@@ -9,6 +9,8 @@ import LongrunIndicator from "../longrun-indicator"
 interface Img2VidComponentProps {
     isAdvancedView: boolean
     imageUrl: string
+    coverImageDataURL?: string
+    textImageDataURL?: string
     width: number,
     height: number
     onError?: (error: any) => void
@@ -25,7 +27,48 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
 
-    const onVideoGenerated = (outputs: Array<GenerationOutput>) => {
+    const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
+        if (props.textImageDataURL) {
+            setIsGeneratingVideo(true)
+            setErrorMessage('')
+            try {
+                const body = {
+                    'video_url': outputs[0].mediaUrl,
+                    'image_data': props.textImageDataURL
+                }
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: JSON.stringify(body)
+                })
+                console.log(`${res.status}`)
+                if (res.ok) {
+                    console.log(res)
+                    const { url } = await res.json()
+                    onVideoGenerateComleted([{
+                        mediaUrl: url,
+                        seed: outputs[0].seed
+                    }])
+                }
+                else {
+                    throw new Error(`Unable to overlay image on video ${res.status}`)
+                }
+            }
+            catch (e: any) {
+                setErrorMessage(e.message || 'Unable to overlay image on video')
+            }
+            finally {
+                setIsGeneratingVideo(false)
+            }
+        }
+        else {
+            onVideoGenerateComleted(outputs)
+        }
+        // setIsGeneratingVideo(false)
+        // setErrorMessage('')
+        // props.onVideoGenerated?.(outputs)
+
+    }
+    const onVideoGenerateComleted = (outputs: Array<GenerationOutput>) => {
         setIsGeneratingVideo(false)
         setErrorMessage('')
         props.onVideoGenerated?.(outputs)
@@ -57,7 +100,6 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
             const generationRequest = await response.json()
             if (generationRequest) {
                 setImg2VidRequest(generationRequest)
-                setIsGeneratingVideo(true)
             }
             else {
                 throw new Error('Unable to generate request')
@@ -65,6 +107,8 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
         }
         catch (e: any) {
             setErrorMessage(`Unable to generate video: ${e.message}`)
+        }
+        finally {
             setIsGeneratingVideo(false)
         }
     }

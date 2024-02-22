@@ -6,15 +6,13 @@ import ImageWithTextOverlay from "../image-text-overlay"
 interface TextOverlayProps {
     src: string
     text: string,
-    onImageData: (text: string, imgDataURL: string, width: number, height: number) => void
+    onImageData: (text: string, imgDataURL: string, textImageDataURL: string | undefined, width: number, height: number) => void
 }
 const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
     const [text, setText] = useState<string>(props.text)
-    const [imageDataURL, setImageDataURL] = useState<string>()
 
-    const onImageData = (text: string, url: string, width: number, height: number) => {
-        setImageDataURL(url)
-        props.onImageData?.(text, url, width, height)
+    const onImageData = (text: string, imageDataURL: string, textImageDataURL: string | undefined, width: number, height: number) => {
+        props.onImageData?.(text, imageDataURL, textImageDataURL, width, height)
     }
 
     return (<>
@@ -29,11 +27,6 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
             onImageData={onImageData}
             imageUrl={props.src}
             text={text} />
-        {imageDataURL &&
-            <>
-                <Spacer y={4} />
-
-            </>}
     </>)
 }
 
