@@ -30,6 +30,7 @@ export default function Page() {
 
     const onError = (e: Error) => {
         //setErrorMessage(e.message)
+        console.log(e.message)
         setIsGeneratingVideo(false)
     }
 

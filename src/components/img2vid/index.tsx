@@ -1,9 +1,7 @@
-import { GenerationOutput, GenerationRequest, /*GenerationType*/ } from "@/libs/types"
-import { /*Button,*/ Spacer, Input } from "@nextui-org/react"
+import { GenerationOutput, GenerationRequest } from "@/libs/types"
+import { Input } from "@nextui-org/react"
 import { useState } from "react"
-import ErrorComponent from "../error"
 import styles from "@/styles/home.module.css"
-//import LongrunIndicator from "../longrun-indicator"
 import { useGenerationContext } from "@/context/generation-context";
 
 interface Img2VidComponentProps {
@@ -25,7 +23,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     const [motionBucketId, setMotionBucketId] = useState<string>('127')
     const [noiseAugStrength, setNoiseAugStrength] = useState<string>('0.05')
     const [seed, setSeed] = useState<string>()
-    const [errorMessage, setErrorMessage] = useState<string>('')
+    //const [errorMessage, setErrorMessage] = useState<string>('')
     //const [img2VidRequest/*, setImg2VidRequest*/] = useState<GenerationRequest>()
 
     /*    
@@ -62,15 +60,6 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
         setNoiseAugStrength(v)
         gContext.setVideoNoiseAugStrength(parseInt(v))
     }
-
-    /*
-    {img2VidRequest &&
-                        <LongrunIndicator request={img2VidRequest}
-                            onError={onError}
-                            onComplete={onVideoGenerated}
-                        />}
-    <ErrorComponent errorMessage={errorMessage} />
-    */
 
     return (
         <>
