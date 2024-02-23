@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react"
 import RemoteImage from "../remote-image";
 import ErrorComponent from "../error";
 import styles from "@/styles/home.module.css";
+import { LocalImageData } from "@/libs/types";
 
 
 interface ImageWithTextOverlayProps {
     imageUrl: string;
     text: string;
-    onImageData?: (text: string, imgDataUrl: string, coverImgDataUrl: string, width: number, height: number) => void
+    onImageData?: (text: string, localImageData: LocalImageData) => void
 }
 
 const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, text, onImageData }) => {
@@ -26,12 +27,13 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         }
         img.src = imageDataURL;
     }
-    const drawCanvas = (canvas: HTMLCanvasElement, image: HTMLImageElement, renderImage: boolean) => {
-        const ctx = canvas.getContext("2d");
+    const drawImage = (cvs: HTMLCanvasElement, img: HTMLImageElement | null) => {
+        const ctx = cvs.getContext("2d");
         if (ctx) {
+            ctx.clearRect(0, 0, cvs.width, cvs.height)
             ctx.font = "35px Arial"
-            if (renderImage) {
-                ctx.drawImage(image, 0, 0)
+            if (img) {
+                ctx.drawImage(img, 0, 0)
             }
 
             const lines = text.split('\n')
@@ -40,7 +42,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
 
                 ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
                 const rectH = lineHeight * (lines.length + 2)
-                ctx.fillRect(0, canvas.height - rectH, canvas.width, rectH)
+                ctx.fillRect(0, cvs.height - rectH, cvs.width, rectH)
 
 
                 // Add your text drawing logic here
@@ -49,9 +51,9 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
                 ctx.textAlign = "center"
                 ctx.textBaseline = "bottom"
 
-                let cy = canvas.height - lineHeight;
+                let cy = cvs.height - lineHeight;
                 for (let i = lines.length - 1; i >= 0; i--) {
-                    ctx.fillText(lines[i], canvas.width / 2, cy);
+                    ctx.fillText(lines[i], cvs.width / 2, cy);
                     cy -= lineHeight
                 }
             }
@@ -61,16 +63,20 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
 
     useEffect(() => {
         if (image && canvas) {
-            if (onImageData) {
-                drawCanvas(canvas, image, false)
-                const coverDataUrl = canvas.toDataURL("image/png");
-                drawCanvas(canvas, image, true)
-                const dataURL = canvas.toDataURL("image/png");
-                onImageData?.(text, dataURL, coverDataUrl, image.width, image.height)
+            let txtURL = undefined
+            if (text.length > 0) {
+                drawImage(canvas, null)
+                txtURL = canvas.toDataURL("image/png")
             }
-            else {
-                drawCanvas(canvas, image, true)
-            }
+            drawImage(canvas, image)
+            const dataURL = canvas.toDataURL("image/png")
+            onImageData?.(text, {
+                remoteURL: imageUrl,
+                overlayImageDataURL: txtURL,
+                dataURL: dataURL,
+                width: image.width,
+                height: image.height
+            })
         }
     }, [image, canvas, text]);
 

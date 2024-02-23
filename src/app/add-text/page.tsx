@@ -30,21 +30,15 @@ export default function Page() {
         router.push('img2vid')
     }
 
-    const onTextOverlayChange = (text: string, imgDataUrl: string, overlayImgDataUrl: string, width: number, height: number) => {
+    const onTextOverlayChange = (text: string, localImage: LocalImageData) => {
         setCoverText(text)
-        setCoverImageData({
-            remoteURL: imageUrl!,
-            dataURL: imgDataUrl,
-            overlayImageDataURL: overlayImgDataUrl,
-            width,
-            height
-        })
+        setCoverImageData(localImage)
     }
 
     const handleClickDownload = () => {
         if (coverImageData) {
             const link = document.createElement("a");
-            link.href = coverImageData.dataURL;
+            link.href = coverImageData.dataURL!;
             link.download = "image.png";
             link.click();
         }

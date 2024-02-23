@@ -48,7 +48,8 @@ export default function Page() {
                             height: gContext.videoHeight,
                             motionButcketId: 1,
                             noiseAugStrength: 0.05,
-                            seed: 2233
+                            seed: 2233,
+                            overlayBase64: gContext.coverImageData.overlayImageDataURL
                         }
                     }),
                 })
