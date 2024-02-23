@@ -1,4 +1,4 @@
-import { Txt2imgInput, GenerationOutput, SDProvider } from "@/libs/types";
+import { Txt2imgInput, GenerationOutput, SDProvider, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
 import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
@@ -28,9 +28,9 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [scheduler, setScheduler] = useState<string | undefined>(undefined)
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
     const [clipSkip, setClipSkip] = useState<string>('1')
-    const [numOutput, setNumOutput] = useState<string>('1')
-    const [width, setWidth] = useState<string>('768')
-    const [height, setHeight] = useState<string>('512')
+    const [numOutput, setNumOutput] = useState<string>(DEFAULT_IMG_NUM_OUTPUT.toString())
+    const [width, setWidth] = useState<string>(DEFAULT_IMG_WIDTH.toString())
+    const [height, setHeight] = useState<string>(DEFAULT_IMG_HEIGHT.toString())
 
     const handlePPromptValueChange = (value: string) => {
         setPPromptValue(value)

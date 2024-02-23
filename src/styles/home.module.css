@@ -2,7 +2,7 @@
     color: #f1faee;
     text-align: left;
     min-width: 200px;
-    min-height: 100px;
+    min-height: 50px;
     width: 88%;
 }
 
@@ -19,13 +19,6 @@
     width: 100%;
 }
 
-.renderBtn {
-    width: 30%;
-    float: left;
-    vertical-align: middle;
-    text-align: left;
-    margin-top: 8px;
-}
 
 .modelSelect {
     width: 60%;
@@ -35,7 +28,8 @@
 
 .promptControls {
     width: 100%;
-    height: 56px;
+    height: 60px;
+    clear: both;
 }
 
 .centerCanvas {
@@ -45,13 +39,13 @@
 }
 
 .makeVideoBtn {
-    width: 50%;
+    width: 150px;
     float: right;
     text-align: right;
 }
 
 .backBtn {
-    width: 50%;
+    width: 30%;
     float: left;
     text-align: left;
 }
@@ -98,6 +92,12 @@
 
 .imagePreview {
     width: 100%;
+}
+
+.longrunIndicator {
+    width: 100%;
+    height: 60px;
+    clear: both;
 }
 
 .red {

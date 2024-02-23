@@ -1,5 +1,5 @@
 'use client'
-import { LocalImageData, GenerationOutput, Txt2imgInput } from '@/libs/types';
+import { LocalImageData, GenerationOutput, Txt2imgInput, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT } from '@/libs/types';
 import { createContext, useState, useEffect, useContext } from 'react';
 
 interface GenerationContextType {
@@ -24,7 +24,7 @@ interface GenerationContextType {
     videoSeed: number
     setVideoSeed: (value: number) => void
     videoNoiseAugStrength: number
-    setVideoNoiceAugStrength: (value: number) => void
+    setVideoNoiseAugStrength: (value: number) => void
 }
 
 const GenerationContext = createContext<GenerationContextType | undefined>(undefined);
@@ -36,8 +36,8 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useState<number>(0)
     const [coverText, setCoverText] = useState<string>('')
     const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(undefined)
-    const [videoWidth, setVideoWidth] = useState<number>(0)
-    const [videoHeight, setVideoHeight] = useState<number>(0)
+    const [videoWidth, setVideoWidth] = useState<number>(DEFAULT_VIDEO_WIDTH)
+    const [videoHeight, setVideoHeight] = useState<number>(DEFAULT_VIDEO_HEIGHT)
     const [videoSeed, setVideoSeed] = useState<number>(0)
     const [videoNoiseAugStrength, setVideoNoiseAugStrength] = useState<number>(0)
 
