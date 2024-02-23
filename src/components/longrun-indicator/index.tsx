@@ -12,13 +12,14 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
 
     const connectToStream = () => {
         const id = props.request.id
+        setConnectStatus('')
         console.log(`connectToStream ${id}`)
         // https://developer.mozilla.org/en-US/docs/Web/API/EventSource/message_event#examples
         const eventSource = new EventSource(`/api/stream?id=${id}`)
         eventSource.onerror = () => {
             eventSource.close()
-            setConnectStatus('🔴')
-            props.onError?.(new Error('Error occured while fething generation result'))
+            setConnectStatus('🔴 Error occured while fetching the video')
+            props.onError?.(new Error('Error occured while fetching the video'))
         }
         eventSource.onmessage = (ev: MessageEvent) => {
             const data = JSON.parse(ev.data)
@@ -48,7 +49,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
 
 
     return <>
-        {connectStatus} | job id:{props.request.id}
+        {connectStatus} (id:{props.request.id})
     </>
 }
 
