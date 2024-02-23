@@ -30,11 +30,12 @@ export default function Page() {
         router.push('img2vid')
     }
 
-    const onTextOverlayChange = (text: string, imgDataUrl: string, width: number, height: number) => {
+    const onTextOverlayChange = (text: string, imgDataUrl: string, overlayImgDataUrl: string, width: number, height: number) => {
         setCoverText(text)
         setCoverImageData({
             remoteURL: imageUrl!,
             dataURL: imgDataUrl,
+            overlayImageDataURL: overlayImgDataUrl,
             width,
             height
         })

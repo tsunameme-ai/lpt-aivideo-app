@@ -15,9 +15,9 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
     const [imageDataURL, setImageDataURL] = useState<string>()
     const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
-    const onImageData = (text: string, url: string, width: number, height: number) => {
-        setImageDataURL(url)
-        props.onImageData?.(text, url, width, height)
+    const onImageData = (text: string, imgDataUrl: string, overlayImgDataUrl: string, width: number, height: number) => {
+        setImageDataURL(imgDataUrl)
+        props.onImageData?.(text, imgDataUrl, overlayImgDataUrl, overlayImgDataUrl, width, height)
         setImageLoaded(true)
     }
 

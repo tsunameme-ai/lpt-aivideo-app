@@ -53,6 +53,7 @@ export type LocalImageData = {
     dataURL: string,
     width: number,
     height: number
+    overlayImageDataURL?: string
 }
 
 export type SDProvider = {

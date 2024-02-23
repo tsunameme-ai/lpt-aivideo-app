@@ -42,8 +42,9 @@ export default function Page() {
                     gContext.coverImageData.remoteURL, gContext.videoWidth,
                     gContext.videoHeight, 1, 0.05, 2233)
 
-                if (generationRequest)
+                if (generationRequest) {
                     setImg2VidRequest(generationRequest)
+                }
 
             } catch (e) {
                 console.log('video gen error')
