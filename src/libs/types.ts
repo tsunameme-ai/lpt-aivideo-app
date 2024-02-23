@@ -52,3 +52,9 @@ export type SDProvider = {
     loras?: Array<{ value: string, label: string, baseModel?: string }>
     schedulers?: Array<{ value: string, label: string, default?: boolean }>
 }
+
+export const DEFAULT_IMG_WIDTH = 512
+export const DEFAULT_IMG_HEIGHT = 512
+export const DEFAULT_VIDEO_WIDTH = 512
+export const DEFAULT_VIDEO_HEIGHT = 512
+export const DEFAULT_IMG_NUM_OUTPUT = 3
