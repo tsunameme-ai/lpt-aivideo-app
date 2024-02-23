@@ -1,6 +1,4 @@
 import { GenerationOutput, Img2vidInput, Txt2imgInput } from '../types'
-import { GenerationType } from "@/libs/types"
-
 export class LivepeerAPI {
 
     public async txt2img(params: Txt2imgInput): Promise<Array<GenerationOutput>> {
@@ -44,36 +42,6 @@ export class LivepeerAPI {
             method: 'POST',
             body: fd,
         }, 600000)
-    }
-
-    public async generateVideo(imageUrl: string, width: number, height: number, motionBucketId: number,
-        noiseAugStrength: number, seed: number) {
-        try {
-            const response = await fetch('/api/generate', {
-                method: 'POST',
-                cache: 'no-cache',
-                body: JSON.stringify({
-                    type: GenerationType.IMG2VID, input: {
-                        imageUrl: imageUrl,
-                        width: width,
-                        height: height,
-                        motionButcketId: motionBucketId,
-                        noiseAugStrength: noiseAugStrength,
-                        seed: seed
-                    }
-                }),
-            })
-
-            const generationRequest = await response.json()
-            if (generationRequest)
-                return generationRequest
-            else
-                return null
-
-        }
-        catch (e: any) {
-            throw new Error(`Unable to generate video: ${e.message}`)
-        }
     }
 
     private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<Array<GenerationOutput>> {
