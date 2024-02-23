@@ -1,27 +1,66 @@
 'use client'
 import { useState } from "react"
-import { GenerationOutput } from "@/libs/types"
+import { useRouter } from 'next/navigation'
+import { GenerationOutput, GenerationRequest } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
-import { Spacer, Image, Link } from "@nextui-org/react"
+import { Spacer, Image, Link, Button } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
 import React from "react"
 import { useGenerationContext } from "@/context/generation-context"
 import AdvancedIndicator from "@/components/advanced-indicator"
 import ErrorComponent from "@/components/error"
-
-
+import { LivepeerAPI } from "@/libs/external/livepeer";
+import LongrunIndicator from "@/components/longrun-indicator"
 
 export default function Page() {
+    const router = useRouter()
     const gContext = useGenerationContext()
     const [videoOutput, setVideoOutput] = useState<GenerationOutput | undefined>(undefined)
+    const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
+    const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
+    //const [errorMessage, setErrorMessage] = useState<string>('')
+
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
     const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
         if (outputs.length > 0) {
             setVideoOutput(outputs[0])
         }
+        setIsGeneratingVideo(false)
     }
 
-    //const Img2VidComponentRef = useRef()
+    const onError = (e: Error) => {
+        //setErrorMessage(e.message)
+        console.log(e.message)
+        setIsGeneratingVideo(false)
+    }
+
+    const handleGenerateVideoClick = async () => {
+        if (gContext.coverImageData) {
+            try {
+                setIsGeneratingVideo(true)
+                const generationRequest = await new LivepeerAPI().generateVideo(
+                    gContext.coverImageData.remoteURL, gContext.videoWidth,
+                    gContext.videoHeight, 1, 0.05, 2233)
+
+                if (generationRequest)
+                    setImg2VidRequest(generationRequest)
+
+            } catch (e) {
+                console.log('video gen error')
+                console.log(e)
+                setIsGeneratingVideo(false)
+            }
+
+        }
+
+    }
+
+    /*
+        <div>
+            <ErrorComponent errorMessage={errorMessage} />
+        </div>
+    */
+
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
@@ -38,16 +77,42 @@ export default function Page() {
 
                             <Img2VidComponent
                                 isAdvancedView={gContext.isAdvancedView}
-                                width={gContext.coverImageData.width}
-                                height={gContext.coverImageData.height}
+                                width={gContext.videoWidth}
+                                height={gContext.videoHeight}
                                 imageUrl={gContext.coverImageData.remoteURL}
-                                onVideoGenerated={onVideoGenerated} />
+                                onVideoGenerated={onVideoGenerated}
+                                isGeneratingVideo={isGeneratingVideo}
+                                img2VidRequest={img2VidRequest}
+                            />
                         </>}
+                        <div className="promptControls">
+                            <Button className="float-left" color="primary" onClick={() => router.back()} size="md">Back</Button>
+                            <Button
+                                isLoading={isGeneratingVideo}
+                                className="float-right"
+                                color="primary"
+                                onPress={handleGenerateVideoClick}
+                            >
+                                Generate
+                            </Button>
+                        </div>
+
 
                         {!gContext.coverImageData && <>
                             <ErrorComponent errorMessage="No Image" />
                             <Link href='/txt2vid'>Generate Image</Link>
                         </>}
+
+                        {img2VidRequest &&
+                            <div className={styles.longrunIndicator}>
+                                <LongrunIndicator request={img2VidRequest}
+                                    onError={onError}
+                                    onComplete={onVideoGenerated}
+                                />
+                            </div>
+                        }
+
+
                     </div>
                 </div>
             </section>

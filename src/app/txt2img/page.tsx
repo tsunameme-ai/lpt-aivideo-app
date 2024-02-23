@@ -54,13 +54,12 @@ export default function Page() {
                     <Spacer y={8} />
 
                     {imageOutputs.length == 1 && <>
-                        <img className={styles.center} src={imageOutputs[0].mediaUrl} alt={imageOutputs[0].mediaUrl} />
+                        <Image className={styles.center} src={imageOutputs[0].mediaUrl} alt={imageOutputs[0].mediaUrl} />
                         <Spacer y={8} />
                         <Button className="w-full" color="primary" onPress={handleClickNext}>Next</Button>
                     </>}
 
                     {imageOutputs.length > 1 && <>
-
                         <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false} afterChange={onImageOutputSelected}>
                             {imageOutputs.map((item: GenerationOutput, key: number) => (
                                 < div key={key} >
