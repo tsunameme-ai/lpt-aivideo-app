@@ -35,7 +35,7 @@ export class SDAPI {
             "noise_aug_strength": params.noiseAugStrength,
             "overlay_base64": params.overlayBase64
         }
-        const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/image-to-video`
+        const url = process.env.NEXT_PUBLIC_API_ENDPOINT_IMG2VID!
         return await this.sendRequest(url, {
             cache: 'no-cache',
             method: 'POST',
