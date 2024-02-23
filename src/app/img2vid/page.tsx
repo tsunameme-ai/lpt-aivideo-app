@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
-import { GenerationOutput, GenerationRequest } from "@/libs/types"
+import { GenerationOutput, GenerationRequest, GenerationType } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
 import { Spacer, Image, Link, Button } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
@@ -9,7 +9,6 @@ import React from "react"
 import { useGenerationContext } from "@/context/generation-context"
 import AdvancedIndicator from "@/components/advanced-indicator"
 import ErrorComponent from "@/components/error"
-import { LivepeerAPI } from "@/libs/external/livepeer";
 import LongrunIndicator from "@/components/longrun-indicator"
 
 export default function Page() {
@@ -38,12 +37,26 @@ export default function Page() {
         if (gContext.coverImageData) {
             try {
                 setIsGeneratingVideo(true)
-                const generationRequest = await new LivepeerAPI().generateVideo(
-                    gContext.coverImageData.remoteURL, gContext.videoWidth,
-                    gContext.videoHeight, 1, 0.05, 2233)
 
-                if (generationRequest)
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    cache: 'no-cache',
+                    body: JSON.stringify({
+                        type: GenerationType.IMG2VID, input: {
+                            imageUrl: gContext.coverImageData.remoteURL,
+                            width: gContext.videoWidth,
+                            height: gContext.videoHeight,
+                            motionButcketId: 1,
+                            noiseAugStrength: 0.05,
+                            seed: 2233
+                        }
+                    }),
+                })
+
+                const generationRequest = await response.json()
+                if (generationRequest) {
                     setImg2VidRequest(generationRequest)
+                }
 
             } catch (e) {
                 console.log('video gen error')
