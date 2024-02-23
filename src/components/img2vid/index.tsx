@@ -33,6 +33,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
             setErrorMessage('')
             try {
                 const body = {
+                    'width': width,
                     'video_url': outputs[0].mediaUrl,
                     'image_data': props.textImageDataURL
                 }
