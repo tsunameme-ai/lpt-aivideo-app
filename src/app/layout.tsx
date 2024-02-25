@@ -27,7 +27,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <GenerationContextProvider>
-            <header className='py-2'><NavigationComponent /></header>
+            <header className='py-1'><NavigationComponent /></header>
             {children}
           </GenerationContextProvider>
         </Providers>
