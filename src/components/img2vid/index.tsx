@@ -1,7 +1,6 @@
 import { GenerationOutput, GenerationRequest } from "@/libs/types"
 import { Input } from "@nextui-org/react"
 import { useState } from "react"
-import styles from "@/styles/home.module.css"
 import { useGenerationContext } from "@/context/generation-context";
 
 interface Img2VidComponentProps {
