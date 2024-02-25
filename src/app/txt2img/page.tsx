@@ -56,7 +56,6 @@ export default function Page() {
                     {imageOutputs.length == 1 && <>
                         <Image className={styles.center} src={imageOutputs[0].mediaUrl} alt={imageOutputs[0].mediaUrl} />
                         <Spacer y={8} />
-                        <Button className="w-full" color="primary" onPress={handleClickNext}>Next</Button>
                     </>}
 
                     {imageOutputs.length > 1 && <>
@@ -67,10 +66,13 @@ export default function Page() {
                                 </div>
                             ))}
                         </Slider>
-                        <Spacer y={14} />
-                        <Button className="w-full" color="primary" onPress={handleClickNext}>Next</Button>
                     </>}
                 </div>
+                {imageOutputs.length > 0 && <>
+                    <div className={styles.promptControls}>
+                        <Button className="w-full" color="primary" onPress={handleClickNext} >Next</Button>
+                    </div>
+                </>}
             </section >
         </>
     )

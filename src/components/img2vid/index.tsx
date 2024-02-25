@@ -1,7 +1,6 @@
 import { GenerationOutput, GenerationRequest } from "@/libs/types"
 import { Input } from "@nextui-org/react"
 import { useState } from "react"
-import styles from "@/styles/home.module.css"
 import { useGenerationContext } from "@/context/generation-context";
 
 interface Img2VidComponentProps {
@@ -65,7 +64,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
-                <div className={styles.centerSection}>
+                <div>
                     {props.isAdvancedView &&
                         <div className='grid grid-cols-2 gap-4'>
                             <Input

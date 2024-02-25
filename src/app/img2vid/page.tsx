@@ -69,12 +69,6 @@ export default function Page() {
 
     }
 
-    /*
-        <div>
-            <ErrorComponent errorMessage={errorMessage} />
-        </div>
-    */
-
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
@@ -88,7 +82,6 @@ export default function Page() {
 
                         {gContext.coverImageData && <>
                             {!videoOutput && <Image className={styles.imagePreview} src={gContext.coverImageData.dataURL} alt={gContext.coverImageData.dataURL} />}
-
                             <Img2VidComponent
                                 isAdvancedView={gContext.isAdvancedView}
                                 width={gContext.videoWidth}
@@ -99,18 +92,6 @@ export default function Page() {
                                 img2VidRequest={img2VidRequest}
                             />
                         </>}
-                        <div className="promptControls">
-                            <Button className="float-left" color="primary" onClick={() => router.back()} size="md">Back</Button>
-                            <Button
-                                isLoading={isGeneratingVideo}
-                                className="float-right"
-                                color="primary"
-                                onPress={handleGenerateVideoClick}
-                            >
-                                Generate
-                            </Button>
-                        </div>
-
 
                         {!gContext.coverImageData && <>
                             <ErrorComponent errorMessage="No Image" />
@@ -126,7 +107,21 @@ export default function Page() {
                             </div>
                         }
 
-
+                    </div>
+                </div>
+                <div className="promptControls">
+                    <div className={styles.backBtn}>
+                        <Button color="primary" onClick={() => router.back()} size="md">Back</Button>
+                    </div>
+                    <div className={styles.makeVideoBtn}>
+                        <Button
+                            isLoading={isGeneratingVideo}
+                            className="float-right"
+                            color="primary"
+                            onPress={handleGenerateVideoClick}
+                        >
+                            Generate
+                        </Button>
                     </div>
                 </div>
             </section>

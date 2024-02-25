@@ -1,9 +1,18 @@
 .centerSection {
     color: #f1faee;
     text-align: left;
-    min-width: 200px;
-    min-height: 50px;
+    min-width: 300px;
+    min-height: 520px;
     width: 88%;
+}
+
+.containerRelative {
+    position: relative;
+}
+
+.promptControls {
+    width: 88%;
+    clear: both;
 }
 
 .centerLanding {
@@ -19,17 +28,10 @@
     width: 100%;
 }
 
-
 .modelSelect {
     width: 60%;
     float: right;
     text-align: right;
-}
-
-.promptControls {
-    width: 100%;
-    height: 60px;
-    clear: both;
 }
 
 .centerCanvas {
@@ -82,12 +84,9 @@
     top: 2%;
 }
 
-.containerRelative {
-    position: relative;
-}
-
 .videoPreview {
     width: 100%;
+    background-color: burlywood;
 }
 
 .imagePreview {
@@ -98,6 +97,17 @@
     width: 100%;
     height: 60px;
     clear: both;
+}
+
+.renderBtn {
+    background-color: transparent;
+    position: absolute;
+    right: -8px;
+    bottom: -8px;
+}
+
+.textareaControl {
+    position: relative
 }
 
 .red {

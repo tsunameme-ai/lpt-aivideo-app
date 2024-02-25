@@ -59,10 +59,16 @@ export default function Page() {
                                 onImageData={onTextOverlayChange}
                                 onDownloadClick={handleClickDownload} />
                         </div>
-                        <Spacer y={2} />
+                    </>}
 
+                    {!imageUrl && <>
+                        <ErrorComponent errorMessage="No image" />
+                        <Link href={'/txt2img'}>Generate Image</Link>
+                    </>}
+                </div>
+                {imageUrl &&
+                    <>
                         <div className="promptControls">
-
                             <div className={styles.makeVideoBtn}>
                                 <Button color='primary' onPress={handleClickToVideo}>Next</Button>
                             </div>
@@ -71,12 +77,6 @@ export default function Page() {
                             </div>
                         </div>
                     </>}
-
-                    {!imageUrl && <>
-                        <ErrorComponent errorMessage="No image" />
-                        <Link href={'/txt2img'}>Generate Image</Link>
-                    </>}
-                </div>
             </section>
         </>
     )
