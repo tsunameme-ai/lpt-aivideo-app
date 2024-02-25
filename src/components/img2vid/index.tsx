@@ -64,7 +64,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
-                <div className={styles.centerSection}>
+                <div>
                     {props.isAdvancedView &&
                         <div className='grid grid-cols-2 gap-4'>
                             <Input

@@ -5,6 +5,7 @@ import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org
 import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
 import styles from "@/styles/home.module.css";
+import { FaRegPlayCircle } from "react-icons/fa"
 
 interface Txt2ImgComponentProps {
     sdProvider: SDProvider
@@ -58,7 +59,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
 
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
-            setPPromptErrorMessage('Please set prompt message')
+            //setPPromptErrorMessage('Please set prompt message')
             return
         }
 
@@ -97,17 +98,23 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         }
     }
 
-
     return (
         <>
-            <Textarea
-                label=''
-                placeholder='Try something like "a cat drinks water on the beach"'
-                className={styles.textPrompt}
-                value={pPromptValue}
-                errorMessage={pPromptErrorMessage}
-                onValueChange={handlePPromptValueChange}
-            />
+            <div className={styles.textareaControl}>
+                <Textarea
+                    maxRows={4}
+                    label=''
+                    placeholder='Try something like "a cat drinks water on the beach"'
+                    className={styles.textPrompt}
+                    value={pPromptValue}
+                    errorMessage={pPromptErrorMessage}
+                    onValueChange={handlePPromptValueChange}
+                />
+                <Button isIconOnly color="success" variant="light" className={styles.renderBtn} onPress={generateImage} isLoading={isLoading}>
+                    <FaRegPlayCircle />
+                </Button>
+                <ErrorComponent errorMessage={errorMessage} />
+            </div>
             <Spacer y={1} />
             <div hidden={!props.isAdvancedView}>
                 <Textarea
@@ -176,11 +183,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         label='Num of Images'
                         value={numOutput}
                         onValueChange={setNumOutput} />
-                </div>
-                <Spacer y={4} />
-            </div>
-            <div className={styles.promptControls}>
-                <div className={styles.modelSelect}>
                     <Select
                         defaultSelectedKeys={[baseModel]}
                         onSelectionChange={handleSetBaseModel}
@@ -193,14 +195,10 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                             </SelectItem>
                         ))}
                     </Select>
-                </div >
-                <div className={styles.renderBtn}>
-                    <Button color='secondary' variant='solid' size="md" onPress={generateImage} isLoading={isLoading}>
-                        Generate
-                    </Button >
                 </div>
+                <Spacer y={4} />
             </div>
-            <ErrorComponent errorMessage={errorMessage} />
+
         </>
 
     )

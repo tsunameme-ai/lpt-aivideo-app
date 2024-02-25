@@ -27,6 +27,7 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
 
     return (<>
         <Textarea
+            maxRows={4}
             label='Try something sassy'
             placeholder=''
             value={text}
