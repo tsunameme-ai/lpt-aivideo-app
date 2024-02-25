@@ -7,6 +7,7 @@ import { useGenerationContext } from "@/context/generation-context";
 interface Img2VidComponentProps {
     isAdvancedView: boolean
     imageUrl: string
+    overlayImage?: string
     width: number
     height: number
     onError?: (error: any) => void

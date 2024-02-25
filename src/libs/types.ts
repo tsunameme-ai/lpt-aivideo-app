@@ -4,6 +4,14 @@ export type Txt2vidInput = {
     seconds: number,
     seed?: number
 }
+export type Img2vidNativeInput = {
+    imageUrl: string,
+    motionButcketId: number,
+    noiseAugStrength: number,
+    width: number,
+    height: number,
+    overlayBase64?: string
+}
 export type Img2vidInput = {
     imageUrl?: string,
     motionButcketId: number,
@@ -37,7 +45,7 @@ export enum GenerationType {
 export type GenerationRequest = {
     id: string,
     type: GenerationType,
-    input: Txt2imgInput | Img2vidInput
+    input: Txt2imgInput | Img2vidNativeInput
     output?: GenerationOutput
 }
 export type LocalImageData = {
@@ -45,6 +53,7 @@ export type LocalImageData = {
     dataURL: string,
     width: number,
     height: number
+    overlayImageDataURL?: string
 }
 
 export type SDProvider = {
