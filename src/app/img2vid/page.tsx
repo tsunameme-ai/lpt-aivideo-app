@@ -79,6 +79,7 @@ export default function Page() {
         i2vInput.motionBucketId = mbi
         i2vInput.noiseAugStrength = nas
         i2vInput.seed = seed
+        i2vInput.modelId = model
         setI2vInput(i2vInput)
     }
 

@@ -40,7 +40,6 @@ export default function Page() {
                     <div>Step 1: Write prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={2} />
                     <Txt2ImgComponent
-                        sdConfig={gContext.config}
                         isAdvancedView={gContext.isAdvancedView}
                         onImagesGenerated={onImagesGenerated} />
                     <Spacer y={8} />
