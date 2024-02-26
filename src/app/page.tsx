@@ -11,13 +11,13 @@ export default function Home() {
   return (
     <section className='flex flex-col items-center justify-center'>
       <div className={styles.centerLanding}>
-
-        <h2>Make ridiculous <span className={styles.red}>artificial expressions</span></h2>
-        <Spacer y={4}></Spacer>
-        <h5>Let us get weird together ¯\_(ツ)_/¯</h5>
-        <Spacer y={16}></Spacer>
-        <Button size='lg' color='primary' onPress={handleTxt2img}>{"Get Started"}</Button>
-
+        <h1>Create <span className='italic'>ridonkulous</span> <span className={styles.red}>internet expressions</span></h1>
+        <Spacer y={28}></Spacer>
+      </div>
+      <h5>Let us get weird together ¯\_(ツ)_/¯</h5>
+      <Spacer y={2} />
+      <div className={styles.promptControls}>
+        <Button size='lg' className={styles.nextBtn} onPress={handleTxt2img}>Get Started</Button>
       </div>
     </section >
 
