@@ -128,7 +128,7 @@ export default function Page() {
                             onPress={() => router.back()}
                             size="lg"
                         >
-                            Back
+                            <h5>Back</h5>
                         </Button>
                     </div>
                     <div className='float-right'>
@@ -138,7 +138,7 @@ export default function Page() {
                             isLoading={isGeneratingVideo}
                             onPress={handleGenerateVideoClick}
                         >
-                            Generate
+                            <h5>Generate</h5>
                         </Button>
                     </div>
                 </div>
