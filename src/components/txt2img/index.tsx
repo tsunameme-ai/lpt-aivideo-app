@@ -56,6 +56,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         gContext.setCoverText('')
         gContext.setT2iInput(undefined)
         gContext.setT2iOutputs([])
+        gContext.setI2vInput(undefined)
 
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
