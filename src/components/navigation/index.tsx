@@ -1,6 +1,6 @@
 'use client'
 import React from "react";
-import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand } from "@nextui-org/react";
 
 
 const NavigationComponent: React.FC = () => {
@@ -19,6 +19,9 @@ const NavigationComponent: React.FC = () => {
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                     className="sm:hidden"
                 />
+                <NavbarBrand>
+                    <p><a href="">Groove</a></p>
+                </NavbarBrand>
             </NavbarContent>
             <NavbarMenu>
                 {menuItems.map((item, index) => (
