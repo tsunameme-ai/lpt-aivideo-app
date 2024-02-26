@@ -1,5 +1,5 @@
 'use client'
-import { LocalImageData, GenerationOutput, Txt2imgInput, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT, Img2vidNativeInput } from '@/libs/types';
+import { LocalImageData, GenerationOutput, Txt2imgInput, Img2vidNativeInput } from '@/libs/types';
 import { createContext, useState, useEffect, useContext } from 'react';
 
 interface GenerationContextType {
