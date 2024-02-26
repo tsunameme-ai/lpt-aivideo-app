@@ -20,7 +20,7 @@ const NavigationComponent: React.FC = () => {
                     className="sm:hidden"
                 />
                 <NavbarBrand>
-                    <p><a href="">Groove</a></p>
+                    <p className="font-bold text-inherit"><a href="">Groove</a></p>
                 </NavbarBrand>
             </NavbarContent>
             <NavbarMenu>
