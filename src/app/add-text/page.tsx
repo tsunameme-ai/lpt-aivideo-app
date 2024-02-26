@@ -73,12 +73,24 @@ export default function Page() {
                 </div>
                 {imageUrl &&
                     <>
-                        <div className="promptControls">
-                            <div className={styles.makeVideoBtn}>
-                                <Button color='primary' onPress={handleClickToVideo}>Next</Button>
+                        <div className={styles.promptControls}>
+                            <div className='float-right'>
+                                <Button
+                                    className={styles.nextBtn}
+                                    onPress={handleClickToVideo}
+                                    size="lg"
+                                >
+                                    Next
+                                </Button>
                             </div>
-                            <div className={styles.backBtn}>
-                                <Button color="primary" onClick={() => router.back()}>Back</Button>
+                            <div className='float-left'>
+                                <Button
+                                    className={styles.backBtn}
+                                    onClick={() => router.back()}
+                                    size="lg"
+                                >
+                                    Back
+                                </Button>
                             </div>
                         </div>
                     </>}
