@@ -5,16 +5,17 @@ export type Txt2vidInput = {
     seed?: number
 }
 export type Img2vidNativeInput = {
-    imageUrl: string,
-    motionButcketId: number,
+    imageUrl?: string,
+    motionBucketId: number,
     noiseAugStrength: number,
     width: number,
     height: number,
+    seed?: number
     overlayBase64?: string
 }
 export type Img2vidInput = {
     imageUrl?: string,
-    motionButcketId: number,
+    motionBucketId: number,
     noiseAugStrength: number,
     width: number,
     height: number,
@@ -66,4 +67,6 @@ export const DEFAULT_IMG_WIDTH = 512
 export const DEFAULT_IMG_HEIGHT = 512
 export const DEFAULT_VIDEO_WIDTH = 512
 export const DEFAULT_VIDEO_HEIGHT = 512
+export const DEFAULT_MOTION_BUCKET_ID = 50
+export const DEFAULT_NOISE_AUG_STRENGTH = 0.05
 export const DEFAULT_IMG_NUM_OUTPUT = 3

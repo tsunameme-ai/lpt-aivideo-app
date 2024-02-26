@@ -33,7 +33,7 @@ export class LivepeerAPI {
         fd.append('model_id', 'stabilityai/stable-video-diffusion-img2vid-xt')
         fd.append('width', params.width.toString())
         fd.append('height', params.height.toString())
-        fd.append('motion_bucket_id', params.motionButcketId.toString())
+        fd.append('motion_bucket_id', params.motionBucketId.toString())
         fd.append('noise_aug_strength', params.noiseAugStrength.toString())
 
         const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/image-to-video`

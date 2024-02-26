@@ -1,5 +1,5 @@
 'use client'
-import { LocalImageData, GenerationOutput, Txt2imgInput, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT } from '@/libs/types';
+import { LocalImageData, GenerationOutput, Txt2imgInput, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT, Img2vidNativeInput } from '@/libs/types';
 import { createContext, useState, useEffect, useContext } from 'react';
 
 interface GenerationContextType {
@@ -17,14 +17,9 @@ interface GenerationContextType {
     setCoverText: (value: string) => void
     coverImageData: LocalImageData | undefined
     setCoverImageData: (value: LocalImageData | undefined) => void
-    videoWidth: number
-    setVideoWidth: (value: number) => void
-    videoHeight: number
-    setVideoHeight: (value: number) => void
-    videoSeed: number
-    setVideoSeed: (value: number) => void
-    videoNoiseAugStrength: number
-    setVideoNoiseAugStrength: (value: number) => void
+
+    i2vInput: Img2vidNativeInput | undefined
+    setI2vInput: (value: Img2vidNativeInput | undefined) => void
 }
 
 const GenerationContext = createContext<GenerationContextType | undefined>(undefined);
@@ -36,10 +31,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useState<number>(0)
     const [coverText, setCoverText] = useState<string>('')
     const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(undefined)
-    const [videoWidth, setVideoWidth] = useState<number>(DEFAULT_VIDEO_WIDTH)
-    const [videoHeight, setVideoHeight] = useState<number>(DEFAULT_VIDEO_HEIGHT)
-    const [videoSeed, setVideoSeed] = useState<number>(0)
-    const [videoNoiseAugStrength, setVideoNoiseAugStrength] = useState<number>(0)
+    const [i2vInput, setI2vInput] = useState<Img2vidNativeInput | undefined>(undefined)
 
     useEffect(() => {
         // Optional: Clear context on unmount (comment out if not needed)
@@ -65,10 +57,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 // },
                 coverText, setCoverText,
                 coverImageData, setCoverImageData,
-                videoWidth, setVideoWidth,
-                videoHeight, setVideoHeight,
-                videoSeed, setVideoSeed,
-                videoNoiseAugStrength, setVideoNoiseAugStrength
+                i2vInput, setI2vInput
             }}>
             {children}
         </GenerationContext.Provider>

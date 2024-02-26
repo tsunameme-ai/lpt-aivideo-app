@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
-import { GenerationOutput, GenerationRequest, GenerationType } from "@/libs/types"
+import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutput, GenerationRequest, GenerationType, Img2vidNativeInput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
 import { Spacer, Image, Link, Button } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
@@ -17,6 +17,13 @@ export default function Page() {
     const [videoOutput, setVideoOutput] = useState<GenerationOutput | undefined>(undefined)
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
+    const [i2vInput, setI2vInput] = useState<Img2vidNativeInput>(gContext.i2vInput || {
+        imageUrl: gContext.coverImageData?.remoteURL || '',
+        width: DEFAULT_VIDEO_WIDTH,
+        height: DEFAULT_VIDEO_HEIGHT,
+        motionBucketId: DEFAULT_MOTION_BUCKET_ID,
+        noiseAugStrength: DEFAULT_NOISE_AUG_STRENGTH
+    })
     //const [errorMessage, setErrorMessage] = useState<string>('')
 
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
@@ -37,20 +44,18 @@ export default function Page() {
         if (gContext.coverImageData) {
             try {
                 setIsGeneratingVideo(true)
+                gContext.setI2vInput(i2vInput)
+                const input = {
+                    ...i2vInput,
+                    imageUrl: gContext.coverImageData.remoteURL,
+                    overlayBase64: gContext.coverImageData.overlayImageDataURL
+                }
 
                 const response = await fetch('/api/generate', {
                     method: 'POST',
                     cache: 'no-cache',
                     body: JSON.stringify({
-                        type: GenerationType.IMG2VID, input: {
-                            imageUrl: gContext.coverImageData.remoteURL,
-                            width: gContext.videoWidth,
-                            height: gContext.videoHeight,
-                            motionButcketId: 1,
-                            noiseAugStrength: 0.05,
-                            seed: 2233,
-                            overlayBase64: gContext.coverImageData.overlayImageDataURL
-                        }
+                        type: GenerationType.IMG2VID, input: input
                     }),
                 })
 
@@ -68,6 +73,14 @@ export default function Page() {
         }
 
     }
+    const onI2VInputChange = (w: number, h: number, mbi: number, nas: number, seed: number | undefined) => {
+        i2vInput.width = w
+        i2vInput.height = h
+        i2vInput.motionBucketId = mbi
+        i2vInput.noiseAugStrength = nas
+        i2vInput.seed = seed
+        setI2vInput(i2vInput)
+    }
 
     return (
         <>
@@ -84,13 +97,12 @@ export default function Page() {
                             {!videoOutput && <Image className={styles.imagePreview} src={gContext.coverImageData.dataURL} alt={gContext.coverImageData.dataURL} />}
                             <Img2VidComponent
                                 isAdvancedView={gContext.isAdvancedView}
-                                width={gContext.videoWidth}
-                                height={gContext.videoHeight}
-                                imageUrl={gContext.coverImageData.remoteURL}
-                                onVideoGenerated={onVideoGenerated}
-                                isGeneratingVideo={isGeneratingVideo}
-                                img2VidRequest={img2VidRequest}
-                            />
+                                width={i2vInput.width}
+                                height={i2vInput.width}
+                                motionBucketId={i2vInput.motionBucketId}
+                                noiseAugStrength={i2vInput.noiseAugStrength}
+                                seed={i2vInput.seed}
+                                onI2VInputChange={onI2VInputChange} />
                         </>}
 
                         {!gContext.coverImageData && <>

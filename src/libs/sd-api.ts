@@ -31,7 +31,7 @@ export class SDAPI {
             "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
             "width": params.width,
             "height": params.height,
-            "motion_bucket_id": params.motionButcketId,
+            "motion_bucket_id": params.motionBucketId,
             "noise_aug_strength": params.noiseAugStrength,
             "overlay_base64": params.overlayBase64
         }
