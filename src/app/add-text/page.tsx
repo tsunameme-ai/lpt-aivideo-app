@@ -80,7 +80,7 @@ export default function Page() {
                                     onPress={handleClickToVideo}
                                     size="lg"
                                 >
-                                    Next
+                                    <h5>Next</h5>
                                 </Button>
                             </div>
                             <div className='float-left'>
@@ -89,7 +89,7 @@ export default function Page() {
                                     onClick={() => router.back()}
                                     size="lg"
                                 >
-                                    Back
+                                    <h5>Back</h5>
                                 </Button>
                             </div>
                         </div>

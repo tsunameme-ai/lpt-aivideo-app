@@ -25,6 +25,7 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
         props.onDownloadClick()
     }
 
+    //<FaShare className={styles.shareIcon} />
     return (<>
         <Textarea
             maxRows={4}
@@ -38,7 +39,6 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
             {imageLoaded &&
                 <>
                     <FaFileDownload className={styles.downloadIcon} onClick={onDownloadClick} />
-                    <FaShare className={styles.shareIcon} />
                 </>
             }
             <ImageWithTextOverlay
