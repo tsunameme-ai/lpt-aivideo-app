@@ -95,15 +95,21 @@ export default function Page() {
 
                     </div>
                 </div>
-                <div className="promptControls">
-                    <div className={styles.backBtn}>
-                        <Button color="primary" onClick={() => router.back()} size="md">Back</Button>
-                    </div>
-                    <div className={styles.makeVideoBtn}>
+                <div className={styles.promptControls}>
+                    <div className='float-left'>
                         <Button
+                            className={styles.backBtn}
+                            onPress={() => router.back()}
+                            size="lg"
+                        >
+                            Back
+                        </Button>
+                    </div>
+                    <div className='float-right'>
+                        <Button
+                            size="lg"
+                            className={styles.backBtn}
                             isLoading={isGeneratingVideo}
-                            className="float-right"
-                            color="primary"
                             onPress={handleGenerateVideoClick}
                         >
                             Generate

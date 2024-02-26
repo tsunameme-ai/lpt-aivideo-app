@@ -22,24 +22,7 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     const [motionBucketId, setMotionBucketId] = useState<string>('127')
     const [noiseAugStrength, setNoiseAugStrength] = useState<string>('0.05')
     const [seed, setSeed] = useState<string>()
-    //const [errorMessage, setErrorMessage] = useState<string>('')
-    //const [img2VidRequest/*, setImg2VidRequest*/] = useState<GenerationRequest>()
 
-    /*    
-        const onVideoGenerated = (outputs: Array<GenerationOutput>) => {
-            //setIsGeneratingVideo(false)
-            console.log('onVideoGenerated')
-            setErrorMessage('onVideoGenerated')
-            props.onVideoGenerated?.(outputs)
-    
-        }
-    */
-    /*
-        const onError = (e: Error) => {
-            setErrorMessage(e.message)
-            //setIsGeneratingVideo(false)
-        }
-    */
     const updateHeight = (v: string) => {
         setHeight(v)
         gContext.setVideoHeight(parseInt(v))
