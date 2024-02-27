@@ -21,7 +21,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [pPromptValue, setPPromptValue] = useState<string>(gContext.t2iInput?.pPrompt || '')
     const [nPromptValue, setNPromptValue] = useState<string>(gContext.t2iInput?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
     const [stepsValue, setStepsValue] = useState<string>((gContext.t2iInput?.steps || 20).toString())
-    const [seedValue, setSeedValue] = useState<string>(gContext.t2iInput?.seed || '')
+    const [seedValue, setSeedValue] = useState<string>(gContext.t2iInput?.seed?.toString() || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [pPromptErrorMessage, setPPromptErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -75,7 +75,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             nPrompt: nPromptValue,
             modelId: baseModel,
             steps: stepCount,
-            seed: seedValue.length > 0 ? seedValue : undefined,
+            seed: seedValue.length > 0 ? parseInt(seedValue) : undefined,
             guidanceScale: parseFloat(guidanceScale),
             scheduler: scheduler,
             width: parseInt(width),
