@@ -1,8 +1,9 @@
 'use client'
-import { LocalImageData, GenerationOutput, Txt2imgInput, Img2vidNativeInput } from '@/libs/types';
+import { LocalImageData, GenerationOutput, Txt2imgInput, Img2vidNativeInput, SDConfig } from '@/libs/types';
 import { createContext, useState, useEffect, useContext } from 'react';
 
 interface GenerationContextType {
+    config: SDConfig
     isAdvancedView: boolean
     setIsAdvancedView: (value: boolean) => void
 
@@ -41,9 +42,24 @@ export default function GenerationContextProvider({ children }: { children: Reac
         };
     }, []);
 
-    // const calculateSelectedOutput = (): GenerationOutput | undefined => {
-    //     return t2iOutputs.length > t2iOutputSelectedIndex ? t2iOutputs[t2iOutputSelectedIndex] : undefined
-    // };
+    const generationConfig = (): SDConfig => {
+        return {
+            'models': [
+                { value: 'ByteDance/SDXL-Lightning', label: 'SDXL Lightning', default: true },
+                { value: 'ByteDance/SDXL-Lightning-4step', label: 'SDXL Lightning 4step' },
+                { value: 'ByteDance/SDXL-Lightning-8step', label: 'SDXL Lightning 8step' },
+                { value: 'stabilityai/sd-turbo', label: 'SD Turbo' },
+                { value: 'runwayml/stable-diffusion-v1-5', label: 'SD v1.5', },
+                { value: 'stabilityai/sdxl-turbo', label: 'SDXL Turbo' },
+                { value: 'stabilityai/stable-diffusion-xl-base-1.0', label: 'SDXL 1.0' },
+                { value: 'prompthero/openjourney-v4', label: 'MidJourney V4' }
+            ],
+            'videoModels': [
+                { value: 'stable-video-diffusion-img2vid-xt', label: 'SVD', default: true },
+                { value: 'stabilityai/stable-video-diffusion-img2vid-xt-1-1', label: 'SVD 1.1' }
+            ]
+        }
+    };
 
     return (
         <GenerationContext.Provider
@@ -52,9 +68,9 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 t2iInput, setT2iInput,
                 t2iOutputs, setT2iOutputs,
                 t2iOutputSelectedIndex, setT2iOutputSelectedIndex,
-                // get selectedOutput() {
-                //     return calculateSelectedOutput();
-                // },
+                get config() {
+                    return generationConfig();
+                },
                 coverText, setCoverText,
                 coverImageData, setCoverImageData,
                 i2vInput, setI2vInput

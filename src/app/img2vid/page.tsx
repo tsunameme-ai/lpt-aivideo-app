@@ -22,9 +22,9 @@ export default function Page() {
         width: DEFAULT_VIDEO_WIDTH,
         height: DEFAULT_VIDEO_HEIGHT,
         motionBucketId: DEFAULT_MOTION_BUCKET_ID,
-        noiseAugStrength: DEFAULT_NOISE_AUG_STRENGTH
+        noiseAugStrength: DEFAULT_NOISE_AUG_STRENGTH,
+        modelId: gContext.config.videoModels.find(item => { return item.default === true })?.value!
     })
-    //const [errorMessage, setErrorMessage] = useState<string>('')
 
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
     const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
@@ -73,12 +73,13 @@ export default function Page() {
         }
 
     }
-    const onI2VInputChange = (w: number, h: number, mbi: number, nas: number, seed: number | undefined) => {
+    const onI2VInputChange = (w: number, h: number, mbi: number, nas: number, seed: number | undefined, model: string) => {
         i2vInput.width = w
         i2vInput.height = h
         i2vInput.motionBucketId = mbi
         i2vInput.noiseAugStrength = nas
         i2vInput.seed = seed
+        i2vInput.modelId = model
         setI2vInput(i2vInput)
     }
 
@@ -95,14 +96,16 @@ export default function Page() {
 
                         {gContext.coverImageData && <>
                             {!videoOutput && <Image className={styles.imagePreview} src={gContext.coverImageData.dataURL} alt={gContext.coverImageData.dataURL} />}
-                            <Img2VidComponent
+                            {<Img2VidComponent
                                 isAdvancedView={gContext.isAdvancedView}
+                                sdConfig={gContext.config}
                                 width={i2vInput.width}
                                 height={i2vInput.width}
+                                modelId={i2vInput.modelId}
                                 motionBucketId={i2vInput.motionBucketId}
                                 noiseAugStrength={i2vInput.noiseAugStrength}
                                 seed={i2vInput.seed}
-                                onI2VInputChange={onI2VInputChange} />
+                                onI2VInputChange={onI2VInputChange} />}
                         </>}
 
                         {!gContext.coverImageData && <>

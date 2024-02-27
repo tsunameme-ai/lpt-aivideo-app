@@ -5,6 +5,7 @@ export type Txt2vidInput = {
     seed?: number
 }
 export type Img2vidNativeInput = {
+    modelId: string,
     imageUrl?: string,
     motionBucketId: number,
     noiseAugStrength: number,
@@ -57,8 +58,9 @@ export type LocalImageData = {
     overlayImageDataURL?: string
 }
 
-export type SDProvider = {
+export type SDConfig = {
     models: Array<{ value: string, label: string, default?: boolean }>
+    videoModels: Array<{ value: string, label: string, default?: boolean }>
     loras?: Array<{ value: string, label: string, baseModel?: string }>
     schedulers?: Array<{ value: string, label: string, default?: boolean }>
 }
