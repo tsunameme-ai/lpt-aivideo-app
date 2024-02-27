@@ -45,7 +45,10 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const generationConfig = (): SDConfig => {
         return {
             'models': [
-                { value: 'stabilityai/sd-turbo', label: 'SD Turbo', default: true },
+                { value: 'ByteDance/SDXL-Lightning', label: 'SDXL Lightning', default: true },
+                { value: 'ByteDance/SDXL-Lightning-4step', label: 'SDXL Lightning 4step' },
+                { value: 'ByteDance/SDXL-Lightning-8step', label: 'SDXL Lightning 8step' },
+                { value: 'stabilityai/sd-turbo', label: 'SD Turbo' },
                 { value: 'runwayml/stable-diffusion-v1-5', label: 'SD v1.5', },
                 { value: 'stabilityai/sdxl-turbo', label: 'SDXL Turbo' },
                 { value: 'stabilityai/stable-diffusion-xl-base-1.0', label: 'SDXL 1.0' },
@@ -53,7 +56,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
             ],
             'videoModels': [
                 { value: 'stable-video-diffusion-img2vid-xt', label: 'SVD', default: true },
-                { value: 'stabilityai/stable-video-diffusion-img2vid-xt-1-1', label: 'SVD 1.1 XT' }
+                { value: 'stabilityai/stable-video-diffusion-img2vid-xt-1-1', label: 'SVD 1.1' }
             ]
         }
     };
