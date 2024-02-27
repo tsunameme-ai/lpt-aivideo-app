@@ -7,8 +7,9 @@ import NavigationComponent from "@/components/navigation"
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
-  title: 'Sleepy Dao',
-  description: 'Sleepy Dao is a cutting-edge platform that leverages the power of Livepeer and AI technology to seamlessly generate stunning images and videos, empowering users to bring their creative visions to life with ease and precision.'
+  title: 'Groove',
+  description: 'Groove a creative tool that leverages the latest AI capabilities of the Livepeer network to  \
+  empower users to bring their creative expressions to the internet.'
 }
 
 export const viewport: Viewport = {
