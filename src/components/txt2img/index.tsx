@@ -111,7 +111,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                     onValueChange={handlePPromptValueChange}
                 />
                 <Button isIconOnly size="lg" variant="light" className={styles.renderBtn} onPress={generateImage} isLoading={isLoading}>
-                    <FaRegPlayCircle />
+                    <FaRegPlayCircle size={20} />
                 </Button>
                 <ErrorComponent errorMessage={errorMessage} />
             </div>

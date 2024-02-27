@@ -61,7 +61,7 @@ export default function Page() {
                 </div>
                 {imageOutputs.length > 0 && <>
                     <div className={styles.promptControls}>
-                        <Button className={styles.nextBtn} onPress={handleClickNext} >Next</Button>
+                        <Button className={styles.nextBtn} onPress={handleClickNext} > <h5>Next</h5> </Button>
                     </div>
                 </>}
             </section >

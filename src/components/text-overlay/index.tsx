@@ -1,7 +1,7 @@
 import { Spacer, Textarea } from "@nextui-org/react"
 import { useState } from "react"
 import ImageWithTextOverlay from "../image-text-overlay"
-import { FaFileDownload, FaShare } from "react-icons/fa";
+import { FaFileDownload/*, FaShare */ } from "react-icons/fa";
 import styles from "@/styles/home.module.css";
 import { LocalImageData } from "@/libs/types";
 
@@ -24,6 +24,7 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
         props.onDownloadClick()
     }
 
+    //<FaShare className={styles.shareIcon} />
     return (<>
         <Textarea
             maxRows={4}
@@ -37,7 +38,6 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
             {imageLoaded &&
                 <>
                     <FaFileDownload className={styles.downloadIcon} onClick={onDownloadClick} />
-                    <FaShare className={styles.shareIcon} />
                 </>
             }
             <ImageWithTextOverlay

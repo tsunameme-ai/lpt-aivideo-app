@@ -17,7 +17,7 @@ export default function Home() {
       <h5>Let us get weird together ¯\_(ツ)_/¯</h5>
       <Spacer y={2} />
       <div className={styles.promptControls}>
-        <Button size='lg' className={styles.nextBtn} onPress={handleTxt2img}>Get Started</Button>
+        <Button size='lg' className={styles.nextBtn} onPress={handleTxt2img}><h5>Get Started</h5></Button>
       </div>
     </section >
 
