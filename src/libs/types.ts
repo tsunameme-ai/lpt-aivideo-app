@@ -27,7 +27,7 @@ export type Txt2imgInput = {
     pPrompt: string,
     nPrompt: string,
     modelId: string,
-    seed?: string
+    seed?: number
     guidanceScale?: number
     width: number,
     height: number,
