@@ -10,6 +10,7 @@ import { FaRegPlayCircle } from "react-icons/fa"
 interface Txt2ImgComponentProps {
     isAdvancedView: boolean
     onImagesGenerated: (generationOutput: Array<GenerationOutput>) => void
+    onImagesError: (error: any) => void
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
@@ -92,6 +93,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         }
         catch (error: any) {
             setErrorMessage(error.message || 'Something went wrong.')
+            props.onImagesError(error)
         }
         finally {
             setIsLoading(false)
