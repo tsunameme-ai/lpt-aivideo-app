@@ -54,9 +54,7 @@ export class SDAPI {
 
         try {
             const res = await fetch(url, { ...init, signal: controller.signal })
-            // console.log(res)
             clearTimeout(timeoutId)
-            // const res = await fetch(url, init)
             status = res.status
             resOutput = await this.parseResponse(res)
         }
@@ -80,12 +78,17 @@ export class SDAPI {
     private async parseResponse(res: Response): Promise<Array<GenerationOutput>> {
         if (res.ok) {
             const data = await res.json()
-            return data.images.map((item: { url: string, seed?: number }) => {
-                return {
-                    mediaUrl: item.url,
-                    seed: item.seed
-                }
-            })
+            if (data && data.images) {
+                return data.images.map((item: { url: string, seed?: number }) => {
+                    return {
+                        mediaUrl: item.url,
+                        seed: item.seed
+                    }
+                })
+            }
+            else {
+                throw new Error(`Empty data`)
+            }
         }
         let errorMessage = ''
         try {

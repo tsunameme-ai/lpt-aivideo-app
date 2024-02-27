@@ -23,6 +23,9 @@ export default function Page() {
     const onImagesGenerated = (outputs: Array<GenerationOutput>) => {
         setImageOutputs(outputs)
     }
+    const onImagesError = () => {
+        setImageOutputs([])
+    }
 
     const onImageOutputSelected = (value: number) => {
         setSeelectedOutputIndex(value)
@@ -41,7 +44,8 @@ export default function Page() {
                     <Spacer y={2} />
                     <Txt2ImgComponent
                         isAdvancedView={gContext.isAdvancedView}
-                        onImagesGenerated={onImagesGenerated} />
+                        onImagesGenerated={onImagesGenerated}
+                        onImagesError={onImagesError} />
                     <Spacer y={8} />
 
                     {imageOutputs.length == 1 && <>
@@ -52,8 +56,8 @@ export default function Page() {
                     {imageOutputs.length > 1 && <>
                         <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false} afterChange={onImageOutputSelected}>
                             {imageOutputs.map((item: GenerationOutput, key: number) => (
-                                < div key={key} >
-                                    <Image className={styles.center} src={item.mediaUrl} alt={item.mediaUrl} />
+                                <div key={key} >
+                                    <Image className={styles.center} src={item.mediaUrl} alt={item.seed?.toString()} />
                                 </div>
                             ))}
                         </Slider>
