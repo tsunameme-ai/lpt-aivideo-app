@@ -19,8 +19,8 @@ export default function Page() {
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
     const [i2vInput, setI2vInput] = useState<Img2vidNativeInput>(gContext.i2vInput || {
         imageUrl: gContext.coverImageData?.remoteURL || '',
-        width: DEFAULT_VIDEO_WIDTH,
-        height: DEFAULT_VIDEO_HEIGHT,
+        width: gContext.t2iInput?.width || DEFAULT_VIDEO_WIDTH,
+        height: gContext.t2iInput?.height || DEFAULT_VIDEO_HEIGHT,
         motionBucketId: DEFAULT_MOTION_BUCKET_ID,
         noiseAugStrength: DEFAULT_NOISE_AUG_STRENGTH,
         modelId: gContext.config.videoModels.find(item => { return item.default === true })?.value!
@@ -100,7 +100,7 @@ export default function Page() {
                                 isAdvancedView={gContext.isAdvancedView}
                                 sdConfig={gContext.config}
                                 width={i2vInput.width}
-                                height={i2vInput.width}
+                                height={i2vInput.height}
                                 modelId={i2vInput.modelId}
                                 motionBucketId={i2vInput.motionBucketId}
                                 noiseAugStrength={i2vInput.noiseAugStrength}
