@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import RemoteImage from "../remote-image";
 import ErrorComponent from "../error";
 import styles from "@/styles/home.module.css";
-import { LocalImageData } from "@/libs/types";
+import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, LocalImageData } from "@/libs/types";
 
 
 interface ImageWithTextOverlayProps {
@@ -15,10 +15,30 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
     const [image, setImage] = useState<HTMLImageElement | null>(null);
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
     const [errorMessage, setErrorMessage] = useState<string>('')
+    const [canvasWidth, setCanvasWidth] = useState<number>(DEFAULT_VIDEO_WIDTH)
+    const [canvasHeight, setCanvasHeight] = useState<number>(DEFAULT_VIDEO_HEIGHT)
+
+    const resizeRectangle = (width: number, height: number, maxW: number, maxH: number): { width: number, height: number, resized: boolean } => {
+        const aspectRatio = width / height;
+        if (width > maxW) {
+            const newWidth = maxW;
+            const newHeight = newWidth / aspectRatio;
+            return { width: newWidth, height: newHeight, resized: true };
+        }
+        if (height > maxH) {
+            const newHeight = maxH;
+            const newWidth = newHeight * aspectRatio;
+            return { width: newWidth, height: newHeight, resized: true };
+        }
+        return { width, height, resized: false }
+    }
 
     const onImageLoad = (imageDataURL: string) => {
         const img = new Image();
         img.onload = () => {
+            const { width, height } = resizeRectangle(img.width, img.height, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT)
+            setCanvasWidth(width)
+            setCanvasHeight(height)
             setImage(img)
             setErrorMessage('')
         };
@@ -33,7 +53,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
             ctx.clearRect(0, 0, cvs.width, cvs.height)
             ctx.font = "35px Arial"
             if (img) {
-                ctx.drawImage(img, 0, 0)
+                ctx.drawImage(img, 0, 0, cvs.width, cvs.height)
             }
 
             const lines = text.split('\n')
@@ -74,8 +94,8 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
                 remoteURL: imageUrl,
                 overlayImageDataURL: txtURL,
                 dataURL: dataURL,
-                width: image.width,
-                height: image.height
+                width: canvasWidth,
+                height: canvasHeight
             })
         }
     }, [image, canvas, text]);
@@ -85,7 +105,7 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
             <RemoteImage src={imageUrl} onComplete={onImageLoad} />
 
             {image && <>
-                <canvas className={styles.centerCanvas} ref={(ref) => setCanvas(ref)} width={image?.width || 0} height={image?.height || 0} />
+                <canvas className={styles.centerCanvas} ref={(ref) => setCanvas(ref)} width={canvasWidth} height={canvasHeight} />
             </>}
 
             <ErrorComponent errorMessage={errorMessage} />

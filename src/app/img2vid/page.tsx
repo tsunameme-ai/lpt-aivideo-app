@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutput, GenerationRequest, GenerationType, Img2vidNativeInput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
@@ -19,8 +19,8 @@ export default function Page() {
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
     const [i2vInput, setI2vInput] = useState<Img2vidNativeInput>(gContext.i2vInput || {
         imageUrl: gContext.coverImageData?.remoteURL || '',
-        width: gContext.t2iInput?.width || DEFAULT_VIDEO_WIDTH,
-        height: gContext.t2iInput?.height || DEFAULT_VIDEO_HEIGHT,
+        width: gContext.coverImageData?.width || DEFAULT_VIDEO_WIDTH,
+        height: gContext.coverImageData?.height || DEFAULT_VIDEO_HEIGHT,
         motionBucketId: DEFAULT_MOTION_BUCKET_ID,
         noiseAugStrength: DEFAULT_NOISE_AUG_STRENGTH,
         modelId: gContext.config.videoModels.find(item => { return item.default === true })?.value!

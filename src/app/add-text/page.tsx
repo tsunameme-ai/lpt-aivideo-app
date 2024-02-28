@@ -17,6 +17,7 @@ export default function Page() {
     const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(gContext.coverImageData)
     const [coverText, setCoverText] = useState<string>(gContext.coverText)
 
+
     useEffect(() => {
         const output = gContext.t2iOutputs[gContext.t2iOutputSelectedIndex]
         if (output) {
