@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutput, GenerationRequest, GenerationType, Img2vidNativeInput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
