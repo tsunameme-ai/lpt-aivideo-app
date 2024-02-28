@@ -85,7 +85,7 @@ export default function Page() {
 
     return (
         <>
-            <section className='flex flex-col items-center justify-center'>
+            <section className={styles.main}>
                 <div className={styles.centerSection}>
                     <div>Step 3: Turn it into a video {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />

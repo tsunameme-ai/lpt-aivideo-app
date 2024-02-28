@@ -1,26 +1,38 @@
+.main {
+    text-align: center;
+}
+
 .centerSection {
     color: #f1faee;
     text-align: left;
+    margin: auto;
+    width: 90%;
     min-width: 300px;
+    max-width: 512px;
     min-height: 520px;
-    width: 88%;
 }
+
+.centerLanding {
+    width: 90%;
+    max-width: 512px;
+    color: #f1faee;
+    margin: auto;
+    padding: 100px 0;
+
+}
+
+.promptControls {
+    width: 60%;
+    max-width: 512px;
+    margin: auto;
+}
+
 
 .containerRelative {
     position: relative;
 }
 
-.promptControls {
-    width: 88%;
-}
 
-.centerLanding {
-    padding: 80px 0;
-    color: #ffffff;
-    text-align: center;
-    width: 88%;
-
-}
 
 .textPrompt {
     width: 100%;
@@ -93,6 +105,12 @@
     right: -8px;
     bottom: -8px;
     color: #FFC30C;
+}
+
+.startBtn {
+    color: #f1faee;
+    background-color: #ff8d82;
+    width: 60%;
 }
 
 .nextBtn {

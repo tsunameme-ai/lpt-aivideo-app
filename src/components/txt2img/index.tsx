@@ -107,7 +107,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                     maxRows={4}
                     label=''
                     placeholder='Try something like "a cat drinks water on the beach"'
-                    className={styles.textPrompt}
                     value={pPromptValue}
                     errorMessage={pPromptErrorMessage}
                     onValueChange={handlePPromptValueChange}
