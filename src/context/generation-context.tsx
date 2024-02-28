@@ -1,8 +1,9 @@
 'use client'
-import { LocalImageData, GenerationOutput, Txt2imgInput, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT } from '@/libs/types';
+import { LocalImageData, GenerationOutput, Txt2imgInput, Img2vidNativeInput, SDConfig } from '@/libs/types';
 import { createContext, useState, useEffect, useContext } from 'react';
 
 interface GenerationContextType {
+    config: SDConfig
     isAdvancedView: boolean
     setIsAdvancedView: (value: boolean) => void
 
@@ -17,14 +18,9 @@ interface GenerationContextType {
     setCoverText: (value: string) => void
     coverImageData: LocalImageData | undefined
     setCoverImageData: (value: LocalImageData | undefined) => void
-    videoWidth: number
-    setVideoWidth: (value: number) => void
-    videoHeight: number
-    setVideoHeight: (value: number) => void
-    videoSeed: number
-    setVideoSeed: (value: number) => void
-    videoNoiseAugStrength: number
-    setVideoNoiseAugStrength: (value: number) => void
+
+    i2vInput: Img2vidNativeInput | undefined
+    setI2vInput: (value: Img2vidNativeInput | undefined) => void
 }
 
 const GenerationContext = createContext<GenerationContextType | undefined>(undefined);
@@ -36,10 +32,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useState<number>(0)
     const [coverText, setCoverText] = useState<string>('')
     const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(undefined)
-    const [videoWidth, setVideoWidth] = useState<number>(DEFAULT_VIDEO_WIDTH)
-    const [videoHeight, setVideoHeight] = useState<number>(DEFAULT_VIDEO_HEIGHT)
-    const [videoSeed, setVideoSeed] = useState<number>(0)
-    const [videoNoiseAugStrength, setVideoNoiseAugStrength] = useState<number>(0)
+    const [i2vInput, setI2vInput] = useState<Img2vidNativeInput | undefined>(undefined)
 
     useEffect(() => {
         // Optional: Clear context on unmount (comment out if not needed)
@@ -49,9 +42,24 @@ export default function GenerationContextProvider({ children }: { children: Reac
         };
     }, []);
 
-    // const calculateSelectedOutput = (): GenerationOutput | undefined => {
-    //     return t2iOutputs.length > t2iOutputSelectedIndex ? t2iOutputs[t2iOutputSelectedIndex] : undefined
-    // };
+    const generationConfig = (): SDConfig => {
+        return {
+            'models': [
+                { value: 'ByteDance/SDXL-Lightning', label: 'SDXL Lightning', default: true },
+                { value: 'ByteDance/SDXL-Lightning-4step', label: 'SDXL Lightning 4step' },
+                { value: 'ByteDance/SDXL-Lightning-8step', label: 'SDXL Lightning 8step' },
+                { value: 'stabilityai/sd-turbo', label: 'SD Turbo' },
+                { value: 'runwayml/stable-diffusion-v1-5', label: 'SD v1.5', },
+                { value: 'stabilityai/sdxl-turbo', label: 'SDXL Turbo' },
+                { value: 'stabilityai/stable-diffusion-xl-base-1.0', label: 'SDXL 1.0' },
+                { value: 'prompthero/openjourney-v4', label: 'MidJourney V4' }
+            ],
+            'videoModels': [
+                { value: 'stable-video-diffusion-img2vid-xt', label: 'SVD', default: true },
+                { value: 'stabilityai/stable-video-diffusion-img2vid-xt-1-1', label: 'SVD 1.1' }
+            ]
+        }
+    };
 
     return (
         <GenerationContext.Provider
@@ -60,15 +68,12 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 t2iInput, setT2iInput,
                 t2iOutputs, setT2iOutputs,
                 t2iOutputSelectedIndex, setT2iOutputSelectedIndex,
-                // get selectedOutput() {
-                //     return calculateSelectedOutput();
-                // },
+                get config() {
+                    return generationConfig();
+                },
                 coverText, setCoverText,
                 coverImageData, setCoverImageData,
-                videoWidth, setVideoWidth,
-                videoHeight, setVideoHeight,
-                videoSeed, setVideoSeed,
-                videoNoiseAugStrength, setVideoNoiseAugStrength
+                i2vInput, setI2vInput
             }}>
             {children}
         </GenerationContext.Provider>

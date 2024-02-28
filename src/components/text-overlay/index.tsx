@@ -3,21 +3,20 @@ import { useState } from "react"
 import ImageWithTextOverlay from "../image-text-overlay"
 import { FaFileDownload/*, FaShare */ } from "react-icons/fa";
 import styles from "@/styles/home.module.css";
+import { LocalImageData } from "@/libs/types";
 
 interface TextOverlayProps {
     src: string
     text: string,
-    onImageData: (text: string, imgDataURL: string, width: number, height: number) => void
+    onImageData: (text: string, localImage: LocalImageData) => void
     onDownloadClick: () => void
 }
 const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
     const [text, setText] = useState<string>(props.text)
-    const [imageDataURL, setImageDataURL] = useState<string>()
     const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
-    const onImageData = (text: string, url: string, width: number, height: number) => {
-        setImageDataURL(url)
-        props.onImageData?.(text, url, width, height)
+    const onImageData = (text: string, localImage: LocalImageData) => {
+        props.onImageData?.(text, localImage)
         setImageLoaded(true)
     }
 
@@ -46,9 +45,6 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
                 imageUrl={props.src}
                 text={text} />
         </div>
-        {imageDataURL &&
-            <><Spacer y={4} /></>
-        }
     </>)
 }
 

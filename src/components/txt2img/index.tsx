@@ -1,4 +1,4 @@
-import { Txt2imgInput, GenerationOutput, SDProvider, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
+import { Txt2imgInput, GenerationOutput, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
 import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
@@ -8,20 +8,20 @@ import styles from "@/styles/home.module.css";
 import { FaRegPlayCircle } from "react-icons/fa"
 
 interface Txt2ImgComponentProps {
-    sdProvider: SDProvider
     isAdvancedView: boolean
     onImagesGenerated: (generationOutput: Array<GenerationOutput>) => void
+    onImagesError: (error: any) => void
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
     const gContext = useGenerationContext()
-    const defaultBaseModel = props.sdProvider.models.find(item => { return item.default === true })?.value!
-    const defaultScheduler = props.sdProvider.schedulers?.find(item => { return item.default === true })?.value!
+    const defaultBaseModel = gContext.config.models.find(item => { return item.default === true })?.value!
+    const defaultScheduler = gContext.config.schedulers?.find(item => { return item.default === true })?.value!
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
     const [pPromptValue, setPPromptValue] = useState<string>(gContext.t2iInput?.pPrompt || '')
     const [nPromptValue, setNPromptValue] = useState<string>(gContext.t2iInput?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
     const [stepsValue, setStepsValue] = useState<string>((gContext.t2iInput?.steps || 20).toString())
-    const [seedValue, setSeedValue] = useState<string>(gContext.t2iInput?.seed || '')
+    const [seedValue, setSeedValue] = useState<string>(gContext.t2iInput?.seed?.toString() || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [pPromptErrorMessage, setPPromptErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -56,6 +56,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         gContext.setCoverText('')
         gContext.setT2iInput(undefined)
         gContext.setT2iOutputs([])
+        gContext.setI2vInput(undefined)
 
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
@@ -74,7 +75,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             nPrompt: nPromptValue,
             modelId: baseModel,
             steps: stepCount,
-            seed: seedValue.length > 0 ? seedValue : undefined,
+            seed: seedValue.length > 0 ? parseInt(seedValue) : undefined,
             guidanceScale: parseFloat(guidanceScale),
             scheduler: scheduler,
             width: parseInt(width),
@@ -92,6 +93,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         }
         catch (error: any) {
             setErrorMessage(error.message || 'Something went wrong.')
+            props.onImagesError(error)
         }
         finally {
             setIsLoading(false)
@@ -137,13 +139,13 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         onValueChange={setHeight}
                     />
 
-                    {props.sdProvider.schedulers &&
+                    {gContext.config.schedulers &&
                         <Select
                             defaultSelectedKeys={[defaultScheduler]}
                             value={[scheduler || '']}
                             onSelectionChange={handleSetScheduler}
                             label='Scheduler'>
-                            {props.sdProvider.schedulers.map((item) => (
+                            {gContext.config.schedulers.map((item) => (
                                 <SelectItem key={item.value} value={item.value}>
                                     {item.label}
                                 </SelectItem>
@@ -188,7 +190,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         label="Use a model"
                         errorMessage={baseModel === undefined ? `Must select base model` : ''}
                     >
-                        {props.sdProvider.models.map((model) => (
+                        {gContext.config.models.map((model) => (
                             <SelectItem key={model.value} value={model.value}>
                                 {model.label}
                             </SelectItem>
