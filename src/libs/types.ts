@@ -67,8 +67,8 @@ export type SDConfig = {
 
 export const DEFAULT_IMG_WIDTH = 1024
 export const DEFAULT_IMG_HEIGHT = 1024
-export const DEFAULT_VIDEO_WIDTH = 1024
-export const DEFAULT_VIDEO_HEIGHT = 1024
+export const DEFAULT_VIDEO_WIDTH = 512
+export const DEFAULT_VIDEO_HEIGHT = 512
 export const DEFAULT_MOTION_BUCKET_ID = 50
 export const DEFAULT_NOISE_AUG_STRENGTH = 0.05
 export const DEFAULT_IMG_NUM_OUTPUT = 3
