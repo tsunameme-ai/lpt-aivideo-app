@@ -8,8 +8,9 @@ export default function Home() {
   const handleTxt2img = () => {
     router.push('/txt2img')
   }
+
   return (
-    <section className='flex flex-col items-center justify-center max-w-xl'>
+    <section className={styles.main}>
       <div className={styles.centerLanding}>
         <h1>Create <span className='italic'>ridonkulous</span> <span className={styles.red}>internet expressions</span></h1>
         <Spacer y={28}></Spacer>

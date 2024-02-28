@@ -42,7 +42,7 @@ export default function Page() {
 
     return (
         <>
-            <section className='flex flex-col items-center justify-center max-w-xl'>
+            <section className={styles.main}>
                 <div className={styles.centerSection}>
                     <div>Step 1: Write prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={2} />

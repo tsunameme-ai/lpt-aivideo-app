@@ -1,25 +1,37 @@
+.main {
+    text-align: center;
+}
+
 .centerSection {
     color: #f1faee;
     text-align: left;
+    margin: auto;
+    width: 90%;
     min-width: 300px;
+    max-width: 512px;
     min-height: 520px;
-    width: 88%;
 }
 
 .centerLanding {
-    padding: 100px 0;
+    width: 90%;
+    max-width: 512px;
     color: #f1faee;
-    text-align: center;
-    align-items: center;
+    margin: auto;
+    padding: 100px 0;
+
 }
+
+.promptControls {
+    width: 60%;
+    max-width: 512px;
+    margin: auto;
+}
+
 
 .containerRelative {
     position: relative;
 }
 
-.promptControls {
-    width: 88%;
-}
 
 
 .textPrompt {
