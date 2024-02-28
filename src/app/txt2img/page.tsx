@@ -42,7 +42,7 @@ export default function Page() {
 
     return (
         <>
-            <section className='flex flex-col items-center justify-center'>
+            <section className='flex flex-col items-center justify-center max-w-xl'>
                 <div className={styles.centerSection}>
                     <div>Step 1: Write prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={2} />
@@ -51,7 +51,7 @@ export default function Page() {
                         isAdvancedView={gContext.isAdvancedView}
                         onImagesGenerated={onImagesGenerated}
                     />}
-                    <Spacer y={8} />
+                    <Spacer y={2} />
 
                     {imageOutputs.length == 1 && <>
                         <Image className={styles.center} src={imageOutputs[0].mediaUrl} alt={imageOutputs[0].mediaUrl} />

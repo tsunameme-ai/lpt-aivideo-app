@@ -6,6 +6,13 @@
     width: 88%;
 }
 
+.centerLanding {
+    padding: 100px 0;
+    color: #f1faee;
+    text-align: center;
+    align-items: center;
+}
+
 .containerRelative {
     position: relative;
 }
@@ -14,13 +21,6 @@
     width: 88%;
 }
 
-.centerLanding {
-    padding: 80px 0;
-    color: #ffffff;
-    text-align: center;
-    width: 88%;
-
-}
 
 .textPrompt {
     width: 100%;
@@ -93,6 +93,12 @@
     right: -8px;
     bottom: -8px;
     color: #FFC30C;
+}
+
+.startBtn {
+    color: #f1faee;
+    background-color: #ff8d82;
+    width: 60%;
 }
 
 .nextBtn {

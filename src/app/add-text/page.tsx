@@ -52,7 +52,7 @@ export default function Page() {
 
     return (
         <>
-            <section className='flex flex-col items-center justify-center'>
+            <section className='flex flex-col items-center justify-center max-w-lg'>
                 <div className={styles.centerSection}>
                     <div>Step 2: Add your copy</div>
                     <Spacer y={2}></Spacer>
