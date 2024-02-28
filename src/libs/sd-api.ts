@@ -28,7 +28,7 @@ export class SDAPI {
     public async img2vid(params: Img2vidNativeInput): Promise<Array<GenerationOutput>> {
         const postBody = {
             "image_url": params.imageUrl,
-            "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+            "model_id": params.modelId,
             "width": params.width,
             "height": params.height,
             "motion_bucket_id": params.motionBucketId,
