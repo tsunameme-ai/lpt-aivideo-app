@@ -6,6 +6,7 @@ import GenerationContextProvider from '@/context/generation-context'
 import NavigationComponent from "@/components/navigation"
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://acme.com'),
   manifest: '/manifest.json',
   title: 'Groove',
   description: 'Groove is a creative tool that leverages the latest AI capabilities of the Livepeer network to  \

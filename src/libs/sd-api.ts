@@ -90,6 +90,10 @@ export class SDAPI {
                 throw new Error(`Empty data`)
             }
         }
+        else {
+            console.log(`${res.status}`)
+            console.log(res)
+        }
         let errorMessage = ''
         try {
             const data = await res.json()
