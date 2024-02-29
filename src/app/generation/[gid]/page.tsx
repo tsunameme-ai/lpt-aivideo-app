@@ -1,5 +1,6 @@
 import { GenerationResponse } from '@/libs/types'
-import { Metadata, ResolvingMetadata } from 'next'
+// import { Metadata, ResolvingMetadata } from 'next'
+import { Metadata } from 'next'
 
 type Props = {
     params: { gid: string }
