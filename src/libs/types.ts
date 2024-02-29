@@ -57,15 +57,6 @@ export type LocalImageData = {
     height: number
     overlayImageDataURL?: string
 }
-export type GenerationResponse = {
-    id: string,
-    action: GenerationType,
-    input: Txt2imgInput,
-    outputs: Array<{ url: string, seed: number }>,
-    timestamp: number,
-    duration: number
-}
-
 
 export type SDConfig = {
     models: Array<{ value: string, label: string, default?: boolean }>
