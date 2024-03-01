@@ -1,3 +1,4 @@
+import { metadata } from '@/app/layout'
 import { GenerationResponse } from '@/libs/types'
 // import { Metadata, ResolvingMetadata } from 'next'
 import { Metadata } from 'next'
@@ -7,39 +8,42 @@ type Props = {
     searchParams: { [key: string]: string | string[] | undefined }
 }
 
+const fetchGenerationData = async (gid: string): Promise<GenerationResponse> => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generation/${gid}`)
+    return await res.json() as GenerationResponse
+}
+
 export async function generateMetadata(
     { params }: Props,
     // parent: ResolvingMetadata
 ): Promise<Metadata> {
-
-    // fetch data
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generation/${params.gid}`)
-    const data = await res.json() as GenerationResponse
-
-
-
-
-    // optionally access and extend (rather than replace) parent metadata
-    // const previousImages = (await parent).openGraph?.images || []
+    const data = await fetchGenerationData(params.gid)
+    console.log(JSON.stringify(data))
 
     return {
-        description: data.input.pPrompt || 'prompt',
-
+        description: (data.input as any).prompt || 'prompt',
 
         openGraph: {
             images: [data.outputs[0].url]
-            // images: ['/some-specific-page-image.jpg', ...previousImages],
         },
     }
 }
 
-export default function Page({ params }: { params: { gid: string, asset: string } }) {
-    console.log(`Asset view $`)
-
+export default function Page({ params }: { params: { gid: string } }) {
+    const imgs = metadata.openGraph?.images
+    console.log('??? imgs')
+    console.log(imgs)
     return (
         <>
-            <small>{`Asset ${params.asset} ${params.gid}`}</small>
-            <small>Under construction</small>
+            <div>{`prompt: ${metadata.description}`}</div>
+            <div>{`Asset ${params.gid}`}</div>
+            <div>Under construction</div>
+            {imgs && Array.isArray(imgs) && imgs.length > 0 && <>
+                {imgs.map((item) => (
+                    // <Image src={item} />
+                    <img src={item as string} alt={item as string} />
+                ))}
+            </>}
         </>
     )
 }
