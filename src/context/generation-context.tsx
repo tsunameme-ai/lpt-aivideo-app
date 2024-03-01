@@ -55,8 +55,8 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 { value: 'prompthero/openjourney-v4', label: 'MidJourney V4' }
             ],
             'videoModels': [
-                { value: 'stable-video-diffusion-img2vid-xt', label: 'SVD', default: true },
-                { value: 'stabilityai/stable-video-diffusion-img2vid-xt-1-1', label: 'SVD 1.1' }
+                { value: 'stable-video-diffusion-img2vid-xt', label: 'SVD' },
+                { value: 'stabilityai/stable-video-diffusion-img2vid-xt-1-1', label: 'SVD 1.1', default: true }
             ]
         }
     };
