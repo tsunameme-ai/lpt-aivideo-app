@@ -22,12 +22,12 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
         const aspectRatio = width / height;
         if (width > maxW) {
             const newWidth = maxW;
-            const newHeight = newWidth / aspectRatio;
+            const newHeight = Math.floor(newWidth / aspectRatio);
             return { width: newWidth, height: newHeight, resized: true };
         }
         if (height > maxH) {
             const newHeight = maxH;
-            const newWidth = newHeight * aspectRatio;
+            const newWidth = Math.floor(newHeight * aspectRatio);
             return { width: newWidth, height: newHeight, resized: true };
         }
         return { width, height, resized: false }
