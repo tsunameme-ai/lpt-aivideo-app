@@ -16,19 +16,14 @@ interface Txt2ImgComponentProps {
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
     const gContext = useGenerationContext()
     const defaultBaseModel = gContext.config.models.find(item => { return item.default === true })?.value!
-    const defaultScheduler = gContext.config.schedulers?.find(item => { return item.default === true })?.value!
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
     const [pPromptValue, setPPromptValue] = useState<string>(gContext.t2iInput?.pPrompt || '')
     const [nPromptValue, setNPromptValue] = useState<string>(gContext.t2iInput?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
-    const [stepsValue, setStepsValue] = useState<string>((gContext.t2iInput?.steps || 20).toString())
     const [seedValue, setSeedValue] = useState<string>(gContext.t2iInput?.seed?.toString() || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [pPromptErrorMessage, setPPromptErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
-    const [stepErrorMessage, setStepErrorMessage] = useState<string>('')
-    const [scheduler, setScheduler] = useState<string | undefined>(undefined)
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
-    const [clipSkip, setClipSkip] = useState<string>('1')
     const [numOutput, setNumOutput] = useState<string>(DEFAULT_IMG_NUM_OUTPUT.toString())
     const [width, setWidth] = useState<string>(DEFAULT_IMG_WIDTH.toString())
     const [height, setHeight] = useState<string>(DEFAULT_IMG_HEIGHT.toString())
@@ -42,11 +37,11 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         setBaseModel(key.size === 0 ? defaultBaseModel : key.currentKey)
     }
 
-    const handleSetScheduler = (key: any) => {
-        setScheduler(key.size === 0 ? undefined : key.currentKey)
-    }
-
     const generateImage = async () => {
+        if ((parseInt(width) % 8 != 0) || (parseInt(height) % 8 != 0)) {
+            setErrorMessage('Width and height must be divisible by 8')
+            return
+        }
         setErrorMessage('')
         setIsLoading(false)
 
@@ -64,20 +59,12 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             return
         }
 
-        const stepCount = parseInt(stepsValue)
-        if (isNaN(stepCount) || stepCount < 1 || stepCount > 50) {
-            setStepErrorMessage('Wrong steps value.')
-            return
-        }
-
         const params: Txt2imgInput = {
             pPrompt: pPrompt,
             nPrompt: nPromptValue,
             modelId: baseModel,
-            steps: stepCount,
             seed: seedValue.length > 0 ? parseInt(seedValue) : undefined,
             guidanceScale: parseFloat(guidanceScale),
-            scheduler: scheduler,
             width: parseInt(width),
             height: parseInt(height),
             numOutput: parseInt(numOutput)
@@ -139,28 +126,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         onValueChange={setHeight}
                     />
 
-                    {gContext.config.schedulers &&
-                        <Select
-                            defaultSelectedKeys={[defaultScheduler]}
-                            value={[scheduler || '']}
-                            onSelectionChange={handleSetScheduler}
-                            label='Scheduler'>
-                            {gContext.config.schedulers.map((item) => (
-                                <SelectItem key={item.value} value={item.value}>
-                                    {item.label}
-                                </SelectItem>
-                            ))}
-                        </Select>}
-
-                    <Input
-                        label='Steps'
-                        type='number'
-                        placeholder='1 to 50'
-                        value={stepsValue}
-                        errorMessage={stepErrorMessage}
-                        onValueChange={setStepsValue}
-                    />
-
                     <Input
                         label='Seed'
                         type='number'
@@ -174,12 +139,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         description='1 - 20'
                         value={guidanceScale}
                         onValueChange={setGuidanceScale} />
-
-                    <Input
-                        label='Clip Skip'
-                        description='1 - 8'
-                        value={clipSkip}
-                        onValueChange={setClipSkip} />
                     <Input
                         label='Num of Images'
                         value={numOutput}

@@ -4,8 +4,7 @@ import { Utils } from './utils'
 export class SDAPI {
 
     public async txt2img(params: Txt2imgInput): Promise<Array<GenerationOutput>> {
-        // const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/text-to-image`
-        const url = process.env.NEXT_PUBLIC_API_ENDPOINT_TXT2IMG!
+        const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/text-to-image`
         const postBody = {
             'model_id': params.modelId,
             'prompt': params.pPrompt,

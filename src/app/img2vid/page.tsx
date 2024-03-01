@@ -25,6 +25,7 @@ export default function Page() {
         noiseAugStrength: DEFAULT_NOISE_AUG_STRENGTH,
         modelId: gContext.config.videoModels.find(item => { return item.default === true })?.value!
     })
+    const [errorMessage, setErrorMessage] = useState<string>()
 
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
     const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
@@ -41,6 +42,11 @@ export default function Page() {
     }
 
     const handleGenerateVideoClick = async () => {
+        if ((i2vInput.width % 8 != 0) || (i2vInput.height % 8 != 0)) {
+            setErrorMessage('Width and height must be divisible by 8')
+            return
+        }
+        setErrorMessage('')
         if (gContext.coverImageData) {
             try {
                 setIsGeneratingVideo(true)
@@ -107,6 +113,7 @@ export default function Page() {
                                 seed={i2vInput.seed}
                                 onI2VInputChange={onI2VInputChange} />}
                         </>}
+                        {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
 
                         {!gContext.coverImageData && <>
                             <ErrorComponent errorMessage="No Image" />
@@ -129,8 +136,7 @@ export default function Page() {
                         <Button
                             className={styles.backBtn}
                             onPress={() => router.back()}
-                            size="lg"
-                        >
+                            size="lg">
                             <h5>Back</h5>
                         </Button>
                     </div>
@@ -139,8 +145,7 @@ export default function Page() {
                             size="lg"
                             className={styles.backBtn}
                             isLoading={isGeneratingVideo}
-                            onPress={handleGenerateVideoClick}
-                        >
+                            onPress={handleGenerateVideoClick}>
                             <h5>Generate</h5>
                         </Button>
                     </div>
