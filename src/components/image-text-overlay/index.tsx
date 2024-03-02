@@ -18,25 +18,17 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
     const [canvasWidth, setCanvasWidth] = useState<number>(DEFAULT_VIDEO_WIDTH)
     const [canvasHeight, setCanvasHeight] = useState<number>(DEFAULT_VIDEO_HEIGHT)
 
-    const resizeRectangle = (width: number, height: number, maxW: number, maxH: number): { width: number, height: number, resized: boolean } => {
-        const aspectRatio = width / height;
-        if (width > maxW) {
-            const newWidth = maxW;
-            const newHeight = Math.floor(newWidth / aspectRatio);
-            return { width: newWidth, height: newHeight, resized: true };
-        }
-        if (height > maxH) {
-            const newHeight = maxH;
-            const newWidth = Math.floor(newHeight * aspectRatio);
-            return { width: newWidth, height: newHeight, resized: true };
-        }
-        return { width, height, resized: false }
+    const resizeToFit = (width: number, height: number, maxWidth: number, maxHeight: number): { width: number; height: number } => {
+        const limitingDimension = Math.max(width / maxWidth, height / maxHeight);
+        const newWidth = Math.floor(width / limitingDimension) & ~7; // Ensure divisibility by 8
+        const newHeight = Math.floor(height / limitingDimension) & ~7;
+        return { width: newWidth, height: newHeight };
     }
 
     const onImageLoad = (imageDataURL: string) => {
         const img = new Image();
         img.onload = () => {
-            const { width, height } = resizeRectangle(img.width, img.height, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT)
+            const { width, height } = resizeToFit(img.width, img.height, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT)
             setCanvasWidth(width)
             setCanvasHeight(height)
             setImage(img)
