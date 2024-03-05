@@ -34,8 +34,13 @@ export type Txt2imgInput = {
     numOutput: number
 }
 export type GenerationOutput = {
-    mediaUrl: string,
-    seed?: number
+    id: string,
+    outputs: Array<GenerationOutputItem>
+}
+export type GenerationOutputItem = {
+    id: string,
+    url: string,
+    seed: number
 }
 export enum GenerationType {
     TXT2IMG = 'txt2img',
@@ -45,7 +50,7 @@ export type GenerationRequest = {
     id: string,
     type: GenerationType,
     input: Txt2imgInput | Img2vidNativeInput
-    output?: GenerationOutput
+    outputs?: GenerationOutputItem[]
 }
 export type LocalImageData = {
     remoteURL: string,

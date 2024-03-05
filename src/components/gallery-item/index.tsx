@@ -1,8 +1,8 @@
 'use client'
 import { fetchGenerationData } from "@/actions/stable-diffusion";
-import { GenerationResponse } from "@/libs/types";
 import { useEffect, useState } from "react";
 import { Image } from '@nextui-org/react'
+import { GenerationRequest, GenerationType } from "@/libs/types";
 
 interface GalleryItemComponentProps {
     generationId: string
@@ -10,11 +10,11 @@ interface GalleryItemComponentProps {
 }
 
 const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: GalleryItemComponentProps) => {
-    const [generationResponse, setGenerationResponse] = useState<GenerationResponse>()
+    const [generation, setGeneration] = useState<GenerationRequest>()
 
     const requestData = async (gid: string) => {
         const data = await fetchGenerationData(gid)
-        setGenerationResponse(data)
+        setGeneration(data)
     }
 
     useEffect(() => {
@@ -22,11 +22,25 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
     }, [])
     return (
         <>
-            {(generationResponse?.outputs || []).length > 0 && <>
-                {generationResponse!.outputs.map((item) => (
-                    <Image src={item.url} alt={item.seed.toString()} />
-                ))}
+            {generation && (generation?.outputs?.length ?? 0) > 0 && <>
+                {generation.type === GenerationType.TXT2IMG && <>
+                    <p>Image</p>
+                    <p>Model Id: {generation.input.modelId}</p>
+                    <p>{generation.input.width} x {generation.input.height}</p>
+                    {generation.outputs!.map((item, index) => (
+                        <Image src={item.url} key={`${props.generationId}-${index}`} alt={item.seed.toString()} />
+                    ))}
+                </>}
+                {generation.type === GenerationType.IMG2VID && <>
+                    <p>Image</p>
+                    <p>Model Id: {generation.input.modelId}</p>
+                    <p>{generation.input.width} x {generation.input.height}</p>
+                    {generation!.outputs!.map((item, index) => (
+                        <video src={item.url} key={`${props.generationId}-${index}`} />
+                    ))}
+                </>}
             </>}
+
         </>
     )
 }

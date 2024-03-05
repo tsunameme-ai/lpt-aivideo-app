@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { Button, Spacer, Image } from '@nextui-org/react'
-import { GenerationOutput } from '@/libs/types'
+import { GenerationOutputItem } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import { useState } from 'react'
 import styles from '@/styles/home.module.css'
@@ -16,11 +16,11 @@ import "slick-carousel/slick/slick-theme.css";
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
-    const [imageOutputs, setImageOutputs] = useState<Array<GenerationOutput>>(gContext.t2iOutputs)
+    const [imageOutputs, setImageOutputs] = useState<Array<GenerationOutputItem>>(gContext.t2iOutputs)
     const [selectedOutputIndex, setSeelectedOutputIndex] = useState<number>(gContext.t2iOutputSelectedIndex)
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
 
-    const onImagesGenerated = (outputs: Array<GenerationOutput>) => {
+    const onImagesGenerated = (outputs: Array<GenerationOutputItem>) => {
         setImageOutputs(outputs)
     }
     const onImagesError = () => {
@@ -49,15 +49,15 @@ export default function Page() {
                     <Spacer y={2} />
 
                     {imageOutputs.length == 1 && <>
-                        <Image className={styles.center} src={imageOutputs[0].mediaUrl} alt={imageOutputs[0].mediaUrl} />
+                        <Image className={styles.center} src={imageOutputs[0].url} alt={imageOutputs[0].url} />
                         <Spacer y={8} />
                     </>}
 
                     {imageOutputs.length > 1 && <>
                         <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false} afterChange={onImageOutputSelected}>
-                            {imageOutputs.map((item: GenerationOutput, key: number) => (
+                            {imageOutputs.map((item: GenerationOutputItem, key: number) => (
                                 <div key={key} >
-                                    <Image className={styles.center} src={item.mediaUrl} alt={item.seed?.toString()} />
+                                    <Image className={styles.center} src={item.url} alt={item.seed?.toString()} />
                                 </div>
                             ))}
                         </Slider>

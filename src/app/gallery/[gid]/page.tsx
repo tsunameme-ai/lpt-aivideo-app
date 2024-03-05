@@ -2,6 +2,7 @@ import { metadata } from '@/app/layout'
 import { Metadata } from 'next'
 import GalleryItemComponent from '@/components/gallery-item'
 import { fetchGenerationData } from '@/actions/stable-diffusion'
+import { GenerationType, Txt2imgInput } from '@/libs/types'
 
 type Props = {
     params: { gid: string }
@@ -12,16 +13,30 @@ export async function generateMetadata(
     { params }: Props,
     // parent: ResolvingMetadata
 ): Promise<Metadata> {
-    const data = await fetchGenerationData(params.gid)
-
-    return {
-        description: (data.input as any).prompt || 'prompt',
-        openGraph: {
-            images: data.outputs.map(item => {
-                return item.url
-            })
-        },
+    try {
+        const data = await fetchGenerationData(params.gid)
+        if (data.type === GenerationType.TXT2IMG) {
+            return {
+                description: (data.input as Txt2imgInput).pPrompt,
+                openGraph: {
+                    images: (data.outputs || []).map(item => {
+                        return item.url
+                    }),
+                },
+            }
+        }
+        return {
+            openGraph: {
+                videos: (data.outputs || []).map(item => {
+                    return item.url
+                })
+            },
+        }
     }
+    catch (e) {
+        console.error(e)
+    }
+    return {}
 }
 
 export default function Page({ params }: { params: { gid: string } }) {
