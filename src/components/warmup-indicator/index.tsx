@@ -1,6 +1,6 @@
 'use client'
 import { txt2img } from "@/actions/stable-diffusion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 
 const WarmUpInvervalMS = 4 * 60 * 1000 //4min
