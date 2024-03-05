@@ -1,8 +1,9 @@
 'use client'
 import { fetchGenerationData } from "@/actions/stable-diffusion";
 import { useEffect, useState } from "react";
-import { Image } from '@nextui-org/react'
-import { GenerationRequest, GenerationType } from "@/libs/types";
+import { Image, Spinner } from '@nextui-org/react'
+import { GenerationRequest, GenerationType } from "@/libs/types"
+import ErrorComponent from "../error";
 
 interface GalleryItemComponentProps {
     generationId: string
@@ -10,11 +11,23 @@ interface GalleryItemComponentProps {
 }
 
 const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: GalleryItemComponentProps) => {
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [generation, setGeneration] = useState<GenerationRequest>()
+    const [errorMessage, setErrorMessage] = useState<string>('')
 
     const requestData = async (gid: string) => {
-        const data = await fetchGenerationData(gid)
-        setGeneration(data)
+        setIsLoading(true)
+        try {
+            const data = await fetchGenerationData(gid)
+            setGeneration(data)
+            setErrorMessage('')
+        }
+        catch (e: any) {
+            setErrorMessage(e.message)
+        }
+        finally {
+            setIsLoading(false)
+        }
     }
 
     useEffect(() => {
@@ -22,6 +35,7 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
     }, [])
     return (
         <>
+            {isLoading && <Spinner />}
             {generation && (generation?.outputs?.length ?? 0) > 0 && <>
                 {generation.type === GenerationType.TXT2IMG && <>
                     <p>Image</p>
@@ -40,7 +54,7 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
                     ))}
                 </>}
             </>}
-
+            <ErrorComponent errorMessage={errorMessage} />
         </>
     )
 }

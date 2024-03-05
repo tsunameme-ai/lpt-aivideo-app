@@ -20,7 +20,7 @@ export async function img2vid(params: Img2vidNativeInput): Promise<Array<Generat
 export async function fetchGenerationData(gid: string): Promise<GenerationRequest> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generation/${gid}`)
     if (!res.ok) {
-        throw new Error(`Unable to fetch generatioan data ${gid}`)
+        throw new Error(`Error fetch generatioan data ${res.status} ${gid}`)
     }
     const data = await res.json()
     // console.log(data)

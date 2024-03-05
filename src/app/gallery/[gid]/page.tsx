@@ -42,8 +42,6 @@ export async function generateMetadata(
 export default function Page({ params }: { params: { gid: string } }) {
     return (
         <>
-            <div>{`prompt: ${metadata.description}`}</div>
-            <div>{`Asset ${params.gid}`}</div>
             <div>Under construction</div>
             <GalleryItemComponent generationId={params.gid} />
         </>
