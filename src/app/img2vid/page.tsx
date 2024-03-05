@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
-import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutput, GenerationRequest, GenerationType, Img2vidNativeInput } from "@/libs/types"
+import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem, GenerationRequest, GenerationType, Img2vidNativeInput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
 import { Spacer, Image, Link, Button } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
@@ -14,7 +14,7 @@ import LongrunIndicator from "@/components/longrun-indicator"
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
-    const [videoOutput, setVideoOutput] = useState<GenerationOutput | undefined>(undefined)
+    const [videoOutput, setVideoOutput] = useState<GenerationOutputItem | undefined>(undefined)
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
     const [i2vInput, setI2vInput] = useState<Img2vidNativeInput>(gContext.i2vInput || {
@@ -28,7 +28,7 @@ export default function Page() {
     const [errorMessage, setErrorMessage] = useState<string>()
 
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
-    const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
+    const onVideoGenerated = async (outputs: Array<GenerationOutputItem>) => {
         if (outputs.length > 0) {
             setVideoOutput(outputs[0])
         }
@@ -97,7 +97,7 @@ export default function Page() {
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
                         {videoOutput && <>
-                            <video className={styles.videoPreview} loop controls autoPlay src={videoOutput.mediaUrl} />
+                            <video className={styles.videoPreview} loop controls autoPlay src={videoOutput.url} />
                         </>}
 
                         {gContext.coverImageData && <>

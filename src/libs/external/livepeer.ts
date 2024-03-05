@@ -1,7 +1,7 @@
-import { GenerationOutput, Img2vidInput, Txt2imgInput } from '../types'
+import { GenerationOutputItem, Img2vidInput, Txt2imgInput } from '../types'
 export class LivepeerAPI {
 
-    public async txt2img(params: Txt2imgInput): Promise<Array<GenerationOutput>> {
+    public async txt2img(params: Txt2imgInput): Promise<Array<GenerationOutputItem>> {
         const url = `${process.env.NEXT_PUBLIC_LIVEPEER_ENDPOINT}/text-to-image`
         const postBody = {
             'model_id': params.modelId,
@@ -23,7 +23,7 @@ export class LivepeerAPI {
         })
     }
 
-    public async img2vid(params: Img2vidInput): Promise<Array<GenerationOutput>> {
+    public async img2vid(params: Img2vidInput): Promise<Array<GenerationOutputItem>> {
         const imageFile = params.imageFile
         if (!imageFile) {
             throw new Error(`SD Provider Error: image file does not exist.`)
@@ -44,7 +44,7 @@ export class LivepeerAPI {
         }, 600000)
     }
 
-    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<Array<GenerationOutput>> {
+    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<Array<GenerationOutputItem>> {
         const t = new Date().getTime()
         let resError
         let resOutput
@@ -78,12 +78,12 @@ export class LivepeerAPI {
         }
     }
 
-    private async parseResponse(res: Response): Promise<Array<GenerationOutput>> {
+    private async parseResponse(res: Response): Promise<Array<GenerationOutputItem>> {
         if (res.ok) {
             const data = await res.json()
             return data.images.map((item: { url: string, seed?: number }) => {
                 return {
-                    mediaUrl: item.url,
+                    url: item.url,
                     seed: item.seed
                 }
             })

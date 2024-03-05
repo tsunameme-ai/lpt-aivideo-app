@@ -21,7 +21,7 @@ export default function Page() {
     useEffect(() => {
         const output = gContext.t2iOutputs[gContext.t2iOutputSelectedIndex]
         if (output) {
-            setImageUrl(output.mediaUrl)
+            setImageUrl(output.url)
         }
     }, [])
 

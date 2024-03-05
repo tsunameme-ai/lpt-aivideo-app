@@ -1,9 +1,9 @@
-import { GenerationOutput, Img2vidNativeInput, Txt2imgInput } from './types'
+import { GenerationOutputItem, Img2vidNativeInput, Txt2imgInput } from './types'
 import { Utils } from './utils'
 
 export class SDAPI {
 
-    public async txt2img(params: Txt2imgInput): Promise<Array<GenerationOutput>> {
+    public async txt2img(params: Txt2imgInput): Promise<Array<GenerationOutputItem>> {
         const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/text-to-image`
         const postBody = {
             'model_id': params.modelId,
@@ -25,7 +25,7 @@ export class SDAPI {
         })
     }
 
-    public async img2vid(params: Img2vidNativeInput): Promise<Array<GenerationOutput>> {
+    public async img2vid(params: Img2vidNativeInput): Promise<Array<GenerationOutputItem>> {
         const postBody = {
             "image_url": params.imageUrl,
             "model_id": params.modelId,
@@ -43,7 +43,7 @@ export class SDAPI {
         }, 600000)
     }
 
-    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<Array<GenerationOutput>> {
+    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<Array<GenerationOutputItem>> {
         const t = new Date().getTime()
         let resError
         let resOutput
@@ -75,13 +75,14 @@ export class SDAPI {
         }
     }
 
-    private async parseResponse(res: Response): Promise<Array<GenerationOutput>> {
+    private async parseResponse(res: Response): Promise<Array<GenerationOutputItem>> {
         if (res.ok) {
             const data = await res.json()
             if (data && data.images) {
-                return data.images.map((item: { url: string, seed?: number }) => {
+                return data.images.map((item: { url: string, seed?: number }, index: number) => {
                     return {
-                        mediaUrl: item.url,
+                        id: `${data.id}:${index}`,
+                        url: item.url,
                         seed: item.seed
                     }
                 })
@@ -104,25 +105,34 @@ export class SDAPI {
 }
 
 export class SDStaticAPI {
-    public async txt2img(): Promise<Array<GenerationOutput>> {
+    public async txt2img(): Promise<Array<GenerationOutputItem>> {
         await Utils.delay(1000)
 
         return [{
-            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
+            id: 'static',
+            seed: 1773116098,
+            url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
         }, {
-            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/1-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
+            id: 'static',
+            seed: 1773116098,
+            url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/1-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
         }, {
-            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/2-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
+            id: 'static',
+            seed: 1773116098,
+            url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/2-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
         }, {
-            mediaUrl: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/3-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
+            id: 'static',
+            seed: 1773116098,
+            url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/3-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
         }]
 
     }
 
-    public async img2vid(): Promise<Array<GenerationOutput>> {
+    public async img2vid(): Promise<Array<GenerationOutputItem>> {
         await Utils.delay(10000)
         return [{
-            mediaUrl: 'https://lpt-aivideo-dst.s3.amazonaws.com/1708718637.mp4',
+            id: 'static',
+            url: 'https://lpt-aivideo-dst.s3.amazonaws.com/1708718637.mp4',
             seed: 1773116098
         }]
     }
