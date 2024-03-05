@@ -21,7 +21,6 @@ const WarmUpIndicator: React.FC = () => {
         };
     }, [])
     const warmUp = async () => {
-        console.log(`warmup isVisible:${isVisible} isWarmingUp: ${isWarmingUp}`)
         if (!isVisible) {
             return
         }
@@ -53,9 +52,7 @@ const WarmUpIndicator: React.FC = () => {
 
 
     const handleVisibilityChange = () => {
-        console.log(`handleVisibilityChange? ${document.visibilityState}`)
         isVisible = document.visibilityState === 'visible'
-        // setIsVisible(document.visibilityState === 'visible');
         if (document.visibilityState === 'visible') {
             if (new Date().getTime() - lastWarmupTime > WarmUpInvervalMS) {
                 warmUp()
