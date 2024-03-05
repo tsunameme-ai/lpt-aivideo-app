@@ -1,7 +1,7 @@
 'use server'
 
 import { SDAPI, SDStaticAPI } from "@/libs/sd-api";
-import { GenerationOutput, Img2vidNativeInput, Txt2imgInput } from "@/libs/types";
+import { GenerationOutput, GenerationResponse, Img2vidNativeInput, Txt2imgInput } from "@/libs/types";
 
 export async function txt2img(params: Txt2imgInput): Promise<Array<GenerationOutput>> {
     if (process.env.NEXT_PUBLIC_LIVEPEER === 'static') {
@@ -15,4 +15,9 @@ export async function img2vid(params: Img2vidNativeInput): Promise<Array<Generat
         return await new SDStaticAPI().img2vid()
     }
     return await new SDAPI().img2vid(params)
+}
+export async function fetchGenerationData(gid: string): Promise<GenerationResponse> {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generation/${gid}`)
+    const data = await res.json()
+    return data
 }
