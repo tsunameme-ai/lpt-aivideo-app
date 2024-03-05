@@ -7,7 +7,6 @@ const WarmUpInvervalMS = 4 * 60 * 1000 //4min
 const WarmUpIndicator: React.FC = () => {
     let isVisible: boolean = false
     let lastWarmupTime = 0
-    const [isWarmingUp, setIsWarmingUp] = useState<boolean>(false);
 
     // const [warmUpInterval, setWarmUpInterval] = useState()
     useEffect(() => {
@@ -24,7 +23,6 @@ const WarmUpIndicator: React.FC = () => {
         if (!isVisible) {
             return
         }
-        setIsWarmingUp(true)
         try {
             await txt2img({
                 pPrompt: 'a cat',
@@ -37,9 +35,6 @@ const WarmUpIndicator: React.FC = () => {
         }
         catch (error: any) {
 
-        }
-        finally {
-            setIsWarmingUp(false)
         }
     }
 
