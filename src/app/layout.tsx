@@ -4,9 +4,9 @@ import { Providers } from './providers'
 import type { Viewport } from 'next'
 import GenerationContextProvider from '@/context/generation-context'
 import NavigationComponent from "@/components/navigation"
+import WarmUpIndicator from '@/components/warmup-indicator'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://acme.com'),
   manifest: '/manifest.json',
   title: 'Groove',
   description: 'Groove is a creative tool that leverages the latest AI capabilities of the Livepeer network to  \
@@ -29,7 +29,10 @@ export default function RootLayout({
       <body>
         <Providers>
           <GenerationContextProvider>
-            <header className='py-1'><NavigationComponent /></header>
+            <header className='py-1'>
+              <NavigationComponent />
+              <WarmUpIndicator />
+            </header>
             {children}
           </GenerationContextProvider>
         </Providers>

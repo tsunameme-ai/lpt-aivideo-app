@@ -31,10 +31,7 @@ export type Txt2imgInput = {
     guidanceScale?: number
     width: number,
     height: number,
-    numOutput: number,
-
-    steps?: number
-    scheduler?: string
+    numOutput: number
 }
 export type GenerationOutput = {
     mediaUrl: string,
@@ -57,21 +54,10 @@ export type LocalImageData = {
     height: number
     overlayImageDataURL?: string
 }
-export type GenerationResponse = {
-    id: string,
-    action: GenerationType,
-    input: Txt2imgInput,
-    outputs: Array<{ url: string, seed: number }>,
-    timestamp: number,
-    duration: number
-}
-
 
 export type SDConfig = {
     models: Array<{ value: string, label: string, default?: boolean }>
     videoModels: Array<{ value: string, label: string, default?: boolean }>
-    loras?: Array<{ value: string, label: string, baseModel?: string }>
-    schedulers?: Array<{ value: string, label: string, default?: boolean }>
 }
 
 export const DEFAULT_IMG_WIDTH = 1024
