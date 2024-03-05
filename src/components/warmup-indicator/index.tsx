@@ -1,7 +1,6 @@
 'use client'
 import { txt2img } from "@/actions/stable-diffusion";
 import { useEffect, useState } from "react";
-import ErrorComponent, { ErrorComponentStyle } from "../error";
 
 
 const WarmUpInvervalMS = 4 * 60 * 1000 //4min
@@ -9,7 +8,6 @@ const WarmUpIndicator: React.FC = () => {
     let isVisible: boolean = false
     let lastWarmupTime = 0
     const [isWarmingUp, setIsWarmingUp] = useState<boolean>(false);
-    const [isWarm, setIsWarm] = useState<boolean>(false);
 
     // const [warmUpInterval, setWarmUpInterval] = useState()
     useEffect(() => {
@@ -24,16 +22,12 @@ const WarmUpIndicator: React.FC = () => {
     }, [])
     const warmUp = async () => {
         console.log(`warmup isVisible:${isVisible} isWarmingUp: ${isWarmingUp}`)
-        const dur = new Date().getTime() - lastWarmupTime
-        if (dur > WarmUpInvervalMS) {
-            setIsWarm(false)
-        }
         if (!isVisible) {
             return
         }
         setIsWarmingUp(true)
         try {
-            const outputs = await txt2img({
+            await txt2img({
                 pPrompt: 'a cat',
                 nPrompt: '',
                 modelId: 'ByteDance/SDXL-Lightning',
@@ -41,9 +35,6 @@ const WarmUpIndicator: React.FC = () => {
                 height: 64,
                 numOutput: 1
             })
-            if (outputs && outputs.length > 0) {
-                setIsWarm(true)
-            }
         }
         catch (error: any) {
 
@@ -72,9 +63,7 @@ const WarmUpIndicator: React.FC = () => {
         }
     };
     return (
-        <>{!isWarm &&
-            <ErrorComponent style={ErrorComponentStyle.Warning} errorMessage="Models are warming up. Please wait a bit." />
-        }</>
+        <></>
     );
 };
 
