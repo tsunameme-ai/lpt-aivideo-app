@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { Button, Spacer } from "@nextui-org/react"
 import TextOverlay from "@/components/text-overlay"
@@ -16,14 +16,6 @@ export default function Page() {
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
     const [overlayImageData, setOverlayImageData] = useState<LocalImageData | undefined>(gContext.overlayImageData)
     const [overlayText, setOverlayText] = useState<string>(gContext.overlayText)
-
-
-    // useEffect(() => {
-    //     const output = gContext.t2iOutputs[gContext.t2iOutputSelectedIndex]
-    //     if (output) {
-    //         setImageUrl(output.url)
-    //     }
-    // }, [])
 
     const handleClickToVideo = () => {
         gContext.setOverlayText(overlayText)

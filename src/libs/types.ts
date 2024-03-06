@@ -51,7 +51,6 @@ export type LocalImageData = {
     dataURL: string,
     width: number,
     height: number
-    generationId: string
     overlayImageDataURL?: string
 }
 

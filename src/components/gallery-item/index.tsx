@@ -52,7 +52,7 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
                     <p>Model Id: {generation.input.modelId}</p>
                     <p>{generation.input.width} x {generation.input.height}</p>
                     {generation!.outputs!.map((item) => (
-                        <video loop controls autoPlay src={item.url} />
+                        <video loop controls autoPlay src={item.url} key={`${generation.id}`} />
                     ))}
                 </>}
             </>}
