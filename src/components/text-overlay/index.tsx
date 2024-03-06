@@ -29,7 +29,7 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
         <Textarea
             maxRows={4}
             label=''
-            placeholder='Write something sassy'
+            placeholder='Write your creative copies here. The text can be multiple lines.'
             value={text}
             onValueChange={setText}
         />

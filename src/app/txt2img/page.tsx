@@ -40,7 +40,7 @@ export default function Page() {
         <>
             <section className={styles.main}>
                 <div className={styles.centerSection}>
-                    <div>Step 1: Write prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div>Step 1: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={2} />
                     <Txt2ImgComponent
                         isAdvancedView={gContext.isAdvancedView}
