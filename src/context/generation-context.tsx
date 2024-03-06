@@ -1,5 +1,5 @@
 'use client'
-import { LocalImageData, GenerationOutputItem, Txt2imgInput, Img2vidNativeInput, SDConfig } from '@/libs/types';
+import { LocalImageData, GenerationOutputItem, Txt2imgInput, Img2vidInput, SDConfig } from '@/libs/types';
 import { createContext, useState, useEffect, useContext } from 'react';
 
 interface GenerationContextType {
@@ -11,16 +11,19 @@ interface GenerationContextType {
     setT2iInput: (value: Txt2imgInput | undefined) => void
     t2iOutputs: Array<GenerationOutputItem>
     setT2iOutputs: (outputs: Array<GenerationOutputItem>) => void
-    // get t2iSelectedOutput(): GenerationOutputItem | undefined
+
     t2iOutputSelectedIndex: number
     setT2iOutputSelectedIndex: (value: number) => void
-    coverText: string
-    setCoverText: (value: string) => void
-    coverImageData: LocalImageData | undefined
-    setCoverImageData: (value: LocalImageData | undefined) => void
 
-    i2vInput: Img2vidNativeInput | undefined
-    setI2vInput: (value: Img2vidNativeInput | undefined) => void
+    get t2iSelectedOutput(): GenerationOutputItem | undefined
+
+    overlayText: string
+    setOverlayText: (value: string) => void
+    overlayImageData: LocalImageData | undefined
+    setOverlayImageData: (value: LocalImageData | undefined) => void
+
+    i2vInput: Img2vidInput | undefined
+    setI2vInput: (value: Img2vidInput | undefined) => void
 }
 
 const GenerationContext = createContext<GenerationContextType | undefined>(undefined);
@@ -30,9 +33,9 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [t2iInput, setT2iInput] = useState<Txt2imgInput | undefined>(undefined)
     const [t2iOutputs, setT2iOutputs] = useState<Array<GenerationOutputItem>>([])
     const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useState<number>(0)
-    const [coverText, setCoverText] = useState<string>('')
-    const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(undefined)
-    const [i2vInput, setI2vInput] = useState<Img2vidNativeInput | undefined>(undefined)
+    const [overlayText, setOverlayText] = useState<string>('')
+    const [overlayImageData, setOverlayImageData] = useState<LocalImageData | undefined>(undefined)
+    const [i2vInput, setI2vInput] = useState<Img2vidInput | undefined>(undefined)
 
     useEffect(() => {
         // Optional: Clear context on unmount (comment out if not needed)
@@ -61,6 +64,13 @@ export default function GenerationContextProvider({ children }: { children: Reac
         }
     };
 
+    const getT2iSelectedOutput = (): GenerationOutputItem | undefined => {
+        if (t2iOutputs) {
+            return t2iOutputs[t2iOutputSelectedIndex || 0]
+        }
+        return undefined
+    }
+
     return (
         <GenerationContext.Provider
             value={{
@@ -69,10 +79,13 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 t2iOutputs, setT2iOutputs,
                 t2iOutputSelectedIndex, setT2iOutputSelectedIndex,
                 get config() {
-                    return generationConfig();
+                    return generationConfig()
                 },
-                coverText, setCoverText,
-                coverImageData, setCoverImageData,
+                get t2iSelectedOutput() {
+                    return getT2iSelectedOutput()
+                },
+                overlayText, setOverlayText,
+                overlayImageData, setOverlayImageData,
                 i2vInput, setI2vInput
             }}>
             {children}

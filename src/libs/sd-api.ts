@@ -1,4 +1,4 @@
-import { GenerationOutputItem, Img2vidNativeInput, Txt2imgInput } from './types'
+import { GenerationOutputItem, Img2vidInput, Txt2imgInput } from './types'
 import { Utils } from './utils'
 
 export class SDAPI {
@@ -25,7 +25,7 @@ export class SDAPI {
         })
     }
 
-    public async img2vid(params: Img2vidNativeInput): Promise<Array<GenerationOutputItem>> {
+    public async img2vid(params: Img2vidInput): Promise<Array<GenerationOutputItem>> {
         const postBody = {
             "image_url": params.imageUrl,
             "model_id": params.modelId,
@@ -33,7 +33,9 @@ export class SDAPI {
             "height": params.height,
             "motion_bucket_id": params.motionBucketId,
             "noise_aug_strength": params.noiseAugStrength,
-            "overlay_base64": params.overlayBase64
+            "overlay_base64": params.overlayBase64,
+            "overlay_text": params.overlayText,
+            "image_generation_id": params.imageGenerationId
         }
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT_IMG2VID!
         return await this.sendRequest(url, {

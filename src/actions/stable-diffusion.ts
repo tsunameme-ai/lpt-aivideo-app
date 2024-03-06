@@ -1,7 +1,7 @@
 'use server'
 
 import { SDAPI, SDStaticAPI } from "@/libs/sd-api";
-import { GenerationOutputItem, GenerationRequest, GenerationType, Img2vidNativeInput, Txt2imgInput } from "@/libs/types";
+import { GenerationOutputItem, GenerationRequest, GenerationType, Img2vidInput, Txt2imgInput } from "@/libs/types";
 
 export async function txt2img(params: Txt2imgInput): Promise<Array<GenerationOutputItem>> {
     if (process.env.NEXT_PUBLIC_LIVEPEER === 'static') {
@@ -10,21 +10,25 @@ export async function txt2img(params: Txt2imgInput): Promise<Array<GenerationOut
     return await new SDAPI().txt2img(params)
 }
 
-export async function img2vid(params: Img2vidNativeInput): Promise<Array<GenerationOutputItem>> {
+export async function img2vid(params: Img2vidInput): Promise<Array<GenerationOutputItem>> {
     if (process.env.NEXT_PUBLIC_LIVEPEER === 'static') {
         return await new SDStaticAPI().img2vid()
     }
     return await new SDAPI().img2vid(params)
 }
 
-export async function fetchGenerationData(gid: string): Promise<GenerationRequest> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generation/${gid}`)
+export async function fetchGenerationData(urlGid: string): Promise<GenerationRequest> {
+
+    const gid = decodeURI(urlGid)
+    console.log(gid)
+    const segs = gid.split('%3A')
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generation/${segs[0]}`)
     if (!res.ok) {
         throw new Error(`Error fetch generatioan data ${res.status} ${gid}`)
     }
     const data = await res.json()
     // console.log(data)
-    const parseResponse = (data: any): { type: GenerationType, input: Txt2imgInput | Img2vidNativeInput } => {
+    const parseResponse = (data: any): { type: GenerationType, input: Txt2imgInput | Img2vidInput } => {
         if (data.action === 'txt2img') {
             return {
                 type: GenerationType.TXT2IMG,
@@ -51,7 +55,7 @@ export async function fetchGenerationData(gid: string): Promise<GenerationReques
                     width: data.input.height,
                     height: data.input.height,
                     seed: data.input.seed
-                } as Img2vidNativeInput
+                } as Img2vidInput
 
             }
         }

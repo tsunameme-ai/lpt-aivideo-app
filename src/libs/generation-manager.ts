@@ -1,4 +1,4 @@
-import { GenerationRequest, GenerationType, Img2vidNativeInput, Txt2imgInput } from "./types"
+import { GenerationRequest, GenerationType, Img2vidInput, Txt2imgInput } from "./types"
 import { Utils } from "./utils"
 
 export class GenerationManager {
@@ -12,7 +12,7 @@ export class GenerationManager {
     }
 
 
-    public async addGenerationRequest(type: GenerationType, input: Txt2imgInput | Img2vidNativeInput) {
+    public async addGenerationRequest(type: GenerationType, input: Txt2imgInput | Img2vidInput) {
         await Utils.delay(200)
         const id = new Date().getTime().toString()
         this.generations.set(id, {

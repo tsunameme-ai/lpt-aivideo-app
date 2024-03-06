@@ -1,4 +1,3 @@
-import { metadata } from '@/app/layout'
 import { Metadata } from 'next'
 import GalleryItemComponent from '@/components/gallery-item'
 import { fetchGenerationData } from '@/actions/stable-diffusion'
@@ -11,12 +10,12 @@ type Props = {
 
 export async function generateMetadata(
     { params }: Props,
-    // parent: ResolvingMetadata
 ): Promise<Metadata> {
     try {
         const data = await fetchGenerationData(params.gid)
         if (data.type === GenerationType.TXT2IMG) {
             return {
+                //fields ref https://stackoverflow.com/questions/76265976/next-js-dynamic-metadata
                 description: (data.input as Txt2imgInput).pPrompt,
                 openGraph: {
                     images: (data.outputs || []).map(item => {

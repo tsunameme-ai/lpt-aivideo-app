@@ -47,8 +47,8 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
 
         //Clear context for future steps
         gContext.setT2iOutputSelectedIndex(0)
-        gContext.setCoverImageData(undefined)
-        gContext.setCoverText('')
+        gContext.setOverlayImageData(undefined)
+        gContext.setOverlayText('')
         gContext.setT2iInput(undefined)
         gContext.setT2iOutputs([])
         gContext.setI2vInput(undefined)

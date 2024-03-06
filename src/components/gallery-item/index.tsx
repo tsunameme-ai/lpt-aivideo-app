@@ -18,7 +18,9 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
     const requestData = async (gid: string) => {
         setIsLoading(true)
         try {
-            const data = await fetchGenerationData(gid)
+            const segs = gid.split(':')
+            console.log(segs)
+            const data = await fetchGenerationData(segs[0])
             setGeneration(data)
             setErrorMessage('')
         }
@@ -49,8 +51,8 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
                     <p>Image</p>
                     <p>Model Id: {generation.input.modelId}</p>
                     <p>{generation.input.width} x {generation.input.height}</p>
-                    {generation!.outputs!.map((item, index) => (
-                        <video src={item.url} key={`${props.generationId}-${index}`} />
+                    {generation!.outputs!.map((item) => (
+                        <video loop controls autoPlay src={item.url} />
                     ))}
                 </>}
             </>}
