@@ -1,4 +1,4 @@
-import { Txt2imgInput, GenerationOutput, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
+import { Txt2imgInput, GenerationOutputItem, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";
 import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
@@ -9,7 +9,7 @@ import { FaRegPlayCircle } from "react-icons/fa"
 
 interface Txt2ImgComponentProps {
     isAdvancedView: boolean
-    onImagesGenerated: (generationOutput: Array<GenerationOutput>) => void
+    onImagesGenerated: (generationOutput: Array<GenerationOutputItem>) => void
     onImagesError: (error: any) => void
 }
 
@@ -47,8 +47,8 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
 
         //Clear context for future steps
         gContext.setT2iOutputSelectedIndex(0)
-        gContext.setCoverImageData(undefined)
-        gContext.setCoverText('')
+        gContext.setOverlayImageData(undefined)
+        gContext.setOverlayText('')
         gContext.setT2iInput(undefined)
         gContext.setT2iOutputs([])
         gContext.setI2vInput(undefined)

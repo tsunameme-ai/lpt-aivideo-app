@@ -4,7 +4,7 @@ export type Txt2vidInput = {
     seconds: number,
     seed?: number
 }
-export type Img2vidNativeInput = {
+export type Img2vidInput = {
     modelId: string,
     imageUrl?: string,
     motionBucketId: number,
@@ -13,15 +13,9 @@ export type Img2vidNativeInput = {
     height: number,
     seed?: number
     overlayBase64?: string
-}
-export type Img2vidInput = {
-    imageUrl?: string,
-    motionBucketId: number,
-    noiseAugStrength: number,
-    width: number,
-    height: number,
-    seed?: number | string,
-    imageFile?: File
+    imageId?: string
+    overlayText?: string
+    imageGenerationId?: string
 }
 export type Txt2imgInput = {
     pPrompt: string,
@@ -34,8 +28,13 @@ export type Txt2imgInput = {
     numOutput: number
 }
 export type GenerationOutput = {
-    mediaUrl: string,
-    seed?: number
+    id: string,
+    outputs: Array<GenerationOutputItem>
+}
+export type GenerationOutputItem = {
+    id: string,
+    url: string,
+    seed: number
 }
 export enum GenerationType {
     TXT2IMG = 'txt2img',
@@ -44,8 +43,8 @@ export enum GenerationType {
 export type GenerationRequest = {
     id: string,
     type: GenerationType,
-    input: Txt2imgInput | Img2vidNativeInput
-    output?: GenerationOutput
+    input: Txt2imgInput | Img2vidInput
+    outputs?: GenerationOutputItem[]
 }
 export type LocalImageData = {
     remoteURL: string,

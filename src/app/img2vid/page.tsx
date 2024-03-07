@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
-import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutput, GenerationRequest, GenerationType, Img2vidNativeInput } from "@/libs/types"
+import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem, GenerationRequest, GenerationType, Img2vidInput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
 import { Spacer, Image, Link, Button } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
@@ -14,13 +14,13 @@ import LongrunIndicator from "@/components/longrun-indicator"
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
-    const [videoOutput, setVideoOutput] = useState<GenerationOutput | undefined>(undefined)
+    const [videoOutput, setVideoOutput] = useState<GenerationOutputItem | undefined>(undefined)
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
-    const [i2vInput, setI2vInput] = useState<Img2vidNativeInput>(gContext.i2vInput || {
-        imageUrl: gContext.coverImageData?.remoteURL || '',
-        width: gContext.coverImageData?.width || DEFAULT_VIDEO_WIDTH,
-        height: gContext.coverImageData?.height || DEFAULT_VIDEO_HEIGHT,
+    const [i2vInput, setI2vInput] = useState<Img2vidInput>(gContext.i2vInput || {
+        imageUrl: gContext.overlayImageData?.remoteURL || '',
+        width: gContext.overlayImageData?.width || DEFAULT_VIDEO_WIDTH,
+        height: gContext.overlayImageData?.height || DEFAULT_VIDEO_HEIGHT,
         motionBucketId: DEFAULT_MOTION_BUCKET_ID,
         noiseAugStrength: DEFAULT_NOISE_AUG_STRENGTH,
         modelId: gContext.config.videoModels.find(item => { return item.default === true })?.value!
@@ -28,7 +28,7 @@ export default function Page() {
     const [errorMessage, setErrorMessage] = useState<string>()
 
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
-    const onVideoGenerated = async (outputs: Array<GenerationOutput>) => {
+    const onVideoGenerated = async (outputs: Array<GenerationOutputItem>) => {
         if (outputs.length > 0) {
             setVideoOutput(outputs[0])
         }
@@ -47,14 +47,16 @@ export default function Page() {
             return
         }
         setErrorMessage('')
-        if (gContext.coverImageData) {
+        if (gContext.overlayImageData) {
             try {
                 setIsGeneratingVideo(true)
                 gContext.setI2vInput(i2vInput)
-                const input = {
+                const input: Img2vidInput = {
                     ...i2vInput,
-                    imageUrl: gContext.coverImageData.remoteURL,
-                    overlayBase64: gContext.coverImageData.overlayImageDataURL
+                    imageUrl: gContext.overlayImageData.remoteURL,
+                    overlayBase64: gContext.overlayImageData.overlayImageDataURL,
+                    overlayText: gContext.overlayText,
+                    imageGenerationId: gContext.t2iSelectedOutput!.id
                 }
 
                 const response = await fetch('/api/generate', {
@@ -97,11 +99,11 @@ export default function Page() {
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
                         {videoOutput && <>
-                            <video className={styles.videoPreview} loop controls autoPlay src={videoOutput.mediaUrl} />
+                            <video className={styles.videoPreview} loop controls autoPlay src={videoOutput.url} />
                         </>}
 
-                        {gContext.coverImageData && <>
-                            {!videoOutput && <Image className={styles.imagePreview} src={gContext.coverImageData.dataURL} alt={gContext.coverImageData.dataURL} />}
+                        {gContext.overlayImageData && <>
+                            {!videoOutput && <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />}
                             {<Img2VidComponent
                                 isAdvancedView={gContext.isAdvancedView}
                                 sdConfig={gContext.config}
@@ -115,7 +117,7 @@ export default function Page() {
                         </>}
                         {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
 
-                        {!gContext.coverImageData && <>
+                        {!gContext.overlayImageData && <>
                             <ErrorComponent errorMessage="No Image" />
                             <Link href='/txt2vid'>Generate Image</Link>
                         </>}
@@ -128,7 +130,6 @@ export default function Page() {
                                 />
                             </div>
                         }
-
                     </div>
                 </div>
                 <div className={styles.promptControls}>
@@ -149,6 +150,9 @@ export default function Page() {
                             <h5>Generate</h5>
                         </Button>
                     </div>
+                    {videoOutput && <>
+                        <Link href={`/gallery/${videoOutput.id}`}>Gallery</Link>
+                    </>}
                 </div>
             </section>
         </>

@@ -1,45 +1,37 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { Button, Spacer } from "@nextui-org/react"
 import TextOverlay from "@/components/text-overlay"
 import { useGenerationContext } from "@/context/generation-context"
 import ErrorComponent from "@/components/error"
 import Link from "next/link"
-import { LocalImageData } from "@/libs/types"
+import { GenerationOutputItem, LocalImageData } from "@/libs/types"
 
 import styles from '@/styles/home.module.css'
 
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
-    const [imageUrl, setImageUrl] = useState<string>()
-    const [coverImageData, setCoverImageData] = useState<LocalImageData | undefined>(gContext.coverImageData)
-    const [coverText, setCoverText] = useState<string>(gContext.coverText)
-
-
-    useEffect(() => {
-        const output = gContext.t2iOutputs[gContext.t2iOutputSelectedIndex]
-        if (output) {
-            setImageUrl(output.mediaUrl)
-        }
-    }, [])
+    const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
+    const [overlayImageData, setOverlayImageData] = useState<LocalImageData | undefined>(gContext.overlayImageData)
+    const [overlayText, setOverlayText] = useState<string>(gContext.overlayText)
 
     const handleClickToVideo = () => {
-        gContext.setCoverText(coverText)
-        gContext.setCoverImageData(coverImageData)
+        gContext.setOverlayText(overlayText)
+        gContext.setOverlayImageData(overlayImageData)
         router.push('img2vid')
     }
 
     const onTextOverlayChange = (text: string, localImage: LocalImageData) => {
-        setCoverText(text)
-        setCoverImageData(localImage)
+        setOverlayText(text)
+        setOverlayImageData(localImage)
     }
 
     const handleClickDownload = () => {
-        if (coverImageData) {
+        if (overlayImageData) {
             const link = document.createElement("a");
-            link.href = coverImageData.dataURL!;
+            link.href = overlayImageData.dataURL!;
             link.download = "image.png";
             link.click();
         }
@@ -52,22 +44,22 @@ export default function Page() {
                 <div className={styles.centerSection}>
                     <div>Step 2: Add your copy</div>
                     <Spacer y={2}></Spacer>
-                    {imageUrl && <>
+                    {t2iOutput && <>
                         <div>
                             <TextOverlay
-                                src={imageUrl}
-                                text={coverText}
+                                src={t2iOutput.url}
+                                text={overlayText}
                                 onImageData={onTextOverlayChange}
                                 onDownloadClick={handleClickDownload} />
                         </div>
                     </>}
 
-                    {!imageUrl && <>
+                    {!t2iOutput && <>
                         <ErrorComponent errorMessage="No image" />
                         <Link href={'/txt2img'}>Generate Image</Link>
                     </>}
                 </div>
-                {imageUrl &&
+                {t2iOutput &&
                     <>
                         <div className={styles.promptControls}>
                             <div className='float-right'>

@@ -1,11 +1,11 @@
-import { GenerationOutput, GenerationRequest } from '@/libs/types'
+import { GenerationOutputItem, GenerationRequest } from '@/libs/types'
 import { useEffect, useState } from 'react'
 
 
 interface LongrunIndicatorProps {
     request: GenerationRequest
     onError?: (error: any) => void
-    onComplete?: (outputs: Array<GenerationOutput>) => void
+    onComplete?: (outputs: Array<GenerationOutputItem>) => void
 }
 
 const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicatorProps) => {
