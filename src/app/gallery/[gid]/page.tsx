@@ -15,28 +15,30 @@ export async function generateMetadata(
     try {
         //fields ref https://stackoverflow.com/questions/76265976/next-js-dynamic-metadata
         const data = await fetchGenerationData(params.gid)
-        console.log(data)
         if (data.type === GenerationType.TXT2IMG) {
             return {
-
-                description: (data.input as Txt2imgInput).pPrompt,
+                title: 'Groove',
+                description: 'We bring revolutions to meme',
                 openGraph: {
                     images: (data.outputs || []).map(item => {
                         return item.url
                     }),
+                    type: 'website',
+                    description: (data.input as Txt2imgInput).pPrompt,
                 },
             }
         }
 
         return {
             title: 'Groove',
-            description: 'An AI powered meme generation tool',
-
+            description: 'We bring revolutions to meme',
             openGraph: {
                 videos: (data.outputs || []).map(item => {
                     return item.url
                 }),
-                images: (data.input as Img2vidInput).imageUrl
+                images: (data.input as Img2vidInput).imageUrl,
+                type: 'website',
+                description: (data.input as Img2vidInput).overlayText,
             },
         }
     }
