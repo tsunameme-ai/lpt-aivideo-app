@@ -1,9 +1,11 @@
 'use client'
 import { fetchGenerationData } from "@/actions/stable-diffusion";
 import { useEffect, useState } from "react";
-import { Image, Spinner } from '@nextui-org/react'
+import { Image, Spinner, Button, Spacer } from '@nextui-org/react'
 import { GenerationRequest, GenerationType } from "@/libs/types"
 import ErrorComponent from "../error";
+import styles from "@/styles/home.module.css"
+import { useRouter } from 'next/navigation'
 
 interface GalleryItemComponentProps {
     generationId: string
@@ -14,7 +16,7 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [generation, setGeneration] = useState<GenerationRequest>()
     const [errorMessage, setErrorMessage] = useState<string>('')
-
+    const router = useRouter()
     const requestData = async (gid: string) => {
         setIsLoading(true)
         try {
@@ -35,28 +37,58 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
     useEffect(() => {
         requestData(props.generationId)
     }, [])
+    /*
+                    <p>Model Id: {generation.input.modelId}</p>
+                    <p>{generation.input.width} x {generation.input.height}</p>
+
+    */
+    const HandleSeeMore = () => {
+        router.push('/gallery')
+    }
+    const HandleCreate = () => {
+        router.push('/')
+    }
+
     return (
         <>
             {isLoading && <Spinner />}
-            {generation && (generation?.outputs?.length ?? 0) > 0 && <>
-                {generation.type === GenerationType.TXT2IMG && <>
-                    <p>Image</p>
-                    <p>Model Id: {generation.input.modelId}</p>
-                    <p>{generation.input.width} x {generation.input.height}</p>
-                    {generation.outputs!.map((item, index) => (
-                        <Image src={item.url} key={`${props.generationId}-${index}`} alt={item.seed.toString()} />
-                    ))}
+            {generation && (generation?.outputs?.length ?? 0) > 0 &&
+                <>
+                    {generation.type === GenerationType.TXT2IMG && <>
+                        <div className={styles.imagePreview}>
+                            {generation.outputs!.map((item, index) => (
+                                <Image className={styles.center} src={item.url} key={`${props.generationId}-${index}`} alt={item.seed.toString()} />
+                            ))}
+                        </div>
+                    </>}
+                    {generation.type === GenerationType.IMG2VID && <>
+                        <div className={styles.videoPreview}>
+                            {generation!.outputs!.map((item) => (
+                                <video className={styles.center} loop controls autoPlay src={item.url} key={`${generation.id}`} />
+                            ))}
+                        </div>
+                    </>}
+                    <Spacer y={10} />
+                    <div className={styles.promptControls}>
+                        <Button
+                            className={styles.nextBtn}
+                            size="lg"
+                            onPress={HandleSeeMore}
+                        >
+                            <h5>See More</h5>
+                        </Button>
+                        <Spacer y={10} />
+                        <Button
+                            className={styles.nextBtn}
+                            size="lg"
+                            onPress={HandleCreate}
+                        >
+                            <h5>Be A Creator</h5>
+                        </Button>
+                    </div >
                 </>}
-                {generation.type === GenerationType.IMG2VID && <>
-                    <p>Image</p>
-                    <p>Model Id: {generation.input.modelId}</p>
-                    <p>{generation.input.width} x {generation.input.height}</p>
-                    {generation!.outputs!.map((item) => (
-                        <video loop controls autoPlay src={item.url} key={`${generation.id}`} />
-                    ))}
-                </>}
-            </>}
             <ErrorComponent errorMessage={errorMessage} />
+
         </>
     )
 }
