@@ -31,7 +31,7 @@ export default function RootLayout({
           <GenerationContextProvider>
             <header className='py-1'>
               <NavigationComponent />
-              <WarmUpIndicator />
+              {process.env.NEXT_PUBLIC_WARMUP !== 'off' && <WarmUpIndicator />}
             </header>
             {children}
           </GenerationContextProvider>
