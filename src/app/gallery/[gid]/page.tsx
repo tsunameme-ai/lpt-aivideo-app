@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import GalleryItemComponent from '@/components/gallery-item'
 import { fetchGenerationData } from '@/actions/stable-diffusion'
-import { GenerationType, Txt2imgInput } from '@/libs/types'
+import { GenerationType, Img2vidInput, Txt2imgInput } from '@/libs/types'
 
 
 type Props = {
@@ -15,6 +15,7 @@ export async function generateMetadata(
     try {
         //fields ref https://stackoverflow.com/questions/76265976/next-js-dynamic-metadata
         const data = await fetchGenerationData(params.gid)
+        console.log(data)
         if (data.type === GenerationType.TXT2IMG) {
             return {
 
@@ -29,11 +30,13 @@ export async function generateMetadata(
 
         return {
             title: 'Groove',
-            description: '',
+            description: 'An AI powered meme generation tool',
+
             openGraph: {
                 videos: (data.outputs || []).map(item => {
                     return item.url
-                })
+                }),
+                images: (data.input as Img2vidInput).imageUrl
             },
         }
     }
