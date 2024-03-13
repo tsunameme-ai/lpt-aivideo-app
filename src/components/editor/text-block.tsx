@@ -13,7 +13,7 @@ export interface TextBlockProps {
     background: string,
     id: string,
     isSelected: boolean,
-    onSelect?: (evt: Konva.KonvaEventObject<MouseEvent> | Konva.KonvaEventObject<Event>) => void
+    onSelect?: (id: string) => void
     onRequestEdit?: (block: any) => void
 }
 
@@ -29,15 +29,16 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
         }
     }, [props.isSelected]);
 
-    // useEffect(() => {
-    //     const numLines = (props.text ?? '').split('\n').length
-    //     console.log(numLines)
-    //     // shapeRef.current
-    //     console.log(`shapeRef size ${shapeRef.current.width()} ${shapeRef.current.height()}`)
-    //     console.log(`textRef size ${textRef.current.width()} ${textRef.current.height()}`)
-    //     // textRef.current.height = 50 * numLines + 40
+    useEffect(() => {
+        // const numLines = (props.text ?? '').split('\n').length
+        // console.log(numLines)
+        // // shapeRef.current
+        // console.log(`shapeRef size ${shapeRef.current.width()} ${shapeRef.current.height()}`)
+        // console.log(`textRef size ${textRef.current.width()} ${textRef.current.height()}`)
+        // // textRef.current.height = 50 * numLines + 40
+        console.log(props.text)
 
-    // }, [props.text, props.background, props.fill])
+    }, [props.text, props.background, props.fill])
 
     const onDoubleClick = () => {
         props.onRequestEdit?.(props)
@@ -48,6 +49,8 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
             <Label
                 ref={shapeRef}
                 draggable
+                onClick={() => { props.onSelect?.(props.id) }}
+                onTap={() => { props.onSelect?.(props.id) }}
             >
                 <Tag
                     cornerRadius={10}
@@ -64,8 +67,6 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                     text={props.text}
                     fontStyle={props.fontStyle}
                     align={props.align}
-                    onClick={props.onSelect}
-                    onTap={props.onSelect}
                     onDblClick={onDoubleClick}
                     onDblTap={onDoubleClick}
                 />

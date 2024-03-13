@@ -1,10 +1,11 @@
 'use client'
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import TextBlock, { TextBlockProps } from "./text-block";
 import { Stage, Layer } from "react-konva";
-import Quill from 'quill';
 import "quill/dist/quill.snow.css";
 import { Button } from "@nextui-org/react";
+import TextEditor, { TextEditorProps } from "./text-editor";
+import styles from '@/styles/home.module.css'
 
 
 interface EditorProps {
@@ -13,26 +14,14 @@ interface EditorProps {
 }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
+    const layerRef = useRef<any>();
     const [isEditingText, setIsEditingText] = useState<boolean>(false)
-    const [textBlocks, setTextBlocks] = useState<TextBlockProps[]>([{
-        id: 'rect1',
-        isSelected: false,
-        text: "hello\nhi\nonce upon a time",
-        fill: 'black',
-        background: 'white',
-        x: 10,
-        y: 10,
-        // width: 100
-    }, {
-        id: 'rect2',
-        isSelected: false,
-        text: "world",
-        fill: 'black',
-        background: 'white',
-        x: 10,
-        y: 10,
-        // width: 100
-    }])
+    const [textEditorAttrs, setTextEditorAttrs] = useState<TextEditorProps>({
+        text: '',
+        color: '#000000',
+        background: '#ffffff'
+    })
+    const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
 
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
     const checkDeselect = (e: any) => {
@@ -43,137 +32,91 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
     };
 
-
-    const quillRef = useRef(null);
-    const [quillEditor, setQuillEditor] = useState<Quill>()
-    const [style] = useState<{
-        size: 'small' | false | 'large' | 'huge',
-        bold: boolean,
-        italic: boolean,
-        color: string,
-        background: string,
-        font: false | 'serif' | 'monospace',
-        align: false | 'center' | 'right',
-    }>({ size: 'large', bold: false, italic: false, color: '#000000', background: '#ffffff', font: false, align: false })
-
-    const handleStyleChange = (q: Quill, attribute: string, value: any) => {
-        console.log(`handleStyleChange ${attribute} ${value}`)
-        // const text = q.getText()
-        if (attribute === 'color' && value === false) {
-            value = '#000000'
-        }
-        (style as any)[attribute] = value
-        styleQuill(q)
-        // q.formatText({ index: 0, length: text.length }, { ...style })
-        console.log(`quill??? ${quillEditor}`)
-    }
-    const styleQuill = (q: Quill) => {
-        const text = q.getText()
-        const keys = Object.keys(style)
-        for (let key of keys) {
-            q.formatText({ index: 0, length: text.length }, key, (style as any)[key])
-        }
-        // q.formatText({ index: 0, length: text.length }, { ...style })
-    }
-
-    useEffect(() => {
-        if (quillRef.current) {
-            if (!quillEditor) {
-                const q = new Quill(quillRef.current, {
-                    modules: {
-                        toolbar: {
-                            container: [
-                                // [{ 'size': [] }],
-                                ['bold', 'italic'],
-                                [{ 'color': [] }, { 'background': [] }],
-                                [{ 'font': [] }],
-                                [{ 'align': [false, 'center', 'right'] }],
-                            ],
-                            handlers: {
-                                size: (value: string) => handleStyleChange(q, 'size', value),
-                                bold: (value: boolean) => handleStyleChange(q, 'bold', value),
-                                italic: (value: boolean) => handleStyleChange(q, 'italic', value),
-                                color: (value: boolean) => handleStyleChange(q, 'color', value),
-                                background: (value: boolean) => handleStyleChange(q, 'background', value),
-                                font: (value: boolean) => handleStyleChange(q, 'font', value),
-                                align: (value: boolean) => handleStyleChange(q, 'align', value),
-                            }
-                        }
-                    },
-                    theme: 'snow', // Use the Snow theme
-                });
-                q.on('text-change', () => {
-                    styleQuill(q)
-                })
-                setQuillEditor(q)
-                styleQuill(q)
-                console.log(`???? setQuill ${q}`)
-            }
-        }
-    }, []);
-    // console.log(quillEditor)
-
     return (
-        <div style={{ border: '1px solid #f00', width: `${props.width}px`, height: `${props.height}px`, position: 'relative' }} onClick={() => { checkDeselect }}>
-            <Stage
-                style={{ border: '1px solid #0f0', position: 'absolute', visibility: `${isEditingText ? 'hidden' : 'visible'}` }}
-                width={props.width}
-                height={props.height}
-                onMouseDown={checkDeselect}
-                onTouchStart={checkDeselect}>
-                <Layer>
-                    {textBlocks.map((rect, i) => {
-                        return (
-                            <TextBlock
-                                key={i}
-                                {...rect}
-                                isSelected={rect.id === selectedId}
-                                onSelect={() => {
-                                    setSelectedId(rect.id);
-                                }}
-                                onRequestEdit={(attrs: TextBlockProps) => {
-                                    setIsEditingText(true)
-                                    // console.log(quillEditor)
-                                    console.log(attrs)
-                                    quillEditor?.setText(attrs.text || '')
-                                    style.color = attrs.fill
-                                    style.background = attrs.background
-                                    // style.fontStyle = attrs.
-                                    // style.align = attrs.align || false
-                                }}
-                            // onChange={(newAttrs) => {
-                            //     const rects = rectangles.slice();
-                            //     rects[i] = newAttrs;
-                            //     setRectangles(rects);
-                            // }}
-                            />
-                        );
-                    })}
-                </Layer>
-            </Stage>
+        <>
+            <div style={{ border: '1px solid #f00', width: `${props.width}px`, height: `${props.height}px`, position: 'relative' }} onClick={() => { checkDeselect }}>
+                <Stage
+                    style={{ border: '1px solid #0f0', position: 'absolute', visibility: `${isEditingText ? 'hidden' : 'visible'}` }}
+                    width={props.width}
+                    height={props.height}
+                    onMouseDown={checkDeselect}
+                    onTouchStart={checkDeselect}>
+                    <Layer ref={layerRef}>
+                        {
+                            Object.keys(textBlocks).map((key, i) => {
+                                const rect = textBlocks[key]
+                                return (
+                                    <TextBlock
+                                        key={i}
+                                        {...rect}
+                                        isSelected={rect.id === selectedId}
+                                        onSelect={(rid) => {
+                                            setSelectedId(rid);
+                                        }}
+                                        onRequestEdit={(attrs: TextBlockProps) => {
+                                            setIsEditingText(true)
+                                            setTextEditorAttrs({
+                                                text: attrs.text || '',
+                                                color: attrs.fill,
+                                                background: attrs.background
+                                            })
+                                        }}
+                                    />
+                                );
+                            })}
+                    </Layer>
+                </Stage>
 
-            <div style={{ border: '1px solid #00f', position: 'absolute', visibility: `${isEditingText ? 'visible' : 'hidden'}` }}>
-                <div ref={quillRef} />
+                <div style={{ border: '1px solid #00f', position: 'absolute', width: '100%', visibility: `${isEditingText ? 'visible' : 'hidden'}` }}>
+                    {textEditorAttrs && <TextEditor
+                        {...textEditorAttrs}
+                        onEditingComplete={(text: string | undefined, style: any) => {
+                            setIsEditingText(false)
+                            if (selectedId) {
+                                const tbSelected = textBlocks[selectedId]
+                                if (tbSelected) {
+                                    tbSelected.fill = style.color
+                                    tbSelected.text = text
+                                    tbSelected.background = style.background
+                                    tbSelected.fontFamily = style.font === false ? undefined : style.font as string
+                                    tbSelected.fontStyle = style.bold ? 'bold' : undefined
+                                    tbSelected.align = style.align === false ? undefined : style.align
+                                }
+                            }
+                            setSelectedId(undefined)
+                        }}
+                    />}
+                </div>
+            </div>
+            <div>
                 <Button onPress={() => {
-                    setIsEditingText(false)
-                    const tbSelected = textBlocks.find((r) => {
-                        return r.id === selectedId
+                    setIsEditingText(true)
+                    setTextEditorAttrs({
+                        text: '',
+                        color: 'black',
+                        background: 'white',
                     })
-                    if (tbSelected) {
-                        tbSelected.fill = style.color
-                        tbSelected.text = quillEditor?.getText().trim()
-                        tbSelected.background = style.background
-                        tbSelected.fontFamily = style.font === false ? undefined : style.font as string
-                        tbSelected.fontStyle = style.bold ? 'bold' : undefined
-                        tbSelected.align = style.align === false ? undefined : style.align
-
-                        // tbSelected.fontSize = style.size
+                    const key = `rect${Object.keys(textBlocks).length}`
+                    setSelectedId(key)
+                    textBlocks[key] = {
+                        id: key,
+                        isSelected: false,
+                        text: "Your Text",
+                        fill: 'black',
+                        background: 'white',
+                        x: 10,
+                        y: 10
                     }
 
+                }}>Add Text</Button>
 
-                }}>Done</Button>
+                {selectedId && <Button onPress={() => {
+                    delete textBlocks[selectedId]
+                    setSelectedId(undefined)
+
+                }}>Remove Text</Button>}
             </div>
-        </div>
+        </>
     );
 };
 export default Editor
