@@ -3,6 +3,7 @@ import { Text, Transformer } from "react-konva";
 import Konva from 'konva';
 
 export interface TextBlockProps extends Konva.TextConfig {
+    id: string,
     isSelected: boolean,
     onSelect?: (evt: Konva.KonvaEventObject<MouseEvent> | Konva.KonvaEventObject<Event>) => void
     onRequestEdit?: (block: any) => void
@@ -28,26 +29,21 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
     return (
         <Fragment>
             <Text
+                ref={shapeRef}
+                draggable
                 fontSize={50}
                 onClick={props.onSelect}
                 onTap={props.onSelect}
                 onDblClick={onDoubleClick}
                 onDblTap={onDoubleClick}
-                ref={shapeRef}
                 {...props}
-                draggable
-                onTransform={(evt: Konva.KonvaEventObject<Event>) => {
-                    const node = evt.target
-                    node.setAttrs({
-                        width: node.width() * node.scaleX(),
-                        scaleX: 1,
-                    })
-                }}
             />
             {props.isSelected && (
                 <Transformer
                     ref={trRef}
-                    enabledAnchors={['middle-left', 'middle-right']}
+                    keepRatio={true}
+                    enabledAnchors={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
+                    // enabledAnchors={['middle-left', 'middle-right']}
                     flipEnabled={false}
                     boundBoxFunc={(oldBox, newBox) => {
                         // limit resize

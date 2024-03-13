@@ -14,27 +14,22 @@ interface EditorProps {
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [isEditingText, setIsEditingText] = useState<boolean>(false)
+    const [textBlocks, setTextBlocks] = useState<TextBlockProps[]>([{
+        id: 'rect1',
+        isSelected: false,
+        text: "hello\nhi\nonce upon a time",
+        x: 10,
+        y: 10,
+        // width: 100
+    }, {
+        id: 'rect2',
+        isSelected: false,
+        text: "world",
+        x: 10,
+        y: 10,
+        // width: 100
+    }])
 
-    const initialRectangles = [
-        {
-            text: "hello\nhi\nonce upon a time",
-            x: 10,
-            y: 10,
-            width: 100,
-            // height: 100,
-            fill: 'red',
-            id: 'rect1',
-        },
-        {
-            text: "world",
-            x: 150,
-            y: 150,
-            width: 100,
-            // height: 100,
-            fill: 'green',
-            id: 'rect2',
-        },
-    ];
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
     const checkDeselect = (e: any) => {
         // deselect when clicked on empty area
@@ -82,18 +77,11 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     useEffect(() => {
         if (quillRef.current) {
             if (!quillEditor) {
-                const fontSizeArr = ['8px', '10px', '14px', '20px', '32px', '54px', '68px', '84px', '98px'];
-
-                const Size: any = Quill.import('attributors/style/size');
-                Size.whitelist = fontSizeArr;
-                Quill.register(Size, true);
-
                 const q = new Quill(quillRef.current, {
                     modules: {
                         toolbar: {
                             container: [
                                 // [{ 'size': [] }],
-                                [{ 'size': fontSizeArr }],
                                 ['bold', 'italic'],
                                 [{ 'color': [] }, { 'background': [] }],
                                 [{ 'font': [] }],
@@ -112,7 +100,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                     },
                     theme: 'snow', // Use the Snow theme
                 });
-                q.setText(initialRectangles[0].text)
                 q.on('text-change', () => {
                     styleQuill(q)
                 })
@@ -133,7 +120,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 onMouseDown={checkDeselect}
                 onTouchStart={checkDeselect}>
                 <Layer>
-                    {initialRectangles.map((rect, i) => {
+                    {textBlocks.map((rect, i) => {
                         return (
                             <TextBlock
                                 key={i}
@@ -146,8 +133,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                     setIsEditingText(true)
                                     console.log(quillEditor)
                                     quillEditor?.setText(attrs.text || '')
-                                    // style.size = attrs.fontSize
-                                    // style.
                                 }}
                             // onChange={(newAttrs) => {
                             //     const rects = rectangles.slice();
@@ -161,9 +146,26 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             </Stage>
 
             <div style={{ border: '1px solid #00f', position: 'absolute', visibility: `${isEditingText ? 'visible' : 'hidden'}` }}>
-                <div ref={quillRef} /> {/* Ref for Quill container */}
+                <div ref={quillRef} />
                 <Button onPress={() => {
                     setIsEditingText(false)
+                    const tbSelected = textBlocks.find((r) => {
+                        return r.id === selectedId
+                    })
+                    console.log(textBlocks)
+                    console.log(selectedId)
+                    console.log(tbSelected)
+                    console.log(quillEditor?.getText())
+                    if (tbSelected) {
+                        tbSelected.fill = style.color
+                        tbSelected.text = quillEditor?.getText()
+                        // tbSelected.back
+                        tbSelected.fontFamily = style.font === false ? undefined : style.font as string
+
+
+                        // tbSelected.fontSize = style.size
+                    }
+
 
                 }}>Done</Button>
             </div>
