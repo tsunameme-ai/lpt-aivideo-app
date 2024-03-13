@@ -1,8 +1,16 @@
 import { Fragment, useEffect, useRef } from "react";
-import { Text, Transformer } from "react-konva";
+import { Label, Tag, Text, Transformer } from "react-konva";
 import Konva from 'konva';
 
-export interface TextBlockProps extends Konva.TextConfig {
+export interface TextBlockProps {
+    x: number,
+    y: number,
+    fontFamily?: string,
+    fill: string,
+    text?: string,
+    align?: string
+    fontStyle?: string,
+    background: string,
     id: string,
     isSelected: boolean,
     onSelect?: (evt: Konva.KonvaEventObject<MouseEvent> | Konva.KonvaEventObject<Event>) => void
@@ -11,6 +19,7 @@ export interface TextBlockProps extends Konva.TextConfig {
 
 const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
     const shapeRef = useRef<any>();
+    const textRef = useRef<any>();
     const trRef = useRef<any>();
 
     useEffect(() => {
@@ -20,37 +29,57 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
         }
     }, [props.isSelected]);
 
-    const onDoubleClick = (evt: Konva.KonvaEventObject<MouseEvent> | Konva.KonvaEventObject<Event>) => {
-        console.log(`DOUBLE CLICK`)
-        console.log(evt.target)
-        props.onRequestEdit?.(evt.target.attrs as TextBlockProps)
+    // useEffect(() => {
+    //     const numLines = (props.text ?? '').split('\n').length
+    //     console.log(numLines)
+    //     // shapeRef.current
+    //     console.log(`shapeRef size ${shapeRef.current.width()} ${shapeRef.current.height()}`)
+    //     console.log(`textRef size ${textRef.current.width()} ${textRef.current.height()}`)
+    //     // textRef.current.height = 50 * numLines + 40
+
+    // }, [props.text, props.background, props.fill])
+
+    const onDoubleClick = () => {
+        props.onRequestEdit?.(props)
     }
 
     return (
         <Fragment>
-            <Text
+            <Label
                 ref={shapeRef}
                 draggable
-                fontSize={50}
-                onClick={props.onSelect}
-                onTap={props.onSelect}
-                onDblClick={onDoubleClick}
-                onDblTap={onDoubleClick}
-                {...props}
-            />
+            >
+                <Tag
+                    cornerRadius={10}
+                    fill={props.background}
+                    opacity={0.5}
+                />
+                <Text
+                    lineHeight={1}
+                    padding={20}
+                    fontSize={50}
+                    ref={textRef}
+                    fontFamily={props.fontFamily}
+                    fill={props.fill}
+                    text={props.text}
+                    fontStyle={props.fontStyle}
+                    align={props.align}
+                    onClick={props.onSelect}
+                    onTap={props.onSelect}
+                    onDblClick={onDoubleClick}
+                    onDblTap={onDoubleClick}
+                />
+            </Label>
             {props.isSelected && (
                 <Transformer
                     ref={trRef}
                     keepRatio={true}
-                    enabledAnchors={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
+                    enabledAnchors={['top-left', 'bottom-right']}
                     // enabledAnchors={['middle-left', 'middle-right']}
                     flipEnabled={false}
                     boundBoxFunc={(oldBox, newBox) => {
-                        // limit resize
-
-                        newBox.width = Math.max(30, newBox.width);
-                        newBox.height = Math.max(10, newBox.height)
-                        console.log(newBox)
+                        newBox.width = Math.max(40, newBox.width)
+                        newBox.height = Math.max(90, newBox.height)
                         return newBox;
                     }}
                 />

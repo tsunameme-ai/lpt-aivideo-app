@@ -18,6 +18,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         id: 'rect1',
         isSelected: false,
         text: "hello\nhi\nonce upon a time",
+        fill: 'black',
+        background: 'white',
         x: 10,
         y: 10,
         // width: 100
@@ -25,6 +27,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         id: 'rect2',
         isSelected: false,
         text: "world",
+        fill: 'black',
+        background: 'white',
         x: 10,
         y: 10,
         // width: 100
@@ -32,8 +36,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
     const checkDeselect = (e: any) => {
-        // deselect when clicked on empty area
-        console.log(e)
         const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
             setSelectedId(undefined);
@@ -52,7 +54,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         background: string,
         font: false | 'serif' | 'monospace',
         align: false | 'center' | 'right',
-    }>({ size: false, bold: false, italic: false, color: '#000000', background: '#ffffff', font: false, align: false })
+    }>({ size: 'large', bold: false, italic: false, color: '#000000', background: '#ffffff', font: false, align: false })
 
     const handleStyleChange = (q: Quill, attribute: string, value: any) => {
         console.log(`handleStyleChange ${attribute} ${value}`)
@@ -131,8 +133,13 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                 }}
                                 onRequestEdit={(attrs: TextBlockProps) => {
                                     setIsEditingText(true)
-                                    console.log(quillEditor)
+                                    // console.log(quillEditor)
+                                    console.log(attrs)
                                     quillEditor?.setText(attrs.text || '')
+                                    style.color = attrs.fill
+                                    style.background = attrs.background
+                                    // style.fontStyle = attrs.
+                                    // style.align = attrs.align || false
                                 }}
                             // onChange={(newAttrs) => {
                             //     const rects = rectangles.slice();
@@ -152,16 +159,13 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                     const tbSelected = textBlocks.find((r) => {
                         return r.id === selectedId
                     })
-                    console.log(textBlocks)
-                    console.log(selectedId)
-                    console.log(tbSelected)
-                    console.log(quillEditor?.getText())
                     if (tbSelected) {
                         tbSelected.fill = style.color
-                        tbSelected.text = quillEditor?.getText()
-                        // tbSelected.back
+                        tbSelected.text = quillEditor?.getText().trim()
+                        tbSelected.background = style.background
                         tbSelected.fontFamily = style.font === false ? undefined : style.font as string
-
+                        tbSelected.fontStyle = style.bold ? 'bold' : undefined
+                        tbSelected.align = style.align === false ? undefined : style.align
 
                         // tbSelected.fontSize = style.size
                     }
