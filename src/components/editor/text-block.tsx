@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef } from "react";
 import { Label, Tag, Text, Transformer } from "react-konva";
-import Konva from 'konva';
+// import Konva from 'konva';
 
 export interface TextBlockProps {
     x: number,
@@ -10,6 +10,7 @@ export interface TextBlockProps {
     text?: string,
     align?: string
     fontStyle?: string,
+    opacity?: number
     background: string,
     id: string,
     isSelected: boolean,
@@ -29,16 +30,11 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
         }
     }, [props.isSelected]);
 
+    //A hack to fix transfer outline is off
     useEffect(() => {
-        // const numLines = (props.text ?? '').split('\n').length
-        // console.log(numLines)
-        // // shapeRef.current
-        // console.log(`shapeRef size ${shapeRef.current.width()} ${shapeRef.current.height()}`)
-        // console.log(`textRef size ${textRef.current.width()} ${textRef.current.height()}`)
-        // // textRef.current.height = 50 * numLines + 40
-        console.log(props.text)
+        shapeRef.current.fire('click')
 
-    }, [props.text, props.background, props.fill])
+    }, [props.text])
 
     const onDoubleClick = () => {
         props.onRequestEdit?.(props)
@@ -55,12 +51,12 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                 <Tag
                     cornerRadius={10}
                     fill={props.background}
-                    opacity={0.5}
+                    opacity={props.opacity ?? 0.5}
                 />
                 <Text
                     lineHeight={1}
                     padding={20}
-                    fontSize={50}
+                    fontSize={32}
                     ref={textRef}
                     fontFamily={props.fontFamily}
                     fill={props.fill}

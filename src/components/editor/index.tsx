@@ -1,12 +1,10 @@
 'use client'
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import TextBlock, { TextBlockProps } from "./text-block";
 import { Stage, Layer } from "react-konva";
 import "quill/dist/quill.snow.css";
-import { Button } from "@nextui-org/react";
+import { Button, Slider } from "@nextui-org/react";
 import TextEditor, { TextEditorProps } from "./text-editor";
-import styles from '@/styles/home.module.css'
-
 
 interface EditorProps {
     width: number,
@@ -31,6 +29,11 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             setIsEditingText(false)
         }
     };
+
+
+    //Force update applies when a text block is selected, opacity update is not sent to the object
+    const [, updateState] = useState<any>();
+    const forceUpdate = useCallback(() => updateState({}), []);
 
     return (
         <>
@@ -70,11 +73,14 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 <div style={{ border: '1px solid #00f', position: 'absolute', width: '100%', visibility: `${isEditingText ? 'visible' : 'hidden'}` }}>
                     {textEditorAttrs && <TextEditor
                         {...textEditorAttrs}
-                        onEditingComplete={(text: string | undefined, style: any) => {
+                        onEditingEnd={(text: string | undefined, style: any) => {
                             setIsEditingText(false)
                             if (selectedId) {
-                                const tbSelected = textBlocks[selectedId]
-                                if (tbSelected) {
+                                if (text === undefined || text.length === 0) {
+                                    delete textBlocks[selectedId]
+                                }
+                                else {
+                                    const tbSelected = textBlocks[selectedId]
                                     tbSelected.fill = style.color
                                     tbSelected.text = text
                                     tbSelected.background = style.background
@@ -110,11 +116,31 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
                 }}>Add Text</Button>
 
-                {selectedId && <Button onPress={() => {
-                    delete textBlocks[selectedId]
-                    setSelectedId(undefined)
-
-                }}>Remove Text</Button>}
+                {selectedId && <>
+                    <Button onPress={() => {
+                        delete textBlocks[selectedId]
+                        setSelectedId(undefined)
+                    }}>Remove Text</Button>
+                    <Slider
+                        size='sm'
+                        label="Background alpha"
+                        step={0.01}
+                        maxValue={1}
+                        minValue={0}
+                        // defaultValue={0.5}
+                        defaultValue={textBlocks[selectedId].opacity || 0.5}
+                        classNames={{
+                            base: "max-w-md gap-3",
+                            track: "border-s-secondary-100",
+                            filler: "bg-gradient-to-r from-secondary-100 to-secondary-500"
+                        }}
+                        onChange={(value) => {
+                            const tbSelected = textBlocks[selectedId]
+                            tbSelected.opacity = value as number
+                            forceUpdate()
+                        }}
+                    />
+                </>}
             </div>
         </>
     );

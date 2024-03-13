@@ -7,7 +7,7 @@ export interface TextEditorProps {
     text: string
     color?: string,
     background?: string,
-    onEditingComplete?: (text: string | undefined, style: any) => void
+    onEditingEnd?: (text: string | undefined, style: any) => void
 }
 
 const TextEditor: React.FC<TextEditorProps> = (props: TextEditorProps) => {
@@ -94,7 +94,7 @@ const TextEditor: React.FC<TextEditorProps> = (props: TextEditorProps) => {
         <>
             <div ref={quillRef} />
             <Button onPress={() => {
-                props.onEditingComplete?.(quillEditor?.getText().trim(), style)
+                props.onEditingEnd?.(quillEditor?.getText().trim(), style)
             }}>Done</Button>
         </>
     )
