@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useRef } from "react";
 import { Label, Tag, Text, Transformer } from "react-konva";
-// import Konva from 'konva';
 
 export interface TextBlockProps {
     x: number,
@@ -72,7 +71,6 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                     ref={trRef}
                     keepRatio={true}
                     enabledAnchors={['top-left', 'bottom-right']}
-                    // enabledAnchors={['middle-left', 'middle-right']}
                     flipEnabled={false}
                     boundBoxFunc={(_, newBox) => {
                         newBox.width = Math.max(20, newBox.width)

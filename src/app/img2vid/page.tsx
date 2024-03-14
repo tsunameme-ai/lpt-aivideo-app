@@ -119,7 +119,7 @@ export default function Page() {
 
                         {!gContext.overlayImageData && <>
                             <ErrorComponent errorMessage="No Image" />
-                            <Link href='/txt2vid'>Generate Image</Link>
+                            <Link href='/txt2img'>Generate Image</Link>
                         </>}
 
                         {img2VidRequest &&

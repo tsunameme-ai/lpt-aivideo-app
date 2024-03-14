@@ -2,6 +2,12 @@ import { GenerationOutputItem, Img2vidInput, Txt2imgInput } from './types'
 import { Utils } from './utils'
 
 export class SDAPI {
+    public static resizeToFit = (width: number, height: number, maxWidth: number, maxHeight: number): { width: number; height: number } => {
+        const limitingDimension = Math.max(width / maxWidth, height / maxHeight);
+        const newWidth = Math.floor(width / limitingDimension) & ~7; // Ensure divisibility by 8
+        const newHeight = Math.floor(height / limitingDimension) & ~7;
+        return { width: newWidth, height: newHeight };
+    }
 
     public async txt2img(params: Txt2imgInput): Promise<Array<GenerationOutputItem>> {
         const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/text-to-image`
@@ -109,6 +115,23 @@ export class SDAPI {
 export class SDStaticAPI {
     public async txt2img(): Promise<Array<GenerationOutputItem>> {
         await Utils.delay(1000)
+        return [
+            {
+                "id": "static",
+                "seed": 2300168587,
+                "url": "https://storage.googleapis.com/livepeer-ai-video-dev/e7d1c27a/9e0cb5ce.png"
+            },
+            {
+                "id": "static",
+                "seed": 2300168588,
+                "url": "https://storage.googleapis.com/livepeer-ai-video-dev/e7d1c27a/c5af4d0b.png"
+            },
+            {
+                "id": "static",
+                "seed": 2300168589,
+                "url": "https://storage.googleapis.com/livepeer-ai-video-dev/e7d1c27a/e7d9e0a4.png"
+            }
+        ]
 
         return [{
             id: 'static',
