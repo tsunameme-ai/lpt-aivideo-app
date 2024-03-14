@@ -13,7 +13,7 @@ const NavigationComponent: React.FC = () => {
     ];
 
     return (<>
-        <Navbar onMenuOpenChange={setIsMenuOpen}>
+        <Navbar onMenuOpenChange={setIsMenuOpen} id='app-nav'>
             <NavbarContent>
                 <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}

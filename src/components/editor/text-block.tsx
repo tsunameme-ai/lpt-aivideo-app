@@ -74,9 +74,9 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                     enabledAnchors={['top-left', 'bottom-right']}
                     // enabledAnchors={['middle-left', 'middle-right']}
                     flipEnabled={false}
-                    boundBoxFunc={(oldBox, newBox) => {
-                        newBox.width = Math.max(40, newBox.width)
-                        newBox.height = Math.max(90, newBox.height)
+                    boundBoxFunc={(_, newBox) => {
+                        newBox.width = Math.max(20, newBox.width)
+                        newBox.height = Math.max(20, newBox.height)
                         return newBox;
                     }}
                 />

@@ -72,6 +72,7 @@ const TextEditor: React.FC<TextEditorProps> = (props: TextEditorProps) => {
                     placeholder: 'Blah....',
                     theme: 'snow', // Use the Snow theme
                 });
+                q.format('size', style.size)
                 q.on('text-change', () => {
                     styleQuill(q)
                 })
@@ -79,8 +80,10 @@ const TextEditor: React.FC<TextEditorProps> = (props: TextEditorProps) => {
                 setQuillEditor(q)
                 styleQuill(q)
                 console.log(`???? setQuill ${q}`)
+                q.focus()
             }
         }
+        quillEditor?.focus()
     }, []);
     useEffect(() => {
         quillEditor?.setText(props.text || '')

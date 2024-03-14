@@ -10,7 +10,7 @@ export default function Page() {
         <>
             <section className={styles.main}>
                 <div className={styles.centerSection}>
-                    <Editor width={512} height={768} />
+                    <Editor imageUrl="https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png" />
                 </div>
             </section>
         </>
