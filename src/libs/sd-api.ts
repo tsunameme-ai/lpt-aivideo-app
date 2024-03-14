@@ -115,24 +115,6 @@ export class SDAPI {
 export class SDStaticAPI {
     public async txt2img(): Promise<Array<GenerationOutputItem>> {
         await Utils.delay(1000)
-        return [
-            {
-                "id": "static",
-                "seed": 2300168587,
-                "url": "https://storage.googleapis.com/livepeer-ai-video-dev/e7d1c27a/9e0cb5ce.png"
-            },
-            {
-                "id": "static",
-                "seed": 2300168588,
-                "url": "https://storage.googleapis.com/livepeer-ai-video-dev/e7d1c27a/c5af4d0b.png"
-            },
-            {
-                "id": "static",
-                "seed": 2300168589,
-                "url": "https://storage.googleapis.com/livepeer-ai-video-dev/e7d1c27a/e7d9e0a4.png"
-            }
-        ]
-
         return [{
             id: 'static',
             seed: 1773116098,
