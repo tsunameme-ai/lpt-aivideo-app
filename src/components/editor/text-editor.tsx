@@ -51,8 +51,7 @@ const TextEditor: React.FC<TextEditorProps> = (props: TextEditorProps) => {
                                 ['bold', 'italic'],
                                 [{ 'color': [] }, { 'background': [] }],
                                 [{ 'font': [] }],
-                                [{ 'align': [false, 'center', 'right'] }],
-                                ['clean']
+                                [{ 'align': [false, 'center', 'right'] }]
                             ],
                             handlers: {
                                 size: (value: string) => handleStyleChange(q, 'size', value),

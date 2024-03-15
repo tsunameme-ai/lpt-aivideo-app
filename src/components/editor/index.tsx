@@ -210,17 +210,11 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                             }}>Remove Text</Button>
                             <Slider
                                 size='sm'
-                                label="Background alpha"
+                                label="Background opacity"
                                 step={0.01}
                                 maxValue={1}
                                 minValue={0}
-                                // defaultValue={0.5}
                                 defaultValue={textBlocks[selectedId].opacity || 0.5}
-                                classNames={{
-                                    base: "max-w-md gap-3",
-                                    track: "border-s-secondary-100",
-                                    filler: "bg-gradient-to-r from-secondary-100 to-secondary-500"
-                                }}
                                 onChange={(value) => {
                                     const tbSelected = textBlocks[selectedId]
                                     tbSelected.opacity = value as number
