@@ -6,9 +6,6 @@ import { useRef } from "react";
 const Editor = dynamic(() => import("@/components/editor"), {
     ssr: false,
 });
-const Canvas = dynamic(() => import("@/components/canvas"), {
-    ssr: false,
-});
 
 export default function Page() {
     const ref = useRef<any>()
@@ -20,7 +17,6 @@ export default function Page() {
                         imageUrl="https://storage.googleapis.com/livepeer-ai-video-dev/e7d1c27a/c5af4d0b.png"
                         stageRef={ref}
                     />
-                    <Canvas />
                 </div>
             </section>
         </>

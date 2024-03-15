@@ -19,7 +19,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [image, setImage] = useState<HTMLImageElement>()
     const [width, setWidth] = useState<number>()
     const [height, setHeight] = useState<number>()
-    const [pixelRatio, setPixelRatio] = useState<number>(1.0)
+    const [, setPixelRatio] = useState<number>(1.0)
     const [isEditingText, setIsEditingText] = useState<boolean>(false)
     const [textEditorAttrs, setTextEditorAttrs] = useState<TextEditorProps>({
         text: '',
@@ -194,7 +194,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                 console.log(`stageRef is not defined!`)
                                 return
                             }
-                            const dataUrl = props.stageRef.current?.toDataURL({ pixelRatio: pixelRatio });
+                            // const dataUrl = props.stageRef.current?.toDataURL({ pixelRatio: pixelRatio });
+                            const dataUrl = props.stageRef.current?.toDataURL({ pixelRatio: 2 });
                             const link = document.createElement("a");
                             link.href = dataUrl;
                             link.download = "image.png";
