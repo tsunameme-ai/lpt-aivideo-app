@@ -76,20 +76,21 @@ export default function Page() {
                     <>
                         <Spacer y={4} />
                         <div className={styles.promptControls}>
-                            <div className='float-right'>
+                            <div>
                                 <Button
                                     className={styles.nextBtn}
                                     onPress={handleClickToVideo}
-                                    size="lg"
+                                    size="md"
                                 >
-                                    <h5>Next</h5>
+                                    <h5>GIF it</h5>
                                 </Button>
                             </div>
-                            <div className='float-left'>
+                            <Spacer y={4} />
+                            <div>
                                 <Button
                                     className={styles.backBtn}
                                     onClick={() => router.back()}
-                                    size="lg"
+                                    size="md"
                                 >
                                     <h5>Back</h5>
                                 </Button>
