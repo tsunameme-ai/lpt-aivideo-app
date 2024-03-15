@@ -1,17 +1,26 @@
+'use client'
 import dynamic from "next/dynamic";
 import styles from '@/styles/home.module.css'
-import EditorWrapper from "./wrapper";
+import { useRef } from "react";
 
-dynamic(() => import("@/components/editor"), {
+const Editor = dynamic(() => import("@/components/editor"), {
+    ssr: false,
+});
+const Canvas = dynamic(() => import("@/components/canvas"), {
     ssr: false,
 });
 
 export default function Page() {
+    const ref = useRef<any>()
     return (
         <>
             <section className={styles.main}>
                 <div className={styles.centerSection}>
-                    <EditorWrapper />
+                    <Editor
+                        imageUrl="https://storage.googleapis.com/livepeer-ai-video-dev/e7d1c27a/c5af4d0b.png"
+                        stageRef={ref}
+                    />
+                    <Canvas />
                 </div>
             </section>
         </>
