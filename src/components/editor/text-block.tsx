@@ -70,6 +70,9 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                 <Transformer
                     ref={trRef}
                     keepRatio={true}
+                    rotationSnaps={[0, 90, 180]}
+                    rotateAnchorOffset={30}
+                    anchorCornerRadius={5}
                     enabledAnchors={['top-left', 'bottom-right']}
                     flipEnabled={false}
                     boundBoxFunc={(_, newBox) => {
