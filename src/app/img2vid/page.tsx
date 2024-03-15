@@ -55,6 +55,7 @@ export default function Page() {
             autoClose: 2000,
             hideProgressBar: true
         })
+
         console.log(e.message)
     }
 
