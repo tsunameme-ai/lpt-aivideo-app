@@ -10,6 +10,9 @@ import { useGenerationContext } from "@/context/generation-context"
 import AdvancedIndicator from "@/components/advanced-indicator"
 import ErrorComponent from "@/components/error"
 import LongrunIndicator from "@/components/longrun-indicator"
+import { FaShare } from "react-icons/fa"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Page() {
     const router = useRouter()
@@ -17,6 +20,7 @@ export default function Page() {
     const [videoOutput, setVideoOutput] = useState<GenerationOutputItem | undefined>(undefined)
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
+    const [isButtonNew, setIsButtonNew] = useState<boolean>(false)
     const [i2vInput, setI2vInput] = useState<Img2vidInput>(gContext.i2vInput || {
         imageUrl: gContext.overlayImageData?.remoteURL || '',
         width: gContext.overlayImageData?.width || DEFAULT_VIDEO_WIDTH,
@@ -28,20 +32,38 @@ export default function Page() {
     const [errorMessage, setErrorMessage] = useState<string>()
 
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
+    const toastId = "copy-success";
     const onVideoGenerated = async (outputs: Array<GenerationOutputItem>) => {
         if (outputs.length > 0) {
             setVideoOutput(outputs[0])
         }
         setIsGeneratingVideo(false)
+        setIsButtonNew(true)
     }
 
     const onError = (e: Error) => {
         //setErrorMessage(e.message)
         console.log(e.message)
         setIsGeneratingVideo(false)
+        setIsButtonNew(false)
+    }
+
+    const handleShare = (e: any) => {
+        navigator.clipboard.writeText(window.location.origin + '/gallery/' + videoOutput?.id)
+        toast.success("GIF link is copied. Send it!", {
+            toastId: toastId,
+            autoClose: 2000,
+            hideProgressBar: true
+        })
     }
 
     const handleGenerateVideoClick = async () => {
+
+        if (isButtonNew) {
+            console.log('isButtonNew')
+            return
+        }
+
         if ((i2vInput.width % 8 != 0) || (i2vInput.height % 8 != 0)) {
             setErrorMessage('Width and height must be divisible by 8')
             return
@@ -76,8 +98,10 @@ export default function Page() {
                 console.log('video gen error')
                 console.log(e)
                 setIsGeneratingVideo(false)
+                setIsButtonNew(false)
             }
 
+            //href={`/gallery/${videoOutput.id}`}
         }
 
     }
@@ -95,13 +119,15 @@ export default function Page() {
         <>
             <section className={styles.main}>
                 <div className={styles.centerSection}>
-                    <div>Step 3: Turn it into a video {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div>Step 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
+
                         {videoOutput && <>
                             <video className={styles.videoPreview} loop controls autoPlay src={videoOutput.url} />
+                            <FaShare className={styles.shareIcon} onClick={handleShare} />
                         </>}
-
+                        <ToastContainer />
                         {gContext.overlayImageData && <>
                             {!videoOutput && <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />}
                             {<Img2VidComponent
@@ -133,26 +159,28 @@ export default function Page() {
                     </div>
                 </div>
                 <div className={styles.promptControls}>
-                    <div className='float-left'>
+                    <div>
+                        <Button
+                            className={styles.nextBtn}
+                            size="md"
+                            isLoading={isGeneratingVideo}
+                            onPress={handleGenerateVideoClick}
+                        >
+                            <h5>{isButtonNew ? 'Create New' : 'Render'}</h5>
+                        </Button>
+                    </div>
+                    <Spacer y={4} />
+                    <div>
                         <Button
                             className={styles.backBtn}
                             onPress={() => router.back()}
-                            size="lg">
+                            size="md"
+                            isLoading={isGeneratingVideo}
+                        >
                             <h5>Back</h5>
                         </Button>
                     </div>
-                    <div className='float-right'>
-                        <Button
-                            size="lg"
-                            className={styles.backBtn}
-                            isLoading={isGeneratingVideo}
-                            onPress={handleGenerateVideoClick}>
-                            <h5>Generate</h5>
-                        </Button>
-                    </div>
-                    {videoOutput && <>
-                        <Link href={`/gallery/${videoOutput.id}`}>Gallery</Link>
-                    </>}
+
                 </div>
             </section>
         </>

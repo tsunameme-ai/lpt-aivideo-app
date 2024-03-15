@@ -61,6 +61,7 @@ export default function Page() {
                                 </div>
                             ))}
                         </Slider>
+                        <Spacer y={8} />
                     </>}
                 </div>
                 {imageOutputs.length > 0 && <>
