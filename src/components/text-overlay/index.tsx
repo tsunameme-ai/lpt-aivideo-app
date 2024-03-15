@@ -1,7 +1,7 @@
 import { Spacer, Textarea } from "@nextui-org/react"
 import { useState } from "react"
 import ImageWithTextOverlay from "../image-text-overlay"
-import { FaFileDownload/*, FaShare */ } from "react-icons/fa";
+import { FaFileDownload/*, FaShare */ } from "react-icons/fa"
 import styles from "@/styles/home.module.css";
 import { LocalImageData } from "@/libs/types";
 
@@ -33,7 +33,7 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
             value={text}
             onValueChange={setText}
         />
-        <Spacer y={4} />
+        <Spacer y={2} />
         <div className={styles.containerRelative}>
             {imageLoaded &&
                 <>

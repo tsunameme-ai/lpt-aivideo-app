@@ -9,7 +9,8 @@
     width: 90%;
     min-width: 300px;
     max-width: 512px;
-    min-height: 520px;
+    min-height: 470px;
+    /*background-color: #FFC303;*/
 }
 
 .centerLanding {
@@ -48,49 +49,53 @@
     text-align: center;
     min-height: 100px;
     width: 100%;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 5px;
 }
 
 
 .slider {
     width: 90%;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
     text-align: center;
 }
 
 .center {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
+    width: 100%;
+    margin: 0 auto;
     text-align: center;
+    border-radius: 5px;
 }
 
 .downloadIcon {
     position: absolute;
-    width: 22px;
-    height: 22px;
-    top: 2%;
-    right: 2%;
+    width: 30px;
+    height: 30px;
+    top: 1%;
+    right: 1%;
     color: #FFC303;
 }
 
 .shareIcon {
     position: absolute;
-    width: 22px;
-    height: 22px;
-    right: 12%;
-    top: 2%;
+    width: 30px;
+    height: 30px;
+    right: 1%;
+    top: 1%;
     color: #FFC303;
 }
 
 .videoPreview {
     width: 100%;
+    border-radius: 5px;
 }
 
 .imagePreview {
     width: 100%;
+    border-radius: 5px;
 }
 
 
@@ -123,6 +128,7 @@
 .backBtn {
     color: #f1faee;
     background-color: #ff8d82;
+    width: 100%;
 }
 
 
