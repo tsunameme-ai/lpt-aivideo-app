@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import TextBlock, { TextBlockProps } from "./text-block";
 import { Stage, Layer, Image as KonvaImage } from "react-konva";
 import "quill/dist/quill.snow.css";
-import { Button, Slider, Spinner } from "@nextui-org/react";
+import { Button, Slider, Spinner, Tooltip } from "@nextui-org/react";
 import TextEditor, { TextEditorProps } from "./text-editor";
 import RemoteImage from "../remote-image";
 import { SDAPI } from "@/libs/sd-api";
@@ -209,7 +209,28 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                 delete textBlocks[selectedId]
                                 setSelectedId(undefined)
                             }}>Remove Text</Button>
-                            <Slider
+                            <Tooltip
+                                content={
+                                    <Slider
+                                        className="h-32"
+                                        aria-label="background opacity"
+                                        size='sm'
+                                        step={0.01}
+                                        maxValue={1}
+                                        minValue={0}
+                                        orientation="vertical"
+                                        defaultValue={textBlocks[selectedId].opacity || 0.5}
+                                        onChange={(value) => {
+                                            const tbSelected = textBlocks[selectedId]
+                                            tbSelected.opacity = value as number
+                                            forceUpdate()
+                                        }}
+                                    />}
+                            >
+                                <Button>Background Opacity</Button>
+                            </Tooltip>
+
+                            {/* <Slider
                                 size='sm'
                                 label="Background opacity"
                                 step={0.01}
@@ -221,7 +242,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                     tbSelected.opacity = value as number
                                     forceUpdate()
                                 }}
-                            />
+                            /> */}
                         </>}
                     </div>
                 </> : <Spinner />}
