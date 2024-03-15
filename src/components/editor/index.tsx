@@ -169,7 +169,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                     </div >
 
 
-                    <div style={{ width: '100%', padding: '0px', margin: '0px' }}>
+                    <div className="max-w">
                         <Button onPress={() => {
                             const key = `rect${Object.keys(textBlocks).length}`
                             textBlocks[key] = {
@@ -208,7 +208,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                             <Button onPress={() => {
                                 delete textBlocks[selectedId]
                                 setSelectedId(undefined)
-                            }}>Remove Text</Button>
+                            }}>Remove</Button>
                             <Tooltip
                                 content={
                                     <Slider
@@ -229,20 +229,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                             >
                                 <Button>Background Opacity</Button>
                             </Tooltip>
-
-                            {/* <Slider
-                                size='sm'
-                                label="Background opacity"
-                                step={0.01}
-                                maxValue={1}
-                                minValue={0}
-                                defaultValue={textBlocks[selectedId].opacity || 0.5}
-                                onChange={(value) => {
-                                    const tbSelected = textBlocks[selectedId]
-                                    tbSelected.opacity = value as number
-                                    forceUpdate()
-                                }}
-                            /> */}
                         </>}
                     </div>
                 </> : <Spinner />}
