@@ -17,17 +17,8 @@ export async function img2vid(params: Img2vidInput): Promise<Array<GenerationOut
     return await new SDAPI().img2vid(params)
 }
 
-export async function fetchGenerationData(urlGid: string): Promise<GenerationRequest> {
+const parseGenerationRequest = (data: any): GenerationRequest => {
 
-    const gid = decodeURI(urlGid)
-    console.log(gid)
-    const segs = gid.split('%3A')
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generation/${segs[0]}`)
-    if (!res.ok) {
-        throw new Error(`Error fetch generatioan data ${res.status} ${gid}`)
-    }
-    const data = await res.json()
-    // console.log(data)
     const parseResponse = (data: any): { type: GenerationType, input: Txt2imgInput | Img2vidInput } => {
         if (data.action === 'txt2img') {
             return {
@@ -56,7 +47,6 @@ export async function fetchGenerationData(urlGid: string): Promise<GenerationReq
                     height: data.input.height,
                     seed: data.input.seed
                 } as Img2vidInput
-
             }
         }
         throw new Error('Unknown type')
@@ -68,4 +58,33 @@ export async function fetchGenerationData(urlGid: string): Promise<GenerationReq
         input: input,
         outputs: data.outputs
     }
+}
+
+
+export async function fetchGenerationData(urlGid: string): Promise<GenerationRequest> {
+    const gid = decodeURI(urlGid)
+    console.log(gid)
+    const segs = gid.split('%3A')
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generation/${segs[0]}`)
+    if (!res.ok) {
+        throw new Error(`Error fetch generatioan data ${res.status} ${gid}`)
+    }
+    const data = await res.json()
+    return parseGenerationRequest(data)
+}
+
+export async function fetchGallery(pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
+    const pageQuery = pageKey ? `?page=${pageKey}` : ''
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generations${pageQuery}`)
+    if (!res.ok) {
+        throw new Error(`Error fetch generation data ${res.status} ${pageKey}`)
+    }
+    const data = await res.json()
+    return {
+        nextPage: data['next-page'],
+        items: data.items.map((item: any) => {
+            return parseGenerationRequest(item)
+        })
+    }
+
 }
