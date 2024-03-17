@@ -4,11 +4,11 @@ import ErrorComponent from "@/components/error"
 import { GenerationRequest } from "@/libs/types"
 import styles from "@/styles/home.module.css"
 import { Button, Spacer, Spinner } from "@nextui-org/react"
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react"
+import { Table, TableHeader, TableBody, TableRow, TableColumn, TableCell } from "@nextui-org/react"
+import { Tabs, Tab } from "@nextui-org/react"
 
 export default function Page() {
-    const router = useRouter()
     const [nextPage, setNextPage] = useState<string | undefined>(undefined)
     const [items, setItems] = useState<GenerationRequest[]>([])
     const [isFetchinData, setIsFetchinData] = useState<boolean>(false)
@@ -35,32 +35,33 @@ export default function Page() {
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <div className="flex justify-center items-center">GALLERY page is still under contruction </div>
+                    <div className="flex justify-center items-center">What other people are creating </div>
                     <Spacer y={5}></Spacer>
-                    <div className="flex justify-center items-center"><Button color="primary" onClick={() => router.back()}>Back</Button></div>
                     <div>
-                        <h2>--data start--</h2>
-                        {isFetchinData && <Spinner />}
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>row</th>
-                                    <th>id</th>
-                                    <th>url</th>
-                                </tr>
-                                {items.map((item, index) => (
-                                    <tr key={item.id}>
-                                        <td>{index}</td>
-                                        <td>{item.id}</td>
-                                        <td>{item.outputs?.[0].url}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
+                        <Tabs className="w-full">
+                            <Tab key='community' title='Community'>
+                                {isFetchinData && <Spinner />}
+                                <Table hideHeader>
+                                    <TableHeader>
+                                        <TableColumn>url</TableColumn>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {items.map((item) => (
+                                            <TableRow key={item.id}>
+                                                <TableCell><video className={styles.videoPreview} controls autoPlay src={item.outputs?.[0].url} /></TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
 
-                        </table>
+                                </Table>
+                                {nextPage && <Button onPress={() => fetchData(nextPage)}>Next Page</Button>}
+                            </Tab>
+                            <Tab key='me' title='Me'>
+                                Under construction
+                            </Tab>
+                        </Tabs>
 
-                        {nextPage && <Button onPress={() => fetchData(nextPage)}>Next Page</Button>}
-                        <h2>--data end--</h2>
+
                     </div>
                     {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
                 </div>
