@@ -33,7 +33,7 @@ const NavigationComponent: React.FC = () => {
                             href={item[1]}
                             size="lg"
                         >
-                            <div className="text-3xl leading-10">{item[0]}</div>
+                            <div className="text-2xl leading-10">{item[0]}</div>
                         </Link>
                     </NavbarMenuItem>
                 ))}
