@@ -32,7 +32,7 @@ export default function Page() {
     const [errorMessage, setErrorMessage] = useState<string>()
 
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
-    const toastId = "copy-success";
+    const toastId = "copy-success"
     const onVideoGenerated = async (outputs: Array<GenerationOutputItem>) => {
         if (outputs.length > 0) {
             setVideoOutput(outputs[0])

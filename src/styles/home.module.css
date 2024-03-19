@@ -88,6 +88,16 @@
     color: #FFC303;
 }
 
+.galleryShareIcon {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 5%;
+    top: 2.5%;
+    color: #FFC303;
+}
+
+
 .videoPreview {
     width: 100%;
     border-radius: 5px;
@@ -131,9 +141,20 @@
     width: 100%;
 }
 
+.galleryTable {
+    /*background-color: #ff8d82;*/
+    width: 100%;
+}
 
 .textareaControl {
     position: relative
+}
+
+.toast {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    height: 10px;
 }
 
 .red {
