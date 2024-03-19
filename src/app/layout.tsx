@@ -17,11 +17,13 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  userScalable: false
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en" className='comfort'>
       <body>
@@ -29,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <GenerationContextProvider>
             <header className='py-1'>
               <NavigationComponent />
-              {process.env.NEXT_PUBLIC_WARMUP !== 'off' && <WarmUpIndicator />}
+              <WarmUpIndicator />
             </header>
             {children}
           </GenerationContextProvider>
