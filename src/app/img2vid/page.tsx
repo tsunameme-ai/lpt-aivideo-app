@@ -13,6 +13,7 @@ import LongrunIndicator from "@/components/longrun-indicator"
 import { FaShare } from "react-icons/fa"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import MediaPlayerComponent from "@/components/media-player"
 
 export default function Page() {
     const router = useRouter()
@@ -126,7 +127,7 @@ export default function Page() {
                     <div className={styles.containerRelative}>
 
                         {videoOutput && <>
-                            <video className={styles.videoPreview} loop controls autoPlay src={videoOutput.url} />
+                            <MediaPlayerComponent src={videoOutput.url} className={styles.videoPreview} />
                             <FaShare className={styles.shareIcon} onClick={handleShare} />
                         </>}
                         <ToastContainer />
