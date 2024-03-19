@@ -26,7 +26,6 @@ export default function Page() {
             const data = await fetchGallery(pageKey)
             setNextPage(data.nextPage)
             setItems(items.concat(data.items))
-
         }
         catch (e: any) {
             setErrorMessage(`Fetch gallery data failed ${e.message}`)
@@ -37,11 +36,12 @@ export default function Page() {
     }
 
     const toastId = "gallery-copy-success"
-    const handleShare = (url: string) => {
-        navigator.clipboard.writeText(window.location.origin + '/gallery/' + url)
-        toast.success("GIF link is copied. Send it!", {
+    const handleShare = (itemid: string) => {
+
+        navigator.clipboard.writeText(`${window.location.origin}/gallery/${itemid}`)
+        toast.success("Link is copied. Send it!", {
             toastId: toastId,
-            autoClose: 2000,
+            autoClose: 1800,
             hideProgressBar: true
         })
     }
@@ -56,26 +56,29 @@ export default function Page() {
                     <ToastContainer />
                     <Card className="max-w-full">
                         <CardBody className="overflow-hidden">
-                            <Tabs fullWidth >
-                                <Tab key='community' title='Everyone else'>
+                            <Tabs fullWidth classNames={{
+                                tabContent: "group-data-[selected=true]:text-[#f1faee]",
+                                cursor: "w-full bg-[#ffc303]"
+                            }} >
+                                <Tab key='community' title='Everyone else' >
                                     {isFetchinData && <div className={styles.center}><Spacer y={4}></Spacer><Spinner color="warning" /></div>}
                                     <Table radius="sm" hideHeader className={styles.galleryTable} aria-label="Gallery">
                                         <TableHeader>
                                             <TableColumn>url</TableColumn>
                                         </TableHeader>
                                         <TableBody>
-                                            {items.map((item) => (
-                                                <TableRow key={item.id}>
-                                                    <TableCell>
+                                            {items.map((item, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell key={item.id}>
                                                         <video className={styles.videoPreview} controls autoPlay src={item.outputs?.[0].url} />
-                                                        <FaShare className={styles.galleryShareIcon} onClick={() => handleShare(item.outputs?.[0].url as string)} />
+                                                        <FaShare className={styles.galleryShareIcon} onClick={() => handleShare(item.id as string)} />
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>
                                     </Table>
                                     <div className={styles.center}>
-                                        {nextPage && <Button onPress={() => fetchData(nextPage)}>Load More</Button>}
+                                        {nextPage && <Button onPress={() => fetchData(nextPage)} className="bg-[#ff8d82]">Load More</Button>}
                                     </div>
                                 </Tab>
                                 <Tab key='me' title='Me'>

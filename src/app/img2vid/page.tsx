@@ -50,9 +50,9 @@ export default function Page() {
 
     const handleShare = (e: any) => {
         navigator.clipboard.writeText(window.location.origin + '/gallery/' + videoOutput?.id)
-        toast.success("GIF link is copied. Send it!", {
+        toast.success("Link is copied. Send it!", {
             toastId: toastId,
-            autoClose: 2000,
+            autoClose: 1800,
             hideProgressBar: true
         })
 

@@ -93,10 +93,9 @@
     width: 28px;
     height: 28px;
     right: 5%;
-    top: 2.5%;
+    top: 3%;
     color: #FFC303;
 }
-
 
 .videoPreview {
     width: 100%;
@@ -142,7 +141,6 @@
 }
 
 .galleryTable {
-    /*background-color: #ff8d82;*/
     width: 100%;
 }
 
