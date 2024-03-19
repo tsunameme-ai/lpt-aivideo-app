@@ -8,9 +8,8 @@ import WarmUpIndicator from '@/components/warmup-indicator'
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
-  title: 'Groove',
-  description: 'Groove is a creative tool that leverages the latest AI capabilities of the Livepeer network to  \
-  empower users to bring their creative expressions to the internet.'
+  title: 'Tsunameme',
+  description: 'Tsunameme brings revolutions to meme'
 }
 
 export const viewport: Viewport = {

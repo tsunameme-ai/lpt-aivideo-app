@@ -1,17 +1,94 @@
 'use client'
+import { fetchGallery } from "@/actions/stable-diffusion"
+import ErrorComponent from "@/components/error"
+import { GenerationRequest } from "@/libs/types"
 import styles from "@/styles/home.module.css"
-import { Button, Spacer } from "@nextui-org/react"
-import { useRouter } from 'next/navigation'
+import { Button, Spacer, Spinner, Tabs, Tab, Card, CardBody } from "@nextui-org/react"
+import { useEffect, useState } from "react"
+import { Table, TableHeader, TableBody, TableRow, TableColumn, TableCell } from "@nextui-org/react"
+import { FaShare } from "react-icons/fa"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 
 export default function Page() {
-    const router = useRouter()
+    const [nextPage, setNextPage] = useState<string | undefined>(undefined)
+    const [items, setItems] = useState<GenerationRequest[]>([])
+    const [isFetchinData, setIsFetchinData] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+
+    const fetchData = async (pageKey?: string) => {
+        setErrorMessage(undefined)
+        setIsFetchinData(true)
+
+        try {
+
+            const data = await fetchGallery(pageKey)
+            setNextPage(data.nextPage)
+            setItems(items.concat(data.items))
+        }
+        catch (e: any) {
+            setErrorMessage(`Fetch gallery data failed ${e.message}`)
+        }
+        finally {
+            setIsFetchinData(false)
+        }
+    }
+
+    const toastId = "gallery-copy-success"
+    const handleShare = (itemid: string) => {
+
+        navigator.clipboard.writeText(`${window.location.origin}/gallery/${itemid}`)
+        toast.success("Link is copied. Send it!", {
+            toastId: toastId,
+            autoClose: 1800,
+            hideProgressBar: true
+        })
+    }
+
+    useEffect(() => {
+        fetchData(undefined)
+    }, [])
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <div className="flex justify-center items-center">GALLERY page is still under contruction </div>
-                    <Spacer y={5}></Spacer>
-                    <div className="flex justify-center items-center"><Button color="primary" onClick={() => router.back()}>Back</Button></div>
+                    <ToastContainer />
+                    <Card className="max-w-full">
+                        <CardBody className="overflow-hidden">
+                            <Tabs fullWidth classNames={{
+                                tabContent: "group-data-[selected=true]:text-[#f1faee]",
+                                cursor: "w-full bg-[#ffc303]"
+                            }} >
+                                <Tab key='community' title='Everyone else' >
+                                    {isFetchinData && <div className={styles.center}><Spacer y={4}></Spacer><Spinner color="warning" /></div>}
+                                    <Table radius="sm" hideHeader className={styles.galleryTable} aria-label="Gallery">
+                                        <TableHeader>
+                                            <TableColumn>url</TableColumn>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {items.map((item, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell key={item.id}>
+                                                        <video className={styles.videoPreview} controls autoPlay src={item.outputs?.[0].url} />
+                                                        <FaShare className={styles.galleryShareIcon} onClick={() => handleShare(item.id as string)} />
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                    <div className={styles.center}>
+                                        {nextPage && <Button onPress={() => fetchData(nextPage)} className="bg-[#ff8d82]">Load More</Button>}
+                                    </div>
+                                </Tab>
+                                <Tab key='me' title='Me'>
+                                    Nothing yet!
+                                </Tab>
+                            </Tabs>
+                        </CardBody>
+                    </Card>
+
+                    {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
                 </div>
             </section>
         </>
