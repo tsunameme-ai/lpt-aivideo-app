@@ -81,10 +81,19 @@
 
 .shareIcon {
     position: absolute;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     right: 1%;
     top: 1%;
+    color: #FFC303;
+}
+
+.galleryShareIcon {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    right: 5%;
+    top: 3%;
     color: #FFC303;
 }
 
@@ -131,9 +140,19 @@
     width: 100%;
 }
 
+.galleryTable {
+    width: 100%;
+}
 
 .textareaControl {
     position: relative
+}
+
+.toast {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    height: 10px;
 }
 
 .red {
