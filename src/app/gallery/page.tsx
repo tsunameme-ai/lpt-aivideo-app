@@ -7,7 +7,8 @@ import { Button, Spacer, Spinner, Tabs, Tab, Card, CardBody } from "@nextui-org/
 import { useEffect, useState } from "react"
 import { Table, TableHeader, TableBody, TableRow, TableColumn, TableCell } from "@nextui-org/react"
 import { FaShare } from "react-icons/fa"
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 export default function Page() {
@@ -43,7 +44,6 @@ export default function Page() {
             autoClose: 2000,
             hideProgressBar: true
         })
-        console.log(url)
     }
 
     useEffect(() => {
@@ -53,6 +53,7 @@ export default function Page() {
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
+                    <ToastContainer />
                     <Card className="max-w-full">
                         <CardBody className="overflow-hidden">
                             <Tabs fullWidth >
