@@ -33,7 +33,7 @@ export default function Page() {
     const [errorMessage, setErrorMessage] = useState<string>()
 
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
-    const toastId = "copy-success";
+    const toastId = "copy-success"
     const onVideoGenerated = async (outputs: Array<GenerationOutputItem>) => {
         if (outputs.length > 0) {
             setVideoOutput(outputs[0])
@@ -51,9 +51,9 @@ export default function Page() {
 
     const handleShare = (e: any) => {
         navigator.clipboard.writeText(window.location.origin + '/gallery/' + videoOutput?.id)
-        toast.success("GIF link is copied. Send it!", {
+        toast.success("Link is copied. Send it!", {
             toastId: toastId,
-            autoClose: 2000,
+            autoClose: 1800,
             hideProgressBar: true
         })
 

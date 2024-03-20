@@ -17,7 +17,7 @@ export async function generateMetadata(
         const data = await fetchGenerationData(params.gid)
         if (data.type === GenerationType.TXT2IMG) {
             return {
-                title: 'Groove',
+                title: 'Tsunameme',
                 description: 'We bring revolutions to meme',
                 openGraph: {
                     images: (data.outputs || []).map(item => {
@@ -30,7 +30,7 @@ export async function generateMetadata(
         }
 
         return {
-            title: 'Groove',
+            title: 'Tsunameme',
             description: 'We bring revolutions to meme',
             openGraph: {
                 videos: (data.outputs || []).map(item => {
