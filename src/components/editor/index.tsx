@@ -3,11 +3,13 @@ import { useCallback, useEffect, useState } from "react";
 import TextBlock, { TextBlockProps } from "./text-block";
 import { Stage, Layer, Image as KonvaImage } from "react-konva";
 import "quill/dist/quill.snow.css";
-import { Button, Slider, Spinner, Tooltip } from "@nextui-org/react";
+import { Button, Slider, Spinner, Tooltip, useDisclosure } from "@nextui-org/react";
 import TextEditor, { TextEditorProps } from "./text-editor";
 import RemoteImage from "../remote-image";
 import { SDAPI } from "@/libs/sd-api";
 import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH } from "@/libs/types";
+import EditTextModalComponent from "@/components/edit-text-modal"
+
 interface EditorProps {
     coverLayerRef?: any
     stageRef?: any
@@ -74,6 +76,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     //         setIsEditingText(false)
     //     }
     // }
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const handleOpenModal = () => {
+        console.log('onOpen')
+        onOpen()
+    }
+
+    const handleCloseModal = (v: string) => {
+        console.log('v:' + v)
+        onClose()
+    }
 
     useEffect(() => {
         const onResize = () => {
@@ -101,6 +113,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 };
                 img.src = imgLocalUrl
             }} />
+            <EditTextModalComponent initialText='something something' isOpen={isOpen} onClose={handleCloseModal} />
             <div id='editor-wrapper' style={{ width: '100%', border: '2px solid #ff0' }}>
                 {image ? <>
                     <div id='editor-container' style={{ border: '1px solid #f00', width: '100%', height: `${height}px`, position: 'relative', padding: '0px', margin: '0px' }}>
@@ -168,8 +181,12 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
                     </div >
 
-
                     <div className="max-w">
+
+                        <Button color='secondary' onPress={() => {
+                            handleOpenModal()
+                        }}> launch modal test</Button>
+
                         <Button onPress={() => {
                             const key = `rect${Object.keys(textBlocks).length}`
                             textBlocks[key] = {

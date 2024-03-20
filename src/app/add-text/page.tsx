@@ -7,7 +7,6 @@ import { useGenerationContext } from "@/context/generation-context"
 import ErrorComponent from "@/components/error"
 import Link from "next/link"
 import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem } from "@/libs/types"
-
 import styles from '@/styles/home.module.css'
 
 
