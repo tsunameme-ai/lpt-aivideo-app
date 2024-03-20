@@ -71,7 +71,7 @@ export default function Page() {
                                             {items.map((item, index) => (
                                                 <TableRow key={index}>
                                                     <TableCell key={item.id}>
-                                                        <MediaPlayerComponent className={styles.videoPreview} src={item.outputs?.[0].url} />
+                                                        <MediaPlayerComponent className={styles.videoPreview} src={item.outputs?.[0].url!} />
                                                         <FaShare className={styles.galleryShareIcon} onClick={() => handleShare(item.id as string)} />
                                                     </TableCell>
                                                 </TableRow>
