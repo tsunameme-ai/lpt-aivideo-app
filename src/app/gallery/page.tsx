@@ -9,6 +9,7 @@ import { Table, TableHeader, TableBody, TableRow, TableColumn, TableCell } from 
 import { FaShare } from "react-icons/fa"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import MediaPlayerComponent from "@/components/media-player"
 
 
 export default function Page() {
@@ -70,7 +71,7 @@ export default function Page() {
                                             {items.map((item, index) => (
                                                 <TableRow key={index}>
                                                     <TableCell key={item.id}>
-                                                        <video className={styles.videoPreview} controls autoPlay src={item.outputs?.[0].url} />
+                                                        <MediaPlayerComponent className={styles.videoPreview} src={item.outputs?.[0].url!} />
                                                         <FaShare className={styles.galleryShareIcon} onClick={() => handleShare(item.id as string)} />
                                                     </TableCell>
                                                 </TableRow>
