@@ -5,6 +5,8 @@ import type { Viewport } from 'next'
 import GenerationContextProvider from '@/context/generation-context'
 import NavigationComponent from "@/components/navigation"
 import WarmUpIndicator from '@/components/warmup-indicator'
+import { Analytics } from "@vercel/analytics/react"
+
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
@@ -33,6 +35,7 @@ export default function RootLayout({
               <WarmUpIndicator />
             </header>
             {children}
+            <Analytics />
           </GenerationContextProvider>
         </Providers>
       </body>
