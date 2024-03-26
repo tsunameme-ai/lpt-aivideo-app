@@ -6,6 +6,7 @@ import { GenerationRequest, GenerationType } from "@/libs/types"
 import ErrorComponent from "../error";
 import styles from "@/styles/home.module.css"
 import { useRouter } from 'next/navigation'
+import MediaPlayerComponent from "../media-player";
 
 interface GalleryItemComponentProps {
     generationId: string
@@ -64,7 +65,7 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
                     {generation.type === GenerationType.IMG2VID && <>
                         <div className={styles.videoPreview}>
                             {generation!.outputs!.map((item) => (
-                                <video className={styles.center} loop controls autoPlay src={item.url} key={`${generation.id}`} />
+                                <MediaPlayerComponent src={item.url} className={styles.center} key={generation.id} />
                             ))}
                         </div>
                     </>}
