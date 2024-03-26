@@ -55,7 +55,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 { value: 'runwayml/stable-diffusion-v1-5', label: 'SD v1.5', },
                 { value: 'stabilityai/sdxl-turbo', label: 'SDXL Turbo' },
                 { value: 'stabilityai/stable-diffusion-xl-base-1.0', label: 'SDXL 1.0' },
-                { value: 'prompthero/openjourney-v4', label: 'MidJourney V4' }
+                // { value: 'prompthero/openjourney-v4', label: 'MidJourney V4' }
             ],
             'videoModels': [
                 { value: 'stable-video-diffusion-img2vid-xt', label: 'SVD' },
