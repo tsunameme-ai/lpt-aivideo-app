@@ -26,7 +26,7 @@ const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest
     const intervalId = setInterval(() => {
         count += 1
         notify.log(JSON.stringify({ "data": `PING ${count}s` }))
-    }, 1000);
+    }, 5000);
 
     try {
         const output = await exec(gr.input)
