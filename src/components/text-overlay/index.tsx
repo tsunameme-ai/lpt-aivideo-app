@@ -4,7 +4,7 @@ import ImageWithTextOverlay from "../image-text-overlay"
 import { FaFileDownload/*, FaShare */ } from "react-icons/fa"
 import styles from "@/styles/home.module.css";
 import { LocalImageData } from "@/libs/types";
-import { Analytics } from "@/libs/utils";
+import { Analytics } from "@/libs/analytics";
 
 interface TextOverlayProps {
     src: string

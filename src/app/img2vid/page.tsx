@@ -14,7 +14,7 @@ import { FaShare } from "react-icons/fa"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MediaPlayerComponent from "@/components/media-player"
-import { Analytics } from "@/libs/utils"
+import { Analytics } from "@/libs/analytics"
 
 export default function Page() {
     const router = useRouter()

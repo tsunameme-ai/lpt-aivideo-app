@@ -9,7 +9,7 @@ import Link from "next/link"
 import { GenerationOutputItem, LocalImageData } from "@/libs/types"
 
 import styles from '@/styles/home.module.css'
-import { Analytics } from "@/libs/utils"
+import { Analytics } from "@/libs/analytics"
 
 export default function Page() {
     const router = useRouter()

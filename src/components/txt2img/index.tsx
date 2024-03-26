@@ -6,7 +6,7 @@ import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
 import styles from "@/styles/home.module.css";
 import { FaRegPlayCircle } from "react-icons/fa"
-import { Analytics } from "@/libs/utils";
+import { Analytics } from "@/libs/analytics";
 
 interface Txt2ImgComponentProps {
     isAdvancedView: boolean

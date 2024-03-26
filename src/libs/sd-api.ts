@@ -1,5 +1,5 @@
 import { GenerationOutputItem, Img2vidInput, Txt2imgInput } from './types'
-import { Analytics, Utils } from './utils'
+import { Utils } from './utils'
 
 export class SDAPI {
 
@@ -69,9 +69,7 @@ export class SDAPI {
             clearTimeout(timeoutId)
             const dur = (new Date().getTime() - t) / 1000
             const segs = url.split('/')
-            const api = segs[segs.length - 1]
             console.log(`SDAPI REQ ${status} ${segs[segs.length - 1]} ${dur}`)
-            Analytics.trackEvent({ 'event': 'generate-api', 'path': api, 'dur': dur })
             if (resError) {
                 throw resError
             }

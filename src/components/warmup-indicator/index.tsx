@@ -1,6 +1,6 @@
 'use client'
 import { txt2img } from "@/actions/stable-diffusion";
-import { Analytics } from "@/libs/utils";
+import { Analytics } from "@/libs/analytics";
 import { useEffect } from "react";
 
 
