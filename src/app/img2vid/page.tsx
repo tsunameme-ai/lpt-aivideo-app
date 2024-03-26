@@ -14,6 +14,7 @@ import { FaShare } from "react-icons/fa"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MediaPlayerComponent from "@/components/media-player"
+import { Analytics } from "@/libs/utils"
 
 export default function Page() {
     const router = useRouter()
@@ -35,6 +36,7 @@ export default function Page() {
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
     const toastId = "copy-success"
     const onVideoGenerated = async (outputs: Array<GenerationOutputItem>) => {
+        Analytics.trackEvent({ 'event': 'vidgen-complete' })
         if (outputs.length > 0) {
             setVideoOutput(outputs[0])
         }

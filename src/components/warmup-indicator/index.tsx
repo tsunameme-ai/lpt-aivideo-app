@@ -1,5 +1,6 @@
 'use client'
 import { txt2img } from "@/actions/stable-diffusion";
+import { Analytics } from "@/libs/utils";
 import { useEffect } from "react";
 
 
@@ -24,6 +25,7 @@ const WarmUpIndicator: React.FC = () => {
             return
         }
         try {
+            Analytics.trackEvent({ 'event': 'warmup' })
             await txt2img({
                 pPrompt: 'a cat',
                 nPrompt: '',

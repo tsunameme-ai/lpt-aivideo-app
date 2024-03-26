@@ -6,6 +6,7 @@ import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
 import styles from "@/styles/home.module.css";
 import { FaRegPlayCircle } from "react-icons/fa"
+import { Analytics } from "@/libs/utils";
 
 interface Txt2ImgComponentProps {
     isAdvancedView: boolean
@@ -38,6 +39,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     }
 
     const generateImage = async () => {
+        Analytics.trackEvent({ 'event': 'click-2img' })
         if ((parseInt(width) % 8 != 0) || (parseInt(height) % 8 != 0)) {
             setErrorMessage('Width and height must be divisible by 8')
             return

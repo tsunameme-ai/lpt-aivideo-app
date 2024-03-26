@@ -5,6 +5,7 @@ import type { Viewport } from 'next'
 import GenerationContextProvider from '@/context/generation-context'
 import NavigationComponent from "@/components/navigation"
 import WarmUpIndicator from '@/components/warmup-indicator'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
@@ -36,6 +37,8 @@ export default function RootLayout({
           </GenerationContextProvider>
         </Providers>
       </body>
+
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GID!} />
     </html >
   )
 }
