@@ -4,6 +4,7 @@ import { Label, Tag, Text, Transformer } from "react-konva";
 export interface TextBlockProps {
     x: number,
     y: number,
+    blockWidth: number,
     fontFamily?: string,
     fill: string,
     text?: string,
@@ -15,12 +16,15 @@ export interface TextBlockProps {
     isSelected: boolean,
     onSelect?: (id: string) => void
     onRequestEdit?: (block: any) => void
+    onDragging?: (e: any) => void
+    onDragStart?: (e: any) => void
+    onDragEnd?: (e: any) => void
 }
 
 const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
-    const shapeRef = useRef<any>();
-    const textRef = useRef<any>();
-    const trRef = useRef<any>();
+    const shapeRef = useRef<any>()
+    const textRef = useRef<any>()
+    const trRef = useRef<any>()
 
     useEffect(() => {
         if (props.isSelected) {
@@ -35,7 +39,7 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
 
     }, [props.text])
 
-    const onDoubleClick = () => {
+    const onClick = () => {
         props.onRequestEdit?.(props)
     }
 
@@ -46,24 +50,30 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                 draggable
                 onClick={() => { props.onSelect?.(props.id) }}
                 onTap={() => { props.onSelect?.(props.id) }}
+                onMouseDown={() => { props.onSelect?.(props.id) }}
+                onDragStart={(e) => { props.onDragStart?.(e) }}
+                onDragMove={(e) => { props.onDragging?.(e) }}
+                onDragEnd={(e) => { props.onDragEnd?.(e) }}
             >
                 <Tag
-                    cornerRadius={10}
+                    cornerRadius={0}
                     fill={props.background}
                     opacity={props.opacity ?? 0.5}
                 />
                 <Text
+                    width={props.blockWidth}
                     lineHeight={1}
-                    padding={20}
-                    fontSize={32}
+                    padding={10}
+                    fontSize={22}
                     ref={textRef}
                     fontFamily={props.fontFamily}
                     fill={props.fill}
                     text={props.text}
                     fontStyle={props.fontStyle}
                     align={props.align}
-                    onDblClick={onDoubleClick}
-                    onDblTap={onDoubleClick}
+                    onClick={onClick}
+                    onTap={onClick}
+                    wrap='word'
                 />
             </Label>
             {props.isSelected && (

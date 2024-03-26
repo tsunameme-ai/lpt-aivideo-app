@@ -91,12 +91,17 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         <>
             <div className={styles.textareaControl}>
                 <Textarea
-                    maxRows={4}
-                    label=''
-                    placeholder='Try something like "a cat drinks water on the beach"'
+                    maxRows={3}
+                    label='Describe the picture on your mind'
+                    placeholder=''
                     value={pPromptValue}
                     errorMessage={pPromptErrorMessage}
                     onValueChange={handlePPromptValueChange}
+                    classNames={{
+                        input: "font-normal text-lg",
+                        label: "font-normal text-sm",
+                        inputWrapper: "border-[#FFC30C]"
+                    }}
                 />
                 <Button isIconOnly size="lg" variant="light" className={styles.renderBtn} onPress={generateImage} isLoading={isLoading}>
                     <FaRegPlayCircle size={20} />

@@ -1,14 +1,18 @@
 'use client'
-import { useCallback, useEffect, useState } from "react";
-import TextBlock, { TextBlockProps } from "./text-block";
-import { Stage, Layer, Image as KonvaImage } from "react-konva";
-import "quill/dist/quill.snow.css";
-import { Button, Slider, Spinner, Tooltip, useDisclosure } from "@nextui-org/react";
-import TextEditor, { TextEditorProps } from "./text-editor";
-import RemoteImage from "../remote-image";
-import { SDAPI } from "@/libs/sd-api";
-import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH } from "@/libs/types";
+import { useEffect, useState } from "react"
+import TextBlock, { TextBlockProps } from "./text-block"
+import { Stage, Layer, Image as KonvaImage } from "react-konva"
+//import "quill/dist/quill.snow.css";
+import { Button, Spinner, useDisclosure } from "@nextui-org/react"
+import RemoteImage from "../remote-image"
+import { SDAPI } from "@/libs/sd-api"
+import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH } from "@/libs/types"
 import EditTextModalComponent from "@/components/edit-text-modal"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { MdOutlineTextFields } from "react-icons/md"
+import { FaFileDownload } from "react-icons/fa"
+import styles from "@/styles/home.module.css"
 
 interface EditorProps {
     coverLayerRef?: any
@@ -18,37 +22,28 @@ interface EditorProps {
 }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
+    //let isDragging: boolean = false
     const [image, setImage] = useState<HTMLImageElement>()
     const [width, setWidth] = useState<number>()
     const [height, setHeight] = useState<number>()
     const [, setPixelRatio] = useState<number>(1.0)
-    const [isEditingText, setIsEditingText] = useState<boolean>(false)
-    const [textEditorAttrs, setTextEditorAttrs] = useState<TextEditorProps>({
-        text: '',
-        color: '#000000',
-        background: '#ffffff'
-    })
     const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
-
-    const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
-    const checkDeselect = (e: any) => {
+    const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
+    const [IsTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
+    const handleMouseDown = (e: any) => {
+        console.log('handleMouseDown')
         try {
             e.preventDefault()
         }
         catch (e) {
 
         }
-        const clickedOnEmpty = e.target === e.target.getStage();
+        const clickedOnEmpty = e.target === e.target.getStage()
         if (clickedOnEmpty) {
-            setSelectedId(undefined);
-            setIsEditingText(false)
+            setSelectedId(undefined)
         }
-    };
 
-
-    //Force update applies when a text block is selected, opacity update is not sent to the object
-    const [, updateState] = useState<any>();
-    const forceUpdate = useCallback(() => updateState({}), []);
+    }
 
     const resize = (img: any) => {
         if (!img) {
@@ -68,23 +63,61 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         setHeight(editorH)
         setPixelRatio(imgWidth / editorW)
         props.onPixelRatio?.(imgWidth / editorW, imgWidth, imgHeight)
-    }
-    // const onTouch = (event: any) => {
-    //     const clickedCanvas = event.target.closest("canvas")
-    //     if (!clickedCanvas) {
-    //         setSelectedId(undefined);
-    //         setIsEditingText(false)
-    //     }
-    // }
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const handleOpenModal = () => {
-        console.log('onOpen')
-        onOpen()
+        console.log(height)
+        console.log(editorH)
+        console.log(imgHeight)
     }
 
-    const handleCloseModal = (v: string) => {
-        console.log('v:' + v)
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const handleOpenModal = () => { onOpen() }
+    const handleCloseModal = (text: string, slider: number) => {
+        const key = `rect${Object.keys(textBlocks).length}`
+        Object.keys(textBlocks).forEach(key => {
+            delete textBlocks[key]
+        })
+
+        const editorWrapperElement = document.getElementById('editor-wrapper')
+        const editorW = editorWrapperElement?.clientWidth ?? 330
+
+        textBlocks[key] = {
+            blockWidth: editorW * 0.99,
+            id: key,
+            isSelected: false,
+            text: text,
+            opacity: slider,
+            fill: 'black',
+            background: 'white',
+            x: 15,
+            y: 15
+        }
         onClose()
+    }
+
+    const handleTextBlockDragStart = () => {
+        setIsTextBlockDragging(true)
+    }
+    const handleTextBlockDragEnd = () => {
+        setIsTextBlockDragging(false)
+    }
+    const handleTextBlockDragging = (e: any) => {
+        console.log(IsTextBlockDragging)
+        if (!height || !width)
+            return
+
+        if (width && Math.abs(e.target.attrs.x) >= (width - 1)) {
+            console.log('delete')
+            if (selectedId) {
+                delete textBlocks[selectedId]
+                setSelectedId(undefined)
+                toast.warning("Text deleted", {
+                    toastId: 'delete notification',
+                    autoClose: 1500,
+                    hideProgressBar: true
+                })
+            }
+        } else
+            console.log(`target.attr: ${e.target.attrs.x}, ${e.target.attrs.y}`)
+        //console.log('evt.touches: ' + e.evt.touches[0].clientX + ',' + e.evt.touches[0].clientY)
     }
 
     useEffect(() => {
@@ -92,19 +125,15 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             resize(image)
         }
         onResize()
-        window.addEventListener('resize', onResize);
-        // window.addEventListener('mousedown', onTouch);
-        // window.addEventListener('touchstart', onTouch);
+        window.addEventListener('resize', onResize)
         return () => {
-            window.removeEventListener('resize', onResize);
-            // window.removeEventListener('mousedown', onTouch);
-            // window.removeEventListener('touchstart', onTouch);
-        };
+            window.removeEventListener('resize', onResize)
+        }
     }, [])
-
 
     return (
         <>
+            <ToastContainer />
             <RemoteImage src={props.imageUrl} onComplete={(imgLocalUrl) => {
                 const img = new Image();
                 img.onload = () => {
@@ -113,18 +142,19 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 };
                 img.src = imgLocalUrl
             }} />
-            <EditTextModalComponent initialText='something something' isOpen={isOpen} onClose={handleCloseModal} />
-            <div id='editor-wrapper' style={{ width: '100%', border: '2px solid #ff0' }}>
-                {image ? <>
-                    <div id='editor-container' style={{ border: '1px solid #f00', width: '100%', height: `${height}px`, position: 'relative', padding: '0px', margin: '0px' }}>
 
+            <EditTextModalComponent initialText='' initialOpacity={0.3} isOpen={isOpen} onClose={handleCloseModal} />
+            <div id='editor-wrapper'>
+                {image ? <>
+                    <div id='editor-container'>
                         <Stage
                             ref={props.stageRef}
-                            style={{ border: '1px solid #0f0', position: 'absolute', visibility: `${isEditingText ? 'hidden' : 'visible'}` }}
+                            style={{ position: 'absolute' }}
                             width={width}
                             height={height}
-                            onMouseDown={checkDeselect}
-                            onTouchStart={checkDeselect}>
+                            onMouseDown={handleMouseDown}
+                            onTouchStart={handleMouseDown}
+                        >
                             <Layer>
                                 <KonvaImage listening={false} x={0} y={0} width={width} height={height} image={image} />
                             </Layer>
@@ -139,117 +169,43 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                 {...rect}
                                                 isSelected={rect.id === selectedId}
                                                 onSelect={(rid) => {
-                                                    setSelectedId(rid);
+                                                    setSelectedId(rid)
                                                 }}
-                                                onRequestEdit={(attrs: TextBlockProps) => {
-                                                    setIsEditingText(true)
-                                                    setTextEditorAttrs({
-                                                        text: attrs.text || '',
-                                                        color: attrs.fill,
-                                                        background: attrs.background
-                                                    })
+                                                onRequestEdit={() => {
+                                                    handleOpenModal()
+                                                }}
+                                                onDragging={(e) => {
+                                                    handleTextBlockDragging(e)
+                                                }}
+                                                onDragStart={(e) => {
+                                                    setIsTextBlockDragging(true)
+                                                    console.log('start')
+                                                    handleTextBlockDragStart()
+                                                }}
+                                                onDragEnd={(e) => {
+                                                    setIsTextBlockDragging(false)
+                                                    console.log('end')
+                                                    handleTextBlockDragEnd()
                                                 }}
                                             />
                                         );
                                     })}
                             </Layer>
                         </Stage>
-
-                        {textEditorAttrs && isEditingText && <div style={{ border: '1px solid #00f', position: 'absolute', width: '100%' }}>
-                            <TextEditor
-                                {...textEditorAttrs}
-                                onEditingEnd={(text: string | undefined, style: any) => {
-                                    setIsEditingText(false)
-                                    if (selectedId) {
-                                        if (text === undefined || text.length === 0) {
-                                            delete textBlocks[selectedId]
-                                        }
-                                        else {
-                                            const tbSelected = textBlocks[selectedId]
-                                            tbSelected.fill = style.color
-                                            tbSelected.text = text
-                                            tbSelected.background = style.background
-                                            tbSelected.fontFamily = style.font === false ? undefined : style.font as string
-                                            tbSelected.fontStyle = style.bold ? 'bold' : undefined
-                                            tbSelected.align = style.align === false ? undefined : style.align
-                                        }
-                                    }
-                                    setSelectedId(undefined)
-                                }}
-                            />
-                        </div>}
-
                     </div >
-
-                    <div className="max-w">
-
-                        <Button color='secondary' onPress={() => {
-                            handleOpenModal()
-                        }}> launch modal test</Button>
-
-                        <Button onPress={() => {
-                            const key = `rect${Object.keys(textBlocks).length}`
-                            textBlocks[key] = {
-                                id: key,
-                                isSelected: false,
-                                text: '',
-                                fill: 'black',
-                                background: 'white',
-                                x: 10,
-                                y: 10
-                            }
-                            setSelectedId(key)
-                            setTextEditorAttrs({
-                                text: '',
-                                color: 'black',
-                                background: 'white',
-                            })
-                            setIsEditingText(true)
-                        }}>Add Text</Button>
-                        <Button onPress={() => {
-                            if (!props.stageRef) {
-                                console.log(`stageRef is not defined!`)
-                                return
-                            }
-                            // const dataUrl = props.stageRef.current?.toDataURL({ pixelRatio: pixelRatio });
-                            const dataUrl = props.stageRef.current?.toDataURL({ pixelRatio: 2 });
-                            const link = document.createElement("a");
-                            link.href = dataUrl;
-                            link.download = "image.png";
-                            link.click();
-                        }}>
-                            Dowload Image
-                        </Button>
-
-                        {selectedId && !isEditingText && <>
-                            <Button onPress={() => {
-                                delete textBlocks[selectedId]
-                                setSelectedId(undefined)
-                            }}>Remove</Button>
-                            <Tooltip
-                                content={
-                                    <Slider
-                                        className="h-32"
-                                        aria-label="background opacity"
-                                        size='sm'
-                                        step={0.01}
-                                        maxValue={1}
-                                        minValue={0}
-                                        orientation="vertical"
-                                        defaultValue={textBlocks[selectedId].opacity || 0.5}
-                                        onChange={(value) => {
-                                            const tbSelected = textBlocks[selectedId]
-                                            tbSelected.opacity = value as number
-                                            forceUpdate()
-                                        }}
-                                    />}
-                            >
-                                <Button>Background Opacity</Button>
-                            </Tooltip>
-                        </>}
-                    </div>
                 </> : <Spinner />}
-            </div >
+            </div>
+
+            {!IsTextBlockDragging && <>
+                <div className="max-w">
+                    <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
+                    }}> <FaFileDownload size={20} /></Button>
+                    <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
+                        handleOpenModal()
+                    }}> <MdOutlineTextFields size={26} /></Button>
+                </div>
+            </>
+            }
         </>
     );
 };

@@ -62,7 +62,7 @@ export default function Page() {
     const handleGenerateVideoClick = async () => {
 
         if (isButtonNew) {
-            console.log('isButtonNew')
+            router.push('/')
             return
         }
 
@@ -171,20 +171,36 @@ export default function Page() {
                             <h5>{isButtonNew ? 'Create New' : 'Render'}</h5>
                         </Button>
                     </div>
+
+                    {isButtonNew &&
+                        <>
+                            <Spacer y={4} />
+                            <div>
+                                <Button
+                                    className={styles.nextBtn}
+                                    size="md"
+                                    isLoading={isGeneratingVideo}
+                                    onPress={() => { router.push('/gallery') }}
+                                >
+                                    <h5>Gallery</h5>
+                                </Button>
+                            </div>
+                        </>
+                    }
                     <Spacer y={4} />
                     <div>
                         <Button
                             className={styles.backBtn}
                             onPress={() => router.back()}
                             size="md"
-                            isLoading={isGeneratingVideo}
+                            disabled={!isGeneratingVideo}
                         >
                             <h5>Back</h5>
                         </Button>
                     </div>
 
                 </div>
-            </section>
+            </section >
         </>
     )
 }

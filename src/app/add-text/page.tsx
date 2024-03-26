@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation'
 import { Button, Spacer } from "@nextui-org/react"
 import { useGenerationContext } from "@/context/generation-context"
 import ErrorComponent from "@/components/error"
-import Link from "next/link"
 import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem } from "@/libs/types"
 import styles from '@/styles/home.module.css'
+
 
 
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -65,12 +65,13 @@ export default function Page() {
                             }}
                             stageRef={editorStageRef}
                             coverLayerRef={editorCoverLayerRef}
-                            imageUrl={t2iOutput.url} />
+                            imageUrl={t2iOutput.url}
+                        />
                         : <>
                             <ErrorComponent errorMessage="No image" />
-                            <Link href={'/txt2img'}>Generate Image</Link>
                         </>}
                 </div>
+
                 {t2iOutput &&
                     <>
                         <Spacer y={4} />
@@ -97,7 +98,7 @@ export default function Page() {
                         </div>
                     </>}
                 {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
-            </section>
+            </section >
         </>
     )
 }

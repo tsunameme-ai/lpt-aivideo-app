@@ -10,7 +10,16 @@
     min-width: 300px;
     max-width: 512px;
     min-height: 470px;
-    /*background-color: #FFC303;*/
+}
+
+.centerSectionAddText {
+    color: #f1faee;
+    text-align: left;
+    margin: auto;
+    width: 100%;
+    max-width: 512px;
+    min-height: 300px;
+    background-color: #FFC303;
 }
 
 .centerLanding {
@@ -19,7 +28,12 @@
     color: #f1faee;
     margin: auto;
     padding: 100px 0;
+}
 
+.editorControls {
+    width: 70%;
+    max-width: 512px;
+    margin: auto;
 }
 
 .promptControls {
@@ -153,6 +167,23 @@
     top: 0%;
     right: 0%;
     height: 10px;
+}
+
+.editorModal {
+    background-color: #98887F;
+    padding: 0px;
+    margin: 0px;
+    size: 30px;
+}
+
+.addTextBtn {
+    background-color: transparent;
+    float: right;
+    color: #FFC30C;
+}
+
+.editorTextArea {
+    width: 100%;
 }
 
 .red {
