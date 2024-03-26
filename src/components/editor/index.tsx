@@ -93,12 +93,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         onClose()
     }
 
-    const handleTextBlockDragStart = () => {
-        setIsTextBlockDragging(true)
-    }
-    const handleTextBlockDragEnd = () => {
-        setIsTextBlockDragging(false)
-    }
     const handleTextBlockDragging = (e: any) => {
         console.log(IsTextBlockDragging)
         if (!height || !width)
@@ -180,12 +174,12 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                 onDragStart={(e) => {
                                                     setIsTextBlockDragging(true)
                                                     console.log('start')
-                                                    handleTextBlockDragStart()
+                                                    e
                                                 }}
                                                 onDragEnd={(e) => {
                                                     setIsTextBlockDragging(false)
                                                     console.log('end')
-                                                    handleTextBlockDragEnd()
+                                                    e
                                                 }}
                                             />
                                         );
