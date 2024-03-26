@@ -4,7 +4,6 @@ import { Label, Tag, Text, Transformer } from "react-konva";
 export interface TextBlockProps {
     x: number,
     y: number,
-    blockWidth: number,
     fontFamily?: string,
     fill: string,
     text?: string,
@@ -61,7 +60,6 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                     opacity={props.opacity ?? 0.5}
                 />
                 <Text
-                    width={props.blockWidth}
                     lineHeight={1}
                     padding={10}
                     fontSize={22}

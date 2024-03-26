@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react"
 import TextBlock, { TextBlockProps } from "./text-block"
 import { Stage, Layer, Image as KonvaImage } from "react-konva"
-//import "quill/dist/quill.snow.css";
 import { Button, Spinner, useDisclosure } from "@nextui-org/react"
 import RemoteImage from "../remote-image"
 import { SDAPI } from "@/libs/sd-api"
@@ -11,6 +10,7 @@ import EditTextModalComponent from "@/components/edit-text-modal"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { MdOutlineTextFields } from "react-icons/md"
+import { MdDelete } from "react-icons/md"
 import { FaFileDownload } from "react-icons/fa"
 import styles from "@/styles/home.module.css"
 
@@ -22,7 +22,8 @@ interface EditorProps {
 }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
-    //let isDragging: boolean = false
+    const [deleteBtnVariant, setDeleteBtnVariant] = useState<'light' | 'flat' | 'bordered'>('light')
+    const [deleteBtnColor, setDeleteBtnColor] = useState<'danger' | 'default'>('default')
     const [image, setImage] = useState<HTMLImageElement>()
     const [width, setWidth] = useState<number>()
     const [height, setHeight] = useState<number>()
@@ -63,30 +64,30 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         setHeight(editorH)
         setPixelRatio(imgWidth / editorW)
         props.onPixelRatio?.(imgWidth / editorW, imgWidth, imgHeight)
-        console.log(height)
-        console.log(editorH)
-        console.log(imgHeight)
+        //console.log(height)
+        //console.log(editorH)
+        //console.log(imgHeight)
     }
 
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const handleOpenModal = () => { onOpen() }
+    const handleOpenModal = () => {
+        if (selectedId || Object.keys(textBlocks).length <= 0)
+            onOpen()
+    }
     const handleCloseModal = (text: string, slider: number) => {
         const key = `rect${Object.keys(textBlocks).length}`
         Object.keys(textBlocks).forEach(key => {
             delete textBlocks[key]
         })
 
-        const editorWrapperElement = document.getElementById('editor-wrapper')
-        const editorW = editorWrapperElement?.clientWidth ?? 330
-
         textBlocks[key] = {
-            blockWidth: editorW * 0.99,
             id: key,
             isSelected: false,
             text: text,
             opacity: slider,
             fill: 'black',
             background: 'white',
+            align: 'center',
             x: 15,
             y: 15
         }
@@ -94,12 +95,27 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     }
 
     const handleTextBlockDragging = (e: any) => {
-        console.log(IsTextBlockDragging)
+
         if (!height || !width)
             return
 
-        if (width && Math.abs(e.target.attrs.x) >= (width - 1)) {
-            console.log('delete')
+        //move to the deletion zone
+        if (e.evt.touches[0].clientX >= 300 && e.evt.touches[0].clientY <= 110) {
+            setDeleteBtnVariant('bordered')
+            setDeleteBtnColor('danger')
+        } else {
+            setDeleteBtnVariant('light')
+            setDeleteBtnColor('default')
+            //console.log(`target.attr: ${e.target.attrs.x}, ${e.target.attrs.y}`)
+            //console.log(`e.evt.touches[0]: ${e.evt.touches[0].clientX}, ${e.evt.touches[0].clientY}`)
+        }
+    }
+
+    const handleTextBlockDragEnd = (e: any) => {
+
+        //Inside the deletion zone when drag ends
+        if (e.evt.changedTouches[0]?.clientX >= 300 && e.evt.changedTouches[0]?.clientY <= 110) {
+            console.log('handleTextBlockDragEnd + delete')
             if (selectedId) {
                 delete textBlocks[selectedId]
                 setSelectedId(undefined)
@@ -109,9 +125,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                     hideProgressBar: true
                 })
             }
-        } else
-            console.log(`target.attr: ${e.target.attrs.x}, ${e.target.attrs.y}`)
-        //console.log('evt.touches: ' + e.evt.touches[0].clientX + ',' + e.evt.touches[0].clientY)
+
+        }
+    }
+
+    const handleDownload = () => {
+        const dataUrl = props.stageRef.current?.toDataURL({ pixelRatio: 2 })
+        const link = document.createElement("a")
+        link.href = dataUrl
+        link.download = "image.png"
+        link.click()
     }
 
     useEffect(() => {
@@ -173,16 +196,14 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                 }}
                                                 onDragStart={(e) => {
                                                     setIsTextBlockDragging(true)
-                                                    console.log('start')
                                                     e
                                                 }}
                                                 onDragEnd={(e) => {
                                                     setIsTextBlockDragging(false)
-                                                    console.log('end')
-                                                    e
+                                                    handleTextBlockDragEnd(e)
                                                 }}
                                             />
-                                        );
+                                        )
                                     })}
                             </Layer>
                         </Stage>
@@ -190,14 +211,28 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 </> : <Spinner />}
             </div>
 
+
+
             {!IsTextBlockDragging && <>
                 <div className="max-w">
                     <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
+                        handleDownload()
                     }}> <FaFileDownload size={20} /></Button>
                     <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
                         handleOpenModal()
                     }}> <MdOutlineTextFields size={26} /></Button>
+
                 </div>
+            </>
+            }
+
+            {IsTextBlockDragging && <>
+                <Button isIconOnly variant={deleteBtnVariant} className={styles.deleteTextBtn}
+                    onPress={() => { }} color={deleteBtnColor}
+                    radius="none"
+                >
+                    <MdDelete size={26} />
+                </Button>
             </>
             }
         </>

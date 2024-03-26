@@ -182,6 +182,14 @@
     color: #FFC30C;
 }
 
+.deleteTextBtn {
+
+    float: right;
+    color: #FF4429;
+
+
+}
+
 .editorTextArea {
     width: 100%;
 }

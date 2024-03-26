@@ -9,7 +9,6 @@ import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem } from 
 import styles from '@/styles/home.module.css'
 
 
-
 const Editor = dynamic(() => import("@/components/editor"), {
     ssr: false,
 });
