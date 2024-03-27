@@ -7,6 +7,7 @@ import { useGenerationContext } from "@/context/generation-context"
 import ErrorComponent from "@/components/error"
 import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem } from "@/libs/types"
 import styles from '@/styles/home.module.css'
+import { Analytics } from "@/libs/analytics"
 
 
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -23,20 +24,24 @@ export default function Page() {
     const [editorDimension, setEditorDimension] = useState<{ pixelRatio: number, width: number, height: number }>({ pixelRatio: 1.0, width: DEFAULT_VIDEO_WIDTH, height: DEFAULT_VIDEO_HEIGHT })
 
     const handleClickToVideo = () => {
+
         const imgDataUrl = editorStageRef.current?.toDataURL({ pixelRatio: editorDimension.pixelRatio })
         const coverDataUrl = editorCoverLayerRef.current?.toDataURL({ pixelRatio: editorDimension.pixelRatio })
         if (!imgDataUrl) {
             setErrorMessage(`Error: image dataURL cannot be generated`)
             return
         }
+      
         if (!imgDataUrl) {
             setErrorMessage(`Error: cover image dataURL cannot be generated`)
             return
         }
+    
         if (!t2iOutput) {
             setErrorMessage(`Error: no image`)
             return
         }
+      
         gContext.setOverlayImageData({
             remoteURL: t2iOutput?.url,
             dataURL: imgDataUrl,
@@ -44,6 +49,8 @@ export default function Page() {
             height: editorDimension.height,
             overlayImageDataURL: coverDataUrl
         })
+      
+        Analytics.trackEvent({ 'event': 'click-img2vid' })
         router.push('img2vid')
     }
 

@@ -75,7 +75,7 @@ export class SDAPI {
             clearTimeout(timeoutId)
             const dur = (new Date().getTime() - t) / 1000
             const segs = url.split('/')
-            console.log(`LIVEPEER REQ ${status} ${segs[segs.length - 1]} ${dur}`)
+            console.log(`SDAPI REQ ${status} ${segs[segs.length - 1]} ${dur}`)
             if (resError) {
                 throw resError
             }
