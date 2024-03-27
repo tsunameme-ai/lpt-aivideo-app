@@ -122,10 +122,10 @@ export default function Page() {
         <>
             <section className={styles.main}>
                 <div className={styles.centerSection}>
+
                     <div>Step 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
-
                         {videoOutput && <>
                             <MediaPlayerComponent src={videoOutput.url} className={styles.videoPreview} />
                             <FaShare className={styles.shareIcon} onClick={handleShare} />

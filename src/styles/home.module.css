@@ -97,18 +97,20 @@
     position: absolute;
     width: 28px;
     height: 28px;
-    right: 1%;
+    right: 1.5%;
     top: 1%;
     color: #FFC303;
+    z-index: 99;
 }
 
 .galleryShareIcon {
     position: absolute;
     width: 28px;
     height: 28px;
-    right: 5%;
-    top: 3%;
+    right: 6%;
+    top: 4%;
     color: #FFC303;
+    z-index: 99;
 }
 
 .videoPreview {
