@@ -97,7 +97,10 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     }
 
     const handleTextBlockDragging = (e: any) => {
-
+        //console.log(height)
+        //console.log(width)
+        //console.log(e)
+        /*
         if (!height || !width)
             return
 
@@ -111,24 +114,26 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             //console.log(`target.attr: ${e.target.attrs.x}, ${e.target.attrs.y}`)
             console.log(`e.evt.touches[0]: ${e.evt.touches[0].clientX}, ${e.evt.touches[0].clientY}`)
         }
+        */
     }
 
     const handleTextBlockDragEnd = (e: any) => {
-
-        //Inside the deletion zone when drag ends
-        if (e.evt.changedTouches[0]?.clientX >= 305 && e.evt.changedTouches[0]?.clientY <= 150) {
-            console.log('handleTextBlockDragEnd + delete')
-            if (selectedId) {
-                delete textBlocks[selectedId]
-                setSelectedId(undefined)
-                toast.warning("Text deleted", {
-                    toastId: 'delete notification',
-                    autoClose: 1500,
-                    hideProgressBar: true
-                })
-            }
-
-        }
+        /*
+                //Inside the deletion zone when drag ends
+                if (e.evt.changedTouches[0]?.clientX >= 305 && e.evt.changedTouches[0]?.clientY <= 150) {
+                    console.log('handleTextBlockDragEnd + delete')
+                    if (selectedId) {
+                        delete textBlocks[selectedId]
+                        setSelectedId(undefined)
+                        toast.warning("Text deleted", {
+                            toastId: 'delete notification',
+                            autoClose: 1500,
+                            hideProgressBar: true
+                        })
+                    }
+        
+                }
+        */
     }
 
     const handleDownload = () => {
@@ -204,6 +209,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                     setIsTextBlockDragging(false)
                                                     handleTextBlockDragEnd(e)
                                                 }}
+
                                             />
                                         )
                                     })}

@@ -92,8 +92,8 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             <div className={styles.textareaControl}>
                 <Textarea
                     maxRows={3}
-                    label='Describe the picture on your mind'
-                    placeholder=''
+                    label='Describe the visual you want to use'
+                    placeholder='Try something like "eating breakfast in front of a Tsunami" or your weirdest (no NSFW) dream'
                     value={pPromptValue}
                     errorMessage={pPromptErrorMessage}
                     onValueChange={handlePPromptValueChange}
