@@ -9,6 +9,7 @@ import Link from "next/link"
 import { GenerationOutputItem, LocalImageData } from "@/libs/types"
 
 import styles from '@/styles/home.module.css'
+import { Analytics } from "@/libs/analytics"
 
 export default function Page() {
     const router = useRouter()
@@ -18,6 +19,7 @@ export default function Page() {
     const [overlayText, setOverlayText] = useState<string>(gContext.overlayText)
 
     const handleClickToVideo = () => {
+        Analytics.trackEvent({ 'event': 'click-img2vid' })
         gContext.setOverlayText(overlayText)
         gContext.setOverlayImageData(overlayImageData)
         router.push('/img2vid')
