@@ -21,7 +21,6 @@
     "framer-motion": "^10.18.0",
     "konva": "^9.3.6",
     "next": "14.0.4",
-    "quill": "^2.0.0-rc.2",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.0.1",

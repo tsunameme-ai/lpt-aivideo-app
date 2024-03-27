@@ -91,7 +91,7 @@ export default function Page() {
 
                     {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
                 </div>
-            </section >
+            </section>
         </>
     )
 }

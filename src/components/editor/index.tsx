@@ -31,8 +31,10 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
     const [IsTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
+    const DELETE_ZONE_X = 305
+    const DELETE_ZONE_Y = 150
     const handleMouseDown = (e: any) => {
-        console.log('handleMouseDown')
+        //console.log('handleMouseDown')
         try {
             e.preventDefault()
         }
@@ -100,21 +102,21 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             return
 
         //move to the deletion zone
-        if (e.evt.touches[0].clientX >= 300 && e.evt.touches[0].clientY <= 110) {
+        if (e.evt.touches[0].clientX >= DELETE_ZONE_X && e.evt.touches[0].clientY <= DELETE_ZONE_Y) {
             setDeleteBtnVariant('bordered')
             setDeleteBtnColor('danger')
         } else {
             setDeleteBtnVariant('light')
             setDeleteBtnColor('default')
             //console.log(`target.attr: ${e.target.attrs.x}, ${e.target.attrs.y}`)
-            //console.log(`e.evt.touches[0]: ${e.evt.touches[0].clientX}, ${e.evt.touches[0].clientY}`)
+            console.log(`e.evt.touches[0]: ${e.evt.touches[0].clientX}, ${e.evt.touches[0].clientY}`)
         }
     }
 
     const handleTextBlockDragEnd = (e: any) => {
 
         //Inside the deletion zone when drag ends
-        if (e.evt.changedTouches[0]?.clientX >= 300 && e.evt.changedTouches[0]?.clientY <= 110) {
+        if (e.evt.changedTouches[0]?.clientX >= 305 && e.evt.changedTouches[0]?.clientY <= 150) {
             console.log('handleTextBlockDragEnd + delete')
             if (selectedId) {
                 delete textBlocks[selectedId]

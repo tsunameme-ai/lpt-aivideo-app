@@ -6,7 +6,7 @@ interface EditTextModalComponentProps {
     initialText?: string
     initialOpacity?: number
     isOpen: boolean
-    onClose?: (text: string, sllider: number) => void
+    onClose?: (text: string, opacity: number) => void
 }
 
 const EditTextModalComponent: React.FC<EditTextModalComponentProps> = (props: EditTextModalComponentProps) => {
