@@ -10,7 +10,16 @@
     min-width: 300px;
     max-width: 512px;
     min-height: 470px;
-    /*background-color: #FFC303;*/
+}
+
+.centerSectionAddText {
+    color: #f1faee;
+    text-align: left;
+    margin: auto;
+    width: 100%;
+    max-width: 512px;
+    min-height: 300px;
+    background-color: #FFC303;
 }
 
 .centerLanding {
@@ -19,7 +28,12 @@
     color: #f1faee;
     margin: auto;
     padding: 100px 0;
+}
 
+.editorControls {
+    width: 70%;
+    max-width: 512px;
+    margin: auto;
 }
 
 .promptControls {
@@ -83,18 +97,20 @@
     position: absolute;
     width: 28px;
     height: 28px;
-    right: 1%;
+    right: 1.5%;
     top: 1%;
     color: #FFC303;
+    z-index: 99;
 }
 
 .galleryShareIcon {
     position: absolute;
     width: 28px;
     height: 28px;
-    right: 5%;
-    top: 3%;
+    right: 6%;
+    top: 4%;
     color: #FFC303;
+    z-index: 99;
 }
 
 .videoPreview {
@@ -155,7 +171,36 @@
     height: 10px;
 }
 
+.editorModal {
+    background-color: #98887F;
+    padding: 0px;
+    margin: 0px;
+    size: 30px;
+}
+
+.addTextBtn {
+    background-color: transparent;
+    float: right;
+    color: #FFC30C;
+}
+
+.deleteTextBtn {
+
+    float: right;
+    color: #FF4429;
+
+
+}
+
+.editorTextArea {
+    width: 100%;
+}
+
 .red {
     color: #ff4429;
     background-color: #FFC30C;
+}
+
+.ql-editor .ql-size-hugee {
+    font-size: 4em
 }

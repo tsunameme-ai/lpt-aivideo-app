@@ -65,7 +65,7 @@ export default function Page() {
     const handleGenerateVideoClick = async () => {
 
         if (isButtonNew) {
-            console.log('isButtonNew')
+            router.push('/')
             return
         }
 
@@ -124,10 +124,10 @@ export default function Page() {
         <>
             <section className={styles.main}>
                 <div className={styles.centerSection}>
+
                     <div>Step 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
-
                         {videoOutput && <>
                             <MediaPlayerComponent src={videoOutput.url} className={styles.videoPreview} />
                             <FaShare className={styles.shareIcon} onClick={handleShare} />
@@ -150,7 +150,7 @@ export default function Page() {
 
                         {!gContext.overlayImageData && <>
                             <ErrorComponent errorMessage="No Image" />
-                            <Link href='/txt2vid'>Generate Image</Link>
+                            <Link href='/txt2img'>Generate Image</Link>
                         </>}
 
                         {img2VidRequest &&
@@ -174,20 +174,36 @@ export default function Page() {
                             <h5>{isButtonNew ? 'Create New' : 'Render'}</h5>
                         </Button>
                     </div>
+
+                    {isButtonNew &&
+                        <>
+                            <Spacer y={4} />
+                            <div>
+                                <Button
+                                    className={styles.nextBtn}
+                                    size="md"
+                                    isLoading={isGeneratingVideo}
+                                    onPress={() => { router.push('/gallery') }}
+                                >
+                                    <h5>Gallery</h5>
+                                </Button>
+                            </div>
+                        </>
+                    }
                     <Spacer y={4} />
                     <div>
                         <Button
                             className={styles.backBtn}
                             onPress={() => router.back()}
                             size="md"
-                            isLoading={isGeneratingVideo}
+                            disabled={!isGeneratingVideo}
                         >
                             <h5>Back</h5>
                         </Button>
                     </div>
 
                 </div>
-            </section>
+            </section >
         </>
     )
 }

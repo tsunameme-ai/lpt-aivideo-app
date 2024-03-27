@@ -3,6 +3,7 @@ import RemoteImage from "../remote-image";
 import ErrorComponent from "../error";
 import styles from "@/styles/home.module.css";
 import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, LocalImageData } from "@/libs/types";
+import { SDAPI } from "@/libs/sd-api";
 
 
 interface ImageWithTextOverlayProps {
@@ -18,17 +19,10 @@ const ImageWithTextOverlay: React.FC<ImageWithTextOverlayProps> = ({ imageUrl, t
     const [canvasWidth, setCanvasWidth] = useState<number>(DEFAULT_VIDEO_WIDTH)
     const [canvasHeight, setCanvasHeight] = useState<number>(DEFAULT_VIDEO_HEIGHT)
 
-    const resizeToFit = (width: number, height: number, maxWidth: number, maxHeight: number): { width: number; height: number } => {
-        const limitingDimension = Math.max(width / maxWidth, height / maxHeight);
-        const newWidth = Math.floor(width / limitingDimension) & ~7; // Ensure divisibility by 8
-        const newHeight = Math.floor(height / limitingDimension) & ~7;
-        return { width: newWidth, height: newHeight };
-    }
-
     const onImageLoad = (imageDataURL: string) => {
         const img = new Image();
         img.onload = () => {
-            const { width, height } = resizeToFit(img.width, img.height, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT)
+            const { width, height } = SDAPI.resizeToFit(img.width, img.height, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT)
             setCanvasWidth(width)
             setCanvasHeight(height)
             setImage(img)

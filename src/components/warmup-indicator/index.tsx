@@ -12,13 +12,29 @@ const WarmUpIndicator: React.FC = () => {
     // const [warmUpInterval, setWarmUpInterval] = useState()
     useEffect(() => {
         // warmUp()
+        const scheduleWarmup = () => {
+            const interval = setInterval(() => {
+                warmUp()
+            }, WarmUpInvervalMS)
+            return interval
+        }
+
+        const handleVisibilityChange = () => {
+            isVisible = document.visibilityState === 'visible'
+            if (document.visibilityState === 'visible') {
+                if (new Date().getTime() - lastWarmupTime > WarmUpInvervalMS) {
+                    warmUp()
+                }
+            }
+        }
+
         const interval = scheduleWarmup()
-        window.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('visibilitychange', handleVisibilityChange)
         handleVisibilityChange()
         return () => {
             clearInterval(interval)
-            window.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
+            window.removeEventListener('visibilitychange', handleVisibilityChange)
+        }
     }, [])
     const warmUp = async () => {
         if (!isVisible) {
@@ -40,22 +56,6 @@ const WarmUpIndicator: React.FC = () => {
         }
     }
 
-    const scheduleWarmup = () => {
-        const interval = setInterval(() => {
-            warmUp()
-        }, WarmUpInvervalMS)
-        return interval
-    }
-
-
-    const handleVisibilityChange = () => {
-        isVisible = document.visibilityState === 'visible'
-        if (document.visibilityState === 'visible') {
-            if (new Date().getTime() - lastWarmupTime > WarmUpInvervalMS) {
-                warmUp()
-            }
-        }
-    };
     return (
         <></>
     );

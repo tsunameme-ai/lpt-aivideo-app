@@ -11,7 +11,6 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MediaPlayerComponent from "@/components/media-player"
 
-
 export default function Page() {
     const [nextPage, setNextPage] = useState<string | undefined>(undefined)
     const [items, setItems] = useState<GenerationRequest[]>([])
@@ -50,6 +49,7 @@ export default function Page() {
     useEffect(() => {
         fetchData(undefined)
     }, [])
+
     return (
         <>
             <section className='flex flex-col items-center justify-center'>
@@ -69,7 +69,7 @@ export default function Page() {
                                         </TableHeader>
                                         <TableBody>
                                             {items.map((item, index) => (
-                                                <TableRow key={index}>
+                                                < TableRow key={index} >
                                                     <TableCell key={item.id}>
                                                         <MediaPlayerComponent className={styles.videoPreview} src={item.outputs?.[0].url!} />
                                                         <FaShare className={styles.galleryShareIcon} onClick={() => handleShare(item.id as string)} />
