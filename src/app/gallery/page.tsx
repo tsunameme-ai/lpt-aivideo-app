@@ -36,12 +36,12 @@ export default function Page() {
     }
 
     const toastId = "gallery-copy-success"
-    const handleShare = (itemid: string) => {
+    const handleShare = (itemurl: string) => {
 
-        navigator.clipboard.writeText(`${window.location.origin}/gallery/${itemid}`)
-        toast.success("Link is copied. Send it!", {
+        navigator.clipboard.writeText(`${itemurl}`)
+        toast.success("GIF link is copied. Send it!", {
             toastId: toastId,
-            autoClose: 1800,
+            autoClose: 1000,
             hideProgressBar: true
         })
     }
@@ -69,10 +69,11 @@ export default function Page() {
                                         </TableHeader>
                                         <TableBody>
                                             {items.map((item, index) => (
+
                                                 < TableRow key={index} >
                                                     <TableCell key={item.id}>
                                                         <MediaPlayerComponent className={styles.videoPreview} src={item.outputs?.[0].url!} />
-                                                        <FaShare className={styles.galleryShareIcon} onClick={() => handleShare(item.id as string)} />
+                                                        <FaShare className={styles.galleryShareIcon} onClick={() => handleShare(item.outputs?.[0].url!)} />
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
