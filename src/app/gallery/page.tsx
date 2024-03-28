@@ -61,7 +61,7 @@ export default function Page() {
                                 tabContent: "group-data-[selected=true]:text-[#f1faee]",
                                 cursor: "w-full bg-[#ffc303]"
                             }} >
-                                <Tab key='community' title='Everyone else' >
+                                <Tab key='community' title='Community' >
                                     {isFetchinData && <div className={styles.center}><Spacer y={4}></Spacer><Spinner color="warning" /></div>}
                                     <Table radius="sm" hideHeader className={styles.galleryTable} aria-label="Gallery">
                                         <TableHeader>
