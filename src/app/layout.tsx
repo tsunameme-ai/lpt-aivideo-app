@@ -4,7 +4,6 @@ import { Providers } from './providers'
 import type { Viewport } from 'next'
 import GenerationContextProvider from '@/context/generation-context'
 import NavigationComponent from "@/components/navigation"
-import WarmUpIndicator from '@/components/warmup-indicator'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
@@ -29,7 +28,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <GenerationContextProvider>
             <header className='py-1'>
               <NavigationComponent />
-              {process.env.NEXT_PUBLIC_WARMUP !== 'off' && <WarmUpIndicator />}
             </header>
             {children}
           </GenerationContextProvider>
