@@ -14,7 +14,7 @@ const MediaPlayerComponent: React.FC<MediaPlayerComponentProps> = (props: MediaP
     }
     const [isVideo] = useState<boolean>(checkIsVideo(props.src))
     return (
-        isVideo ? <video className={props.className} loop controls src={props.src} />
+        isVideo ? <video className={props.className} autoPlay loop muted controls webkit-playsinline playsInline src={props.src} />
             : <Image className={props.className} src={props.src} alt='image' />
     )
 }
