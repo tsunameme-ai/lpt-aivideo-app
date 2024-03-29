@@ -41,7 +41,7 @@ export default function Page() {
         navigator.clipboard.writeText(`${itemurl}`)
         toast.success("GIF link is copied. Send it!", {
             toastId: toastId,
-            autoClose: 1000,
+            autoClose: 1200,
             hideProgressBar: true
         })
     }
