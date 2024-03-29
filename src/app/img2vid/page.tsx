@@ -59,8 +59,6 @@ export default function Page() {
             autoClose: 1200,
             hideProgressBar: true
         })
-
-
     }
 
     const handleGenerateVideoClick = async () => {
