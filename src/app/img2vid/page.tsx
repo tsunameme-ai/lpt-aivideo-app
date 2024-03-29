@@ -59,8 +59,6 @@ export default function Page() {
             autoClose: 1200,
             hideProgressBar: true
         })
-
-
     }
 
     const handleGenerateVideoClick = async () => {
@@ -150,7 +148,7 @@ export default function Page() {
 
                         {!gContext.overlayImageData && <>
                             <ErrorComponent errorMessage="No Image" />
-                            <Link href='/txt2img'>Generate Image</Link>
+                            <Link href='/'>Start Over</Link>
                         </>}
 
                         {img2VidRequest &&

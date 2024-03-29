@@ -54,7 +54,9 @@ export default function Page() {
                     </>}
 
                     {imageOutputs.length > 1 && <>
-                        <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false} afterChange={onImageOutputSelected}>
+                        <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false}
+                            initialSlide={selectedOutputIndex}
+                            afterChange={onImageOutputSelected}>
                             {imageOutputs.map((item: GenerationOutputItem, key: number) => (
                                 <div key={key} >
                                     <Image className={styles.center} src={item.url} alt={item.seed?.toString()} />

@@ -52,7 +52,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
 
 
     return <>
-        {connectStatus} (id:{props.request.id})
+        {connectStatus}
     </>
 }
 

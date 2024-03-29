@@ -26,23 +26,82 @@ interface GenerationContextType {
     setI2vInput: (value: Img2vidInput | undefined) => void
 }
 
-const GenerationContext = createContext<GenerationContextType | undefined>(undefined);
+const GenerationContext = createContext<GenerationContextType | undefined>(undefined)
 
-export default function GenerationContextProvider({ children }: { children: React.ReactNode }) {
-    const [isAdvancedView, setIsAdvancedView] = useState<boolean>(false)
-    const [t2iInput, setT2iInput] = useState<Txt2imgInput | undefined>(undefined)
-    const [t2iOutputs, setT2iOutputs] = useState<Array<GenerationOutputItem>>([])
-    const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useState<number>(0)
-    const [overlayText, setOverlayText] = useState<string>('')
-    const [overlayImageData, setOverlayImageData] = useState<LocalImageData | undefined>(undefined)
-    const [i2vInput, setI2vInput] = useState<Img2vidInput | undefined>(undefined)
+
+const readFromStorage = (storage: Storage, key: string): any => {
+    const localStorageValue = storage.getItem(key)
+    if (localStorageValue) {
+        try {
+            return JSON.parse(localStorageValue);
+        }
+        catch (e) {
+            console.log(`??? localStorageValue json error ${typeof (localStorageValue)} ${localStorageValue}`)
+            return localStorageValue
+        }
+    } else {
+        return undefined
+    }
+}
+const writeToStorage = (storage: Storage, key: string, value: any) => {
+    if ([null, undefined].includes(value)) {
+        storage.removeItem(key)
+    }
+    else {
+        storage.setItem(key, JSON.stringify(value));
+    }
+
+}
+const useLocalStorage = (key: string, defaultValue: any) => {
+    const [value, setValue] = useState(() => {
+        if (typeof (window) === 'undefined') {
+            return defaultValue
+        }
+        const localStorageValue = readFromStorage(window.localStorage, key)
+        return localStorageValue || defaultValue
+    });
 
     useEffect(() => {
-        // Optional: Clear context on unmount (comment out if not needed)
-        return () => {
-            console.log(`--Clear context on unmount--`)
-            setT2iInput(undefined)
-        };
+        if (typeof (window) === 'undefined') {
+            return
+        }
+        writeToStorage(localStorage, key, value)
+    }, [key, value]);
+
+    return [value, setValue];
+}
+
+
+export default function GenerationContextProvider({ children }: { children: React.ReactNode }) {
+    const [isAdvancedView, setIsAdvancedView] = useLocalStorage('isAdvancedView', false)
+    const [t2iInput, setT2iInput] = useLocalStorage('t2iInput', undefined)
+    const [t2iOutputs, setT2iOutputs] = useLocalStorage('t2iOutputs', [])
+    const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useLocalStorage('t2iOutputSelectedIndex', 0)
+    const [overlayText, setOverlayText] = useLocalStorage('overlayText', '')
+    const [overlayImageData, setOverlayImageData] = useLocalStorage('overlayImageData', undefined)
+    const [i2vInput, setI2vInput] = useLocalStorage('i2vInput', undefined)
+
+    const updateValueFromLocalStorage = (key: string) => {
+        if (typeof (window) === 'undefined') {
+            return
+        }
+        const localStorageValue = readFromStorage(localStorage, key)
+        writeToStorage(localStorage, key, localStorageValue)
+
+    }
+
+    useEffect(() => {
+        updateValueFromLocalStorage('isAdvancedView')
+        updateValueFromLocalStorage('t2iInput')
+        updateValueFromLocalStorage('t2iOutputs')
+        updateValueFromLocalStorage('t2iOutputSelectedIndex')
+        updateValueFromLocalStorage('overlayText')
+        updateValueFromLocalStorage('overlayImageData')
+        updateValueFromLocalStorage('i2vInput')
+
+        // return () => {
+        //     setT2iInput(undefined)
+        // };
     }, []);
 
     const generationConfig = (): SDConfig => {

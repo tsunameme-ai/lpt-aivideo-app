@@ -1,3 +1,4 @@
+'use client'
 import { Txt2imgInput, GenerationOutputItem, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
 import { useState } from "react";
 import ErrorComponent from "../error";

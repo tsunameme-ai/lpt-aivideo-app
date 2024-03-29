@@ -3,10 +3,20 @@ import { Button, Spacer } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import styles from '@/styles/home.module.css'
 import { motion } from "framer-motion"
+import { useGenerationContext } from '@/context/generation-context'
 
 export default function Home() {
   const router = useRouter()
+  const gContext = useGenerationContext()
   const handleTxt2img = () => {
+    //Clear context 
+    gContext.setT2iInput(undefined)
+    gContext.setT2iOutputs([])
+    gContext.setT2iOutputSelectedIndex(0)
+    gContext.setOverlayText('')
+    gContext.setOverlayImageData(undefined)
+    gContext.setI2vInput(undefined)
+
     router.push('/txt2img')
   }
 
