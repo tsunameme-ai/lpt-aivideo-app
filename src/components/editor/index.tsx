@@ -218,6 +218,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                     <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
                         handleDownload()
                     }}> <FaFileDownload size={20} /></Button>
+
                     {(Object.keys(textBlocks).length <= 0) &&
                         <>
                             <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
