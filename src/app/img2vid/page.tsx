@@ -45,8 +45,7 @@ export default function Page() {
     }
 
     const onError = (e: Error) => {
-        //setErrorMessage(e.message)
-        console.log(e.message)
+        setErrorMessage(e.message)
         setIsGeneratingVideo(false)
         setIsButtonNew(false)
     }

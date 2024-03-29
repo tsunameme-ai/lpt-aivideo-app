@@ -34,7 +34,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const DELETE_ZONE_X = 305
     const DELETE_ZONE_Y = 150
     const handleMouseDown = (e: any) => {
-        console.log('handleMouseDown')
         try {
             e.preventDefault()
         }
