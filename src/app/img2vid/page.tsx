@@ -45,21 +45,22 @@ export default function Page() {
     }
 
     const onError = (e: Error) => {
-        //setErrorMessage(e.message)
-        console.log(e.message)
+        setErrorMessage(e.message)
         setIsGeneratingVideo(false)
         setIsButtonNew(false)
     }
 
-    const handleShare = (e: any) => {
-        navigator.clipboard.writeText(window.location.origin + '/gallery/' + videoOutput?.id)
-        toast.success("Link is copied. Send it!", {
+    const handleShare = () => {
+        if (!videoOutput)
+            return
+        navigator.clipboard.writeText(videoOutput.url)
+        toast.success("GIF link is copied. Send it!", {
             toastId: toastId,
-            autoClose: 1800,
+            autoClose: 1200,
             hideProgressBar: true
         })
 
-        console.log(e.message)
+
     }
 
     const handleGenerateVideoClick = async () => {
@@ -106,7 +107,6 @@ export default function Page() {
                 setIsButtonNew(false)
             }
 
-            //href={`/gallery/${videoOutput.id}`}
         }
 
     }

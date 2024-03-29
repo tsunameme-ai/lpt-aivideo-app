@@ -107,8 +107,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         } else {
             setDeleteBtnVariant('light')
             setDeleteBtnColor('default')
-            //console.log(`target.attr: ${e.target.attrs.x}, ${e.target.attrs.y}`)
-            //console.log(`e.evt.touches[0]: ${e.evt.touches[0].clientX}, ${e.evt.touches[0].clientY}`)
         }
     }
 
@@ -121,7 +119,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 setSelectedId(undefined)
                 toast.warning("Text deleted", {
                     toastId: 'delete notification',
-                    autoClose: 1500,
+                    autoClose: 1200,
                     hideProgressBar: true
                 })
             }
@@ -195,6 +193,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                     handleTextBlockDragging(e)
                                                 }}
                                                 onDragStart={(e) => {
+                                                    setSelectedId(rect.id)
                                                     setIsTextBlockDragging(true)
                                                     e
                                                 }}
