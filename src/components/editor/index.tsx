@@ -199,6 +199,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                 }}
                                                 onDragEnd={(e) => {
                                                     setIsTextBlockDragging(false)
+                                                    setSelectedId(undefined)
                                                     handleTextBlockDragEnd(e)
                                                 }}
                                             />
@@ -217,10 +218,13 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                     <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
                         handleDownload()
                     }}> <FaFileDownload size={20} /></Button>
-                    <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
-                        handleOpenModal()
-                    }}> <MdOutlineTextFields size={26} /></Button>
-
+                    {(Object.keys(textBlocks).length <= 0) &&
+                        <>
+                            <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
+                                handleOpenModal()
+                            }}> <MdOutlineTextFields size={26} /></Button>
+                        </>
+                    }
                 </div>
             </>
             }
