@@ -133,7 +133,7 @@ export default function Page() {
                         <ToastContainer />
                         {gContext.overlayImageData && <>
                             {!videoOutput && <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />}
-                            {i2vInput && <Img2VidComponent
+                            {<Img2VidComponent
                                 isAdvancedView={gContext.isAdvancedView}
                                 sdConfig={gContext.config}
                                 width={i2vInput.width}
