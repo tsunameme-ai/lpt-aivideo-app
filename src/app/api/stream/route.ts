@@ -11,13 +11,6 @@ interface Notify {
     error: (error: Error) => void;
     close: () => void;
 }
-// const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest) => {
-//     notify.log(JSON.stringify({ "data": "Started" }))
-//     // const output = await exec(gr.input)
-//     await Utils.delay(2000)
-//     notify.error(new Error('Something went wrong'))
-//     // notify.complete(JSON.stringify({ "data": output, complete: true }))
-// }
 
 const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest) => {
     notify.log(JSON.stringify({ "data": "Started" }));
@@ -25,7 +18,11 @@ const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest
 
     const intervalId = setInterval(() => {
         count += 1
-        notify.log(JSON.stringify({ "data": `PING ${count}s` }))
+        const segs = []
+        for (let i = 0; i < count % 10; i++) {
+            segs.push('💨')
+        }
+        notify.log(JSON.stringify({ "data": `PING ${segs.join(' ')}` }))
     }, 1000);
 
     try {
@@ -48,9 +45,7 @@ export async function GET(req: Request | NextRequest) {
     if (!id) {
         return new Response(JSON.stringify({ error: `Request Id doesn't exist` }), { status: 400, headers: { 'Content-Type': 'application/json' } })
     }
-    console.log(id)
     const pendingRqs = await GenerationManager.getInstance().fetchPendingRequests()
-    console.log(`api/stream/route ${pendingRqs.size}`)
     const generationRequest = pendingRqs.get(id)
     if (!generationRequest) {
         return new Response(JSON.stringify({ error: `Request ${id} doesn't exist` }), { status: 400, headers: { 'Content-Type': 'application/json' } })

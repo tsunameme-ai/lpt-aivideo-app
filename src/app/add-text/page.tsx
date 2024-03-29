@@ -31,17 +31,17 @@ export default function Page() {
             setErrorMessage(`Error: image dataURL cannot be generated`)
             return
         }
-      
+
         if (!imgDataUrl) {
             setErrorMessage(`Error: cover image dataURL cannot be generated`)
             return
         }
-    
+
         if (!t2iOutput) {
             setErrorMessage(`Error: no image`)
             return
         }
-      
+
         gContext.setOverlayImageData({
             remoteURL: t2iOutput?.url,
             dataURL: imgDataUrl,
@@ -49,7 +49,7 @@ export default function Page() {
             height: editorDimension.height,
             overlayImageDataURL: coverDataUrl
         })
-      
+
         Analytics.trackEvent({ 'event': 'click-img2vid' })
         router.push('img2vid')
     }

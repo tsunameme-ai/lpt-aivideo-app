@@ -1,5 +1,6 @@
 import { GenerationRequest, GenerationType, Img2vidInput, Txt2imgInput } from "./types"
 import { Utils } from "./utils"
+import ShortUniqueId from 'short-unique-id'
 
 export class GenerationManager {
     private static instance: GenerationManager
@@ -14,7 +15,7 @@ export class GenerationManager {
 
     public async addGenerationRequest(type: GenerationType, input: Txt2imgInput | Img2vidInput) {
         await Utils.delay(200)
-        const id = new Date().getTime().toString()
+        const id = new ShortUniqueId({ length: 6 }).rnd()
         this.generations.set(id, {
             id: id,
             type: type,

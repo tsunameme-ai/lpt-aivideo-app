@@ -1,3 +1,4 @@
+'use client'
 import { useGenerationContext } from "@/context/generation-context";
 import { Switch } from "@nextui-org/react"
 
