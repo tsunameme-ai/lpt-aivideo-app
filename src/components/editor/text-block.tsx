@@ -26,8 +26,9 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
     const shapeRef = useRef<any>()
     const textRef = useRef<any>()
     const trRef = useRef<any>()
-    const [blockWidth, setBlockWidth] = useState<number>(100)
-    const [blockHeight, setBlockHeight] = useState<number>(20)
+    const tagRef = useRef<any>()
+    const [blockWidth, setBlockWidth] = useState<number>(0)
+    const [blockHeight, setBlockHeight] = useState<number>(0)
     const DRAG_BOUND_X = 329
     const DRAG_BOUND_Y = 329
 
@@ -36,7 +37,7 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
             trRef.current.nodes([shapeRef.current]);
             trRef.current.getLayer().batchDraw();
         }
-    }, [props.isSelected]);
+    }, [props.isSelected])
 
     //A hack to fix transfer outline is off
     useEffect(() => {
@@ -49,14 +50,19 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
     }
 
     const onHandleBound = (pos: Vector2d) => {
-        //console.log(pos)
-        //console.log(blockWidth)
+
         if (pos.x >= DRAG_BOUND_X)
             return { x: DRAG_BOUND_X, y: pos.y }
 
         if (pos.y >= DRAG_BOUND_Y)
             return { x: pos.x, y: DRAG_BOUND_Y }
 
+
+        if (blockWidth == 0)
+            setBlockWidth(tagRef.current.attrs.width)
+
+        if (blockHeight == 0)
+            setBlockHeight(tagRef.current.attrs.height)
 
         if (blockWidth > 0 && pos.x <= (blockWidth * -1) * 0.92)
             return {
@@ -87,6 +93,7 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                 dragBoundFunc={onHandleBound}
             >
                 <Tag
+                    ref={tagRef}
                     cornerRadius={0}
                     fill={props.background}
                     opacity={props.opacity ?? 0.5}
