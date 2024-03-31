@@ -49,7 +49,7 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
     }
 
     const onHandleBound = (pos: Vector2d) => {
-        console.log(pos)
+        //console.log(pos)
         //console.log(blockWidth)
         if (pos.x >= DRAG_BOUND_X)
             return { x: DRAG_BOUND_X, y: pos.y }
