@@ -6,10 +6,8 @@ import styles from "@/styles/home.module.css"
 import { Button, Spacer, Spinner, Tabs, Tab, Card, CardBody } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import { Table, TableHeader, TableBody, TableRow, TableColumn, TableCell } from "@nextui-org/react"
-import { FaShare } from "react-icons/fa"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import MediaPlayerComponent from "@/components/media-player"
 import GalleryCell from "./cell"
 
 export default function Page() {
