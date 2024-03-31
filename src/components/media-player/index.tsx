@@ -5,6 +5,7 @@ import { Image } from "@nextui-org/react"
 interface MediaPlayerComponentProps {
     src: string
     className: string
+    onLoad?: () => void
 }
 const MediaPlayerComponent: React.FC<MediaPlayerComponentProps> = (props: MediaPlayerComponentProps) => {
     const checkIsVideo = (url: string) => {
@@ -15,7 +16,7 @@ const MediaPlayerComponent: React.FC<MediaPlayerComponentProps> = (props: MediaP
     const [isVideo] = useState<boolean>(checkIsVideo(props.src))
     return (
         isVideo ? <video className={props.className} autoPlay loop muted controls webkit-playsinline playsInline src={props.src} />
-            : <Image className={props.className} src={props.src} alt='image' />
+            : <Image className={props.className} src={props.src} alt='image' onLoad={props.onLoad} />
     )
 }
 export default MediaPlayerComponent
