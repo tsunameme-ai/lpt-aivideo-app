@@ -1,4 +1,5 @@
-import { Fragment, useEffect, useRef } from "react";
+import { Vector2d } from "konva/lib/types";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Label, Tag, Text, Transformer } from "react-konva";
 
 export interface TextBlockProps {
@@ -18,19 +19,25 @@ export interface TextBlockProps {
     onDragging?: (e: any) => void
     onDragStart?: (e: any) => void
     onDragEnd?: (e: any) => void
+    //onHandleBound?: (p: Vector2d) => Vector2d
 }
 
 const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
     const shapeRef = useRef<any>()
     const textRef = useRef<any>()
     const trRef = useRef<any>()
+    const tagRef = useRef<any>()
+    const [blockWidth, setBlockWidth] = useState<number>(0)
+    const [blockHeight, setBlockHeight] = useState<number>(0)
+    const DRAG_BOUND_X = 329
+    const DRAG_BOUND_Y = 329
 
     useEffect(() => {
         if (props.isSelected) {
             trRef.current.nodes([shapeRef.current]);
             trRef.current.getLayer().batchDraw();
         }
-    }, [props.isSelected]);
+    }, [props.isSelected])
 
     //A hack to fix transfer outline is off
     useEffect(() => {
@@ -40,6 +47,36 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
 
     const onClick = () => {
         props.onRequestEdit?.(props)
+    }
+
+    const onHandleBound = (pos: Vector2d) => {
+
+        if (pos.x >= DRAG_BOUND_X)
+            return { x: DRAG_BOUND_X, y: pos.y }
+
+        if (pos.y >= DRAG_BOUND_Y)
+            return { x: pos.x, y: DRAG_BOUND_Y }
+
+
+        if (blockWidth == 0)
+            setBlockWidth(tagRef.current.attrs.width)
+
+        if (blockHeight == 0)
+            setBlockHeight(tagRef.current.attrs.height)
+
+        if (blockWidth > 0 && pos.x <= (blockWidth * -1) * 0.92)
+            return {
+                x: (blockWidth * -1) * 0.92,
+                y: pos.y
+            }
+
+        if (blockHeight > 0 && pos.y <= (blockHeight * -1) * 0.92)
+            return {
+                x: pos.x,
+                y: (blockHeight * -1) * 0.92
+            }
+
+        return { x: pos.x, y: pos.y }
     }
 
     return (
@@ -53,8 +90,10 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                 onDragStart={(e) => { props.onDragStart?.(e) }}
                 onDragMove={(e) => { props.onDragging?.(e) }}
                 onDragEnd={(e) => { props.onDragEnd?.(e) }}
+                dragBoundFunc={onHandleBound}
             >
                 <Tag
+                    ref={tagRef}
                     cornerRadius={0}
                     fill={props.background}
                     opacity={props.opacity ?? 0.5}
@@ -86,7 +125,9 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                     boundBoxFunc={(_, newBox) => {
                         newBox.width = Math.max(20, newBox.width)
                         newBox.height = Math.max(20, newBox.height)
-                        return newBox;
+                        setBlockWidth(newBox.width)
+                        setBlockHeight(newBox.height)
+                        return newBox
                     }}
                 />
             )}

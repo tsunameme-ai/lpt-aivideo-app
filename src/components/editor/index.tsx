@@ -108,6 +108,9 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             setDeleteBtnVariant('light')
             setDeleteBtnColor('default')
         }
+
+        //console.log(e.target.attrs.x + '  ' + e.evt.changedTouches[0]?.clientX)
+        //console.log(e.target.attrs.x - e.evt.changedTouches[0]?.clientX)
     }
 
     const handleTextBlockDragEnd = (e: any) => {
@@ -202,6 +205,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                     setSelectedId(undefined)
                                                     handleTextBlockDragEnd(e)
                                                 }}
+
                                             />
                                         )
                                     })}

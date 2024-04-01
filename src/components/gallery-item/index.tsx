@@ -1,12 +1,12 @@
 'use client'
-import { fetchGenerationData } from "@/actions/stable-diffusion";
-import { useEffect, useState } from "react";
+import { fetchGenerationData } from "@/actions/stable-diffusion"
+import { useEffect, useState } from "react"
 import { Image, Spinner, Button, Spacer } from '@nextui-org/react'
 import { GenerationRequest, GenerationType } from "@/libs/types"
-import ErrorComponent from "../error";
+import ErrorComponent from "../error"
 import styles from "@/styles/home.module.css"
 import { useRouter } from 'next/navigation'
-import MediaPlayerComponent from "../media-player";
+import MediaPlayerComponent from "../media-player"
 
 interface GalleryItemComponentProps {
     generationId: string
