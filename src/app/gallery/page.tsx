@@ -6,10 +6,9 @@ import styles from "@/styles/home.module.css"
 import { Button, Spacer, Spinner, Tabs, Tab, Card, CardBody } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import { Table, TableHeader, TableBody, TableRow, TableColumn, TableCell } from "@nextui-org/react"
-import { FaShare } from "react-icons/fa"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import MediaPlayerComponent from "@/components/media-player"
+import GalleryCell from "./cell"
 
 export default function Page() {
     const [nextPage, setNextPage] = useState<string | undefined>(undefined)
@@ -72,8 +71,9 @@ export default function Page() {
 
                                                 < TableRow key={index} >
                                                     <TableCell key={item.id}>
-                                                        <MediaPlayerComponent className={styles.videoPreview} src={item.outputs?.[0].url!} />
-                                                        <FaShare className={styles.galleryShareIcon} onClick={() => handleShare(item.outputs?.[0].url!)} />
+                                                        <GalleryCell
+                                                            src={item.outputs?.[0].url!}
+                                                            handleClickShare={handleShare} />
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
