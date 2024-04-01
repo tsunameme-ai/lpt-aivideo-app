@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem, GenerationRequest, GenerationType, Img2vidInput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
@@ -61,6 +61,7 @@ export default function Page() {
         })
     }
 
+
     const handleGenerateVideoClick = async () => {
 
         if (isButtonNew) {
@@ -117,6 +118,12 @@ export default function Page() {
         i2vInput.modelId = model
         setI2vInput(i2vInput)
     }
+
+    useEffect(() => {
+        if (!gContext.isAdvancedView) {
+            handleGenerateVideoClick()
+        }
+    }, [])
 
     return (
         <>
