@@ -1,5 +1,5 @@
 'use client'
-import { Button, Spacer, Image } from '@nextui-org/react'
+import { Button, Spacer } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import styles from '@/styles/home.module.css'
 import Slider from "react-slick"
