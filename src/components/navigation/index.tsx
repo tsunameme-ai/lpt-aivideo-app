@@ -20,7 +20,7 @@ const NavigationComponent: React.FC = () => {
                     className="sm:hidden"
                 />
                 <NavbarBrand>
-                    <p className="font-bold text-inherit">Tsunameme</p>
+                    <p className="font-bold text-[20px]">Tsunameme</p>
                 </NavbarBrand>
             </NavbarContent>
             <NavbarMenu>
@@ -33,7 +33,7 @@ const NavigationComponent: React.FC = () => {
                             href={item[1]}
                             size="lg"
                         >
-                            <div className="text-2xl leading-10">{item[0]}</div>
+                            <div className="text-[20px] leading-10">{item[0]}</div>
                         </Link>
                     </NavbarMenuItem>
                 ))}
