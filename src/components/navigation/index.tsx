@@ -31,7 +31,7 @@ const NavigationComponent: React.FC = () => {
                     < NavbarMenuItem key={`${item}-${index}`}>
                         <Link
                             onPress={() => {
-                                if (menuItems[index][1] === '/txt2img') {
+                                if (menuItems[index][1] !== '/txt2img') {
                                     gContext.reset()
                                 }
                             }}
