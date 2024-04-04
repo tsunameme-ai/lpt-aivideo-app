@@ -9,15 +9,10 @@ import { useState } from 'react';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const [displayMode, setDisplayMode] = useState<DisplayMode>()
-    const onDisplayModeChange = (mode: DisplayMode) => {
-        console.log(`???onDisplayModeChange:${mode} `)
-        setDisplayMode(mode)
-    }
-
 
     return (
         <NextUIProvider>
-            <Installer onDisplayModeChange={onDisplayModeChange} />
+            <Installer onDisplayModeChange={setDisplayMode} />
             {
                 displayMode !== DisplayMode.BROWSER &&
                 <React.Fragment>{children}</React.Fragment>
