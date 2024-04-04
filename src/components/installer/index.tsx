@@ -13,6 +13,7 @@ interface InstallerProps {
     onAppReadyChange: (ready: boolean) => void
 }
 export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     const [installPromtEvent, setInstallPromtEvent] = useState<Event | undefined>(undefined)
     const [displayMode, setDisplayMode] = useState<DisplayMode>()
@@ -74,6 +75,7 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         const ism = checkIsMobile()
         setIsMobile(ism)
         props.onAppReadyChange(ism && displayMode !== DisplayMode.BROWSER)
+        setIsLoading(false)
         return () => {
             setInstallPromtEvent(undefined)
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPromptEvt)
@@ -84,9 +86,11 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     }, [])
 
     return (<>
-        {
-            (!isMobile || displayMode === DisplayMode.BROWSER) &&
-            <InstallPromo isMobile={isMobile} hasInstallPrompt={installPromtEvent !== undefined} onInstallRequested={handleInstallRequest} />
+        {isLoading ? <></> :
+            <>{
+                (!isMobile || displayMode === DisplayMode.BROWSER) &&
+                <InstallPromo isMobile={isMobile} hasInstallPrompt={installPromtEvent !== undefined} onInstallRequested={handleInstallRequest} />
+            }</>
         }
     </>)
 }

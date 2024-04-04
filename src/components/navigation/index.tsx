@@ -2,6 +2,7 @@
 import React from "react";
 import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand } from "@nextui-org/react";
 import { useGenerationContext } from "@/context/generation-context";
+import { usePathname } from "next/navigation";
 
 
 const NavigationComponent: React.FC = () => {
@@ -27,9 +28,9 @@ const NavigationComponent: React.FC = () => {
             </NavbarContent>
             <NavbarMenu>
                 {menuItems.map((item, index) => (
-
                     < NavbarMenuItem key={`${item}-${index}`}>
                         <Link
+                            isDisabled={menuItems[index][1] === usePathname()}
                             onPress={() => {
                                 if (menuItems[index][1] !== '/txt2img') {
                                     gContext.reset()
