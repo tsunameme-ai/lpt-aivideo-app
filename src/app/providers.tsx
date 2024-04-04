@@ -1,20 +1,19 @@
-// app/providers.tsx
 'use client'
 
-import { DisplayMode, Installer } from '@/components/installer';
+import { Installer } from '@/components/installer';
 import { NextUIProvider } from '@nextui-org/react'
 import React from 'react';
 import { useState } from 'react';
 
 
 export function Providers({ children }: { children: React.ReactNode }) {
-    const [displayMode, setDisplayMode] = useState<DisplayMode>()
+    const [isAppReady, setIsAppReady] = useState<boolean>(false)
 
     return (
         <NextUIProvider>
-            <Installer onDisplayModeChange={setDisplayMode} />
+            <Installer onAppReadyChange={setIsAppReady} />
             {
-                displayMode !== DisplayMode.BROWSER &&
+                isAppReady &&
                 <React.Fragment>{children}</React.Fragment>
             }
         </NextUIProvider>

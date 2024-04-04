@@ -10,12 +10,7 @@ export default function Home() {
   const gContext = useGenerationContext()
   const handleTxt2img = () => {
     //Clear context 
-    gContext.setT2iInput(undefined)
-    gContext.setT2iOutputs([])
-    gContext.setT2iOutputSelectedIndex(0)
-    gContext.setOverlayText('')
-    gContext.setOverlayImageData(undefined)
-    gContext.setI2vInput(undefined)
+    gContext.reset()
 
     router.push('/txt2img')
   }
