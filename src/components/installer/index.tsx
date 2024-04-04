@@ -71,8 +71,9 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         const displayMode = getPWADisplayMode()
         setDisplayMode(displayMode)
         handleResizeEvent()
-        setIsMobile(checkIsMobile())
-        props.onAppReadyChange(isMobile && displayMode !== DisplayMode.BROWSER)
+        const ism = checkIsMobile()
+        setIsMobile(ism)
+        props.onAppReadyChange(ism && displayMode !== DisplayMode.BROWSER)
         return () => {
             setInstallPromtEvent(undefined)
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPromptEvt)
