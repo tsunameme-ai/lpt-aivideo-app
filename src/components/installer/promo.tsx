@@ -22,7 +22,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                     props.isMobile && props.hasInstallPrompt ?
                         <Button color="primary" onPress={props.onInstallRequested}>Install</Button>
                         :
-                        <p>Please install the app first. You can do that by using "Add to Home Screen".</p>
+                        <p>Please install the app first. You can do that by using <strong>Add to Home Screen</strong>.</p>
                 }
 
             </div>
