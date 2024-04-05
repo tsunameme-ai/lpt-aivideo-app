@@ -9,6 +9,16 @@ interface InstallPromoProps {
 }
 
 export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoProps) => {
+    //console.log(props.isMobile)
+    let dynamicMSG
+    if (!props.isMobile)
+        dynamicMSG = <p>Please open this page from your mobile phone.</p>
+    else if (props.hasInstallPrompt) {
+        dynamicMSG = < Button size='lg' className={styles.startBtn} onPress={props.onInstallRequested} > Install</Button >
+    } else {
+        dynamicMSG = <><p>Please open from the below navigation bar</p><p>Use <strong>Add to Home Screen</strong> to install the app</p></>
+    }
+
     return (
 
         <section className={styles.main}>
@@ -17,14 +27,8 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
             <Spacer y={8} />
             <div className={styles.centerLanding}>
                 <LandingPromoComponent />
-                <Spacer y={8} />
-                {
-                    props.isMobile && props.hasInstallPrompt ?
-                        <Button color="primary" onPress={props.onInstallRequested}>Install</Button>
-                        :
-                        <p>Please install the app first. You can do that by using <strong>Add to Home Screen</strong>.</p>
-                }
-
+                <Spacer y={6} />
+                {dynamicMSG}
             </div>
         </section>
     )
