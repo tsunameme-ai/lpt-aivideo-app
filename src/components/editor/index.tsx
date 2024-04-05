@@ -183,7 +183,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                         >
                             <Layer>
                                 <KonvaImage listening={false} x={0} y={0} width={width} height={height} image={image} />
-                                {watermark && <KonvaImage listening={false} x={width! - 143} y={height! - 38} width={143} height={38} image={watermark} />}
+                                {watermark && <KonvaImage listening={false} x={width! - watermark.width} y={height! - watermark.height} width={watermark.width} height={watermark.height} image={watermark} />}
                             </Layer>
                             <Layer
                                 ref={props.coverLayerRef}>
