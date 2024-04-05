@@ -33,13 +33,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [isEmptyPrompt, setIsEmptyPrompt] = useState<boolean>(true)
 
     const handlePPromptValueChange = (value: string) => {
-        console.log(value.length)
-
-        if (value.length <= 0)
-            setIsEmptyPrompt(true)
-        else
-            setIsEmptyPrompt(false)
-
+        setIsEmptyPrompt(value.length <= 0)
         setPPromptValue(value)
         setPPromptErrorMessage('')
     }
