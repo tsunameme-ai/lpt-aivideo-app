@@ -24,6 +24,7 @@ interface GenerationContextType {
 
     i2vInput: Img2vidInput | undefined
     setI2vInput: (value: Img2vidInput | undefined) => void
+    reset: () => void
 }
 
 const GenerationContext = createContext<GenerationContextType | undefined>(undefined)
@@ -129,7 +130,15 @@ export default function GenerationContextProvider({ children }: { children: Reac
         }
         return undefined
     }
+    const reset = () => {
+        setT2iInput(undefined)
+        setT2iOutputs([])
+        setT2iOutputSelectedIndex(0)
+        setOverlayText('')
+        setOverlayImageData(undefined)
+        setI2vInput(undefined)
 
+    }
     return (
         <GenerationContext.Provider
             value={{
@@ -145,7 +154,8 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 },
                 overlayText, setOverlayText,
                 overlayImageData, setOverlayImageData,
-                i2vInput, setI2vInput
+                i2vInput, setI2vInput,
+                reset
             }}>
             {children}
         </GenerationContext.Provider>

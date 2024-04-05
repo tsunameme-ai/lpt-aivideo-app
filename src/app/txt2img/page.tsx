@@ -35,6 +35,17 @@ export default function Page() {
         gContext.setT2iOutputSelectedIndex(selectedOutputIndex)
         router.push('/add-text')
     }
+    // useEffect(() => {
+    //     console.log('???? txt2img onpageload')
+
+    //     gContext.setT2iInput(undefined)
+    //     gContext.setT2iOutputs([])
+    //     gContext.setT2iOutputSelectedIndex(0)
+    //     gContext.setOverlayText('')
+    //     gContext.setOverlayImageData(undefined)
+    //     gContext.setI2vInput(undefined)
+
+    // }, [])
 
     return (
         <>
