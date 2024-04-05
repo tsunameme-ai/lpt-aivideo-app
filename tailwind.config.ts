@@ -24,7 +24,7 @@ const config: Config = {
         "comfort": {
           extend: "dark",
           colors: {
-            background: "#98887f",
+            background: "#887a72",
           }
         }
       }

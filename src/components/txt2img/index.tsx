@@ -6,7 +6,8 @@ import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org
 import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
 import styles from "@/styles/home.module.css";
-import { FaRegPlayCircle } from "react-icons/fa"
+//import { FaRegPlayCircle } from "react-icons/fa"
+import { FaArrowRotateRight } from "react-icons/fa6"
 import { Analytics } from "@/libs/analytics";
 
 interface Txt2ImgComponentProps {
@@ -29,8 +30,16 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [numOutput, setNumOutput] = useState<string>(DEFAULT_IMG_NUM_OUTPUT.toString())
     const [width, setWidth] = useState<string>(DEFAULT_IMG_WIDTH.toString())
     const [height, setHeight] = useState<string>(DEFAULT_IMG_HEIGHT.toString())
+    const [isEmptyPrompt, setIsEmptyPrompt] = useState<boolean>(true)
 
     const handlePPromptValueChange = (value: string) => {
+        console.log(value.length)
+
+        if (value.length <= 0)
+            setIsEmptyPrompt(true)
+        else
+            setIsEmptyPrompt(false)
+
         setPPromptValue(value)
         setPPromptErrorMessage('')
     }
@@ -94,20 +103,19 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         <>
             <div className={styles.textareaControl}>
                 <Textarea
+                    radius="sm"
                     maxRows={3}
-                    label='Describe the visual you want to use'
-                    placeholder='Try something like "eating breakfast in front of a tsunami" or your weirdest (no NSFW) dream'
+                    label=''
+                    placeholder='Try "eating breakfast in front of a scary tsunami"'
                     value={pPromptValue}
                     errorMessage={pPromptErrorMessage}
                     onValueChange={handlePPromptValueChange}
                     classNames={{
-                        input: "font-normal text-lg",
-                        label: "font-normal text-sm",
-                        inputWrapper: "border-[#FFC30C]"
+                        input: "text-lg"
                     }}
                 />
-                <Button isIconOnly size="lg" variant="light" className={styles.renderBtn} onPress={generateImage} isLoading={isLoading}>
-                    <FaRegPlayCircle size={20} />
+                <Button isIconOnly isDisabled={isEmptyPrompt} size="lg" variant="light" className={styles.renderBtn} onPress={generateImage} isLoading={isLoading}>
+                    <FaArrowRotateRight size={25} />
                 </Button>
                 <ErrorComponent errorMessage={errorMessage} />
             </div>

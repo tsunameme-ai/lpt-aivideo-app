@@ -58,7 +58,7 @@ export default function Page() {
         <>
             <section className={styles.main}>
                 <div className={styles.centerSection}>
-                    <div>Step 2: Add your copy</div>
+                    <div className='text-[20px]'>Step 2 of 3: Add your copy</div>
                     <Spacer y={2}></Spacer>
                     {t2iOutput ?
                         <Editor
@@ -88,7 +88,7 @@ export default function Page() {
                                     onPress={handleClickToVideo}
                                     size="md"
                                 >
-                                    <h5>GIF it</h5>
+                                    <div className='text-[20px]'>GIF it</div>
                                 </Button>
                             </div>
                             <Spacer y={4} />
@@ -98,7 +98,7 @@ export default function Page() {
                                     onClick={() => router.back()}
                                     size="md"
                                 >
-                                    <h5>Back</h5>
+                                    <div className='text-[20px]'>Back</div>
                                 </Button>
                             </div>
                         </div>

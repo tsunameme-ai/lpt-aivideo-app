@@ -76,7 +76,7 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
                             size="lg"
                             onPress={HandleSeeMore}
                         >
-                            <h5>See More</h5>
+                            <div className='text-[20px]'>See More</div>
                         </Button>
                         <Spacer y={10} />
                         <Button
@@ -84,7 +84,7 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
                             size="lg"
                             onPress={HandleCreate}
                         >
-                            <h5>Be A Creator</h5>
+                            <div className='text-[20px]'>Be A Creator</div>
                         </Button>
                     </div >
                 </>}
