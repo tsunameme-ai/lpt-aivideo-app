@@ -2,7 +2,6 @@
 import { Button, Spacer } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import styles from '@/styles/home.module.css'
-import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import { useGenerationContext } from '@/context/generation-context'
@@ -21,6 +20,7 @@ export default function Home() {
 
   return (
     <section className={styles.main}>
+
       <div className={styles.centerLanding}>
         <LandingPromoComponent />
         <Spacer y={20} />

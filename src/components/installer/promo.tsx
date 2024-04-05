@@ -1,4 +1,6 @@
-import { Button } from "@nextui-org/react"
+import { Button, Spacer } from "@nextui-org/react"
+import LandingPromoComponent from '@/components/landing-promo'
+import styles from '@/styles/home.module.css'
 
 interface InstallPromoProps {
     hasInstallPrompt: boolean
@@ -8,18 +10,23 @@ interface InstallPromoProps {
 
 export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoProps) => {
     return (
-        <>
-            <div className="container aspect-square max-w-sm mx-auto">
-                <p>Promo content</p>
+
+        <section className={styles.main}>
+            <Spacer y={8} />
+            <h1>Tsunameme</h1>
+            <Spacer y={8} />
+            <div className={styles.centerLanding}>
+                <LandingPromoComponent />
+                <Spacer y={8} />
                 {
                     props.isMobile && props.hasInstallPrompt ?
                         <Button color="primary" onPress={props.onInstallRequested}>Install</Button>
                         :
-                        <p>To install the app, add this website to your home screen.</p>
+                        <p>Please install the app first. You can do that by using "Add to Home Screen".</p>
                 }
 
             </div>
-        </>
+        </section>
     )
 
 }
