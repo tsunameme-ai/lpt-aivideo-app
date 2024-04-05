@@ -20,7 +20,6 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
     }
 
     return (
-
         <section className={styles.main}>
             <Spacer y={8} />
             <h1>Tsunameme</h1>
