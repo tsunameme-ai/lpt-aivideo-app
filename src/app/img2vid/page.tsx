@@ -130,7 +130,7 @@ export default function Page() {
             <section className={styles.main}>
                 <div className={styles.centerSection}>
 
-                    <div>Step 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div className='text-[20px]'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
                         {videoOutput && <>
@@ -176,7 +176,7 @@ export default function Page() {
                             isLoading={isGeneratingVideo}
                             onPress={handleGenerateVideoClick}
                         >
-                            <h5>{isButtonNew ? 'Create New' : 'Render'}</h5>
+                            <div className='text-[20px]'>{isButtonNew ? 'Create New' : 'Render'}</div>
                         </Button>
                     </div>
 
@@ -190,7 +190,7 @@ export default function Page() {
                                     isLoading={isGeneratingVideo}
                                     onPress={() => { router.push('/gallery') }}
                                 >
-                                    <h5>Gallery</h5>
+                                    <div className='text-[20px]'>Gallery</div>
                                 </Button>
                             </div>
                         </>
@@ -203,11 +203,11 @@ export default function Page() {
                             size="md"
                             disabled={!isGeneratingVideo}
                         >
-                            <h5>Back</h5>
+                            <div className='text-[20px]'>Back</div>
                         </Button>
                     </div>
 
-                </div>
+                </div >
             </section >
         </>
     )

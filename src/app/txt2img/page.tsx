@@ -51,7 +51,7 @@ export default function Page() {
         <>
             <section className={styles.main}>
                 <div className={styles.centerSection}>
-                    <div>Step 1: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div className='text-[20px]'>Step 1 of 3: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={2} />
                     <Txt2ImgComponent
                         isAdvancedView={gContext.isAdvancedView}
@@ -61,7 +61,7 @@ export default function Page() {
 
                     {imageOutputs.length == 1 && <>
                         <Image className={styles.center} src={imageOutputs[0].url} alt={imageOutputs[0].url} />
-                        <Spacer y={8} />
+                        <Spacer y={9} />
                     </>}
 
                     {imageOutputs.length > 1 && <>
@@ -74,12 +74,12 @@ export default function Page() {
                                 </div>
                             ))}
                         </Slider>
-                        <Spacer y={8} />
+                        <Spacer y={9} />
                     </>}
                 </div>
                 {imageOutputs.length > 0 && <>
                     <div className={styles.promptControls}>
-                        <Button className={styles.nextBtn} onPress={handleClickNext} > <h5>Next</h5> </Button>
+                        <Button className={styles.nextBtn} onPress={handleClickNext} ><div className='text-[20px]'>Next</div></Button>
                     </div>
                 </>}
             </section >
