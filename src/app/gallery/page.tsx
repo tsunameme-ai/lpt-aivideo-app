@@ -84,7 +84,7 @@ export default function Page() {
                                     </div>
                                 </Tab>
                                 <Tab key='me' title='Me'>
-                                    Nothing yet!
+                                    Not implemented yet!
                                 </Tab>
                             </Tabs>
                         </CardBody>

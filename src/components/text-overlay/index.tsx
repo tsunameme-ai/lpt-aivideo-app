@@ -37,11 +37,6 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
         />
         <Spacer y={2} />
         <div className={styles.containerRelative}>
-            {imageLoaded &&
-                <>
-                    <FaFileDownload className={styles.downloadIcon} onClick={onDownloadClick} />
-                </>
-            }
             <ImageWithTextOverlay
                 onImageData={onImageData}
                 imageUrl={props.src}
