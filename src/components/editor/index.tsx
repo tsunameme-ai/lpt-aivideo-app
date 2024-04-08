@@ -76,6 +76,12 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             onOpen()
     }
     const handleCloseModal = (text: string, slider: number) => {
+
+        let filteredText = text.replaceAll(' ', '').replaceAll('\n', '')
+        if (filteredText.length <= 0) {
+            onClose()
+            return
+        }
         const key = `rect${Object.keys(textBlocks).length}`
         Object.keys(textBlocks).forEach(key => {
             delete textBlocks[key]
@@ -84,7 +90,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         textBlocks[key] = {
             id: key,
             isSelected: false,
-            text: text,
+            text: filteredText,
             opacity: slider,
             fill: 'black',
             background: 'white',
