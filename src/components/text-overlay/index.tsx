@@ -14,17 +14,13 @@ interface TextOverlayProps {
 }
 const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
     const [text, setText] = useState<string>(props.text)
-    const [imageLoaded, setImageLoaded] = useState<boolean>(false)
+    //const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
     const onImageData = (text: string, localImage: LocalImageData) => {
         props.onImageData?.(text, localImage)
-        setImageLoaded(true)
+        //setImageLoaded(true)
     }
 
-    const onDownloadClick = () => {
-        props.onDownloadClick()
-        Analytics.trackEvent({ 'event': 'click-download-image' })
-    }
 
     //<FaShare className={styles.shareIcon} />
     return (<>
