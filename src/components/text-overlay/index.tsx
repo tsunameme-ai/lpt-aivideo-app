@@ -1,10 +1,9 @@
 import { Spacer, Textarea } from "@nextui-org/react"
 import { useState } from "react"
 import ImageWithTextOverlay from "../image-text-overlay"
-import { FaFileDownload/*, FaShare */ } from "react-icons/fa"
 import styles from "@/styles/home.module.css";
 import { LocalImageData } from "@/libs/types";
-import { Analytics } from "@/libs/analytics";
+
 
 interface TextOverlayProps {
     src: string
@@ -21,8 +20,6 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
         //setImageLoaded(true)
     }
 
-
-    //<FaShare className={styles.shareIcon} />
     return (<>
         <Textarea
             maxRows={4}
