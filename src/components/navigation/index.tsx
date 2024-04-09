@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand } from "@nextui-org/react";
 import { useGenerationContext } from "@/context/generation-context";
+import { AuthIndicator } from "../auth-indicator";
 
 
 const NavigationComponent: React.FC = () => {
@@ -20,8 +21,7 @@ const NavigationComponent: React.FC = () => {
                 ['Gallery', '/gallery'],
                 ['About', '/about'],
                 ['dev-editor', '/text-demo'],
-                ['dev-home', '/'],
-                ['dev-login', '/login']
+                ['dev-home', '/']
             ]
             setMenuItems(items)
         }
@@ -57,6 +57,7 @@ const NavigationComponent: React.FC = () => {
                         </Link>
                     </NavbarMenuItem>
                 ))}
+                <AuthIndicator />
             </NavbarMenu>
         </Navbar >
     </>)
