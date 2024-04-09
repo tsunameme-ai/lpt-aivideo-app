@@ -25,6 +25,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [deleteBtnVariant, setDeleteBtnVariant] = useState<'light' | 'flat' | 'bordered'>('light')
     const [deleteBtnColor, setDeleteBtnColor] = useState<'danger' | 'default'>('default')
     const [image, setImage] = useState<HTMLImageElement>()
+    const [watermark, setWatermark] = useState<HTMLImageElement>()
     const [width, setWidth] = useState<number>()
     const [height, setHeight] = useState<number>()
     const [, setPixelRatio] = useState<number>(1.0)
@@ -144,6 +145,13 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
         onResize()
         window.addEventListener('resize', onResize)
+
+        const wmimg = new Image();
+        wmimg.onload = () => {
+            setWatermark(wmimg)
+        }
+        wmimg.src = '/watermark.png';
+
         return () => {
             window.removeEventListener('resize', onResize)
         }
@@ -209,6 +217,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                             />
                                         )
                                     })}
+                                {watermark && <KonvaImage listening={false} x={width! - watermark.width} y={height! - watermark.height} width={watermark.width} height={watermark.height} image={watermark} />}
                             </Layer>
                         </Stage>
                     </div >
