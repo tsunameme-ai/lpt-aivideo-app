@@ -1,4 +1,4 @@
-import { fetchAssetsByUser, fetchGallery } from "@/actions/stable-diffusion"
+import { fetchAssetsByUser } from "@/actions/stable-diffusion"
 import { GenerationRequest } from "@/libs/types"
 import { Link, Spacer, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react"
 import { useEffect, useState } from "react"

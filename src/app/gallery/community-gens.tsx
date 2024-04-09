@@ -1,7 +1,7 @@
 'use client'
 import { fetchGallery } from "@/actions/stable-diffusion"
 import { GenerationRequest } from "@/libs/types"
-import { Tab, Spacer, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react"
+import { Spacer, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import GalleryCell from "./cell"
 import styles from "@/styles/home.module.css"

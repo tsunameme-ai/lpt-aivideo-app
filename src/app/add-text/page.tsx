@@ -17,7 +17,7 @@ const Editor = dynamic(() => import("@/components/editor"), {
 });
 
 export default function Page() {
-    const { ready, authenticated, login, user, logout } = usePrivy()
+    const { authenticated, user } = usePrivy()
     const router = useRouter()
     const editorCoverLayerRef = useRef<any>()
     const editorStageRef = useRef<any>()

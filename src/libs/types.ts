@@ -1,5 +1,3 @@
-import { LinkedInOAuthWithMetadata } from "@privy-io/react-auth"
-
 export type Txt2vidInput = {
     pPrompt: string,
     nPrompt: string,
