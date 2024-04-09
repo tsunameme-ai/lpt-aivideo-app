@@ -1,3 +1,5 @@
+import { LinkedInOAuthWithMetadata } from "@privy-io/react-auth"
+
 export type Txt2vidInput = {
     pPrompt: string,
     nPrompt: string,
@@ -16,6 +18,7 @@ export type Img2vidInput = {
     imageId?: string
     overlayText?: string
     imageGenerationId?: string
+    userId?: string
 }
 export type Txt2imgInput = {
     pPrompt: string,
@@ -26,6 +29,7 @@ export type Txt2imgInput = {
     width: number,
     height: number,
     numOutput: number
+    userId?: string
 }
 export type GenerationOutput = {
     id: string,

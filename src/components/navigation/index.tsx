@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand } from "@nextui-org/react";
 import { useGenerationContext } from "@/context/generation-context";
 
@@ -8,11 +8,25 @@ const NavigationComponent: React.FC = () => {
 
     const gContext = useGenerationContext()
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-    const menuItems = [
+    const [menuItems, setMenuItems] = useState<string[][]>([
         ['Create', '/txt2img'],
         ['Gallery', '/gallery'],
         ['About', '/about']
-    ];
+    ])
+    useEffect(() => {
+        if (process.env.NEXT_PUBLIC_DEBUG === 'browser') {
+            const items = [
+                ['Create', '/txt2img'],
+                ['Gallery', '/gallery'],
+                ['About', '/about'],
+                ['dev-editor', '/text-demo'],
+                ['dev-home', '/'],
+                ['dev-login', '/login']
+            ]
+            setMenuItems(items)
+        }
+
+    }, [])
 
     return (<>
         <Navbar onMenuOpenChange={setIsMenuOpen}>

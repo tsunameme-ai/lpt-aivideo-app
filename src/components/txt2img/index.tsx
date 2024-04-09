@@ -6,9 +6,9 @@ import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org
 import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
 import styles from "@/styles/home.module.css";
-//import { FaRegPlayCircle } from "react-icons/fa"
 import { FaArrowRotateRight } from "react-icons/fa6"
 import { Analytics } from "@/libs/analytics";
+import { usePrivy } from "@privy-io/react-auth";
 
 interface Txt2ImgComponentProps {
     isAdvancedView: boolean
@@ -17,6 +17,7 @@ interface Txt2ImgComponentProps {
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
+    const { authenticated, user } = usePrivy()
     const gContext = useGenerationContext()
     const defaultBaseModel = gContext.config.models.find(item => { return item.default === true })?.value!
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
@@ -73,7 +74,8 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             guidanceScale: parseFloat(guidanceScale),
             width: parseInt(width),
             height: parseInt(height),
-            numOutput: parseInt(numOutput)
+            numOutput: parseInt(numOutput),
+            userId: authenticated && user ? user.id : undefined
         }
         gContext.setT2iInput(params)
         setIsLoading(true)

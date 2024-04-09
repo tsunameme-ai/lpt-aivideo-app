@@ -47,7 +47,8 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     const handleDisplayModeChangeEvt = (evt: Event) => {
         if ((evt as any).matches) {
             setDisplayMode(DisplayMode.STANDALONE)
-            props.onAppReadyChange(isMobile)
+            props.onAppReadyChange((process.env.NEXT_PUBLIC_DEBUG === 'browser') || isMobile)
+
         }
     }
     const handleResizeEvent = () => {
@@ -74,7 +75,7 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         handleResizeEvent()
         const ism = checkIsMobile()
         setIsMobile(ism)
-        props.onAppReadyChange(ism && displayMode !== DisplayMode.BROWSER)
+        props.onAppReadyChange((process.env.NEXT_PUBLIC_DEBUG === 'browser') || (displayMode !== DisplayMode.BROWSER))
         setIsLoading(false)
         return () => {
             setInstallPromtEvent(undefined)
