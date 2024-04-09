@@ -25,6 +25,7 @@ const AuthPromo: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
     return (
         <Modal
             size='xs'
+            placement='center'
             isDismissable={false}
             isOpen={isOpen}
             onClose={onClose} >

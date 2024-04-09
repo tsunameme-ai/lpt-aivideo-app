@@ -61,7 +61,7 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
                         </TableBody>
                     </Table>
                     : <>
-                        <Link href='/'>Get Started</Link>
+                        {!isFetchinData && <Link href='/'>Get Started</Link>}
                     </>
             }
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
