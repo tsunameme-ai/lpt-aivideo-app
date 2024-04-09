@@ -16,9 +16,8 @@ jobs:
        - uses: actions/setup-node@v3
          with:
            node-version: 20  # Adjust if needed
-      - name: Create .env file
-        run: |
-          echo NEXT_PUBLIC_PRIVY_ID=testid >> .env
+       - name: Create .env file
+         run: echo NEXT_PUBLIC_PRIVY_ID=testid >> .env
        - run: npm ci
        - run: npm run build
        - run: npm run test
