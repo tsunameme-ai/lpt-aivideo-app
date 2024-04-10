@@ -5,8 +5,6 @@ import { Label, Tag, Text, Transformer } from "react-konva";
 export interface TextBlockProps {
     x: number,
     y: number,
-    stageWidth?: number,
-    stageHeight?: number,
     fontFamily?: string,
     fill: string,
     text?: string,
@@ -41,29 +39,11 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
         }
     }, [props.isSelected])
 
+    //A hack to fix transfer outline is off
     useEffect(() => {
-        if (props.stageWidth) {
-            if (textRef.current.getWidth() > props.stageWidth - 10) {
-                textRef.current.setWidth(props.stageWidth - 10)
-            }
-            trRef.current?.forceUpdate()
-        }
+        shapeRef.current.fire('click')
+
     }, [props.text])
-
-
-    useEffect(() => {
-        trRef.current?.forceUpdate()
-    }, [props.isSelected])
-
-    useEffect(() => {
-        if (props.stageWidth && props.stageHeight) {
-            shapeRef.current.setAttrs({
-                x: (props.stageWidth - textRef.current.getWidth()) * 0.5,
-                y: (props.stageHeight - textRef.current.getHeight()) * 0.5
-            });
-        }
-
-    }, [])
 
     const onClick = () => {
         props.onRequestEdit?.(props)
@@ -111,8 +91,6 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                 onDragMove={(e) => { props.onDragging?.(e) }}
                 onDragEnd={(e) => { props.onDragEnd?.(e) }}
                 dragBoundFunc={onHandleBound}
-                x={props.x}
-                y={props.y}
             >
                 <Tag
                     ref={tagRef}
@@ -132,7 +110,7 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                     align={props.align}
                     onClick={onClick}
                     onTap={onClick}
-                    wrap='words'
+                    wrap='word'
                 />
             </Label>
             {props.isSelected && (
