@@ -11,8 +11,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { MdDelete } from "react-icons/md"
 import styles from "@/styles/home.module.css"
+import { StartOutputEvent } from "./types"
 
-export const StartOutputEvent = 'StartOutputEvent'
 
 interface EditorProps {
     imageUrl: string

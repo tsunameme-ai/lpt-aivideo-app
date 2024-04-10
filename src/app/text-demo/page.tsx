@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import styles from '@/styles/home.module.css'
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
-import { StartOutputEvent } from "@/components/editor";
+import { StartOutputEvent } from "@/components/editor/types";
 
 const Editor = dynamic(() => import("@/components/editor"), {
     ssr: false,

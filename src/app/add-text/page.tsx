@@ -8,7 +8,7 @@ import ErrorComponent from "@/components/error"
 import { GenerationOutputItem } from "@/libs/types"
 import styles from '@/styles/home.module.css'
 import { Analytics } from "@/libs/analytics"
-import { StartOutputEvent } from "@/components/editor";
+import { StartOutputEvent } from "@/components/editor/types";
 
 
 const Editor = dynamic(() => import("@/components/editor"), {
