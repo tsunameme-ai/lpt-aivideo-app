@@ -1,7 +1,7 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import TextBlock, { TextBlockProps } from "./text-block"
-import { Stage, Layer, Image as KonvaImage, Text, Tag, Label } from "react-konva"
+import { Stage, Layer, Image as KonvaImage } from "react-konva"
 import { Button, Spinner, useDisclosure } from "@nextui-org/react"
 import RemoteImage from "../remote-image"
 import { SDAPI } from "@/libs/sd-api"
@@ -13,24 +13,26 @@ import { MdOutlineTextFields } from "react-icons/md"
 import { MdDelete } from "react-icons/md"
 import styles from "@/styles/home.module.css"
 
+export const StartRenderEvent = 'StartRender'
 
 interface EditorProps {
-    coverLayerRef?: any
-    stageRef?: any
     imageUrl: string
-    onPixelRatio?: (ratio: number, width: number, height: number) => void
+    onImagesRendered?: (stageImgDataUrl: string, coverImgDataUrl: string, width: number, height: number) => void
 }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
+    const coverLayerRef = useRef<any>()
+    const stageRef = useRef<any>()
     const [deleteBtnVariant, setDeleteBtnVariant] = useState<'light' | 'flat' | 'bordered'>('light')
     const [deleteBtnColor, setDeleteBtnColor] = useState<'danger' | 'default'>('default')
     const [image, setImage] = useState<HTMLImageElement>()
-    const [width, setWidth] = useState<number>()
-    const [height, setHeight] = useState<number>()
-    const [, setPixelRatio] = useState<number>(1.0)
+    const [width, setWidth] = useState<number>(0)
+    const [height, setHeight] = useState<number>(0)
+    const [pixelRatio, setPixelRatio] = useState<number>(1.0)
     const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
-    const [IsTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
+    const [isTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
+    const [isRenderRequested, setIsRenderRequested] = useState<boolean>(false)
     const DELETE_ZONE_X = 305
     const DELETE_ZONE_Y = 150
     const handleMouseDown = (e: any) => {
@@ -64,7 +66,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         setWidth(editorW)
         setHeight(editorH)
         setPixelRatio(imgWidth / editorW)
-        props.onPixelRatio?.(imgWidth / editorW, imgWidth, imgHeight)
+
+        // props.onPixelRatio?.(imgWidth / editorW, imgWidth, imgHeight)
     }
 
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -136,6 +139,19 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
         }
     }
+    const onRenderRequested = () => {
+        setIsTextBlockDragging(false)
+        setSelectedId(undefined)
+        setIsRenderRequested(true)
+    }
+    useEffect(() => {
+        if (isRenderRequested) {
+            const imgDataUrl = stageRef.current?.toDataURL({ pixelRatio: pixelRatio })
+            const coverDataUrl = coverLayerRef.current?.toDataURL({ pixelRatio: pixelRatio })
+            props.onImagesRendered?.(imgDataUrl, coverDataUrl, width, height)
+            setIsRenderRequested(false)
+        }
+    }, [isRenderRequested])
 
 
     useEffect(() => {
@@ -144,8 +160,10 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
         onResize()
         window.addEventListener('resize', onResize)
+        window.addEventListener(StartRenderEvent, onRenderRequested)
         return () => {
             window.removeEventListener('resize', onResize)
+            window.removeEventListener(StartRenderEvent, onRenderRequested)
         }
     }, [])
 
@@ -166,18 +184,17 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 {image ? <>
                     <div id='editor-container'>
                         <Stage
-                            ref={props.stageRef}
+                            ref={stageRef}
                             style={{ position: 'absolute' }}
                             width={width}
                             height={height}
                             onMouseDown={handleMouseDown}
-                            onTouchStart={handleMouseDown}
-                        >
+                            onTouchStart={handleMouseDown}>
                             <Layer>
                                 <KonvaImage listening={false} x={0} y={0} width={width} height={height} image={image} />
                             </Layer>
                             <Layer
-                                ref={props.coverLayerRef}>
+                                ref={coverLayerRef}>
                                 {
                                     Object.keys(textBlocks).map((key, i) => {
                                         const rect = textBlocks[key]
@@ -210,38 +227,21 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                         )
                                     })}
                             </Layer>
-                            {(Object.keys(textBlocks).length <= 0) &&
-                                <Layer>
-                                    <Label x={48} y={120}>
-                                        <Tag
-                                            stroke='#F97216'
-                                            cornerRadius={0}
-                                            strokeEnabled={true}
-                                            strokeWidth={4}
-                                            dash={[10, 5]}
-                                            opacity={1}
-
-                                        />
-                                        <Text
-                                            text='Tap here to add text'
-                                            fontSize={24}
-                                            fontStyle="bold"
-                                            fill="#F97216"
-                                            lineHeight={2}
-                                            padding={10}
-                                            onTap={() => { handleOpenModal() }}
-                                        />
-                                    </Label>
-                                </Layer>
-                            }
                         </Stage>
                     </div >
+                    {Object.keys(textBlocks).length <= 0 && <div className={`flex justify-center items-center`} style={{
+                        width: `${width}px`,
+                        height: `${height}px`,
+                    }}>
+                        <Button color="secondary" variant="bordered" radius="sm" size='lg' onPress={handleOpenModal}>
+                            <div className='text-[20px]'>Tap here to add text</div></Button>
+                    </div>}
                 </> : <Spinner />}
             </div >
 
 
 
-            {!IsTextBlockDragging && <>
+            {!isTextBlockDragging && <>
                 <div className="max-w">
                     {(Object.keys(textBlocks).length <= 0) &&
                         <>
@@ -255,7 +255,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             }
 
             {
-                IsTextBlockDragging && <>
+                isTextBlockDragging && <>
                     <Button isIconOnly variant={deleteBtnVariant} className={styles.deleteTextBtn}
                         onPress={() => { }} color={deleteBtnColor}
                         radius="none"

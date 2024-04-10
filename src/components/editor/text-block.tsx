@@ -50,6 +50,11 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
         }
     }, [props.text])
 
+
+    useEffect(() => {
+        trRef.current?.forceUpdate()
+    }, [props.isSelected])
+
     useEffect(() => {
         if (props.stageWidth && props.stageHeight) {
             shapeRef.current.setAttrs({
