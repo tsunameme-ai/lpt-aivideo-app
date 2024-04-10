@@ -1,12 +1,13 @@
 'use client'
-import dynamic from 'next/dynamic'
-import { useRef, useState } from 'react'
+import dynamic from "next/dynamic";
+import { useState } from "react"
 import { useRouter } from 'next/navigation'
-import { Button, Spacer } from '@nextui-org/react'
-import { useGenerationContext } from '@/context/generation-context'
-import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem } from '@/libs/types'
+import { Button, Spacer } from "@nextui-org/react"
+import { useGenerationContext } from "@/context/generation-context"
+import { GenerationOutputItem } from "@/libs/types"
 import styles from '@/styles/home.module.css'
-import { Analytics } from '@/libs/analytics'
+import { Analytics } from "@/libs/analytics"
+import { StartOutputEvent } from "@/components/editor/types";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -17,16 +18,13 @@ const Editor = dynamic(() => import("@/components/editor"), {
 
 export default function Page() {
     const router = useRouter()
-    const editorCoverLayerRef = useRef<any>()
-    const editorStageRef = useRef<any>()
     const gContext = useGenerationContext()
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
-    const [editorDimension, setEditorDimension] = useState<{ pixelRatio: number, width: number, height: number }>({ pixelRatio: 1.0, width: DEFAULT_VIDEO_WIDTH, height: DEFAULT_VIDEO_HEIGHT })
 
     const handleClickToVideo = () => {
-
-        const imgDataUrl = editorStageRef.current?.toDataURL({ pixelRatio: editorDimension.pixelRatio })
-        const coverDataUrl = editorCoverLayerRef.current?.toDataURL({ pixelRatio: editorDimension.pixelRatio })
+        window.dispatchEvent(new Event(StartOutputEvent))
+    }
+    const onImagesRendered = (imgDataUrl: string, coverDataUrl: string, width: number, height: number) => {
         if (!imgDataUrl) {
             toast.error('Image dataURL cannot be generated', {
                 toastId: 'Error notification',
@@ -60,8 +58,8 @@ export default function Page() {
         gContext.setOverlayImageData({
             remoteURL: t2iOutput?.url,
             dataURL: imgDataUrl,
-            width: editorDimension.width,
-            height: editorDimension.height,
+            width: width,
+            height: height,
             overlayImageDataURL: coverDataUrl
         })
 
@@ -78,15 +76,7 @@ export default function Page() {
                     <Spacer y={2}></Spacer>
                     {t2iOutput ?
                         <Editor
-                            onPixelRatio={(ratio: number, width: number, height: number) => {
-                                setEditorDimension({
-                                    pixelRatio: ratio,
-                                    width,
-                                    height,
-                                })
-                            }}
-                            stageRef={editorStageRef}
-                            coverLayerRef={editorCoverLayerRef}
+                            onImagesRendered={onImagesRendered}
                             imageUrl={t2iOutput.url}
                         />
                         : <>
