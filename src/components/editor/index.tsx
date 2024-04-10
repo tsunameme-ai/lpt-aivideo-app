@@ -28,7 +28,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [image, setImage] = useState<HTMLImageElement>()
     const [width, setWidth] = useState<number>(0)
     const [height, setHeight] = useState<number>(0)
-    const [pixelRatio, setPixelRatio] = useState<number>(1.0)
+    const [outputDimension, setOutputDimension] = useState<{ pixelRatio: number, width: number, height: number }>({ pixelRatio: 1.0, width: 0, height: 0 })
     const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
     const [isTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
@@ -65,7 +65,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
         setWidth(editorW)
         setHeight(editorH)
-        setPixelRatio(imgWidth / editorW)
+        setOutputDimension({ pixelRatio: imgWidth / editorW, width: imgWidth, height: imgHeight })
 
         // props.onPixelRatio?.(imgWidth / editorW, imgWidth, imgHeight)
     }
@@ -146,9 +146,9 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     }
     useEffect(() => {
         if (isRenderRequested) {
-            const imgDataUrl = stageRef.current?.toDataURL({ pixelRatio: pixelRatio })
-            const coverDataUrl = coverLayerRef.current?.toDataURL({ pixelRatio: pixelRatio })
-            props.onImagesRendered?.(imgDataUrl, coverDataUrl, width, height)
+            const imgDataUrl = stageRef.current?.toDataURL({ pixelRatio: outputDimension.pixelRatio })
+            const coverDataUrl = coverLayerRef.current?.toDataURL({ pixelRatio: outputDimension.pixelRatio })
+            props.onImagesRendered?.(imgDataUrl, coverDataUrl, outputDimension.width, outputDimension.height)
             setIsRenderRequested(false)
         }
     }, [isRenderRequested])
@@ -239,20 +239,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 </> : <Spinner />}
             </div >
 
-
-
-            {!isTextBlockDragging && <>
-                <div className="max-w">
-                    {(Object.keys(textBlocks).length <= 0) &&
-                        <>
-                            <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
-                                handleOpenModal()
-                            }}> <MdOutlineTextFields size={26} /></Button>
-                        </>
-                    }
-                </div>
-            </>
-            }
 
             {
                 isTextBlockDragging && <>
