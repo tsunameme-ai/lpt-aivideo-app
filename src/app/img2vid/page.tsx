@@ -31,6 +31,7 @@ export default function Page() {
         noiseAugStrength: DEFAULT_NOISE_AUG_STRENGTH,
         modelId: gContext.config.videoModels.find(item => { return item.default === true })?.value!
     })
+    const [errorMessage, setErrorMessage] = useState<string>()
 
     const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
     const toastId = "copy-success"
@@ -44,11 +45,7 @@ export default function Page() {
     }
 
     const onError = (e: Error) => {
-        toast.error(e.message, {
-            toastId: 'Error notification',
-            autoClose: 1200,
-            hideProgressBar: true
-        })
+        setErrorMessage(e.message)
         setIsGeneratingVideo(false)
         setIsButtonNew(false)
     }
@@ -73,14 +70,10 @@ export default function Page() {
         }
 
         if ((i2vInput.width % 8 != 0) || (i2vInput.height % 8 != 0)) {
-            toast.error(`Width and height must be divisible by 8`, {
-                toastId: 'Error notification',
-                autoClose: 1200,
-                hideProgressBar: true
-            })
+            setErrorMessage('Width and height must be divisible by 8')
             return
         }
-
+        setErrorMessage('')
         if (gContext.overlayImageData) {
             try {
                 setIsGeneratingVideo(true)
@@ -134,9 +127,9 @@ export default function Page() {
 
     return (
         <>
-            <ToastContainer />
             <section className={styles.main}>
                 <div className={styles.centerSection}>
+
                     <div className='text-[20px]'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
@@ -144,7 +137,7 @@ export default function Page() {
                             <MediaPlayerComponent src={videoOutput.url} className={styles.videoPreview} />
                             <FaShare className={styles.shareIcon} onClick={handleShare} />
                         </>}
-
+                        <ToastContainer />
                         {gContext.overlayImageData && <>
                             {!videoOutput && <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />}
                             {<Img2VidComponent
@@ -158,6 +151,7 @@ export default function Page() {
                                 seed={i2vInput.seed}
                                 onI2VInputChange={onI2VInputChange} />}
                         </>}
+                        {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
 
                         {!gContext.overlayImageData && <>
                             <ErrorComponent errorMessage="No Image" />

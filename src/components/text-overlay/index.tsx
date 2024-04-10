@@ -1,9 +1,10 @@
 import { Spacer, Textarea } from "@nextui-org/react"
 import { useState } from "react"
 import ImageWithTextOverlay from "../image-text-overlay"
+import { FaFileDownload/*, FaShare */ } from "react-icons/fa"
 import styles from "@/styles/home.module.css";
 import { LocalImageData } from "@/libs/types";
-
+import { Analytics } from "@/libs/analytics";
 
 interface TextOverlayProps {
     src: string
@@ -13,13 +14,19 @@ interface TextOverlayProps {
 }
 const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
     const [text, setText] = useState<string>(props.text)
-    //const [imageLoaded, setImageLoaded] = useState<boolean>(false)
+    const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
     const onImageData = (text: string, localImage: LocalImageData) => {
         props.onImageData?.(text, localImage)
-        //setImageLoaded(true)
+        setImageLoaded(true)
     }
 
+    const onDownloadClick = () => {
+        props.onDownloadClick()
+        Analytics.trackEvent({ 'event': 'click-download-image' })
+    }
+
+    //<FaShare className={styles.shareIcon} />
     return (<>
         <Textarea
             maxRows={4}
@@ -30,6 +37,11 @@ const TextOverlay: React.FC<TextOverlayProps> = (props: TextOverlayProps) => {
         />
         <Spacer y={2} />
         <div className={styles.containerRelative}>
+            {imageLoaded &&
+                <>
+                    <FaFileDownload className={styles.downloadIcon} onClick={onDownloadClick} />
+                </>
+            }
             <ImageWithTextOverlay
                 onImageData={onImageData}
                 imageUrl={props.src}

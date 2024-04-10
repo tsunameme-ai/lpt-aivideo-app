@@ -9,7 +9,7 @@ export default function Page() {
         <>
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <div className="flex justify-center items-center">GIF is one of the most original media on the internet.</div>
+                    <div className="flex justify-center items-center">ABOUT page is still under contruction </div>
                     <Spacer y={5}></Spacer>
                     <div className="flex justify-center items-center"><Button color="primary" onClick={() => router.back()}>Back</Button></div>
                 </div>
