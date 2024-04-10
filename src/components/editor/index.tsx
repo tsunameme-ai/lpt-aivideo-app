@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import TextBlock, { TextBlockProps } from "./text-block"
 import { Stage, Layer, Image as KonvaImage } from "react-konva"
 import { Button, Spinner, useDisclosure } from "@nextui-org/react"
@@ -9,29 +9,30 @@ import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH } from "@/libs/types"
 import EditTextModalComponent from "@/components/edit-text-modal"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { MdOutlineTextFields } from "react-icons/md"
 import { MdDelete } from "react-icons/md"
-import { FaFileDownload } from "react-icons/fa"
 import styles from "@/styles/home.module.css"
+import { StartOutputEvent } from "./types"
+
 
 interface EditorProps {
-    coverLayerRef?: any
-    stageRef?: any
     imageUrl: string
-    onPixelRatio?: (ratio: number, width: number, height: number) => void
+    onImagesRendered?: (stageImgDataUrl: string, coverImgDataUrl: string, width: number, height: number) => void
 }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
+    const coverLayerRef = useRef<any>()
+    const stageRef = useRef<any>()
     const [deleteBtnVariant, setDeleteBtnVariant] = useState<'light' | 'flat' | 'bordered'>('light')
     const [deleteBtnColor, setDeleteBtnColor] = useState<'danger' | 'default'>('default')
     const [image, setImage] = useState<HTMLImageElement>()
+    const [width, setWidth] = useState<number>(0)
+    const [height, setHeight] = useState<number>(0)
+    const [outputDimension, setOutputDimension] = useState<{ pixelRatio: number, width: number, height: number }>({ pixelRatio: 1.0, width: 0, height: 0 })
     const [watermark, setWatermark] = useState<HTMLImageElement>()
-    const [width, setWidth] = useState<number>()
-    const [height, setHeight] = useState<number>()
-    const [, setPixelRatio] = useState<number>(1.0)
     const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
-    const [IsTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
+    const [isTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
+    const [isOutputRequested, setIsOutputRequested] = useState<boolean>(false)
     const DELETE_ZONE_X = 305
     const DELETE_ZONE_Y = 150
     const handleMouseDown = (e: any) => {
@@ -64,19 +65,25 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
         setWidth(editorW)
         setHeight(editorH)
-        setPixelRatio(imgWidth / editorW)
-        props.onPixelRatio?.(imgWidth / editorW, imgWidth, imgHeight)
-        //console.log(height)
-        //console.log(editorH)
-        //console.log(imgHeight)
+        setOutputDimension({ pixelRatio: imgWidth / editorW, width: imgWidth, height: imgHeight })
+
+        // props.onPixelRatio?.(imgWidth / editorW, imgWidth, imgHeight)
     }
 
     const { isOpen, onOpen, onClose } = useDisclosure()
+
     const handleOpenModal = () => {
+
         if (selectedId || Object.keys(textBlocks).length <= 0)
             onOpen()
     }
     const handleCloseModal = (text: string, slider: number) => {
+
+        if (text.replaceAll(' ', '').replaceAll('\n', '').length <= 0) {
+            onClose()
+            return
+        }
+
         const key = `rect${Object.keys(textBlocks).length}`
         Object.keys(textBlocks).forEach(key => {
             delete textBlocks[key]
@@ -90,8 +97,10 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             fill: 'black',
             background: 'white',
             align: 'center',
-            x: 15,
-            y: 15
+            x: 0,
+            y: 0,
+            stageWidth: width,
+            stageHeight: height
         }
         onClose()
     }
@@ -130,14 +139,20 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
         }
     }
-
-    const handleDownload = () => {
-        const dataUrl = props.stageRef.current?.toDataURL({ pixelRatio: 2 })
-        const link = document.createElement("a")
-        link.href = dataUrl
-        link.download = "image.png"
-        link.click()
+    const onRenderRequested = () => {
+        setIsTextBlockDragging(false)
+        setSelectedId(undefined)
+        setIsOutputRequested(true)
     }
+    useEffect(() => {
+        if (isOutputRequested) {
+            const imgDataUrl = stageRef.current?.toDataURL({ pixelRatio: outputDimension.pixelRatio })
+            const coverDataUrl = coverLayerRef.current?.toDataURL({ pixelRatio: outputDimension.pixelRatio })
+            props.onImagesRendered?.(imgDataUrl, coverDataUrl, outputDimension.width, outputDimension.height)
+            setIsOutputRequested(false)
+        }
+    }, [isOutputRequested])
+
 
     useEffect(() => {
         const onResize = () => {
@@ -145,6 +160,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
         onResize()
         window.addEventListener('resize', onResize)
+        window.addEventListener(StartOutputEvent, onRenderRequested)
 
         const wmimg = new Image();
         wmimg.onload = () => {
@@ -154,6 +170,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
         return () => {
             window.removeEventListener('resize', onResize)
+            window.removeEventListener(StartOutputEvent, onRenderRequested)
         }
     }, [])
 
@@ -165,27 +182,26 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 img.onload = () => {
                     setImage(img)
                     resize(img)
-                };
+                }
                 img.src = imgLocalUrl
             }} />
 
-            <EditTextModalComponent initialText='' initialOpacity={0.3} isOpen={isOpen} onClose={handleCloseModal} />
+            <EditTextModalComponent initialText={selectedId ? textBlocks[selectedId]?.text : ''} initialOpacity={0.3} isOpen={isOpen} onClose={handleCloseModal} />
             <div id='editor-wrapper'>
                 {image ? <>
                     <div id='editor-container'>
                         <Stage
-                            ref={props.stageRef}
+                            ref={stageRef}
                             style={{ position: 'absolute' }}
                             width={width}
                             height={height}
                             onMouseDown={handleMouseDown}
-                            onTouchStart={handleMouseDown}
-                        >
+                            onTouchStart={handleMouseDown}>
                             <Layer>
                                 <KonvaImage listening={false} x={0} y={0} width={width} height={height} image={image} />
                             </Layer>
                             <Layer
-                                ref={props.coverLayerRef}>
+                                ref={coverLayerRef}>
                                 {
                                     Object.keys(textBlocks).map((key, i) => {
                                         const rect = textBlocks[key]
@@ -221,38 +237,27 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                             </Layer>
                         </Stage>
                     </div >
+                    {Object.keys(textBlocks).length <= 0 && <div className={`flex justify-center items-center`} style={{
+                        width: `${width}px`,
+                        height: `${height}px`,
+                    }}>
+                        <Button className="border-3 border-dashed border-[#f97216]" variant="bordered" radius="sm" size='lg' onPress={handleOpenModal}>
+                            <div className='text-[24px] text-[#f97216]'>Tap here to add copy</div></Button>
+                    </div>}
                 </> : <Spinner />}
-            </div>
+            </div >
 
-
-
-            {!IsTextBlockDragging && <>
-                <div className="max-w">
-                    <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
-                        handleDownload()
-                    }}> <FaFileDownload size={20} /></Button>
-
-                    {(Object.keys(textBlocks).length <= 0) &&
-                        <>
-                            <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
-                                handleOpenModal()
-                            }}> <MdOutlineTextFields size={26} /></Button>
-                        </>
-                    }
-                </div>
-            </>
-            }
-
-            {IsTextBlockDragging && <>
-                <Button isIconOnly variant={deleteBtnVariant} className={styles.deleteTextBtn}
-                    onPress={() => { }} color={deleteBtnColor}
-                    radius="none"
-                >
-                    <MdDelete size={26} />
-                </Button>
-            </>
+            {
+                isTextBlockDragging && <>
+                    <Button isIconOnly variant={deleteBtnVariant} className={styles.deleteTextBtn}
+                        onPress={() => { }} color={deleteBtnColor}
+                        radius="none"
+                    >
+                        <MdDelete size={26} />
+                    </Button>
+                </>
             }
         </>
-    );
-};
+    )
+}
 export default Editor
