@@ -8,7 +8,7 @@ import ErrorComponent from "@/components/error"
 import { GenerationOutputItem } from "@/libs/types"
 import styles from '@/styles/home.module.css'
 import { Analytics } from "@/libs/analytics"
-import { StartRenderEvent } from "@/components/editor";
+import { StartOutputEvent } from "@/components/editor";
 
 
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -22,7 +22,7 @@ export default function Page() {
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
 
     const handleClickToVideo = () => {
-        window.dispatchEvent(new Event(StartRenderEvent))
+        window.dispatchEvent(new Event(StartOutputEvent))
     }
     const onImagesRendered = (imgDataUrl: string, coverDataUrl: string, width: number, height: number) => {
         if (!imgDataUrl) {

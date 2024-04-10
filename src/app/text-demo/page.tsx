@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import styles from '@/styles/home.module.css'
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
-import { StartRenderEvent } from "@/components/editor";
+import { StartOutputEvent } from "@/components/editor";
 
 const Editor = dynamic(() => import("@/components/editor"), {
     ssr: false,
@@ -27,7 +27,7 @@ export default function Page() {
                     />
                 </div>
                 <Button onPress={() => {
-                    window.dispatchEvent(new Event(StartRenderEvent))
+                    window.dispatchEvent(new Event(StartOutputEvent))
 
                 }}>GIF it</Button>
                 {stageImageDataUrl && <img src={stageImageDataUrl} />}

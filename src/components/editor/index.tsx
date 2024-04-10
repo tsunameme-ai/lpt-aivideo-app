@@ -9,11 +9,10 @@ import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH } from "@/libs/types"
 import EditTextModalComponent from "@/components/edit-text-modal"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { MdOutlineTextFields } from "react-icons/md"
 import { MdDelete } from "react-icons/md"
 import styles from "@/styles/home.module.css"
 
-export const StartRenderEvent = 'StartRender'
+export const StartOutputEvent = 'StartOutputEvent'
 
 interface EditorProps {
     imageUrl: string
@@ -32,7 +31,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
     const [isTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
-    const [isRenderRequested, setIsRenderRequested] = useState<boolean>(false)
+    const [isOutputRequested, setIsOutputRequested] = useState<boolean>(false)
     const DELETE_ZONE_X = 305
     const DELETE_ZONE_Y = 150
     const handleMouseDown = (e: any) => {
@@ -142,16 +141,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const onRenderRequested = () => {
         setIsTextBlockDragging(false)
         setSelectedId(undefined)
-        setIsRenderRequested(true)
+        setIsOutputRequested(true)
     }
     useEffect(() => {
-        if (isRenderRequested) {
+        if (isOutputRequested) {
             const imgDataUrl = stageRef.current?.toDataURL({ pixelRatio: outputDimension.pixelRatio })
             const coverDataUrl = coverLayerRef.current?.toDataURL({ pixelRatio: outputDimension.pixelRatio })
             props.onImagesRendered?.(imgDataUrl, coverDataUrl, outputDimension.width, outputDimension.height)
-            setIsRenderRequested(false)
+            setIsOutputRequested(false)
         }
-    }, [isRenderRequested])
+    }, [isOutputRequested])
 
 
     useEffect(() => {
@@ -160,10 +159,10 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
         onResize()
         window.addEventListener('resize', onResize)
-        window.addEventListener(StartRenderEvent, onRenderRequested)
+        window.addEventListener(StartOutputEvent, onRenderRequested)
         return () => {
             window.removeEventListener('resize', onResize)
-            window.removeEventListener(StartRenderEvent, onRenderRequested)
+            window.removeEventListener(StartOutputEvent, onRenderRequested)
         }
     }, [])
 
