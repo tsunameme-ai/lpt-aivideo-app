@@ -183,6 +183,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                             <TextBlock
                                                 key={i}
                                                 {...rect}
+                                                stageWidth={width!}
+                                                stageHeight={height!}
                                                 isSelected={rect.id === selectedId}
                                                 onSelect={(rid) => {
                                                     setSelectedId(rid)
