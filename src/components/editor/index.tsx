@@ -9,7 +9,6 @@ import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH } from "@/libs/types"
 import EditTextModalComponent from "@/components/edit-text-modal"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { MdOutlineTextFields } from "react-icons/md"
 import { MdDelete } from "react-icons/md"
 import styles from "@/styles/home.module.css"
 
@@ -212,7 +211,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                             </Layer>
                             {(Object.keys(textBlocks).length <= 0) &&
                                 <Layer>
-                                    <Label x={48} y={120}>
+                                    <Label x={45} y={120}>
                                         <Tag
                                             stroke='#F97216'
                                             cornerRadius={0}
@@ -223,7 +222,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
                                         />
                                         <Text
-                                            text='Tap here to add text'
+                                            text='Tap here to add copy'
                                             fontSize={24}
                                             fontStyle="bold"
                                             fill="#F97216"
@@ -239,21 +238,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 </> : <Spinner />}
             </div >
 
-
-
-            {!IsTextBlockDragging && <>
-                <div className="max-w">
-                    {(Object.keys(textBlocks).length <= 0) &&
-                        <>
-                            <Button isIconOnly variant="light" className={styles.addTextBtn} onPress={() => {
-                                handleOpenModal()
-                            }}> <MdOutlineTextFields size={26} /></Button>
-                        </>
-                    }
-                </div>
-            </>
-            }
-
             {
                 IsTextBlockDragging && <>
                     <Button isIconOnly variant={deleteBtnVariant} className={styles.deleteTextBtn}
@@ -265,6 +249,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 </>
             }
         </>
-    );
-};
+    )
+}
 export default Editor

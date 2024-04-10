@@ -1,13 +1,14 @@
 'use client'
-import dynamic from "next/dynamic";
-import { useRef, useState } from "react"
+import dynamic from 'next/dynamic'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button, Spacer } from "@nextui-org/react"
-import { useGenerationContext } from "@/context/generation-context"
-import ErrorComponent from "@/components/error"
-import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem } from "@/libs/types"
+import { Button, Spacer } from '@nextui-org/react'
+import { useGenerationContext } from '@/context/generation-context'
+import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem } from '@/libs/types'
 import styles from '@/styles/home.module.css'
-import { Analytics } from "@/libs/analytics"
+import { Analytics } from '@/libs/analytics'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -20,7 +21,6 @@ export default function Page() {
     const editorStageRef = useRef<any>()
     const gContext = useGenerationContext()
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
-    const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
     const [editorDimension, setEditorDimension] = useState<{ pixelRatio: number, width: number, height: number }>({ pixelRatio: 1.0, width: DEFAULT_VIDEO_WIDTH, height: DEFAULT_VIDEO_HEIGHT })
 
     const handleClickToVideo = () => {
@@ -28,17 +28,32 @@ export default function Page() {
         const imgDataUrl = editorStageRef.current?.toDataURL({ pixelRatio: editorDimension.pixelRatio })
         const coverDataUrl = editorCoverLayerRef.current?.toDataURL({ pixelRatio: editorDimension.pixelRatio })
         if (!imgDataUrl) {
-            setErrorMessage(`Error: image dataURL cannot be generated`)
+            toast.error('Image dataURL cannot be generated', {
+                toastId: 'Error notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
+
             return
         }
 
         if (!imgDataUrl) {
-            setErrorMessage(`Error: cover image dataURL cannot be generated`)
+            toast.error('Cover image dataURL cannot be generated', {
+                toastId: 'Error notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
+
             return
         }
 
         if (!t2iOutput) {
-            setErrorMessage(`Error: no image`)
+            toast.error('No image', {
+                toastId: 'Error notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
+
             return
         }
 
@@ -56,6 +71,7 @@ export default function Page() {
 
     return (
         <>
+            <ToastContainer />
             <section className={styles.main}>
                 <div className={styles.centerSection}>
                     <div className='text-[20px]'>Step 2 of 3: Add your copy</div>
@@ -74,7 +90,6 @@ export default function Page() {
                             imageUrl={t2iOutput.url}
                         />
                         : <>
-                            <ErrorComponent errorMessage="No image" />
                         </>}
                 </div>
 
@@ -103,7 +118,6 @@ export default function Page() {
                             </div>
                         </div>
                     </>}
-                {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             </section >
         </>
     )

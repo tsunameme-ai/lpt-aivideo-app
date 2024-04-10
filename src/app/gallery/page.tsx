@@ -1,6 +1,5 @@
 'use client'
 import { fetchGallery } from "@/actions/stable-diffusion"
-import ErrorComponent from "@/components/error"
 import { GenerationRequest } from "@/libs/types"
 import styles from "@/styles/home.module.css"
 import { Button, Spacer, Spinner, Tabs, Tab, Card, CardBody } from "@nextui-org/react"
@@ -14,10 +13,8 @@ export default function Page() {
     const [nextPage, setNextPage] = useState<string | undefined>(undefined)
     const [items, setItems] = useState<GenerationRequest[]>([])
     const [isFetchinData, setIsFetchinData] = useState<boolean>(false)
-    const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
 
     const fetchData = async (pageKey?: string) => {
-        setErrorMessage(undefined)
         setIsFetchinData(true)
 
         try {
@@ -27,7 +24,11 @@ export default function Page() {
             setItems(items.concat(data.items))
         }
         catch (e: any) {
-            setErrorMessage(`Fetch gallery data failed ${e.message}`)
+            toast.error(`Fetch gallery data failed ${e.message}`, {
+                toastId: 'Error notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
         }
         finally {
             setIsFetchinData(false)
@@ -51,9 +52,10 @@ export default function Page() {
 
     return (
         <>
+            <ToastContainer />
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <ToastContainer />
+
                     <Card className="max-w-full">
                         <CardBody className="overflow-hidden">
                             <Tabs fullWidth classNames={{
@@ -90,7 +92,6 @@ export default function Page() {
                         </CardBody>
                     </Card>
 
-                    {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
                 </div>
             </section>
         </>
