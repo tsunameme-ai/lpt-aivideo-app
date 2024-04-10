@@ -91,6 +91,8 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                 onDragMove={(e) => { props.onDragging?.(e) }}
                 onDragEnd={(e) => { props.onDragEnd?.(e) }}
                 dragBoundFunc={onHandleBound}
+                x={props.x}
+                y={props.y}
             >
                 <Tag
                     ref={tagRef}
@@ -110,7 +112,7 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                     align={props.align}
                     onClick={onClick}
                     onTap={onClick}
-                    wrap='word'
+                    wrap='words'
                 />
             </Label>
             {props.isSelected && (

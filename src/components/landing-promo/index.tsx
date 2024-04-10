@@ -42,7 +42,7 @@ const LandingPromoComponent = () => {
                 <div key={14}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/KGwZxKAw4u.gif' alt='' /></div>
                 <div key={15}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/riJglKynzV.gif' alt='' /></div>
             </Slider>
-            <div className='text-[12px]'>Selctions from the community</div>
+            <div className='text-[12px]'>Collections from the community</div>
         </>
     )
 }

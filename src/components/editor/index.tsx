@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from "react"
 import TextBlock, { TextBlockProps } from "./text-block"
-import { Stage, Layer, Image as KonvaImage } from "react-konva"
+import { Stage, Layer, Image as KonvaImage, Text, Tag, Label } from "react-konva"
 import { Button, Spinner, useDisclosure } from "@nextui-org/react"
 import RemoteImage from "../remote-image"
 import { SDAPI } from "@/libs/sd-api"
@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { MdOutlineTextFields } from "react-icons/md"
 import { MdDelete } from "react-icons/md"
 import styles from "@/styles/home.module.css"
-import { Utils } from "@/libs/utils"
+
 
 interface EditorProps {
     coverLayerRef?: any
@@ -33,7 +33,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [IsTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
     const DELETE_ZONE_X = 305
     const DELETE_ZONE_Y = 150
-    const MAX_CHARACTER_PERLINE = 29
     const handleMouseDown = (e: any) => {
         try {
             e.preventDefault()
@@ -69,7 +68,9 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     }
 
     const { isOpen, onOpen, onClose } = useDisclosure()
+
     const handleOpenModal = () => {
+
         if (selectedId || Object.keys(textBlocks).length <= 0)
             onOpen()
     }
@@ -80,7 +81,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             return
         }
 
-        let processedText = Utils.paddingNewline(text, MAX_CHARACTER_PERLINE)
         const key = `rect${Object.keys(textBlocks).length}`
         Object.keys(textBlocks).forEach(key => {
             delete textBlocks[key]
@@ -89,7 +89,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         textBlocks[key] = {
             id: key,
             isSelected: false,
-            text: processedText,
+            text: text,
             opacity: slider,
             fill: 'black',
             background: 'white',
@@ -155,11 +155,11 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 img.onload = () => {
                     setImage(img)
                     resize(img)
-                };
+                }
                 img.src = imgLocalUrl
             }} />
 
-            <EditTextModalComponent initialText='' initialOpacity={0.3} isOpen={isOpen} onClose={handleCloseModal} />
+            <EditTextModalComponent initialText={selectedId ? textBlocks[selectedId]?.text : ''} initialOpacity={0.3} isOpen={isOpen} onClose={handleCloseModal} />
             <div id='editor-wrapper'>
                 {image ? <>
                     <div id='editor-container'>
@@ -208,10 +208,34 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                         )
                                     })}
                             </Layer>
+                            {(Object.keys(textBlocks).length <= 0) &&
+                                <Layer>
+                                    <Label x={48} y={120}>
+                                        <Tag
+                                            stroke='#F97216'
+                                            cornerRadius={0}
+                                            strokeEnabled={true}
+                                            strokeWidth={4}
+                                            dash={[10, 5]}
+                                            opacity={1}
+
+                                        />
+                                        <Text
+                                            text='Tap here to add text'
+                                            fontSize={24}
+                                            fontStyle="bold"
+                                            fill="#F97216"
+                                            lineHeight={2}
+                                            padding={10}
+                                            onTap={() => { handleOpenModal() }}
+                                        />
+                                    </Label>
+                                </Layer>
+                            }
                         </Stage>
                     </div >
                 </> : <Spinner />}
-            </div>
+            </div >
 
 
 
@@ -228,14 +252,15 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             </>
             }
 
-            {IsTextBlockDragging && <>
-                <Button isIconOnly variant={deleteBtnVariant} className={styles.deleteTextBtn}
-                    onPress={() => { }} color={deleteBtnColor}
-                    radius="none"
-                >
-                    <MdDelete size={26} />
-                </Button>
-            </>
+            {
+                IsTextBlockDragging && <>
+                    <Button isIconOnly variant={deleteBtnVariant} className={styles.deleteTextBtn}
+                        onPress={() => { }} color={deleteBtnColor}
+                        radius="none"
+                    >
+                        <MdDelete size={26} />
+                    </Button>
+                </>
             }
         </>
     );
