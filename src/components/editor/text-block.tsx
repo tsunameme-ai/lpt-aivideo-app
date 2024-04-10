@@ -5,6 +5,8 @@ import { Label, Tag, Text, Transformer } from "react-konva";
 export interface TextBlockProps {
     x: number,
     y: number,
+    stageWidth?: number,
+    stageHeight?: number,
     fontFamily?: string,
     fill: string,
     text?: string,
@@ -39,11 +41,24 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
         }
     }, [props.isSelected])
 
-    //A hack to fix transfer outline is off
     useEffect(() => {
-        shapeRef.current.fire('click')
-
+        if (props.stageWidth) {
+            if (textRef.current.getWidth() > props.stageWidth - 10) {
+                textRef.current.setWidth(props.stageWidth - 10)
+            }
+            trRef.current?.forceUpdate()
+        }
     }, [props.text])
+
+    useEffect(() => {
+        if (props.stageWidth && props.stageHeight) {
+            shapeRef.current.setAttrs({
+                x: (props.stageWidth - textRef.current.getWidth()) * 0.5,
+                y: (props.stageHeight - textRef.current.getHeight()) * 0.5
+            });
+        }
+
+    }, [])
 
     const onClick = () => {
         props.onRequestEdit?.(props)

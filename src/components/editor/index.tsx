@@ -94,8 +94,10 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             fill: 'black',
             background: 'white',
             align: 'center',
-            x: 15,
-            y: 15
+            x: 0,
+            y: 0,
+            stageWidth: width,
+            stageHeight: height
         }
         onClose()
     }
