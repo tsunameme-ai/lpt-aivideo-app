@@ -28,6 +28,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [width, setWidth] = useState<number>(0)
     const [height, setHeight] = useState<number>(0)
     const [outputDimension, setOutputDimension] = useState<{ pixelRatio: number, width: number, height: number }>({ pixelRatio: 1.0, width: 0, height: 0 })
+    const [watermark, setWatermark] = useState<HTMLImageElement>()
     const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
     const [isTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
@@ -160,6 +161,13 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         onResize()
         window.addEventListener('resize', onResize)
         window.addEventListener(StartOutputEvent, onRenderRequested)
+
+        const wmimg = new Image();
+        wmimg.onload = () => {
+            setWatermark(wmimg)
+        }
+        wmimg.src = '/watermark.png';
+
         return () => {
             window.removeEventListener('resize', onResize)
             window.removeEventListener(StartOutputEvent, onRenderRequested)
@@ -225,6 +233,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                             />
                                         )
                                     })}
+                                {watermark && <KonvaImage listening={false} x={width! - watermark.width} y={height! - watermark.height} width={watermark.width} height={watermark.height} image={watermark} />}
                             </Layer>
                         </Stage>
                     </div >
