@@ -232,8 +232,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                         width: `${width}px`,
                         height: `${height}px`,
                     }}>
-                        <Button color="secondary" variant="bordered" radius="sm" size='lg' onPress={handleOpenModal}>
-                            <div className='text-[20px]'>Tap here to add text</div></Button>
+                        <Button className='border-[#f97216] border-dashed border-4 color-[#f97216]' variant="bordered" radius="sm" size='lg' onPress={handleOpenModal}>
+                            <div className='text-[24px] text-[#f97216]'>Tap here to add copy</div></Button>
                     </div>}
                 </> : <Spinner />}
             </div >
