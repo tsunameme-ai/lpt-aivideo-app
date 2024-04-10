@@ -74,15 +74,6 @@
     border-radius: 5px;
 }
 
-.downloadIcon {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    top: 1%;
-    right: 1%;
-    color: #FFC303;
-}
-
 .shareIcon {
     position: absolute;
     width: 28px;
@@ -168,18 +159,13 @@
     size: 30px;
 }
 
-.addTextBtn {
-    background-color: transparent;
-    float: right;
-    color: #FFC30C;
-}
-
 .deleteTextBtn {
-
     float: right;
     color: #FF4429;
+}
 
-
+.tapToAddMoreBtn {
+    color: #FFC30C
 }
 
 .editorTextArea {
