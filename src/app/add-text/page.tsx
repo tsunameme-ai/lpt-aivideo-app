@@ -4,11 +4,12 @@ import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { Button, Spacer } from "@nextui-org/react"
 import { useGenerationContext } from "@/context/generation-context"
-import ErrorComponent from "@/components/error"
 import { GenerationOutputItem } from "@/libs/types"
 import styles from '@/styles/home.module.css'
 import { Analytics } from "@/libs/analytics"
 import { StartOutputEvent } from "@/components/editor/types";
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -19,24 +20,38 @@ export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
-    const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
 
     const handleClickToVideo = () => {
         window.dispatchEvent(new Event(StartOutputEvent))
     }
     const onImagesRendered = (imgDataUrl: string, coverDataUrl: string, width: number, height: number) => {
         if (!imgDataUrl) {
-            setErrorMessage(`Error: image dataURL cannot be generated`)
+            toast.error('Image dataURL cannot be generated', {
+                toastId: 'Error notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
+
             return
         }
 
-        if (!coverDataUrl) {
-            setErrorMessage(`Error: cover image dataURL cannot be generated`)
+        if (!imgDataUrl) {
+            toast.error('Cover image dataURL cannot be generated', {
+                toastId: 'Error notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
+
             return
         }
 
         if (!t2iOutput) {
-            setErrorMessage(`Error: no image`)
+            toast.error('No image', {
+                toastId: 'Error notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
+
             return
         }
 
@@ -54,6 +69,7 @@ export default function Page() {
 
     return (
         <>
+            <ToastContainer />
             <section className={styles.main}>
                 <div className={styles.centerSection}>
                     <div className='text-[20px]'>Step 2 of 3: Add your copy</div>
@@ -64,7 +80,6 @@ export default function Page() {
                             imageUrl={t2iOutput.url}
                         />
                         : <>
-                            <ErrorComponent errorMessage="No image" />
                         </>}
                 </div>
 
@@ -93,7 +108,6 @@ export default function Page() {
                             </div>
                         </div>
                     </>}
-                {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             </section >
         </>
     )

@@ -238,7 +238,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 </> : <Spinner />}
             </div >
 
-
             {
                 isTextBlockDragging && <>
                     <Button isIconOnly variant={deleteBtnVariant} className={styles.deleteTextBtn}
@@ -250,6 +249,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 </>
             }
         </>
-    );
-};
+    )
+}
 export default Editor
