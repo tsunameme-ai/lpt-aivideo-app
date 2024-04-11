@@ -233,7 +233,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                             />
                                         )
                                     })}
-                                {watermark && <KonvaImage listening={false} x={width! - watermark.width} y={height! - watermark.height} width={watermark.width} height={watermark.height} image={watermark} />}
+                                {watermark && <KonvaImage listening={false} x={width! - watermark.width * .5} y={height! - watermark.height * .5} width={watermark.width * .5} height={watermark.height * .5} image={watermark} />}
                             </Layer>
                         </Stage>
                     </div >
