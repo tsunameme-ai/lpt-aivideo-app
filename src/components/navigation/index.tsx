@@ -57,7 +57,10 @@ const NavigationComponent: React.FC = () => {
                         </Link>
                     </NavbarMenuItem>
                 ))}
-                <AuthIndicator />
+
+                < NavbarMenuItem key={`authentication`}>
+                    <AuthIndicator />
+                </NavbarMenuItem>
             </NavbarMenu>
         </Navbar >
     </>)
