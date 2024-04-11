@@ -1,10 +1,12 @@
 import { fetchAssetsByUser } from "@/actions/stable-diffusion"
 import { GenerationRequest } from "@/libs/types"
-import { Link, Spacer, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react"
+import { Spacer, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import GalleryCell from "./cell"
 import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
+import { useRouter } from 'next/navigation'
+import { useGenerationContext } from '@/context/generation-context'
 
 interface UserGenListProps {
     userId: string
@@ -15,7 +17,8 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
     const [items, setItems] = useState<GenerationRequest[]>([])
     const [isFetchinData, setIsFetchinData] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
-
+    const router = useRouter()
+    const gContext = useGenerationContext()
 
     const fetchData = async (pageKey?: string) => {
         setErrorMessage(undefined)
@@ -38,9 +41,16 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
         fetchData(undefined)
     }, [])
 
+    const handleTxt2img = () => {
+        //Clear context 
+        gContext.reset()
+
+        router.push('/txt2img')
+    }
+
     return (
         <>
-            {isFetchinData && <div className={styles.center}><Spacer y={4}></Spacer><Spinner color="warning" /></div>}
+            {isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
             {
                 items.length > 0 ?
                     <Table radius="sm" hideHeader className={styles.galleryTable} aria-label="Gallery">
@@ -61,7 +71,12 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
                         </TableBody>
                     </Table>
                     : <>
-                        {!isFetchinData && <Link href='/'>Get Started</Link>}
+                        {!isFetchinData && <div className={styles.center}>
+                            <Spacer y={2} />
+                            <Button size='sm' className={styles.startBtn} onPress={handleTxt2img}>
+                                <div className='text-[20px]'>Get Started</div>
+                            </Button>
+                        </div>}
                     </>
             }
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}

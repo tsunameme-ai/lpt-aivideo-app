@@ -31,7 +31,8 @@ export default function Page() {
                         <CardBody className="overflow-hidden">
                             <Tabs fullWidth classNames={{
                                 tabContent: "group-data-[selected=true]:text-[#f1faee]",
-                                cursor: "w-full bg-[#ffc303]"
+                                cursor: "w-full bg-[#ffc303]",
+                                tab: "text-[20px]"
                             }} >
                                 <Tab key='community' title='Community'><CommunityList handleShare={handleShare} /></Tab>
                                 {authenticated && user && <Tab key='me' title='Me'><UserGenList userId={user.id} handleShare={handleShare} /></Tab>}

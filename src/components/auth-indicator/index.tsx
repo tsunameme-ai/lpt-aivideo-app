@@ -1,6 +1,6 @@
 'use client'
 import { usePrivy, User } from '@privy-io/react-auth'
-import { Button, Spinner, Link } from '@nextui-org/react';
+import { Spinner, Link } from '@nextui-org/react';
 import AuthPromo from './promo';
 
 const AuthIndicator: React.FC = () => {
@@ -33,7 +33,7 @@ const AuthIndicator: React.FC = () => {
                                 href='#'
                             >
                                 <div className="text-[20px] leading-10">
-                                    Logout (<span className='text-[15px] underline'>{formatUserInfo(user)}</span>)
+                                    Logout (<span className='text-[15px]'>{formatUserInfo(user)}</span>)
                                 </div>
                             </Link>
                         </>
