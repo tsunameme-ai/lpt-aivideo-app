@@ -15,10 +15,12 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MediaPlayerComponent from "@/components/media-player"
 import { Analytics } from "@/libs/analytics"
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
+    const { authenticated, user } = usePrivy()
     const [videoOutput, setVideoOutput] = useState<GenerationOutputItem | undefined>(undefined)
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
@@ -90,7 +92,8 @@ export default function Page() {
                     imageUrl: gContext.overlayImageData.remoteURL,
                     overlayBase64: gContext.overlayImageData.overlayImageDataURL,
                     overlayText: gContext.overlayText,
-                    imageGenerationId: gContext.t2iSelectedOutput!.id
+                    imageGenerationId: gContext.t2iSelectedOutput!.id,
+                    userId: authenticated && user ? user.id : undefined
                 }
 
                 const response = await fetch('/api/generate', {

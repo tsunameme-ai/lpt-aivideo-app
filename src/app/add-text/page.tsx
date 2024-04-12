@@ -7,6 +7,8 @@ import { useGenerationContext } from "@/context/generation-context"
 import { GenerationOutputItem } from "@/libs/types"
 import styles from '@/styles/home.module.css'
 import { Analytics } from "@/libs/analytics"
+import { usePrivy } from '@privy-io/react-auth'
+import { AuthPromo } from "@/components/auth-indicator";
 import { StartOutputEvent } from "@/components/editor/types";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -17,11 +19,20 @@ const Editor = dynamic(() => import("@/components/editor"), {
 });
 
 export default function Page() {
+    const { authenticated, user } = usePrivy()
     const router = useRouter()
     const gContext = useGenerationContext()
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
+    const [authPrompt, setAuthPrompt] = useState<boolean>(false)
 
     const handleClickToVideo = () => {
+        if (!authenticated || !user) {
+            setAuthPrompt(true)
+            return
+        }
+        proceedToVideo()
+    }
+    const proceedToVideo = () => {
         window.dispatchEvent(new Event(StartOutputEvent))
     }
     const onImagesRendered = (imgDataUrl: string, coverDataUrl: string, width: number, height: number) => {
@@ -108,6 +119,7 @@ export default function Page() {
                             </div>
                         </div>
                     </>}
+                {authPrompt && <AuthPromo onContinueWOLogin={proceedToVideo} onLoginComplete={proceedToVideo} />}
             </section >
         </>
     )

@@ -88,3 +88,19 @@ export async function fetchGallery(pageKey?: string): Promise<{ nextPage?: strin
     }
 
 }
+
+export async function fetchAssetsByUser(userId: string, pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
+    const pageQuery = pageKey ? `?page=${pageKey}` : ''
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/user/${userId}/generations${pageQuery}`)
+    if (!res.ok) {
+        throw new Error(`Error fetch generation data ${res.status} ${pageKey}`)
+    }
+    const data = await res.json()
+    return {
+        nextPage: data['next-page'],
+        items: data.items.map((item: any) => {
+            return parseGenerationRequest(item)
+        })
+    }
+
+}

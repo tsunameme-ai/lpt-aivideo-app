@@ -19,7 +19,8 @@ export class SDAPI {
             'seed': params.seed,
             'width': params.width,
             'height': params.height,
-            'num_images_per_prompt': params.numOutput
+            'num_images_per_prompt': params.numOutput,
+            "user_id": params.userId
         }
         return await this.sendRequest(url, {
             method: 'POST',
@@ -41,7 +42,8 @@ export class SDAPI {
             "noise_aug_strength": params.noiseAugStrength,
             "overlay_base64": params.overlayBase64,
             "overlay_text": params.overlayText,
-            "image_generation_id": params.imageGenerationId
+            "image_generation_id": params.imageGenerationId,
+            "user_id": params.userId
         }
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT_IMG2VID!
         return await this.sendRequest(url, {
