@@ -1,5 +1,5 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea, Slider, Spacer } from "@nextui-org/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styles from '@/styles/home.module.css'
 
 interface EditTextModalComponentProps {
@@ -28,6 +28,11 @@ const EditTextModalComponent: React.FC<EditTextModalComponentProps> = (props: Ed
             setSliderValue(value)
     }
 
+    useEffect(() => {
+        setTextValue(props.initialText || '')
+        setLabelValue(`${LABEL_VALUE} (${props.initialText?.length}/${MAX_CHARACTER})`)
+    }, [props.initialText])
+
 
     return (
         <>
@@ -46,7 +51,7 @@ const EditTextModalComponent: React.FC<EditTextModalComponentProps> = (props: Ed
                                 <Textarea
                                     classNames={{
                                         input: "font-normal text-lg",
-                                        label: "font-normal text-sm",
+                                        label: "font-normal text-lg",
                                         inputWrapper: "border-[#FFC30C]"
                                     }}
                                     maxRows={3}

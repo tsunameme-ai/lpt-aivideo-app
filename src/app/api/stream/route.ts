@@ -22,7 +22,7 @@ const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest
         for (let i = 0; i < count % 10; i++) {
             segs.push('💨')
         }
-        notify.log(JSON.stringify({ "data": `PING ${segs.join(' ')}` }))
+        notify.log(JSON.stringify({ "data": `Rendering ${segs.join(' ')}` }))
     }, 1000);
 
     try {

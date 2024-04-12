@@ -24,9 +24,10 @@ export default function Page() {
 
     return (
         <>
+            <ToastContainer />
             <section className='flex flex-col items-center justify-center'>
                 <div className={styles.centerSection}>
-                    <ToastContainer />
+
                     <Card className="max-w-full">
                         <CardBody className="overflow-hidden">
                             <Tabs fullWidth classNames={{

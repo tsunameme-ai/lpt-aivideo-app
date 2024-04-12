@@ -1,6 +1,6 @@
 'use client'
 
-import { Installer } from '@/components/installer';
+import { Installer } from '@/components/installer'
 import { NextUIProvider } from '@nextui-org/react'
 import { PrivyProvider } from '@privy-io/react-auth';
 import React from 'react';
