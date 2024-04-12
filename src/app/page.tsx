@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css"
 import { useGenerationContext } from '@/context/generation-context'
 //import MediaPlayerComponent from "@/components/media-player"
 import LandingPromoComponent from '@/components/landing-promo'
+import { appFont } from './fonts'
 
 export default function Home() {
   const router = useRouter()
@@ -19,12 +20,12 @@ export default function Home() {
   }
 
   return (
-    <section className={styles.main}>
+    <section className={`${styles.main} ${appFont.className}`}>
 
       <div className={styles.centerLanding}>
         <LandingPromoComponent />
         <Spacer y={20} />
-        <Button size='lg' className={styles.startBtn} onPress={handleTxt2img}><div className='text-[20px]'>Get Started</div></Button>
+        <Button size='lg' className='w-full' color='primary' variant="ghost" radius='sm' onPress={handleTxt2img}>Get Started</Button>
       </div >
     </section >
 

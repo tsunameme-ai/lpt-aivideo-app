@@ -97,26 +97,11 @@ export default function Page() {
                 {t2iOutput &&
                     <>
                         <Spacer y={4} />
-                        <div className={styles.promptControls}>
-                            <div>
-                                <Button
-                                    className={styles.nextBtn}
-                                    onPress={handleClickToVideo}
-                                    size="md"
-                                >
-                                    <div className='text-[20px]'>GIF it</div>
-                                </Button>
-                            </div>
+                        <div className={styles.centerSection}>
+                            <Button size='lg' className='w-full' color='primary' radius='sm' onPress={handleClickToVideo}>GIF it</Button>
                             <Spacer y={4} />
-                            <div>
-                                <Button
-                                    className={styles.backBtn}
-                                    onClick={() => router.back()}
-                                    size="md"
-                                >
-                                    <div className='text-[20px]'>Back</div>
-                                </Button>
-                            </div>
+                            <Button size='lg' className='w-full' color='primary' variant="ghost" radius='sm' onPress={() => router.back()}>Back</Button>
+
                         </div>
                     </>}
                 {authPrompt && <AuthPromo onContinueWOLogin={proceedToVideo} onLoginComplete={proceedToVideo} />}

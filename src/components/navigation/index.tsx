@@ -3,7 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand } from "@nextui-org/react";
 import { useGenerationContext } from "@/context/generation-context";
 import { AuthIndicator } from "../auth-indicator";
+import { Work_Sans } from "next/font/google";
 
+const font = Work_Sans({
+    weight: ['400', '500', '600'],
+    style: ['normal'],
+    subsets: ['latin'],
+})
 
 const NavigationComponent: React.FC = () => {
 
@@ -35,8 +41,8 @@ const NavigationComponent: React.FC = () => {
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                     className="sm:hidden"
                 />
-                <NavbarBrand>
-                    <p className="font-bold text-[20px]">Tsunameme</p>
+                <NavbarBrand className={`${font.className} font-semibold`}>
+                    TSUNAMEME
                 </NavbarBrand>
             </NavbarContent>
             <NavbarMenu>

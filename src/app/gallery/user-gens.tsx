@@ -73,9 +73,7 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
                     : <>
                         {!isFetchinData && <div className={styles.center}>
                             <Spacer y={2} />
-                            <Button size='sm' className={styles.startBtn} onPress={handleTxt2img}>
-                                <div className='text-[20px]'>Get Started</div>
-                            </Button>
+                            <Button size='lg' className='w-full' color='primary' variant="ghost" radius='sm' onPress={handleTxt2img}>Get Started</Button>
                         </div>}
                     </>
             }

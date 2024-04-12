@@ -20,11 +20,18 @@ const config: Config = {
   darkMode: "class",
   plugins: [nextui(
     {
+      layout: {
+        radius: {
+          small: "4px"
+        }
+      },
       themes: {
         "comfort": {
-          extend: "dark",
+          extend: "light",
           colors: {
-            background: "#887a72",
+            background: "#F2ECDC",
+            primary: "#016283",
+            // secondary
           }
         }
       }

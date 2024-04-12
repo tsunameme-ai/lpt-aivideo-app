@@ -35,18 +35,6 @@ export default function Page() {
         gContext.setT2iOutputSelectedIndex(selectedOutputIndex)
         router.push('/add-text')
     }
-    // useEffect(() => {
-    //     console.log('???? txt2img onpageload')
-
-    //     gContext.setT2iInput(undefined)
-    //     gContext.setT2iOutputs([])
-    //     gContext.setT2iOutputSelectedIndex(0)
-    //     gContext.setOverlayText('')
-    //     gContext.setOverlayImageData(undefined)
-    //     gContext.setI2vInput(undefined)
-
-    // }, [])
-
     return (
         <>
             <section className={styles.main}>
@@ -78,8 +66,8 @@ export default function Page() {
                     </>}
                 </div>
                 {imageOutputs.length > 0 && <>
-                    <div className={styles.promptControls}>
-                        <Button className={styles.nextBtn} onPress={handleClickNext} ><div className='text-[20px]'>Next</div></Button>
+                    <div className={styles.centerSection}>
+                        <Button size='lg' className='w-full' color='primary' radius='sm' onPress={handleClickNext}>Next</Button>
                     </div>
                 </>}
             </section >

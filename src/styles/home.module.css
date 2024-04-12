@@ -3,7 +3,6 @@
 }
 
 .centerSection {
-    color: #f1faee;
     text-align: left;
     margin: auto;
     width: 90%;
@@ -15,18 +14,11 @@
 .centerLanding {
     width: 90%;
     max-width: 512px;
-    color: #f1faee;
     margin: auto;
     padding: 0 0;
 }
 
 .editorControls {
-    width: 70%;
-    max-width: 512px;
-    margin: auto;
-}
-
-.promptControls {
     width: 70%;
     max-width: 512px;
     margin: auto;
@@ -119,23 +111,6 @@
     color: #FFC30C;
 }
 
-.startBtn {
-    color: #f1faee;
-    background-color: #ff8d82;
-    width: 60%;
-}
-
-.nextBtn {
-    color: #f1faee;
-    background-color: #ff8d82;
-    width: 100%;
-}
-
-.backBtn {
-    color: #f1faee;
-    background-color: #ff8d82;
-    width: 100%;
-}
 
 .galleryTable {
     width: 100%;
