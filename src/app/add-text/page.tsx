@@ -12,6 +12,7 @@ import { AuthPromo } from "@/components/auth-indicator";
 import { StartOutputEvent } from "@/components/editor/types";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { appFont } from "../fonts";
 
 
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -81,9 +82,9 @@ export default function Page() {
     return (
         <>
             <ToastContainer />
-            <section className={styles.main}>
+            <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div className='text-[20px]'>Step 2 of 3: Add your copy</div>
+                    <div>Step 2 of 3: Add your copy</div>
                     <Spacer y={2}></Spacer>
                     {t2iOutput ?
                         <Editor

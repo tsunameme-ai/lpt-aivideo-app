@@ -25,7 +25,7 @@ export default function Home() {
       <div className={styles.centerLanding}>
         <LandingPromoComponent />
         <Spacer y={20} />
-        <Button size='lg' className='w-full' color='primary' variant="ghost" radius='sm' onPress={handleTxt2img}>Get Started</Button>
+        <Button size='lg' className='w-full' color='primary' radius='sm' onPress={handleTxt2img}>Get Started</Button>
       </div >
     </section >
 

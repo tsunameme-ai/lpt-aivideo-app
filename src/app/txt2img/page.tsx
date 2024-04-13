@@ -11,6 +11,7 @@ import AdvancedIndicator from '@/components/advanced-indicator'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { appFont } from '../fonts'
 
 
 export default function Page() {
@@ -37,9 +38,9 @@ export default function Page() {
     }
     return (
         <>
-            <section className={styles.main}>
+            <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div className='text-[20px]'>Step 1 of 3: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div>Step 1 of 3: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={2} />
                     <Txt2ImgComponent
                         isAdvancedView={gContext.isAdvancedView}

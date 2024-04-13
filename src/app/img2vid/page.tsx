@@ -141,7 +141,7 @@ export default function Page() {
             <ToastContainer />
             <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div className='text-[20px]'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
                         {videoOutput && <>

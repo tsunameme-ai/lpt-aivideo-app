@@ -79,7 +79,7 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
             }
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
-                {nextPage && <Button onPress={() => fetchData(nextPage)} className="bg-[#ff8d82]">Load More</Button>}
+                {nextPage && <Button onPress={() => fetchData(nextPage)} color='primary' radius='sm' >Load More</Button>}
             </div>
         </>
     )
