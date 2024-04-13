@@ -14,9 +14,10 @@ const LandingPromoComponent = () => {
         initialSlide: 0,
         rows: 2,
         slidesPerRow: 2,
-        autoplaySpeed: 3000,
+        autoplaySpeed: 2000,
         autoplay: true,
-        speed: 3000,
+        speed: 2500,
+        arrows: false
     }
 
     return (
