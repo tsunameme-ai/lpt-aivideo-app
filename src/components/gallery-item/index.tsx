@@ -71,11 +71,11 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
                     </>}
                     <Spacer y={10} />
                     <div className={styles.centerSection}>
-                        <Button size='lg' className='w-full' color='primary' radius='sm'
+                        <Button size='md' className='w-full font-medium' color='primary' radius='sm'
                             onPress={HandleSeeMore}>See More
                         </Button>
                         <Spacer y={10} />
-                        <Button size='lg' className='w-full' color='primary' variant="ghost" radius='sm'
+                        <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm'
                             onPress={HandleCreate}>Be A Creator
                         </Button>
                     </div >

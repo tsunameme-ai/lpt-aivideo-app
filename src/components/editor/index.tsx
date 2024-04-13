@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react"
 import TextBlock, { TextBlockProps } from "./text-block"
 import { Stage, Layer, Image as KonvaImage } from "react-konva"
-import { Button, Spinner, useDisclosure } from "@nextui-org/react"
+import { Button, Skeleton, Spinner, useDisclosure } from "@nextui-org/react"
 import RemoteImage from "../remote-image"
 import { SDAPI } from "@/libs/sd-api"
 import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH } from "@/libs/types"
@@ -15,6 +15,8 @@ import { StartOutputEvent } from "./types"
 
 
 interface EditorProps {
+    width: number,
+    height: number,
     imageUrl: string
     onImagesRendered?: (stageImgDataUrl: string, coverImgDataUrl: string, width: number, height: number) => void
 }
@@ -25,8 +27,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [deleteBtnVariant, setDeleteBtnVariant] = useState<'light' | 'flat' | 'bordered'>('light')
     const [deleteBtnColor, setDeleteBtnColor] = useState<'danger' | 'default'>('default')
     const [image, setImage] = useState<HTMLImageElement>()
-    const [width, setWidth] = useState<number>(0)
-    const [height, setHeight] = useState<number>(0)
+    const [width, setWidth] = useState<number>(props.width)
+    const [height, setHeight] = useState<number>(props.height)
     const [outputDimension, setOutputDimension] = useState<{ pixelRatio: number, width: number, height: number }>({ pixelRatio: 1.0, width: 0, height: 0 })
     const [watermark, setWatermark] = useState<HTMLImageElement>()
     const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
@@ -49,25 +51,17 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
     }
 
-    const resize = (img: any) => {
-        if (!img) {
-            return
-        }
-
-        const { width: imgWidth, height: imgHeight } = SDAPI.resizeToFit(img.width, img.height, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT)
+    const resize = (inputWidth: number, inputHeight: number) => {
+        const { width: imgWidth, height: imgHeight } = SDAPI.resizeToFit(inputWidth, inputHeight, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT)
 
         let editorH = window.innerHeight
         const editorWrapperElement = document.getElementById('editor-wrapper');
         let editorW = editorWrapperElement?.clientWidth ?? 0
-        if (img) {
-            editorW = Math.min(editorW, imgWidth)
-            editorH = editorW / imgWidth * imgHeight
-        }
+        editorW = Math.min(editorW, imgWidth)
+        editorH = editorW / imgWidth * imgHeight
         setWidth(editorW)
         setHeight(editorH)
         setOutputDimension({ pixelRatio: imgWidth / editorW, width: imgWidth, height: imgHeight })
-
-        // props.onPixelRatio?.(imgWidth / editorW, imgWidth, imgHeight)
     }
 
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -156,7 +150,12 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
     useEffect(() => {
         const onResize = () => {
-            resize(image)
+            if (image) {
+                resize(image.width, image.height)
+            }
+            else {
+                resize(props.width, props.height)
+            }
         }
         onResize()
         window.addEventListener('resize', onResize)
@@ -181,15 +180,20 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 const img = new Image();
                 img.onload = () => {
                     setImage(img)
-                    resize(img)
+                    resize(img.width, img.height)
                 }
                 img.src = imgLocalUrl
             }} />
 
             <EditTextModalComponent initialText={selectedId ? textBlocks[selectedId]?.text : ''} initialOpacity={0.3} isOpen={isOpen} onClose={handleCloseModal} />
-            <div id='editor-wrapper'>
-                {image ? <>
-                    <div id='editor-container'>
+            <div id='editor-wrapper' />
+            <Skeleton isLoaded={image !== undefined}>
+                <div className='flex' style={{
+                    width: `${width}px`,
+                    height: `${height}px`,
+                    border: '1px solid #f00'
+                }}>
+                    {image && <>
                         <Stage
                             ref={stageRef}
                             style={{ position: 'absolute' }}
@@ -236,27 +240,20 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                 {watermark && <KonvaImage listening={false} x={width! - watermark.width} y={height! - watermark.height} width={watermark.width} height={watermark.height} image={watermark} />}
                             </Layer>
                         </Stage>
-                    </div >
-                    {Object.keys(textBlocks).length <= 0 && <div className={`flex justify-center items-center`} style={{
-                        width: `${width}px`,
-                        height: `${height}px`,
-                    }}>
-                        <Button className="border-3 border-dashed border-[#f97216]" variant="bordered" radius="sm" size='lg' onPress={handleOpenModal}>
-                            <div className='text-[24px] text-[#f97216]'>Tap here to add copy</div></Button>
-                    </div>}
-                </> : <Spinner />}
-            </div >
+                        {Object.keys(textBlocks).length <= 0 &&
+                            <div className="flex justify-center items-center w-full h-full" style={{ border: '1px solid #0f0' }}>
+                                <Button className="absolute left-1/2 transform -translate-x-1/2  border-3 border-dashed border-[#f97216] text-[24px] text-[#f97216]" variant="bordered" radius="sm" size='lg' onPress={handleOpenModal}>
+                                    Tap here to add copy</Button></div>}
 
-            {
-                isTextBlockDragging && <>
-                    <Button isIconOnly variant={deleteBtnVariant} className={styles.deleteTextBtn}
-                        onPress={() => { }} color={deleteBtnColor}
-                        radius="none"
-                    >
-                        <MdDelete size={26} />
-                    </Button>
-                </>
-            }
+
+                        {isTextBlockDragging && <Button isIconOnly variant={deleteBtnVariant} className={`ml-auto top-right-div ${styles.deleteTextBtn}`}
+                            onPress={() => { }} color={deleteBtnColor}
+                            radius="none">
+                            <MdDelete size={26} />
+                        </Button>}
+                    </>}
+                </div >
+            </Skeleton>
         </>
     )
 }

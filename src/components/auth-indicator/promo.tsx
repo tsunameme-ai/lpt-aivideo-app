@@ -2,6 +2,7 @@
 import { useLogin } from '@privy-io/react-auth'
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
 import { useState } from 'react';
+import { appFont } from '@/app/fonts';
 
 interface AuthPromoProps {
     onContinueWOLogin: () => void
@@ -24,6 +25,7 @@ const AuthPromo: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
     });
     return (
         <Modal
+            className={`${appFont.className}`}
             size='xs'
             placement='center'
             isDismissable={false}

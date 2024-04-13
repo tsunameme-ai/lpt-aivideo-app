@@ -40,7 +40,7 @@ export default function Page() {
         <>
             <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div>Step 1 of 3: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div className='font-medium'>Step 1 of 3: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={2} />
                     <Txt2ImgComponent
                         isAdvancedView={gContext.isAdvancedView}
@@ -68,7 +68,7 @@ export default function Page() {
                 </div>
                 {imageOutputs.length > 0 && <>
                     <div className={styles.centerSection}>
-                        <Button size='lg' className='w-full' color='primary' radius='sm' onPress={handleClickNext}>Next</Button>
+                        <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleClickNext}>Next</Button>
                     </div>
                 </>}
             </section >

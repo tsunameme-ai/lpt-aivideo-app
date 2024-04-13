@@ -14,7 +14,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
     if (!props.isMobile)
         dynamicMSG = <p>Please open this page from your mobile phone.</p>
     else if (props.hasInstallPrompt) {
-        dynamicMSG = <Button size='lg' className='w-full' color='primary' variant="ghost" radius='sm' onPress={props.onInstallRequested} >Install</Button >
+        dynamicMSG = <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' onPress={props.onInstallRequested} >Install</Button >
     } else {
         dynamicMSG = <><p>Please open from the below navigation bar</p><p>Use <strong>Add to Home Screen</strong> to install the app</p></>
     }

@@ -141,7 +141,7 @@ export default function Page() {
             <ToastContainer />
             <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div className='font-medium'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
                         {videoOutput && <>
@@ -179,20 +179,20 @@ export default function Page() {
                     </div>
                 </div>
                 <div className={styles.centerSection}>
-                    <Button size='lg' className='w-full' color='primary' radius='sm'
+                    <Button size='md' className='w-full font-medium' color='primary' radius='sm'
                         isLoading={isGeneratingVideo}
                         onPress={handleGenerateVideoClick}>{isButtonNew ? 'Create New' : 'Render'}</Button>
 
                     {isButtonNew &&
                         <>
                             <Spacer y={4} />
-                            <Button size='lg' className='w-full' color='primary' radius='sm' variant="ghost"
+                            <Button size='md' className='w-full font-medium' color='primary' radius='sm' variant="ghost"
                                 isLoading={isGeneratingVideo}
                                 onPress={() => { router.push('/gallery') }}>Gallery</Button>
                         </>
                     }
                     <Spacer y={4} />
-                    <Button size='lg' className='w-full' color='primary' radius='sm' variant="ghost"
+                    <Button size='md' className='w-full font-medium' color='primary' radius='sm' variant="ghost"
                         onPress={() => router.back()}
                         disabled={!isGeneratingVideo}>Back</Button>
 

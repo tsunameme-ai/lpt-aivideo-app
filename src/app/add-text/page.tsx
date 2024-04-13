@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { Button, Spacer } from "@nextui-org/react"
 import { useGenerationContext } from "@/context/generation-context"
-import { GenerationOutputItem } from "@/libs/types"
+import { GenerationOutputItem, Txt2imgInput } from "@/libs/types"
 import styles from '@/styles/home.module.css'
 import { Analytics } from "@/libs/analytics"
 import { usePrivy } from '@privy-io/react-auth'
@@ -23,6 +23,7 @@ export default function Page() {
     const { authenticated, user } = usePrivy()
     const router = useRouter()
     const gContext = useGenerationContext()
+    const [t2iInput] = useState<Txt2imgInput | undefined>(gContext.t2iInput)
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
     const [authPrompt, setAuthPrompt] = useState<boolean>(false)
 
@@ -84,10 +85,12 @@ export default function Page() {
             <ToastContainer />
             <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div>Step 2 of 3: Add your copy</div>
+                    <div className='font-medium'>Step 2 of 3: Add your copy</div>
                     <Spacer y={2}></Spacer>
-                    {t2iOutput ?
+                    {(t2iOutput && t2iInput) ?
                         <Editor
+                            width={t2iInput.width}
+                            height={t2iInput.height}
                             onImagesRendered={onImagesRendered}
                             imageUrl={t2iOutput.url}
                         />
@@ -99,10 +102,9 @@ export default function Page() {
                     <>
                         <Spacer y={4} />
                         <div className={styles.centerSection}>
-                            <Button size='lg' className='w-full' color='primary' radius='sm' onPress={handleClickToVideo}>GIF it</Button>
+                            <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleClickToVideo}>GIF it</Button>
                             <Spacer y={4} />
-                            <Button size='lg' className='w-full' color='primary' variant="ghost" radius='sm' onPress={() => router.back()}>Back</Button>
-
+                            <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' onPress={() => router.back()}>Back</Button>
                         </div>
                     </>}
                 {authPrompt && <AuthPromo onContinueWOLogin={proceedToVideo} onLoginComplete={proceedToVideo} />}
