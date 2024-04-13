@@ -37,7 +37,7 @@ export default function Page() {
 
                     }}>GIF it</Button>
                     <Spacer y={4} />
-                    <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' onPress={() => router.back()}>Back</Button>
+                    <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' >Back</Button>
                 </div>
                 {stageImageDataUrl && <img src={stageImageDataUrl} />}
                 {coverImageDataUrl && <img src={coverImageDataUrl} />}
