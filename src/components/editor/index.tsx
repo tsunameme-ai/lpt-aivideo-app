@@ -2,10 +2,9 @@
 import { useEffect, useRef, useState } from "react"
 import TextBlock, { TextBlockProps } from "./text-block"
 import { Stage, Layer, Image as KonvaImage } from "react-konva"
-import { Button, Skeleton, Spinner, useDisclosure } from "@nextui-org/react"
+import { Button, Skeleton, useDisclosure } from "@nextui-org/react"
 import RemoteImage from "../remote-image"
 import { SDAPI } from "@/libs/sd-api"
-import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH } from "@/libs/types"
 import EditTextModalComponent from "@/components/edit-text-modal"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -52,7 +51,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     }
 
     const resize = (inputWidth: number, inputHeight: number) => {
-        const { width: imgWidth, height: imgHeight } = SDAPI.resizeToFit(inputWidth, inputHeight, DEFAULT_VIDEO_WIDTH, DEFAULT_VIDEO_HEIGHT)
+        const { width: imgWidth, height: imgHeight } = SDAPI.resizeToFit(inputWidth, inputHeight, props.width, props.height)
 
         let editorH = window.innerHeight
         const editorWrapperElement = document.getElementById('editor-wrapper');

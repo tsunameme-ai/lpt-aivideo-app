@@ -179,6 +179,7 @@ export default function Page() {
                     </div>
                 </div>
                 <div className={styles.centerSection}>
+                    <Spacer y={4} />
                     <Button size='md' className='w-full font-medium' color='primary' radius='sm'
                         isLoading={isGeneratingVideo}
                         onPress={handleGenerateVideoClick}>{isButtonNew ? 'Create New' : 'Render'}</Button>
