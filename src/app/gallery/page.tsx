@@ -1,11 +1,10 @@
 'use client'
-import styles from "@/styles/home.module.css"
 import { Tabs, Card, CardBody, Tab } from "@nextui-org/react"
-import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
 import UserGenList from "./user-gens"
+import { ToastContainer, toast } from 'react-toastify'
 
 export default function Page() {
     const { authenticated, user } = usePrivy()
@@ -26,8 +25,7 @@ export default function Page() {
         <>
             <ToastContainer />
             <section className='flex flex-col items-center justify-center'>
-                <div className={styles.centerSection}>
-
+                <div className="w-full">
                     <Card className="max-w-full">
                         <CardBody className="overflow-hidden">
                             <Tabs fullWidth classNames={{
