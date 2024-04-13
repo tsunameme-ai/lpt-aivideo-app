@@ -4,13 +4,13 @@ import { Button, Spacer, Image } from '@nextui-org/react'
 import { GenerationOutputItem } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import { useState } from 'react'
-import styles from '@/styles/home.module.css'
 import React from 'react'
 import { useGenerationContext } from '@/context/generation-context'
 import AdvancedIndicator from '@/components/advanced-indicator'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import styles from '@/styles/home.module.css'
 import { appFont } from '../fonts'
 
 

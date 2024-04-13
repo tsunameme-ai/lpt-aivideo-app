@@ -31,7 +31,6 @@ const config: Config = {
           colors: {
             background: "#F2ECDC",
             primary: "#016283",
-            // secondary
           }
         }
       }

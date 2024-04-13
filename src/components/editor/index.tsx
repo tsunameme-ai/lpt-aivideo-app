@@ -190,7 +190,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 <div className='flex' style={{
                     width: `${width}px`,
                     height: `${height}px`,
-                    border: '1px solid #f00'
                 }}>
                     {image && <>
                         <Stage

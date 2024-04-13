@@ -100,6 +100,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         <>
             <div className={`${styles.textareaControl} ${appFont.className}`}>
                 <Textarea
+                    variant="bordered"
                     radius="sm"
                     maxRows={3}
                     label=''
