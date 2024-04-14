@@ -1,11 +1,11 @@
 'use client'
 import { fetchGallery } from "@/actions/stable-diffusion"
 import { GenerationRequest } from "@/libs/types"
-import { Spacer, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react"
+import { Spacer, Spinner, Button, Image, useDisclosure } from "@nextui-org/react"
 import { useEffect, useState } from "react"
-import GalleryCell from "./cell"
 import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
+import CellModal from "./cellModal"
 
 interface CommunityListProps {
     handleShare: (url: string) => void
@@ -15,7 +15,7 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
     const [items, setItems] = useState<GenerationRequest[]>([])
     const [isFetchinData, setIsFetchinData] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
-
+    const [selectedCell, setSelectedCell] = useState<string>('')
 
     const fetchData = async (pageKey?: string) => {
         setErrorMessage(undefined)
@@ -35,33 +35,38 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
         }
     }
 
+    const { onOpen, isOpen, onClose } = useDisclosure()
+    const handleOpenModal = (url: string) => {
+        setSelectedCell(url)
+        onOpen()
+    }
+
+    const handleCloseModal = () => {
+        onClose()
+    }
+
+    const handleShare = (itemurl: string) => {
+        props.handleShare(itemurl)
+    }
+
     useEffect(() => {
         fetchData(undefined)
     }, [])
 
     return (
         <>
-
-            {isFetchinData && <div className={styles.center}><Spacer y={4}></Spacer><Spinner color="warning" /></div>}
-            <Table radius="sm" hideHeader className={styles.galleryTable} aria-label="Gallery">
-                <TableHeader>
-                    <TableColumn>url</TableColumn>
-                </TableHeader>
-                <TableBody>
-                    {items.map((item, index) => (
-
-                        < TableRow key={index} >
-                            <TableCell key={item.id}>
-                                <GalleryCell
-                                    src={item.outputs?.[0].url!}
-                                    handleClickShare={props.handleShare} />
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <CellModal imgUrl={selectedCell} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />
+            {isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
+            <div className="grid grid-cols-3 gap-1">
+                {items.map((item, index) => (
+                    <div key={index}>
+                        <Image radius="sm" src={item.outputs?.[0].url!} alt={item.outputs?.[0].url!} onClick={() => { handleOpenModal(item.outputs?.[0].url!) }} />
+                    </div>
+                ))}
+            </div>
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
+                <Spacer y={1} />
                 {nextPage && <Button onPress={() => fetchData(nextPage)} size='md' className='font-medium' color='primary'>Load More</Button>}
             </div>
         </>

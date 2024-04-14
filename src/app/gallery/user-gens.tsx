@@ -1,17 +1,18 @@
 import { fetchAssetsByUser } from "@/actions/stable-diffusion"
 import { GenerationRequest } from "@/libs/types"
-import { Spacer, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react"
+import { Spacer, Spinner, Image, Button, useDisclosure } from "@nextui-org/react"
 import { useEffect, useState } from "react"
-import GalleryCell from "./cell"
 import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
 import { useRouter } from 'next/navigation'
 import { useGenerationContext } from '@/context/generation-context'
+import CellModal from "./cellModal"
 
 interface UserGenListProps {
     userId: string
     handleShare: (url: string) => void
 }
+
 const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
     const [nextPage, setNextPage] = useState<string | undefined>(undefined)
     const [items, setItems] = useState<GenerationRequest[]>([])
@@ -19,6 +20,7 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
     const router = useRouter()
     const gContext = useGenerationContext()
+    const [selectedCell, setSelectedCell] = useState<string>('')
 
     const fetchData = async (pageKey?: string) => {
         setErrorMessage(undefined)
@@ -37,49 +39,54 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
         }
     }
 
+    const { onOpen, isOpen, onClose } = useDisclosure()
+    const handleOpenModal = (url: string) => {
+        setSelectedCell(url)
+        onOpen()
+    }
+
+    const handleCloseModal = () => {
+        onClose()
+    }
+
+    const handleShare = (itemurl: string) => {
+        props.handleShare(itemurl)
+    }
+
     useEffect(() => {
         fetchData(undefined)
     }, [])
 
     const handleTxt2img = () => {
-        //Clear context 
-        gContext.reset()
 
+        gContext.reset()
         router.push('/txt2img')
     }
 
     return (
         <>
+            <CellModal imgUrl={selectedCell} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />
             {isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
             {
                 items.length > 0 ?
-                    <Table radius="sm" hideHeader className={styles.galleryTable} aria-label="Gallery">
-                        <TableHeader>
-                            <TableColumn>url</TableColumn>
-                        </TableHeader>
-                        <TableBody>
-                            {items.map((item, index) => (
-                                < TableRow key={index} >
-                                    <TableCell key={item.id}>
-                                        <GalleryCell
-                                            src={item.outputs?.[0].url!}
-                                            handleClickShare={props.handleShare} />
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-
-                        </TableBody>
-                    </Table>
+                    <div className="grid grid-cols-3 gap-1">
+                        {items.map((item, index) => (
+                            <div key={index}>
+                                <Image radius="sm" src={item.outputs?.[0].url!} alt={index.toString()} onClick={() => { handleOpenModal(item.outputs?.[0].url!) }} />
+                            </div>
+                        ))}
+                    </div>
                     : <>
                         {!isFetchinData && <div className={styles.center}>
-                            <Spacer y={2} />
+                            <Spacer y={1} />
                             <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' onPress={handleTxt2img}>Get Started</Button>
                         </div>}
                     </>
             }
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
-                {nextPage && <Button onPress={() => fetchData(nextPage)} size='md' className='font-medium' color='primary' radius='sm' >Load More</Button>}
+              <Spacer y={1} />      
+              {nextPage && <Button onPress={() => fetchData(nextPage)} size='md' className='font-medium' color='primary' radius='sm' >Load More</Button>}
             </div>
         </>
     )
