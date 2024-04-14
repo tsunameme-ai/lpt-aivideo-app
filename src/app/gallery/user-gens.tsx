@@ -79,16 +79,14 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
                     : <>
                         {!isFetchinData && <div className={styles.center}>
                             <Spacer y={1} />
-                            <Button size='sm' className={styles.startBtn} onPress={handleTxt2img}>
-                                <div className='text-[20px]'>Get Started</div>
-                            </Button>
+                            <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' onPress={handleTxt2img}>Get Started</Button>
                         </div>}
                     </>
             }
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
-                <Spacer y={1} />
-                {nextPage && <Button onPress={() => fetchData(nextPage)} className="bg-[#ff8d82]">Load More</Button>}
+              <Spacer y={1} />      
+              {nextPage && <Button onPress={() => fetchData(nextPage)} size='md' className='font-medium' color='primary' radius='sm' >Load More</Button>}
             </div>
         </>
     )

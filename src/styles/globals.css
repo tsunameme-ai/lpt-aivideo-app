@@ -41,3 +41,9 @@ body {
     font-family: Helvetica;
     overscroll-behavior: none;
 }
+
+.slick-prev:before,
+.slick-next:before {
+    color: #9DABB6 !important;
+    opacity: 1 !important;
+}

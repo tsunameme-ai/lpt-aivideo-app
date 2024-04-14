@@ -5,6 +5,7 @@ import type { Viewport } from 'next'
 import GenerationContextProvider from '@/context/generation-context'
 import NavigationComponent from "@/components/navigation"
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { appFont, inter } from './fonts'
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
@@ -22,7 +23,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 
   return (
-    <html lang="en" className='comfort'>
+    <html lang="en" className={`comfort ${inter.className} ${appFont.className}`}>
       <body>
         <Providers>
           <GenerationContextProvider>
@@ -38,12 +39,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html >
   )
 }
-
-/*
-// Temporary comment out
-          <footer className="w-full flex items-center justify-center py-3 bottom-0 absolute">
-            <span className="text-blue-100">Powered by &nbsp;</span>
-            <p className="text-red-300">Sleepy Dao</p>
-          </footer>
-
-*/

@@ -70,26 +70,17 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
                         </div>
                     </>}
                     <Spacer y={10} />
-                    <div className={styles.promptControls}>
-                        <Button
-                            className={styles.nextBtn}
-                            size="lg"
-                            onPress={HandleSeeMore}
-                        >
-                            <div className='text-[20px]'>See More</div>
+                    <div className={styles.centerSection}>
+                        <Button size='md' className='w-full font-medium' color='primary' radius='sm'
+                            onPress={HandleSeeMore}>See More
                         </Button>
                         <Spacer y={10} />
-                        <Button
-                            className={styles.nextBtn}
-                            size="lg"
-                            onPress={HandleCreate}
-                        >
-                            <div className='text-[20px]'>Be A Creator</div>
+                        <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm'
+                            onPress={HandleCreate}>Be A Creator
                         </Button>
                     </div >
                 </>}
             <ErrorComponent errorMessage={errorMessage} />
-
         </>
     )
 }

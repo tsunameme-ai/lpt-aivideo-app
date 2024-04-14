@@ -67,7 +67,7 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
                 <Spacer y={1} />
-                {nextPage && <Button onPress={() => fetchData(nextPage)} className="bg-[#ff8d82]">Load More</Button>}
+                {nextPage && <Button onPress={() => fetchData(nextPage)} size='md' className='font-medium' color='primary'>Load More</Button>}
             </div>
         </>
     )

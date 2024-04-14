@@ -3,30 +3,21 @@
 }
 
 .centerSection {
-    color: #f1faee;
     text-align: left;
     margin: auto;
     width: 90%;
     min-width: 300px;
     max-width: 512px;
-    min-height: 470px;
 }
 
 .centerLanding {
     width: 90%;
     max-width: 512px;
-    color: #f1faee;
     margin: auto;
     padding: 0 0;
 }
 
 .editorControls {
-    width: 70%;
-    max-width: 512px;
-    margin: auto;
-}
-
-.promptControls {
     width: 70%;
     max-width: 512px;
     margin: auto;
@@ -60,7 +51,7 @@
 
 
 .slider {
-    width: 90%;
+    width: 100%;
     display: block;
     margin: 0 auto;
     text-align: center;
@@ -107,7 +98,6 @@
 
 .longrunIndicator {
     width: 100%;
-    height: 60px;
     clear: both;
 }
 
@@ -119,23 +109,6 @@
     color: #FFC30C;
 }
 
-.startBtn {
-    color: #f1faee;
-    background-color: #ff8d82;
-    width: 60%;
-}
-
-.nextBtn {
-    color: #f1faee;
-    background-color: #ff8d82;
-    width: 100%;
-}
-
-.backBtn {
-    color: #f1faee;
-    background-color: #ff8d82;
-    width: 100%;
-}
 
 .galleryTable {
     width: 100%;
