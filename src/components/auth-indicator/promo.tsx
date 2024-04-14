@@ -38,8 +38,7 @@ const AuthPromo: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
                         <ModalBody>
                             {errorMessage ? <p color="danger" >{errorMessage}</p>
                                 : <p>
-                                    Login to claim ownership of your creations.
-                                    blah blah...
+                                    Login to save the GIF into your own account
                                 </p>}
 
                         </ModalBody>
