@@ -1,6 +1,7 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea, Slider, Spacer } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import styles from '@/styles/home.module.css'
+import { appFont } from "@/app/fonts"
 
 interface EditTextModalComponentProps {
     initialText?: string
@@ -36,7 +37,7 @@ const EditTextModalComponent: React.FC<EditTextModalComponentProps> = (props: Ed
 
     return (
         <>
-            <Modal className={styles.editorModal} placement='top' size='lg' radius='sm'
+            <Modal className={`${styles.editorModal} ${appFont.className}`} placement='top' size='lg' radius='sm'
                 isOpen={props.isOpen} onClose={() => { props.onClose?.(textValue, sliderValue) }}
                 classNames={{
                     body: "px-4",

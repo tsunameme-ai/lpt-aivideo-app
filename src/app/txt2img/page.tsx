@@ -4,13 +4,14 @@ import { Button, Spacer, Image } from '@nextui-org/react'
 import { GenerationOutputItem } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import { useState } from 'react'
-import styles from '@/styles/home.module.css'
 import React from 'react'
 import { useGenerationContext } from '@/context/generation-context'
 import AdvancedIndicator from '@/components/advanced-indicator'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import styles from '@/styles/home.module.css'
+import { appFont } from '../fonts'
 
 
 export default function Page() {
@@ -35,23 +36,11 @@ export default function Page() {
         gContext.setT2iOutputSelectedIndex(selectedOutputIndex)
         router.push('/add-text')
     }
-    // useEffect(() => {
-    //     console.log('???? txt2img onpageload')
-
-    //     gContext.setT2iInput(undefined)
-    //     gContext.setT2iOutputs([])
-    //     gContext.setT2iOutputSelectedIndex(0)
-    //     gContext.setOverlayText('')
-    //     gContext.setOverlayImageData(undefined)
-    //     gContext.setI2vInput(undefined)
-
-    // }, [])
-
     return (
         <>
-            <section className={styles.main}>
+            <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div className='text-[20px]'>Step 1 of 3: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div className='font-medium'>Step 1 of 3: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={2} />
                     <Txt2ImgComponent
                         isAdvancedView={gContext.isAdvancedView}
@@ -78,8 +67,8 @@ export default function Page() {
                     </>}
                 </div>
                 {imageOutputs.length > 0 && <>
-                    <div className={styles.promptControls}>
-                        <Button className={styles.nextBtn} onPress={handleClickNext} ><div className='text-[20px]'>Next</div></Button>
+                    <div className={styles.centerSection}>
+                        <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleClickNext}>Next</Button>
                     </div>
                 </>}
             </section >

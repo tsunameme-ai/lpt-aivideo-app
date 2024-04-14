@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
 import UserGenList from "./user-gens"
+import { appFont } from "../fonts"
 
 export default function Page() {
     const { authenticated, user } = usePrivy()
@@ -25,7 +26,7 @@ export default function Page() {
     return (
         <>
             <ToastContainer />
-            <section className='flex flex-col items-center justify-center'>
+            <section className={`flex flex-col items-center justify-center ${appFont.className}`}>
                 <div className={styles.centerSection}>
 
                     <Card className="max-w-full">

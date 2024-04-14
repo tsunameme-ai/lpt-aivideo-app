@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import MediaPlayerComponent from "@/components/media-player"
 import { Analytics } from "@/libs/analytics"
 import { usePrivy } from "@privy-io/react-auth";
+import { appFont } from "../fonts"
 
 export default function Page() {
     const router = useRouter()
@@ -138,9 +139,9 @@ export default function Page() {
     return (
         <>
             <ToastContainer />
-            <section className={styles.main}>
+            <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div className='text-[20px]'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div className='font-medium'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
                     <div className={styles.containerRelative}>
                         {videoOutput && <>
@@ -177,44 +178,24 @@ export default function Page() {
                         }
                     </div>
                 </div>
-                <div className={styles.promptControls}>
-                    <div>
-                        <Button
-                            className={styles.nextBtn}
-                            size="md"
-                            isLoading={isGeneratingVideo}
-                            onPress={handleGenerateVideoClick}
-                        >
-                            <div className='text-[20px]'>{isButtonNew ? 'Create New' : 'Render'}</div>
-                        </Button>
-                    </div>
+                <div className={styles.centerSection}>
+                    <Spacer y={4} />
+                    <Button size='md' className='w-full font-medium' color='primary' radius='sm'
+                        isLoading={isGeneratingVideo}
+                        onPress={handleGenerateVideoClick}>{isButtonNew ? 'Create New' : 'Render'}</Button>
 
                     {isButtonNew &&
                         <>
                             <Spacer y={4} />
-                            <div>
-                                <Button
-                                    className={styles.nextBtn}
-                                    size="md"
-                                    isLoading={isGeneratingVideo}
-                                    onPress={() => { router.push('/gallery') }}
-                                >
-                                    <div className='text-[20px]'>Gallery</div>
-                                </Button>
-                            </div>
+                            <Button size='md' className='w-full font-medium' color='primary' radius='sm' variant="ghost"
+                                isLoading={isGeneratingVideo}
+                                onPress={() => { router.push('/gallery') }}>Gallery</Button>
                         </>
                     }
                     <Spacer y={4} />
-                    <div>
-                        <Button
-                            className={styles.backBtn}
-                            onPress={() => router.back()}
-                            size="md"
-                            disabled={!isGeneratingVideo}
-                        >
-                            <div className='text-[20px]'>Back</div>
-                        </Button>
-                    </div>
+                    <Button size='md' className='w-full font-medium' color='primary' radius='sm' variant="ghost"
+                        onPress={() => router.back()}
+                        disabled={!isGeneratingVideo}>Back</Button>
 
                 </div >
             </section >

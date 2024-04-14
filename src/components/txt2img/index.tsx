@@ -9,6 +9,7 @@ import styles from "@/styles/home.module.css";
 import { FaArrowRotateRight } from "react-icons/fa6"
 import { Analytics } from "@/libs/analytics";
 import { usePrivy } from "@privy-io/react-auth";
+import { appFont } from "@/app/fonts";
 
 interface Txt2ImgComponentProps {
     isAdvancedView: boolean
@@ -97,8 +98,9 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
 
     return (
         <>
-            <div className={styles.textareaControl}>
+            <div className={`${styles.textareaControl} ${appFont.className}`}>
                 <Textarea
+                    variant="bordered"
                     radius="sm"
                     maxRows={3}
                     label=''
