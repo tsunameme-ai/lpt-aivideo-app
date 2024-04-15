@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { MdDelete } from "react-icons/md"
 import styles from "@/styles/home.module.css"
 import { StartOutputEvent } from "./types"
+import { appFont } from "@/app/fonts"
 
 
 interface EditorProps {
@@ -71,6 +72,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             onOpen()
     }
     const handleCloseModal = (text: string, slider: number) => {
+        console.log(appFont.className)
 
         if (text.replaceAll(' ', '').replaceAll('\n', '').length <= 0) {
             onClose()
@@ -93,7 +95,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             x: 0,
             y: 0,
             stageWidth: width,
-            stageHeight: height
+            stageHeight: height,
+            fontFamily: '__Work_Sans_ef3b78'
         }
         onClose()
     }
@@ -149,12 +152,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
     useEffect(() => {
         const onResize = () => {
-            if (image) {
-                resize(image.width, image.height)
-            }
-            else {
-                resize(props.width, props.height)
-            }
+            resize((image || props).width, (image || props).height)
         }
         onResize()
         window.addEventListener('resize', onResize)
@@ -183,8 +181,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 }
                 img.src = imgLocalUrl
             }} />
-
-            <EditTextModalComponent initialText={selectedId ? textBlocks[selectedId]?.text : ''} initialOpacity={0.3} isOpen={isOpen} onClose={handleCloseModal} />
+            {isOpen && image && <EditTextModalComponent imageUrl={props.imageUrl} width={width} height={height} text={selectedId ? textBlocks[selectedId]?.text : ''} opacity={0.3} isOpen={true} onClose={handleCloseModal} />}
             <div id='editor-wrapper' />
             <Skeleton isLoaded={image !== undefined}>
                 <div className='flex' style={{
@@ -239,8 +236,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                             </Layer>
                         </Stage>
                         {Object.keys(textBlocks).length <= 0 &&
-                            <div className="flex justify-center items-center w-full h-full" style={{ border: '1px solid #0f0' }}>
-                                <Button className="absolute left-1/2 transform -translate-x-1/2  border-3 border-dashed border-[#f97216] text-[24px] text-[#f97216]" variant="bordered" radius="sm" size='lg' onPress={handleOpenModal}>
+                            <div className="flex justify-center items-center w-full h-full">
+                                <Button className="absolute left-1/2 transform -translate-x-1/2  border-3 border-dashed border-[#f97216] text-[24px] text-[#f97216]" variant="bordered" radius="none" size='lg' onPress={handleOpenModal}>
                                     Tap here to add copy</Button></div>}
 
 

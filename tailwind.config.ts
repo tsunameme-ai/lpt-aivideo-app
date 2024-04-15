@@ -10,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        black: "#060200"
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -29,8 +32,10 @@ const config: Config = {
         "comfort": {
           extend: "light",
           colors: {
+            foreground: "#060200",
             background: "#F2ECDC",
             primary: "#016283",
+            secondary: "#9DABB6"
           }
         }
       }

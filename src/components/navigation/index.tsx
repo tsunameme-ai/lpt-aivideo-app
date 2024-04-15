@@ -2,14 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand } from "@nextui-org/react";
 import { useGenerationContext } from "@/context/generation-context";
-import { AuthIndicator } from "../auth-indicator";
-import { Work_Sans } from "next/font/google";
-
-const font = Work_Sans({
-    weight: ['400', '500', '600'],
-    style: ['normal'],
-    subsets: ['latin'],
-})
+import { AuthIndicator } from "../auth-indicator"
+import { appFont } from "@/app/fonts";
 
 const NavigationComponent: React.FC = () => {
 
@@ -41,7 +35,7 @@ const NavigationComponent: React.FC = () => {
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                     className="sm:hidden"
                 />
-                <NavbarBrand className={`${font.className} font-semibold`}>
+                <NavbarBrand className={`${appFont.className} font-semibold`}>
                     TSUNAMEME
                 </NavbarBrand>
             </NavbarContent>
@@ -55,11 +49,11 @@ const NavigationComponent: React.FC = () => {
                                 }
                             }}
                             color="foreground"
-                            className="w-full"
+                            className={`${appFont.className} font-medium w-full leading-10`}
                             href={item[1]}
                             size="lg"
                         >
-                            <div className="text-[20px] leading-10">{item[0]}</div>
+                            {item[0]}
                         </Link>
                     </NavbarMenuItem>
                 ))}

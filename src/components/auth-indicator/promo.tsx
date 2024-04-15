@@ -20,7 +20,7 @@ const AuthPromo: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
         },
         onError: (error: any) => {
             console.log(error);
-            setErrorMessage(`Unable to login:${error.message}`)
+            setErrorMessage(`Oops. Login failed.`)
         },
     });
     return (
