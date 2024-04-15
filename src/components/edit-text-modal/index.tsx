@@ -1,11 +1,14 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea, Slider, Spacer } from "@nextui-org/react"
-import { useEffect, useState } from "react"
+import { Modal, ModalContent, ModalHeader, ModalBody, Textarea, Button } from "@nextui-org/react"
+import { useEffect, useRef, useState } from "react"
 import styles from '@/styles/home.module.css'
 import { appFont } from "@/app/fonts"
 
 interface EditTextModalComponentProps {
-    initialText?: string
-    initialOpacity?: number
+    imageUrl: string
+    width: number
+    height: number
+    text?: string
+    opacity: number
     isOpen: boolean
     onClose?: (text: string, opacity: number) => void
 }
@@ -13,9 +16,10 @@ interface EditTextModalComponentProps {
 const EditTextModalComponent: React.FC<EditTextModalComponentProps> = (props: EditTextModalComponentProps) => {
     const LABEL_VALUE = 'Be creative or die'
     const MAX_CHARACTER = 125
-    const [textValue, setTextValue] = useState<string>(props.initialText || '')
+    const taRef = useRef<any>(undefined)
+    const [textValue, setTextValue] = useState<string>(props.text || '')
     const [labelValue, setLabelValue] = useState<string>(LABEL_VALUE)
-    const [sliderValue, setSliderValue] = useState(props.initialOpacity || 0)
+    const [opacity] = useState(props.opacity || 0)
 
     const handleTextValueChange = (value: string) => {
         if (value.length <= MAX_CHARACTER) {
@@ -23,75 +27,86 @@ const EditTextModalComponent: React.FC<EditTextModalComponentProps> = (props: Ed
             setLabelValue(`${LABEL_VALUE} (${value.length}/${MAX_CHARACTER})`)
         }
     }
+    useEffect(() => {
+        handleTextValueChange(props.text || '')
+    }, [props.text])
 
-    const handleSliderValue = (value: number | number[]) => {
-        if (!Array.isArray(value))
-            setSliderValue(value)
+    const handleClickClose = () => {
+        props.onClose?.(textValue, opacity)
     }
 
     useEffect(() => {
-        setTextValue(props.initialText || '')
-        setLabelValue(`${LABEL_VALUE} (${props.initialText?.length}/${MAX_CHARACTER})`)
-    }, [props.initialText])
-
+        if (taRef.current) {
+            taRef.current.focus()
+            setTimeout(() => {
+                const textAreaLength = taRef.current.value.length;
+                taRef.current.selectionStart = textAreaLength;
+                taRef.current.selectionEnd = textAreaLength;
+            }, 100);
+        }
+    }, []);
 
     return (
         <>
-            <Modal className={`${styles.editorModal} ${appFont.className}`} placement='top' size='lg' radius='sm'
-                isOpen={props.isOpen} onClose={() => { props.onClose?.(textValue, sliderValue) }}
-                classNames={{
-                    body: "px-4",
-                    header: "color-[#292f46]"
+            <Modal className={`${styles.editorModal} ${appFont.className} bg-background`} size='full' radius='none' placement='center'
+                isOpen={props.isOpen}
+                onClose={() => { props.onClose?.(textValue, opacity) }}
+                onOpenChange={(isOpen: boolean) => {
+                    if (isOpen && taRef) {
+                        taRef.current.focus()
+                    }
+                }}
+                hideCloseButton={true}
+                isDismissable={false}
+                motionProps={{
+                    variants: {
+                        enter: {
+                            x: 0,
+                            y: 0,
+                            opacity: 1
+                        },
+                        exit: {
+                            x: 0,
+                            y: 0,
+                            opacity: 0
+                        },
+                    },
                 }}
             >
-                <ModalContent>
+                <ModalContent id='text-editor-wrapper'>
                     {() => (
                         <>
-                            <ModalHeader />
-                            <ModalBody>
-                                <Textarea
-                                    classNames={{
-                                        input: "font-normal text-lg",
-                                        label: "font-normal text-lg",
-                                        inputWrapper: "border-[#FFC30C]"
-                                    }}
-                                    maxRows={3}
-                                    value={textValue}
-                                    label={labelValue}
-                                    placeholder=''
-                                    onValueChange={handleTextValueChange}
-                                    variant='bordered'
-                                    size="lg"
-                                    errorMessage=""
-                                />
-                                <Spacer y={1} />
-                                <Slider
-                                    label='Background Opacity:'
-                                    step={0.01}
-                                    maxValue={1}
-                                    minValue={0}
-                                    defaultValue={sliderValue}
-                                    classNames={{
-                                        base: "max-w-md",
-                                        filler: "bg-gradient-to-r from-primary-500 to-secondary-400",
-                                        labelWrapper: "mb-2",
-                                        label: "font-normal text-default-900 text-md",
-                                        value: "font-normal text-default-900 text-md",
-                                        thumb: [
-                                            "transition-size",
-                                            "bg-gradient-to-r from-secondary-400 to-primary-500",
-                                            "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20",
-                                            "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6"
-                                        ],
-                                        step: "data-[in-range=true]:bg-black/30 dark:data-[in-range=true]:bg-white/50"
-                                    }}
-                                    onChange={handleSliderValue}
-                                />
+                            <ModalHeader className="font-normal">
+                                <div>{labelValue}</div>
+                                <Button color="primary" variant="ghost" style={{ position: 'absolute', top: '10px', right: '16px' }} onPress={handleClickClose}>
+                                    Done
+                                </Button>
+                            </ModalHeader>
+                            <ModalBody className="items-center">
+                                <div style={{ width: `${props.width}px`, height: `${props.height}px` }}>
+                                    <div className="w-full h-full bg-img bg-contain bg-no-repeat" style={{ backgroundImage: `url(${props.imageUrl})` }}>
+                                        <div className={`w-full h-full bg-white/${Math.floor(opacity * 100)}`}>
+                                            <Textarea
+                                                ref={taRef}
+                                                fullWidth={true}
+                                                classNames={{
+                                                    base: `w-full h-full`,
+                                                    input: "font-normal text-lg w-full h-full text-center",
+                                                    inputWrapper: `border-primary w-full h-full`
+                                                }}
+                                                radius='none'
+                                                disableAutosize
+                                                style={{ height: `${props.height - 24}px` }}
+                                                value={textValue}
+                                                onValueChange={handleTextValueChange}
+                                                variant='bordered'
+                                                size="lg"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
 
                             </ModalBody>
-                            <ModalFooter>
-
-                            </ModalFooter>
                         </>
                     )}
                 </ModalContent>

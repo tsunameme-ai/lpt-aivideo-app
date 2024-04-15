@@ -26,7 +26,7 @@ export default function Page() {
                         width={DEFAULT_IMG_WIDTH}
                         height={DEFAULT_IMG_HEIGHT}
                         onImagesRendered={onImagesRendered}
-                        imageUrl="https://storage.googleapis.com/livepeer-ai-video-dev/e7d1c27a/c5af4d0b.png"
+                        imageUrl="https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png"
                     />
                 </div>
 

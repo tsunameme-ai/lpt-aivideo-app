@@ -4,7 +4,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
 import UserGenList from "./user-gens"
-
 import { ToastContainer } from 'react-toastify'
 import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
