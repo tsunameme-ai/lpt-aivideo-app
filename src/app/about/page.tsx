@@ -8,11 +8,23 @@ export default function Page() {
     const router = useRouter()
     return (
         <>
-            <section className={`flex flex-col items-center justify-center ${appFont.className}`}>
+            <section className={`items-center justify-center ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div className="flex justify-center items-center">GIF is one of the most original media on the internet.</div>
-                    <Spacer y={5}></Spacer>
-                    <div className="flex justify-center items-center"><Button color="primary" onClick={() => router.back()}>Back</Button></div>
+                    <div className="flex justify-center items-center">
+                        We love GIFs. For the longest time, we wish we could make jaw-dropping GIFs like professional visual artists.
+                        <br /><br />
+                        Then generative AI came, and everything changed. Now, anyone with good taste and creativity can produce stunning videos with just a few lines of text.
+                        We realized that if this could be done for videos, it could certainly be done for GIFs.
+                        <br /><br />
+                        Thus, Tsunameme was born. If you share our love for GIFs, you are in for a treat.
+                        <br /><br />
+                        This project is generously supported by Livepeer, a decentralized GPU network that makes video processing
+                        much more affordable than traditional cloud services.
+                        <br /><br />
+                        Got questions or ideas? Drop us a line anytime!
+                    </div>
+                    <Spacer y={5} />
+                    <div className="flex justify-center items-center"><Button color="primary" onClick={() => router.push('/')}>Get Started</Button></div>
                 </div>
             </section>
         </>
