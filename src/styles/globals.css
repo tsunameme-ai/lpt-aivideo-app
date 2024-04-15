@@ -47,9 +47,3 @@ body {
     color: #9DABB6 !important;
     opacity: 1 !important;
 }
-
-.bg-overlay {
-    /* Target bg-overlay class */
-    /* background-color: rgba(0, 0, 0, 0.5);  */
-    background-color: rgba(242, 236, 220, 0.2)
-}

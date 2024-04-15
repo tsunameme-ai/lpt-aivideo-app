@@ -152,7 +152,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
     useEffect(() => {
         const onResize = () => {
+<<<<<<< HEAD
             resize((image || props).width, (image || props).height)
+=======
+            if (image) {
+                resize(image.width, image.height)
+            }
+            else {
+                resize(props.width, props.height)
+            }
+>>>>>>> main
         }
         onResize()
         window.addEventListener('resize', onResize)

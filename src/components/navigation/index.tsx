@@ -2,8 +2,19 @@
 import React, { useEffect, useState } from "react";
 import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand } from "@nextui-org/react";
 import { useGenerationContext } from "@/context/generation-context";
+<<<<<<< HEAD
 import { AuthIndicator } from "../auth-indicator"
 import { appFont } from "@/app/fonts";
+=======
+import { AuthIndicator } from "../auth-indicator";
+import { Work_Sans } from "next/font/google";
+
+const font = Work_Sans({
+    weight: ['400', '500', '600'],
+    style: ['normal'],
+    subsets: ['latin'],
+})
+>>>>>>> main
 
 const NavigationComponent: React.FC = () => {
 
