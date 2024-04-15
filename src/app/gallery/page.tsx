@@ -1,5 +1,5 @@
 'use client'
-import { Tabs, Card, CardBody, Tab, Button } from "@nextui-org/react"
+import { Tabs, Card, CardBody, Tab } from "@nextui-org/react"
 import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
