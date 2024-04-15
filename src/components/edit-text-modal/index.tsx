@@ -86,7 +86,7 @@ const EditTextModalComponent: React.FC<EditTextModalComponentProps> = (props: Ed
                             <ModalBody className="items-center">
                                 <div style={{ width: `${props.width}px`, height: `${props.height}px` }}>
                                     <div className="w-full h-full bg-img bg-contain bg-no-repeat" style={{ backgroundImage: `url(${props.imageUrl})` }}>
-                                        <div className={`w-full h-full bg-white/${Math.floor(opacity * 100).toString()}`}>
+                                        <div className={`w-full h-full bg-white/30`}>
                                             <Textarea
                                                 ref={taRef}
                                                 fullWidth={true}
