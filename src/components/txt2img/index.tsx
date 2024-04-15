@@ -98,8 +98,9 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
 
     return (
         <>
-            <div className={`${styles.textareaControl} ${appFont.className}`}>
+            <div className={`relative ${appFont.className}`}>
                 <Textarea
+                    color="primary"
                     variant="bordered"
                     radius="sm"
                     maxRows={3}
@@ -109,7 +110,8 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                     errorMessage={pPromptErrorMessage}
                     onValueChange={handlePPromptValueChange}
                     classNames={{
-                        input: "text-lg"
+                        input: "text-lg",
+                        inputWrapper: "border-primary"
                     }}
                 />
                 <Button isIconOnly isDisabled={isEmptyPrompt} size="lg" variant="light" className={styles.renderBtn} onPress={generateImage} isLoading={isLoading}>

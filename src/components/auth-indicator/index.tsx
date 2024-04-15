@@ -2,6 +2,7 @@
 import { usePrivy, User } from '@privy-io/react-auth'
 import { Spinner, Link } from '@nextui-org/react';
 import AuthPromo from './promo';
+import { appFont } from '@/app/fonts';
 
 const AuthIndicator: React.FC = () => {
     const { ready, authenticated, login, user, logout } = usePrivy()
@@ -30,9 +31,10 @@ const AuthIndicator: React.FC = () => {
                                 onPress={logout}
                                 color="foreground"
                                 className="w-full"
+                                size="lg"
                                 href='#'
                             >
-                                <div className="text-[20px] leading-10">
+                                <div className={`${appFont.className} font-medium w-full leading-10`}>
                                     Logout (<span className='text-[15px]'>{formatUserInfo(user)}</span>)
                                 </div>
                             </Link>
@@ -42,12 +44,10 @@ const AuthIndicator: React.FC = () => {
                                 <Link
                                     onPress={login}
                                     color="foreground"
-                                    className="w-full"
-                                    href='#'
-                                >
-                                    <div className="text-[20px] leading-10">
-                                        Login
-                                    </div>
+                                    className={`${appFont.className} font-medium w-full leading-10`}
+                                    size="lg"
+                                    href='#'>
+                                    Login
                                 </Link>
 
                             </>

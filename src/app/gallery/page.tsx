@@ -4,9 +4,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
 import UserGenList from "./user-gens"
-
-import { ToastContainer, toast } from 'react-toastify'
 import { appFont } from "../fonts"
+import { ToastContainer, toast } from 'react-toastify'
 
 export default function Page() {
     const { authenticated, user } = usePrivy()
