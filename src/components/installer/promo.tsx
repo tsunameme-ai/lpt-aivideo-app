@@ -1,6 +1,7 @@
 import { Button, Spacer } from "@nextui-org/react"
 import LandingPromoComponent from '@/components/landing-promo'
 import styles from '@/styles/home.module.css'
+import { FaAnglesDown } from "react-icons/fa6"
 
 interface InstallPromoProps {
     hasInstallPrompt: boolean
@@ -16,7 +17,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
     else if (props.hasInstallPrompt) {
         dynamicMSG = <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' onPress={props.onInstallRequested} >Install</Button >
     } else {
-        dynamicMSG = <><p>Please open from the below navigation bar</p><p>Use <strong>Add to Home Screen</strong> to install the app</p></>
+        dynamicMSG = <><div>Tap below button and choose</div> <div><strong>Add to Home Screen</strong> to install the app</div></>
     }
 
     return (
@@ -28,6 +29,8 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 <LandingPromoComponent />
                 <Spacer y={6} />
                 {dynamicMSG}
+                <Spacer y={1} />
+                <FaAnglesDown className="m-auto" />
             </div>
         </section>
     )
