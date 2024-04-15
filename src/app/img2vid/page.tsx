@@ -17,6 +17,7 @@ import MediaPlayerComponent from "@/components/media-player"
 import { Analytics } from "@/libs/analytics"
 import { usePrivy } from "@privy-io/react-auth";
 import { appFont } from "../fonts"
+import { share } from "@/libs/share-utils"
 
 export default function Page() {
     const router = useRouter()
@@ -59,12 +60,10 @@ export default function Page() {
     const handleShare = () => {
         if (!videoOutput)
             return
-        navigator.clipboard.writeText(videoOutput.url)
-        toast.success("GIF link is copied. Send it!", {
-            toastId: toastId,
-            autoClose: 1200,
-            hideProgressBar: true
-        })
+        share({
+            url: videoOutput.url,
+            toastTitle: "GIF link is copied. Send it!"
+        }, toastId)
     }
 
 

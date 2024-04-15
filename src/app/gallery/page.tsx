@@ -1,25 +1,23 @@
 'use client'
-import { Tabs, Card, CardBody, Tab } from "@nextui-org/react"
+import { Tabs, Card, CardBody, Tab, Button } from "@nextui-org/react"
 import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
 import UserGenList from "./user-gens"
 
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import { appFont } from "../fonts"
+import { share } from "@/libs/share-utils"
 
 export default function Page() {
     const { authenticated, user } = usePrivy()
 
     const toastId = "gallery-copy-success"
     const handleShare = (itemurl: string) => {
-
-        navigator.clipboard.writeText(`${itemurl}`)
-        toast.success("GIF link is copied. Send it!", {
-            toastId: toastId,
-            autoClose: 1200,
-            hideProgressBar: true
-        })
+        share({
+            url: itemurl,
+            toastTitle: 'GIF link is copied. Send it!'
+        }, toastId)
     }
 
 
