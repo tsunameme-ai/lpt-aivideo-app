@@ -7,7 +7,7 @@ export const inter = Inter({
 })
 
 export const appFont = Work_Sans({
-    weight: ['400', '500', '600'],
+    weight: ['400', '500', '600', '800'],
     style: ['normal'],
     subsets: ['latin'],
     display: 'swap',
