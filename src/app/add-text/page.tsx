@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { Button, Spacer } from "@nextui-org/react"
 import { useGenerationContext } from "@/context/generation-context"
-import { GenerationOutputItem, Txt2imgInput } from "@/libs/types"
+import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem, Txt2imgInput } from "@/libs/types"
 import styles from '@/styles/home.module.css'
 import { Analytics } from "@/libs/analytics"
 import { usePrivy } from '@privy-io/react-auth'
@@ -89,8 +89,8 @@ export default function Page() {
                     <Spacer y={2}></Spacer>
                     {(t2iOutput && t2iInput) ?
                         <Editor
-                            width={t2iInput.width}
-                            height={t2iInput.height}
+                            width={DEFAULT_VIDEO_WIDTH}
+                            height={DEFAULT_VIDEO_HEIGHT}
                             onImagesRendered={onImagesRendered}
                             imageUrl={t2iOutput.url}
                         />
