@@ -191,10 +191,6 @@ export default function Page() {
                                 onPress={() => { router.push('/gallery') }}>Gallery</Button>
                         </>
                     }
-                    <Spacer y={4} />
-                    <Button size='md' className='w-full font-medium' color='primary' radius='sm' variant="ghost"
-                        onPress={() => router.back()}
-                        disabled={!isGeneratingVideo}>Back</Button>
 
                 </div >
             </section >

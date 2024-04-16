@@ -1,19 +1,34 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand, Button } from "@nextui-org/react";
 import { useGenerationContext } from "@/context/generation-context";
 import { AuthIndicator } from "../auth-indicator"
 import { appFont } from "@/app/fonts";
+import { FaAngleLeft } from "react-icons/fa6";
+import { useRouter, usePathname } from "next/navigation";
+
+
+enum NavIcon {
+    BACK = 'back',
+    TOGGLE = 'toggle',
+    NONE = 'none'
+}
 
 const NavigationComponent: React.FC = () => {
+    const pathname = usePathname()
+    const router = useRouter()
 
     const gContext = useGenerationContext()
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [menuItems, setMenuItems] = useState<string[][]>([
         ['Create', '/txt2img'],
         ['Gallery', '/gallery'],
         ['About', '/about']
     ])
+    const [navIcon, setNavIcon] = useState<NavIcon>(NavIcon.TOGGLE)
+    // const [currentUrl, setCurrentUrl] = useState(router.asPath); // Initial URL
+
+
     useEffect(() => {
         if (process.env.NEXT_PUBLIC_DEBUG === 'browser') {
             const items = [
@@ -25,16 +40,43 @@ const NavigationComponent: React.FC = () => {
             ]
             setMenuItems(items)
         }
-
     }, [])
+    useEffect(() => {
+        if (['/img2vid', '/add-text'].includes(pathname)) {
+            setNavIcon(NavIcon.BACK)
+        }
+        else if ('/' === pathname) {
+            setNavIcon(NavIcon.NONE)
+        }
+        else {
+            setNavIcon(NavIcon.TOGGLE)
+        }
+    }, [pathname]);
+
+
+    const renderIcon = () => {
+        switch (navIcon) {
+            case NavIcon.BACK:
+                return <Button isIconOnly variant='light' style={{ minWidth: 0, width: '24px' }}
+                    onPress={() => { router.back() }} color='primary'
+                    radius="none">
+                    <FaAngleLeft size={26} />
+                </Button>
+            case NavIcon.TOGGLE:
+                return <NavbarMenuToggle
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    className="sm:hidden"
+                />
+            default:
+                return <></>
+
+        }
+    }
 
     return (<>
         <Navbar className="text-primary" onMenuOpenChange={setIsMenuOpen}>
             <NavbarContent>
-                <NavbarMenuToggle
-                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                    className="sm:hidden"
-                />
+                {renderIcon()}
                 <NavbarBrand className={`${appFont.className} font-semibold`}>
                     TSUNAMEME
                 </NavbarBrand>
