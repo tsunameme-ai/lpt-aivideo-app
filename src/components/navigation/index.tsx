@@ -25,8 +25,18 @@ const NavigationComponent: React.FC = () => {
         ['Gallery', '/gallery'],
         ['About', '/about']
     ])
-    const [navIcon, setNavIcon] = useState<NavIcon>(NavIcon.TOGGLE)
-    // const [currentUrl, setCurrentUrl] = useState(router.asPath); // Initial URL
+
+    const selectNavIcon = (path: string): NavIcon => {
+        if (['/img2vid', '/add-text'].includes(path)) {
+            return NavIcon.BACK
+        }
+        if ('/' === path) {
+            return NavIcon.NONE
+        }
+        return NavIcon.TOGGLE
+    }
+    const [navIcon, setNavIcon] = useState<NavIcon>(selectNavIcon(pathname))
+
 
 
     useEffect(() => {
@@ -42,15 +52,7 @@ const NavigationComponent: React.FC = () => {
         }
     }, [])
     useEffect(() => {
-        if (['/img2vid', '/add-text'].includes(pathname)) {
-            setNavIcon(NavIcon.BACK)
-        }
-        else if ('/' === pathname) {
-            setNavIcon(NavIcon.NONE)
-        }
-        else {
-            setNavIcon(NavIcon.TOGGLE)
-        }
+        setNavIcon(selectNavIcon(pathname))
     }, [pathname]);
 
 
