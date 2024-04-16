@@ -1,7 +1,6 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import '../styles/globals.css'
 import { Providers } from './providers'
-import type { Viewport } from 'next'
 import GenerationContextProvider from '@/context/generation-context'
 import NavigationComponent from "@/components/navigation"
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -10,14 +9,15 @@ import { appFont, inter } from './fonts'
 export const metadata: Metadata = {
   manifest: '/manifest.json',
   title: 'Tsunameme',
-  description: 'Tsunameme brings revolutions to meme'
+  description: 'Tsunameme brings revolutions to meme',
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  userScalable: false
+  userScalable: false,
+  themeColor: '#016283'
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -27,9 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           <GenerationContextProvider>
-            <header className='py-1'>
-              <NavigationComponent />
-            </header>
+            <NavigationComponent />
             {children}
           </GenerationContextProvider>
         </Providers>

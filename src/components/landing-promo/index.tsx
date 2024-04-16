@@ -22,11 +22,16 @@ const LandingPromoComponent = () => {
 
     return (
         <>
-            <div className='text-[20px]'>Making GIF expressions</div>
-            <div className='text-[20px]'>with <span className={styles.red}>generative AI</span></div>
+            <div className='font-bold text-background text-5xl'>TSUNAMEME</div>
+            <Spacer y={4} />
+            <div className='font-semibold text-background text-base'>
+                <p>Making GIF expressions</p>
+                <p>with generative AI</p>
+                {/* <p>with <span className={styles.red}>generative AI</span></p> */}
+            </div>
             <Spacer y={8} />
             <Slider className={styles.slider} {...sliderGIFSettings}>
-                <div key={0}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/EtXjqe36bZ.gif' alt='' /> </div>
+                <div key={0}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/EtXjqe36bZ.gif' alt='' /> </div >
                 <div key={1}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/E5J8VQLt1X.gif' alt='' /></div>
                 <div key={2}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/jJ5VujUbMn.gif' alt='' /></div>
                 <div key={3}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/GH1Exd8DcI.gif' alt='' /></div>
@@ -42,8 +47,7 @@ const LandingPromoComponent = () => {
                 <div key={13}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/amwYmgjyTU.gif' alt='' /></div>
                 <div key={14}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/KGwZxKAw4u.gif' alt='' /></div>
                 <div key={15}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/riJglKynzV.gif' alt='' /></div>
-            </Slider>
-            <div className='text-[12px]'>Collections from the community</div>
+            </Slider >
         </>
     )
 }

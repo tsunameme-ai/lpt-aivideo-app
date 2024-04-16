@@ -17,7 +17,6 @@ enum NavIcon {
 const NavigationComponent: React.FC = () => {
     const pathname = usePathname()
     const router = useRouter()
-
     const gContext = useGenerationContext()
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [menuItems, setMenuItems] = useState<string[][]>([
@@ -76,37 +75,41 @@ const NavigationComponent: React.FC = () => {
     }
 
     return (<>
-        <Navbar className="text-primary" onMenuOpenChange={setIsMenuOpen}>
-            <NavbarContent>
-                {renderIcon()}
-                <NavbarBrand className={`${appFont.className} font-semibold`}>
-                    TSUNAMEME
-                </NavbarBrand>
-            </NavbarContent>
-            <NavbarMenu>
-                {menuItems.map((item, index) => (
-                    < NavbarMenuItem key={`${item}-${index}`}>
-                        <Link
-                            onPress={() => {
-                                if (menuItems[index][1] === '/txt2img') {
-                                    gContext.reset()
-                                }
-                            }}
-                            color="foreground"
-                            className={`${appFont.className} font-medium w-full leading-10`}
-                            href={item[1]}
-                            size="lg"
-                        >
-                            {item[0]}
-                        </Link>
-                    </NavbarMenuItem>
-                ))}
 
-                < NavbarMenuItem key={`authentication`}>
-                    <AuthIndicator />
-                </NavbarMenuItem>
-            </NavbarMenu>
-        </Navbar >
+        {pathname != '/' &&
+            <header className='py-1'>
+                <Navbar className="text-primary" onMenuOpenChange={setIsMenuOpen}>
+                    <NavbarContent>
+                        {renderIcon()}
+                        <NavbarBrand className={`${appFont.className} font-semibold`}>
+                            TSUNAMEME
+                        </NavbarBrand>
+                    </NavbarContent>
+                    <NavbarMenu>
+                        {menuItems.map((item, index) => (
+                            < NavbarMenuItem key={`${item}-${index}`}>
+                                <Link
+                                    onPress={() => {
+                                        if (menuItems[index][1] === '/txt2img') {
+                                            gContext.reset()
+                                        }
+                                    }}
+                                    color="foreground"
+                                    className={`${appFont.className} font-medium w-full leading-10`}
+                                    href={item[1]}
+                                    size="lg"
+                                >
+                                    {item[0]}
+                                </Link>
+                            </NavbarMenuItem>
+                        ))}
+                        < NavbarMenuItem key={`authentication`}>
+                            <AuthIndicator />
+                        </NavbarMenuItem>
+                    </NavbarMenu>
+                </Navbar >
+            </header>
+        }
     </>)
 };
 
