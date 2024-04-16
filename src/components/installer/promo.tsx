@@ -2,6 +2,8 @@ import { Button, Spacer } from "@nextui-org/react"
 import LandingPromoComponent from '@/components/landing-promo'
 import styles from '@/styles/home.module.css'
 import { FaAnglesDown } from "react-icons/fa6"
+import { appFont } from "@/app/fonts"
+import { useRef, useEffect } from "react"
 
 interface InstallPromoProps {
     hasInstallPrompt: boolean
@@ -19,20 +21,30 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
     } else {
         dynamicMSG = <><div>Tap below button and choose</div> <div><strong>Add to Home Screen</strong> to install the app</div></>
     }
+    const divRef = useRef(null);
+
+    useEffect(() => {
+        const setHeight = () => {
+            div.style.height = `${window.innerHeight}px`;
+        };
+        const div: any = divRef.current;
+        if (div) {
+            setHeight()
+            window.addEventListener('resize', setHeight)
+        }
+        return () => window.removeEventListener('resize', setHeight)
+    }, []);
 
     return (
-        <section className={styles.main}>
-            <Spacer y={8} />
-            <h1>Tsunameme</h1>
-            <Spacer y={8} />
-            <div className={styles.centerLanding}>
+        <div ref={divRef} className={`${styles.main} ${appFont.className} flex bg-gradient-to-b from-primary to-[#98CDB1] w-full h-full`} >
+            <div className={`${styles.centerLanding} text-white`}>
                 <LandingPromoComponent />
                 <Spacer y={6} />
                 {dynamicMSG}
                 <Spacer y={1} />
                 <FaAnglesDown className="m-auto" />
             </div>
-        </section>
+        </div>
     )
 
 }
