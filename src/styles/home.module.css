@@ -15,7 +15,10 @@
     max-width: 512px;
     margin: auto;
     padding: 0 0;
+    z-index: 2;
+    background-size: 100% 144px;
 }
+
 
 .editorControls {
     width: 70%;
