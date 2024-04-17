@@ -23,11 +23,7 @@ export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const { authenticated, user } = usePrivy()
-    const [videoOutput, setVideoOutput] = useState<GenerationOutputItem | undefined>({
-        id: 'test',
-        seed: 123,
-        url: 'https://lpt-aivideo-dst.s3.amazonaws.com/CZrV2ezwGx.gif',
-    })
+    const [videoOutput, setVideoOutput] = useState<GenerationOutputItem | undefined>(undefined)
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
     const [isButtonNew, setIsButtonNew] = useState<boolean>(false)
