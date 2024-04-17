@@ -144,3 +144,7 @@
 .ql-editor .ql-size-hugee {
     font-size: 4em
 }
+
+.galleryModal {
+    width: 256px;
+}

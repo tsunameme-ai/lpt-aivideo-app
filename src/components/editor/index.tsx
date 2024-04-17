@@ -183,7 +183,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 }
                 img.src = imgLocalUrl
             }} />
-            {isOpen && image && <EditTextModalComponent imageUrl={props.imageUrl} width={canvasDimension.width} height={canvasDimension.height} text={selectedId ? textBlocks[selectedId]?.text : ''} opacity={0.3} isOpen={true} onClose={handleCloseModal} />}
+            {isOpen && image && <EditTextModalComponent imageUrl={props.imageUrl} width={canvasDimension.width} height={canvasDimension.height} text={selectedId ? textBlocks[selectedId]?.text : ''} opacity={0.4} isOpen={true} onClose={handleCloseModal} />}
             <div id='editor-wrapper' />
             <Skeleton isLoaded={image !== undefined}>
                 <div className='flex' style={{
