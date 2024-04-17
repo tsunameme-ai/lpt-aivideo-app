@@ -6,8 +6,6 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import { useGenerationContext } from '@/context/generation-context'
 import LandingPromoComponent from '@/components/landing-promo'
-import { appFont } from './fonts'
-import { useRef, useEffect } from 'react'
 
 export default function Home() {
   const router = useRouter()
@@ -17,33 +15,16 @@ export default function Home() {
     gContext.reset()
     router.push('/txt2img')
   }
-  const divRef = useRef(null);
-
-  useEffect(() => {
-    const setHeight = () => {
-      div.style.height = `${window.innerHeight}px`;
-    };
-    const div: any = divRef.current;
-    if (div) {
-      setHeight()
-      window.addEventListener('resize', setHeight)
-    }
-    return () => window.removeEventListener('resize', setHeight)
-  }, []);
 
   return (
-    // <div ref={divRef} className={`${styles.main} ${appFont.className} flex bg-gradient-to-b from-50% from-primary to-[#98CDB1] w-full h-full`} >
-    //   <div className="bg-img bg-cover bg-no-repeat w-full absolute" style={{ backgroundImage: "url('/wave.png')", height: '144px', top: '0px', left: '0px', border: '1px solid #f00' }}></div>
-    //   
-    // </div >
-    // <div ref={divRef} className={`${styles.landingBg} ${appFont.className} w-full h-full`} >
-    <div ref={divRef} className={`${styles.main} ${appFont.className} flex bg-gradient-to-b from-50% from-primary to-[#98CDB1] w-full h-full`} >
+    <div className={`${styles.main} w-full f-full min-h-screen bg-gradient-to-b from-50% from-primary to-[#98CDB1]`} style={{ border: '1px solid #0f0' }}>
+      <div className="h-32 w-full flex bg-img bg-repeat-x" style={{ backgroundImage: "url('/wave.png')" }} />
       <div className={styles.centerLanding}>
+        <Spacer y={8} />
         <LandingPromoComponent />
-        <Spacer y={20} />
+        <Spacer y={10} />
         <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleTxt2img}>Get Started</Button>
       </div >
-
     </div>
   )
 }

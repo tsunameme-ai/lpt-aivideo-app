@@ -16,16 +16,9 @@
     margin: auto;
     padding: 0 0;
     z-index: 2;
+    background-size: 100% 144px;
 }
 
-.landingBg {
-    text-align: center;
-    border: '1px solid #f00';
-    background-image: url('/wave.png'), linear-gradient(to bottom, #016283 150px, #98CDB1);
-    background-repeat: no-repeat;
-    background-position: top;
-    background-size: 100% auto;
-}
 
 .editorControls {
     width: 70%;
