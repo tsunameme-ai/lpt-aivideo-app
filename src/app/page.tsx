@@ -32,13 +32,18 @@ export default function Home() {
   }, []);
 
   return (
-    <div ref={divRef} className={`${styles.main} ${appFont.className} flex bg-gradient-to-b from-primary to-[#98CDB1] w-full h-full`} >
+    // <div ref={divRef} className={`${styles.main} ${appFont.className} flex bg-gradient-to-b from-50% from-primary to-[#98CDB1] w-full h-full`} >
+    //   <div className="bg-img bg-cover bg-no-repeat w-full absolute" style={{ backgroundImage: "url('/wave.png')", height: '144px', top: '0px', left: '0px', border: '1px solid #f00' }}></div>
+    //   
+    // </div >
+    // <div ref={divRef} className={`${styles.landingBg} ${appFont.className} w-full h-full`} >
+    <div ref={divRef} className={`${styles.main} ${appFont.className} flex bg-gradient-to-b from-50% from-primary to-[#98CDB1] w-full h-full`} >
       <div className={styles.centerLanding}>
         <LandingPromoComponent />
         <Spacer y={20} />
         <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleTxt2img}>Get Started</Button>
       </div >
-    </div >
 
+    </div>
   )
 }

@@ -15,6 +15,16 @@
     max-width: 512px;
     margin: auto;
     padding: 0 0;
+    z-index: 2;
+}
+
+.landingBg {
+    text-align: center;
+    border: '1px solid #f00';
+    background-image: url('/wave.png'), linear-gradient(to bottom, #016283 150px, #98CDB1);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: 100% auto;
 }
 
 .editorControls {
