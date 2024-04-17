@@ -17,7 +17,7 @@ export default function Home() {
   }
 
   return (
-    <div className={`${styles.main} w-full f-full min-h-screen bg-gradient-to-b from-50% from-primary to-[#98CDB1]`} style={{ border: '1px solid #0f0' }}>
+    <div className={`${styles.main} w-full f-full min-h-screen bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
       <div className="h-32 w-full flex bg-img bg-repeat-x" style={{ backgroundImage: "url('/wave.png')" }} />
       <div className={styles.centerLanding}>
         <Spacer y={8} />
