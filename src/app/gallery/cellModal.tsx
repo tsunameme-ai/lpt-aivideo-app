@@ -1,6 +1,7 @@
-import { Image, Modal, ModalContent, ModalHeader, ModalFooter } from "@nextui-org/react"
+import { Modal, ModalContent } from "@nextui-org/react"
 import { FaShare } from "react-icons/fa"
 import styles from "@/styles/home.module.css"
+import MediaPlayerComponent from "@/components/media-player"
 
 interface CellModalProps {
     imgUrl: string,
@@ -13,13 +14,11 @@ const CellModal: React.FC<CellModalProps> = (props: CellModalProps) => {
 
     return (
         <>
-            <Modal isOpen={props.isOpen} onClose={() => { props.onClose?.() }} placement="center" backdrop="blur" >
-                <ModalHeader />
-                <ModalContent>
-                    <Image src={props.imgUrl} alt={props.imgUrl} />
+            <Modal size='sm' hideCloseButton={true} isOpen={props.isOpen} onClose={() => { props.onClose?.() }} placement="center" backdrop="blur" >
+                <ModalContent className="flex items-center">
+                    <MediaPlayerComponent src={props.imgUrl} key={props.imgUrl} className={"w-full"} />
                     <FaShare className={styles.galleryShareIcon} onClick={() => props.handleShare?.(props.imgUrl)} />
                 </ModalContent>
-                <ModalFooter />
             </Modal>
         </>
     )

@@ -141,7 +141,8 @@ export class SDStaticAPI {
         await Utils.delay(10000)
         return [{
             id: 'static',
-            url: 'https://lpt-aivideo-dst.s3.amazonaws.com/T1EjNmQU2x.gif',
+            // url: 'https://lpt-aivideo-dst.s3.amazonaws.com/T1EjNmQU2x.gif',
+            url: 'https://lpt-aivideo-dst.s3.amazonaws.com/CZrV2ezwGx.gif',
             seed: 1773116098
         }]
     }

@@ -34,7 +34,6 @@ export default function Page() {
                     <Spacer y={4} />
                     <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={() => {
                         window.dispatchEvent(new Event(StartOutputEvent))
-
                     }}>GIF it</Button>
                     <Spacer y={4} />
                     <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' >Back</Button>

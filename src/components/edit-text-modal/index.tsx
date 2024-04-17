@@ -44,7 +44,6 @@ const EditTextModalComponent: React.FC<EditTextModalComponentProps> = (props: Ed
                 taRef.current.selectionEnd = textAreaLength;
             }, 100);
         }
-        console.log(`bg-white/${Math.floor(opacity * 100)}`)
     }, []);
 
     return (

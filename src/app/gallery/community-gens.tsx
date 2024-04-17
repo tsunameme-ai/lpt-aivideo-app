@@ -55,7 +55,7 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
 
     return (
         <>
-            <CellModal imgUrl={selectedCell} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />
+            {selectedCell && <CellModal imgUrl={selectedCell} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />}
             {isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
             <div className="grid grid-cols-3 gap-1">
                 {items.map((item, index) => (

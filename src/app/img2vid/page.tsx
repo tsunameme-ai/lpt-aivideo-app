@@ -23,7 +23,11 @@ export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const { authenticated, user } = usePrivy()
-    const [videoOutput, setVideoOutput] = useState<GenerationOutputItem | undefined>(undefined)
+    const [videoOutput, setVideoOutput] = useState<GenerationOutputItem | undefined>({
+        id: 'test',
+        seed: 123,
+        url: 'https://lpt-aivideo-dst.s3.amazonaws.com/CZrV2ezwGx.gif',
+    })
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
     const [isButtonNew, setIsButtonNew] = useState<boolean>(false)
@@ -142,9 +146,9 @@ export default function Page() {
                 <div className={styles.centerSection}>
                     <div className='font-medium'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
-                    <div className={styles.containerRelative}>
+                    <div className={`${styles.containerRelative}`}>
                         {videoOutput && <>
-                            <MediaPlayerComponent src={videoOutput.url} className={styles.videoPreview} />
+                            <MediaPlayerComponent src={videoOutput.url} className={`${styles.videoPreview} w-full`} />
                             <FaShare className={styles.shareIcon} onClick={handleShare} />
                         </>}
 
