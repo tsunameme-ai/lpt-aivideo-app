@@ -128,20 +128,3 @@
     float: right;
     color: #FF4429;
 }
-
-.editorTextArea {
-    width: 100%;
-}
-
-.red {
-    color: #ff4429;
-    background-color: #FFC30C;
-}
-
-.ql-editor .ql-size-hugee {
-    font-size: 4em
-}
-
-.galleryModal {
-    width: 256px;
-}

@@ -27,7 +27,6 @@ const LandingPromoComponent = () => {
             <div className='font-semibold text-background text-base'>
                 <p>Making GIF expressions</p>
                 <p>with generative AI</p>
-                {/* <p>with <span className={styles.red}>generative AI</span></p> */}
             </div>
             <Spacer y={8} />
             <Slider className={styles.slider} {...sliderGIFSettings}>

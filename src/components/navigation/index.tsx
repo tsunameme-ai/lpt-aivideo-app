@@ -26,7 +26,7 @@ const NavigationComponent: React.FC = () => {
     ])
 
     const selectNavIcon = (path: string): NavIcon => {
-        if (['/img2vid', '/add-text'].includes(path)) {
+        if (['/img2vid', '/caption'].includes(path)) {
             return NavIcon.BACK
         }
         if ('/' === path) {
@@ -70,7 +70,6 @@ const NavigationComponent: React.FC = () => {
                 />
             default:
                 return <></>
-
         }
     }
 
