@@ -3,8 +3,6 @@ import { Image } from "@nextui-org/react"
 
 
 interface MediaPlayerComponentProps {
-    // width: number
-    // height: number
     src: string
     className: string
     onLoad?: () => void
