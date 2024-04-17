@@ -54,7 +54,7 @@ export default function Page() {
                     </>}
 
                     {imageOutputs.length > 1 && <>
-                        <Slider className={styles.slider} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false}
+                        <Slider className={styles.slider} arrows={false} dots={true} slidesToShow={1} slidesToScroll={1} vertical={false}
                             initialSlide={selectedOutputIndex}
                             afterChange={onImageOutputSelected}>
                             {imageOutputs.map((item: GenerationOutputItem, key: number) => (
