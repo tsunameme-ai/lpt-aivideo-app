@@ -83,6 +83,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         Object.keys(textBlocks).forEach(key => {
             delete textBlocks[key]
         })
+        const segs = appFont.className.split('_')
 
         textBlocks[key] = {
             id: key,
@@ -96,7 +97,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             y: 0,
             stageWidth: width,
             stageHeight: height,
-            fontFamily: '__Work_Sans_ef3b78'
+            fontFamily: `__Work_Sans_${segs[segs.length - 1]}`
         }
         onClose()
     }
