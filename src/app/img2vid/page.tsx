@@ -51,12 +51,7 @@ export default function Page() {
         setIsButtonNew(true)
     }
 
-    const onError = (e: Error) => {
-        toast.error(e.message, {
-            toastId: 'Error notification',
-            autoClose: 1200,
-            hideProgressBar: true
-        })
+    const onError = () => {
         setIsGeneratingVideo(false)
         setIsButtonNew(false)
     }
@@ -146,11 +141,11 @@ export default function Page() {
                 <div className={styles.centerSection}>
                     <div className='font-medium'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
-                    <div className={`${styles.containerRelative}`}>
-                        {videoOutput && <>
-                            <MediaPlayerComponent src={videoOutput.url} className={`${styles.videoPreview} w-full`} />
+                    <div>
+                        {videoOutput && <div className='flex justify-center'>
+                            <MediaPlayerComponent src={videoOutput.url} className={styles.videoPreview} />
                             <FaShare className={styles.shareIcon} onClick={handleShare} />
-                        </>}
+                        </div>}
 
                         {gContext.overlayImageData && <>
                             {!videoOutput && <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />}
@@ -173,6 +168,7 @@ export default function Page() {
 
                         {img2VidRequest &&
                             <div className={styles.longrunIndicator}>
+                                <Spacer y={4} />
                                 <LongrunIndicator request={img2VidRequest}
                                     onError={onError}
                                     onComplete={onVideoGenerated}
@@ -182,7 +178,7 @@ export default function Page() {
                     </div>
                 </div>
                 <div className={styles.centerSection}>
-                    <Spacer y={4} />
+                    <Spacer y={1} />
                     <Button size='md' className='w-full font-medium' color='primary' radius='sm'
                         isLoading={isGeneratingVideo}
                         onPress={handleGenerateVideoClick}>{isButtonNew ? 'Create New' : 'Render'}</Button>
