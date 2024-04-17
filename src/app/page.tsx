@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import { useGenerationContext } from '@/context/generation-context'
 import LandingPromoComponent from '@/components/landing-promo'
+import { appFont } from './fonts'
 
 export default function Home() {
   const router = useRouter()
@@ -17,7 +18,7 @@ export default function Home() {
   }
 
   return (
-    <div className={`${styles.main} w-full f-full min-h-screen bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
+    <div className={`${styles.main} ${appFont.className} w-full f-full min-h-screen bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
       <div className="h-32 w-full flex bg-img bg-repeat-x" style={{ backgroundImage: "url('/wave.png')" }} />
       <div className={styles.centerLanding}>
         <Spacer y={8} />
