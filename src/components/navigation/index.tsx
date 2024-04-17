@@ -70,7 +70,6 @@ const NavigationComponent: React.FC = () => {
                 />
             default:
                 return <></>
-
         }
     }
 
