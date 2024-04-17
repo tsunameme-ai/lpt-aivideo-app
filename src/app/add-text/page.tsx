@@ -103,8 +103,6 @@ export default function Page() {
                         <Spacer y={4} />
                         <div className={styles.centerSection}>
                             <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleClickToVideo}>GIF it</Button>
-                            <Spacer y={4} />
-                            <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' onPress={() => router.back()}>Back</Button>
                         </div>
                     </>}
                 {authPrompt && <AuthPromo onContinueWOLogin={proceedToVideo} onLoginComplete={proceedToVideo} />}

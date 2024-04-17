@@ -24,7 +24,7 @@ export default function Page() {
                         Got questions or ideas? Drop us a line anytime!
                     </div>
                     <Spacer y={5} />
-                    <div className="flex justify-center items-center"><Button color="primary" onClick={() => router.push('/')}>Get Started</Button></div>
+                    <div className="flex justify-center items-center"><Button size='md' className='font-medium' color='primary' radius='sm' onClick={() => router.push('/')}>Get Started</Button></div>
                 </div>
             </section>
         </>
