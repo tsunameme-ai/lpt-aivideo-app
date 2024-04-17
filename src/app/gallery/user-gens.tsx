@@ -6,7 +6,7 @@ import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
 import { useRouter } from 'next/navigation'
 import { useGenerationContext } from '@/context/generation-context'
-import CellModal from "./cellModal"
+import CellModal from "./cell-modal"
 
 interface UserGenListProps {
     userId: string

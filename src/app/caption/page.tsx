@@ -85,7 +85,7 @@ export default function Page() {
             <ToastContainer />
             <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div className='font-medium'>Step 2 of 3: Add your copy</div>
+                    <div className='font-medium'>Step 2 of 3: Add your caption</div>
                     <Spacer y={2}></Spacer>
                     {(t2iOutput && t2iInput) ?
                         <Editor

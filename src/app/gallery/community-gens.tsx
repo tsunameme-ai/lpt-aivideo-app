@@ -5,7 +5,7 @@ import { Spacer, Spinner, Button, Image, useDisclosure } from "@nextui-org/react
 import { useEffect, useState } from "react"
 import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
-import CellModal from "./cellModal"
+import CellModal from "./cell-modal"
 
 interface CommunityListProps {
     handleShare: (url: string) => void

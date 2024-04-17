@@ -34,7 +34,7 @@ export default function Page() {
 
     const handleClickNext = () => {
         gContext.setT2iOutputSelectedIndex(selectedOutputIndex)
-        router.push('/add-text')
+        router.push('/caption')
     }
     return (
         <>

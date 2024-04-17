@@ -238,7 +238,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                         {Object.keys(textBlocks).length <= 0 &&
                             <div className="flex justify-center items-center w-full h-full">
                                 <Button className="absolute left-1/2 transform -translate-x-1/2  border-3 border-dashed border-[#f97216] text-[24px] text-[#f97216]" variant="bordered" radius="none" size='lg' onPress={handleOpenModal}>
-                                    Tap here to add copy</Button></div>}
+                                    Tap here to add caption</Button></div>}
 
 
                         {isTextBlockDragging && <Button isIconOnly variant={deleteBtnVariant} className={`ml-auto top-right-div ${styles.deleteTextBtn}`}
