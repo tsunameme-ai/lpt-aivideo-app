@@ -14,7 +14,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
     useEffect(() => {
         const connectToStream = () => {
             const id = props.request.id
-            setConnectStatus('')
+            setConnectStatus('🟢')
             console.log(`connectToStream ${id}`)
             // https://developer.mozilla.org/en-US/docs/Web/API/EventSource/message_event#examples
             const eventSource = new EventSource(`/api/stream?id=${id}`)
@@ -27,7 +27,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
                 const data = JSON.parse(ev.data)
                 if (data.complete === true) {
                     eventSource.close()
-                    //setConnectStatus('✅')
+                    setConnectStatus('')
                     props.onComplete?.(data.data)
                 }
                 else {
@@ -52,7 +52,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
 
 
     return <>
-        {connectStatus}
+        {connectStatus.length > 0 && <span>{connectStatus}</span>}
     </>
 }
 

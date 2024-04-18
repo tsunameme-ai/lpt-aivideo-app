@@ -18,10 +18,10 @@ const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest
     const intervalId = setInterval(() => {
         count += 1
         const segs = []
-        for (let i = 0; i < count % 9; i++) {
+        for (let i = 0; i < count % 8; i++) {
             segs.push('💨')
         }
-        notify.log(JSON.stringify({ "data": `Rendering the gif ${segs.join(' ')}` }))
+        notify.log(JSON.stringify({ "data": `It might take a while ${segs.join(' ')}` }))
     }, 1000);
 
     try {
@@ -32,10 +32,9 @@ const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest
     } catch (error) {
         console.error(error);
     } finally {
-        clearInterval(intervalId); // Clear the interval when finished
+        clearInterval(intervalId);
     }
-};
-// export async function GET(req: NextApiRequest, res: NextApiResponse)
+}
 
 export async function GET(req: Request | NextRequest) {
     const url = new URL(req.url!)
@@ -59,7 +58,6 @@ export async function GET(req: Request | NextRequest) {
     else {
         throw new Error(`Generation type ${generationRequest.type} has no exectuion details.`)
     }
-    // const take = url.searchParams.get("take")
 
     let responseStream = new TransformStream();
     const writer = responseStream.writable.getWriter();
