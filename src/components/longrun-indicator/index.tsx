@@ -20,7 +20,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
             const eventSource = new EventSource(`/api/stream?id=${id}`)
             eventSource.onerror = () => {
                 eventSource.close()
-                setConnectStatus('🔴 Ouch! Something just went wrong. Try it later?')
+                setConnectStatus('🔴 Something just went wrong. Try it later?')
                 props.onError?.(new Error('Ouch! Something just went wrong. Try it later?'))
             }
             eventSource.onmessage = (ev: MessageEvent) => {
