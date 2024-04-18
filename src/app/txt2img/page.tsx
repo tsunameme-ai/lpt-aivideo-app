@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { Button, Spacer, Image } from '@nextui-org/react'
+import { Spacer, Image } from '@nextui-org/react'
 import { GenerationOutputItem } from '@/libs/types'
 import Txt2ImgComponent from '@/components/txt2img'
 import { useState } from 'react'
@@ -12,6 +12,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from '@/styles/home.module.css'
 import { appFont } from '../fonts'
+import { PrimaryButton } from '@/components/buttons'
 
 
 export default function Page() {
@@ -68,7 +69,7 @@ export default function Page() {
                 </div>
                 {imageOutputs.length > 0 && <>
                     <div className={styles.centerSection}>
-                        <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleClickNext}>Next</Button>
+                        <PrimaryButton onPress={handleClickNext}>Next</PrimaryButton>
                     </div>
                 </>}
             </section >

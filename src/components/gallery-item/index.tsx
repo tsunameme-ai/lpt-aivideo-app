@@ -1,12 +1,13 @@
 'use client'
 import { fetchGenerationData } from "@/actions/stable-diffusion"
 import { useEffect, useState } from "react"
-import { Image, Spinner, Button, Spacer } from '@nextui-org/react'
+import { Image, Spinner, Spacer } from '@nextui-org/react'
 import { GenerationRequest, GenerationType } from "@/libs/types"
 import ErrorComponent from "../error"
 import styles from "@/styles/home.module.css"
 import { useRouter } from 'next/navigation'
 import MediaPlayerComponent from "../media-player"
+import { PrimaryButton, SecondaryButton } from "../buttons"
 
 interface GalleryItemComponentProps {
     generationId: string
@@ -71,13 +72,9 @@ const GalleryItemComponent: React.FC<GalleryItemComponentProps> = (props: Galler
                     </>}
                     <Spacer y={10} />
                     <div className={styles.centerSection}>
-                        <Button size='md' className='w-full font-medium' color='primary' radius='sm'
-                            onPress={HandleSeeMore}>See More
-                        </Button>
+                        <PrimaryButton onPress={HandleSeeMore}>See More</PrimaryButton>
                         <Spacer y={10} />
-                        <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm'
-                            onPress={HandleCreate}>Be A Creator
-                        </Button>
+                        <SecondaryButton onPress={HandleCreate}>Be A Creator</SecondaryButton>
                     </div >
                 </>}
             <ErrorComponent errorMessage={errorMessage} />

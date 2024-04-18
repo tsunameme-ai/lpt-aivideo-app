@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem, GenerationRequest, GenerationType, Img2vidInput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
-import { Spacer, Image, Link, Button } from "@nextui-org/react"
+import { Spacer, Image, Link } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
 import React from "react"
 import { useGenerationContext } from "@/context/generation-context"
@@ -18,6 +18,7 @@ import { Analytics } from "@/libs/analytics"
 import { usePrivy } from "@privy-io/react-auth";
 import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
+import { PrimaryButton, SecondaryButton } from "@/components/buttons"
 
 export default function Page() {
     const router = useRouter()
@@ -179,16 +180,16 @@ export default function Page() {
                 </div>
                 <div className={styles.centerSection}>
                     <Spacer y={4} />
-                    <Button size='md' className='w-full font-medium' color='primary' radius='sm'
+                    <PrimaryButton
                         isLoading={isGeneratingVideo}
-                        onPress={handleGenerateVideoClick}>{isButtonNew ? 'Create New' : 'Render'}</Button>
+                        onPress={handleGenerateVideoClick}>{isButtonNew ? 'Create New' : 'Render'}</PrimaryButton>
 
                     {isButtonNew &&
                         <>
                             <Spacer y={4} />
-                            <Button size='md' className='w-full font-medium' color='primary' radius='sm' variant="ghost"
+                            <SecondaryButton
                                 isLoading={isGeneratingVideo}
-                                onPress={() => { router.push('/gallery') }}>Gallery</Button>
+                                onPress={() => { router.push('/gallery') }}>Gallery</SecondaryButton>
                         </>
                     }
 

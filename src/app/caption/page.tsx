@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
-import { Button, Spacer } from "@nextui-org/react"
+import { Spacer } from "@nextui-org/react"
 import { useGenerationContext } from "@/context/generation-context"
 import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem, Txt2imgInput } from "@/libs/types"
 import styles from '@/styles/home.module.css'
@@ -13,6 +13,7 @@ import { StartOutputEvent } from "@/components/editor/types";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { appFont } from "../fonts";
+import { PrimaryButton } from "@/components/buttons";
 
 
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -102,7 +103,7 @@ export default function Page() {
                     <>
                         <Spacer y={4} />
                         <div className={styles.centerSection}>
-                            <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleClickToVideo}>GIF it</Button>
+                            <PrimaryButton onPress={handleClickToVideo}>GIF it</PrimaryButton>
                         </div>
                     </>}
                 {authPrompt && <AuthPromo onContinueWOLogin={proceedToVideo} onLoginComplete={proceedToVideo} />}

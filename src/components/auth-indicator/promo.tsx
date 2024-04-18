@@ -30,6 +30,7 @@ const AuthPromo: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
             placement='center'
             isDismissable={false}
             isOpen={isOpen}
+            hideCloseButton={true}
             onClose={onClose} >
             <ModalContent>
                 {(onClose) => (

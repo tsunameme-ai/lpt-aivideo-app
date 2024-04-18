@@ -1,11 +1,12 @@
 'use client'
 import { fetchGallery } from "@/actions/stable-diffusion"
 import { GenerationRequest } from "@/libs/types"
-import { Spacer, Spinner, Button, Image, useDisclosure } from "@nextui-org/react"
+import { Spacer, Spinner, Image, useDisclosure } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
 import CellModal from "./cell-modal"
+import { PrimaryButton } from "@/components/buttons"
 
 interface CommunityListProps {
     handleShare: (url: string) => void
@@ -67,7 +68,7 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
                 <Spacer y={1} />
-                {nextPage && <Button onPress={() => fetchData(nextPage)} size='md' className='font-medium' color='primary' radius='sm' >Load More</Button>}
+                {nextPage && <PrimaryButton onPress={() => fetchData(nextPage)} className='font-medium'>Load More</PrimaryButton>}
             </div>
         </>
     )
