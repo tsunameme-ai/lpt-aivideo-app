@@ -27,7 +27,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
                 const data = JSON.parse(ev.data)
                 if (data.complete === true) {
                     eventSource.close()
-                    setConnectStatus('✅')
+                    //setConnectStatus('✅')
                     props.onComplete?.(data.data)
                 }
                 else {
