@@ -21,7 +21,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
             eventSource.onerror = () => {
                 eventSource.close()
                 setConnectStatus('🔴 Something just went wrong. Try it later?')
-                props.onError?.(new Error('Ouch! Something just went wrong. Try it later?'))
+                props.onError?.(new Error('Something just went wrong. Try it later?'))
             }
             eventSource.onmessage = (ev: MessageEvent) => {
                 const data = JSON.parse(ev.data)
