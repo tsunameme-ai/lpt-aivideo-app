@@ -16,7 +16,6 @@
     margin: auto;
     padding: 0 0;
     z-index: 2;
-    background-size: 100% 144px;
 }
 
 
@@ -130,4 +129,16 @@
 .deleteTextBtn {
     float: right;
     color: #FF4429;
+}
+
+.wave {
+    background-image: url('/wave.png');
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (min-resolution: 192dpi) {
+    .wave {
+        background-image: url('/wave@2x.png');
+        background-size: auto 100%;
+    }
 }
