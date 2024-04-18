@@ -1,4 +1,4 @@
-import { StreamResponse, StreamStatus } from '@/app/api/stream/route'
+import { StreamResponse, StreamStatus } from '@/app/api/stream/types'
 import { GenerationOutputItem, GenerationRequest } from '@/libs/types'
 import { useEffect, useState } from 'react'
 

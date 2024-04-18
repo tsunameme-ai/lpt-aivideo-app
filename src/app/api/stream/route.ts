@@ -2,16 +2,10 @@ import { img2vid, txt2img } from "@/actions/stable-diffusion";
 import { GenerationManager } from "@/libs/generation-manager";
 import { GenerationRequest, GenerationType } from "@/libs/types";
 import { NextRequest } from "next/server";
+import { StreamResponse, StreamStatus } from "./types";
 
 export const dynamic = 'force-dynamic'
 
-export enum StreamStatus {
-    START = 'start',
-    PING = 'ping',
-    COMPLETE = 'complete'
-}
-
-export type StreamResponse = { status: StreamStatus, data?: any }
 
 interface Notify {
     log: (response: StreamResponse) => void;
