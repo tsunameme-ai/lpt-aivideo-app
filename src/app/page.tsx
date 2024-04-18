@@ -19,9 +19,9 @@ export default function Home() {
 
   return (
     <div className={`${styles.main} ${appFont.className} w-full f-full min-h-screen bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
-      <div className="h-32 w-full flex bg-img bg-repeat-x" style={{ backgroundImage: "url('/wave.png')" }} />
+      <div className={`h-32 w-full flex bg-img bg-repeat-x ${styles.wave}`} />
       <div className={styles.centerLanding}>
-        <Spacer y={8} />
+        <Spacer y={4} />
         <LandingPromoComponent />
         <Spacer y={10} />
         <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleTxt2img}>Get Started</Button>
