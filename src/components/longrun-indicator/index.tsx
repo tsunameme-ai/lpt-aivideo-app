@@ -20,14 +20,14 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
             const eventSource = new EventSource(`/api/stream?id=${id}`)
             eventSource.onerror = () => {
                 eventSource.close()
-                setConnectStatus('🔴 Fail to fetch')
-                props.onError?.(new Error('Fail to fetch the video'))
+                setConnectStatus('🔴 Something just went wrong. Try it later?')
+                props.onError?.(new Error('Something just went wrong. Try it later?'))
             }
             eventSource.onmessage = (ev: MessageEvent) => {
                 const data = JSON.parse(ev.data)
                 if (data.complete === true) {
                     eventSource.close()
-                    setConnectStatus('✅')
+                    //setConnectStatus('✅')
                     props.onComplete?.(data.data)
                 }
                 else {

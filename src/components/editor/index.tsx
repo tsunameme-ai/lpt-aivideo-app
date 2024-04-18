@@ -20,6 +20,7 @@ interface EditorProps {
     imageUrl: string
     onImagesRendered?: (stageImgDataUrl: string, coverImgDataUrl: string, width: number, height: number) => void
 }
+type Dimension = { width: number, height: number }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const coverLayerRef = useRef<any>()
@@ -27,10 +28,10 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [deleteBtnVariant, setDeleteBtnVariant] = useState<'light' | 'flat' | 'bordered'>('light')
     const [deleteBtnColor, setDeleteBtnColor] = useState<'danger' | 'default'>('default')
     const [image, setImage] = useState<HTMLImageElement>()
-    const [width, setWidth] = useState<number>(props.width)
-    const [height, setHeight] = useState<number>(props.height)
+    const [canvasDimension, setCanvasDimension] = useState<Dimension>({ width: props.width, height: props.height })
     const [outputDimension, setOutputDimension] = useState<{ pixelRatio: number, width: number, height: number }>({ pixelRatio: 1.0, width: 0, height: 0 })
     const [watermark, setWatermark] = useState<HTMLImageElement>()
+    const [watermarkDimension, setWatermarkDimension] = useState<Dimension>({ width: 0, height: 0 })
     const [textBlocks] = useState<{ [key: string]: TextBlockProps }>({})
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
     const [isTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
@@ -59,10 +60,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         let editorW = editorWrapperElement?.clientWidth ?? 0
         editorW = Math.min(editorW, imgWidth)
         editorH = editorW / imgWidth * imgHeight
-        setWidth(editorW)
-        setHeight(editorH)
+        setCanvasDimension({ width: editorW, height: editorH })
         setOutputDimension({ pixelRatio: imgWidth / editorW, width: imgWidth, height: imgHeight })
     }
+
+    useEffect(() => {
+        if (watermark) {
+            setWatermarkDimension({ width: canvasDimension.width * watermark.width / 1024, height: canvasDimension.height * watermark.height / 1024 })
+        }
+
+    }, [watermark, canvasDimension])
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -72,7 +79,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             onOpen()
     }
     const handleCloseModal = (text: string, slider: number) => {
-        console.log(appFont.className)
 
         if (text.replaceAll(' ', '').replaceAll('\n', '').length <= 0) {
             onClose()
@@ -95,8 +101,8 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             align: 'center',
             x: 0,
             y: 0,
-            stageWidth: width,
-            stageHeight: height,
+            stageWidth: canvasDimension.width,
+            stageHeight: canvasDimension.height,
             fontFamily: `__Work_Sans_${segs[segs.length - 1]}`
         }
         onClose()
@@ -104,7 +110,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
     const handleTextBlockDragging = (e: any) => {
 
-        if (!height || !width)
+        if (!canvasDimension)
             return
 
         //move to the deletion zone
@@ -115,9 +121,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             setDeleteBtnVariant('light')
             setDeleteBtnColor('default')
         }
-
-        //console.log(e.target.attrs.x + '  ' + e.evt.changedTouches[0]?.clientX)
-        //console.log(e.target.attrs.x - e.evt.changedTouches[0]?.clientX)
     }
 
     const handleTextBlockDragEnd = (e: any) => {
@@ -163,7 +166,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         wmimg.onload = () => {
             setWatermark(wmimg)
         }
-        wmimg.src = '/watermark.png';
+        wmimg.src = '/watermark1024.png';
 
         return () => {
             window.removeEventListener('resize', onResize)
@@ -182,23 +185,23 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                 }
                 img.src = imgLocalUrl
             }} />
-            {isOpen && image && <EditTextModalComponent imageUrl={props.imageUrl} width={width} height={height} text={selectedId ? textBlocks[selectedId]?.text : ''} opacity={0.3} isOpen={true} onClose={handleCloseModal} />}
+            {isOpen && image && <EditTextModalComponent imageUrl={props.imageUrl} width={canvasDimension.width} height={canvasDimension.height} text={selectedId ? textBlocks[selectedId]?.text : ''} opacity={0.4} isOpen={true} onClose={handleCloseModal} />}
             <div id='editor-wrapper' />
             <Skeleton isLoaded={image !== undefined}>
                 <div className='flex' style={{
-                    width: `${width}px`,
-                    height: `${height}px`,
+                    width: `${canvasDimension.width}px`,
+                    height: `${canvasDimension.height}px`,
                 }}>
                     {image && <>
                         <Stage
                             ref={stageRef}
                             style={{ position: 'absolute' }}
-                            width={width}
-                            height={height}
+                            width={canvasDimension.width}
+                            height={canvasDimension.height}
                             onMouseDown={handleMouseDown}
                             onTouchStart={handleMouseDown}>
                             <Layer>
-                                <KonvaImage listening={false} x={0} y={0} width={width} height={height} image={image} />
+                                <KonvaImage listening={false} x={0} y={0} width={canvasDimension.width} height={canvasDimension.height} image={image} />
                             </Layer>
                             <Layer
                                 ref={coverLayerRef}>
@@ -233,7 +236,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                             />
                                         )
                                     })}
-                                {watermark && <KonvaImage listening={false} x={width! - watermark.width} y={height! - watermark.height} width={watermark.width} height={watermark.height} image={watermark} />}
+                                {watermark && <KonvaImage image={watermark} listening={false} x={canvasDimension.width - watermarkDimension.width} y={canvasDimension.height - watermarkDimension.height} width={watermarkDimension.width} height={watermarkDimension.height} />}
                             </Layer>
                         </Stage>
                         {Object.keys(textBlocks).length <= 0 &&

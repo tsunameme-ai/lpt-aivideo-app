@@ -25,13 +25,6 @@
     margin: auto;
 }
 
-
-.containerRelative {
-    position: relative;
-}
-
-
-
 .textPrompt {
     width: 100%;
 }
@@ -71,10 +64,10 @@
     position: absolute;
     width: 28px;
     height: 28px;
-    right: 1.5%;
-    top: 1%;
     color: #FFC303;
-    z-index: 99;
+    z-index: 59;
+    right: 5%;
+
 }
 
 .galleryShareIcon {
@@ -90,6 +83,10 @@
 .videoPreview {
     width: 100%;
     border-radius: 5px;
+    text-align: center;
+    align-items: center;
+    margin: 0 auto;
+
 }
 
 .imagePreview {
