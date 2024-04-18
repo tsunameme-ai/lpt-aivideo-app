@@ -13,12 +13,12 @@ interface Notify {
 }
 
 const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest) => {
-
+    notify.log(JSON.stringify({ "data": `Sending to the cloud` }))
     let count = 0
     const intervalId = setInterval(() => {
         count += 1
         const segs = []
-        for (let i = 0; i < count % 10; i++) {
+        for (let i = 0; i < count % 9; i++) {
             segs.push('💨')
         }
         notify.log(JSON.stringify({ "data": `Rendering the gif ${segs.join(' ')}` }))
@@ -27,7 +27,7 @@ const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest
     try {
         const output = await exec(gr.input)
         output.id = gr.id
-        notify.complete(JSON.stringify({ "data": output, complete: true }))
+        //notify.complete(JSON.stringify({ "data": output, complete: true }))
         GenerationManager.getInstance().removeGenerationRequest(gr.id)
     } catch (error) {
         console.error(error);
