@@ -14,8 +14,8 @@ export enum StreamStatus {
 export type StreamResponse = { status: StreamStatus, data?: any }
 
 interface Notify {
-    log: (message: StreamResponse) => void;
-    complete: (message: StreamResponse) => void;
+    log: (response: StreamResponse) => void;
+    complete: (response: StreamResponse) => void;
     error: (error: Error) => void;
     close: () => void;
 }
@@ -107,7 +107,7 @@ export async function GET(req: Request | NextRequest) {
         headers: {
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "text/event-stream; charset=utf-8",
-            Connection: "keep-alive",
+            "Connection": "keep-alive",
             "Cache-Control": "no-cache, no-transform",
             "X-Accel-Buffering": "no",
             "Content-Encoding": "none",
