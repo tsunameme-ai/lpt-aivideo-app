@@ -1,12 +1,13 @@
 import { fetchAssetsByUser } from "@/actions/stable-diffusion"
 import { GenerationRequest } from "@/libs/types"
-import { Spacer, Spinner, Image, Button, useDisclosure } from "@nextui-org/react"
+import { Spacer, Spinner, Image, useDisclosure } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
 import { useRouter } from 'next/navigation'
 import { useGenerationContext } from '@/context/generation-context'
 import CellModal from "./cell-modal"
+import { PrimaryButton, SecondaryButton } from "@/components/buttons"
 
 interface UserGenListProps {
     userId: string
@@ -79,14 +80,14 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
                     : <>
                         {!isFetchinData && <div className={styles.center}>
                             <Spacer y={1} />
-                            <Button size='md' className='w-full font-medium' color='primary' variant="ghost" radius='sm' onPress={handleTxt2img}>Get Started</Button>
+                            <SecondaryButton onPress={handleTxt2img}>Get Started</SecondaryButton>
                         </div>}
                     </>
             }
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
                 <Spacer y={1} />
-                {nextPage && <Button onPress={() => fetchData(nextPage)} size='md' className='font-medium' color='primary' radius='sm' >Load More</Button>}
+                {nextPage && <PrimaryButton onPress={() => fetchData(nextPage)} className='font-medium'>Load More</PrimaryButton>}
             </div >
         </>
     )

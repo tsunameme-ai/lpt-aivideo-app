@@ -1,5 +1,5 @@
 'use client'
-import { Button, Spacer } from '@nextui-org/react'
+import { Spacer } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import styles from '@/styles/home.module.css'
 import "slick-carousel/slick/slick.css"
@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css"
 import { useGenerationContext } from '@/context/generation-context'
 import LandingPromoComponent from '@/components/landing-promo'
 import { appFont } from './fonts'
+import { PrimaryButton } from '@/components/buttons'
 
 export default function Home() {
   const router = useRouter()
@@ -24,7 +25,7 @@ export default function Home() {
         <Spacer y={4} />
         <LandingPromoComponent />
         <Spacer y={10} />
-        <Button size='md' className='w-full font-medium' color='primary' radius='sm' onPress={handleTxt2img}>Get Started</Button>
+        <PrimaryButton onPress={handleTxt2img}>Get Started</PrimaryButton>
       </div >
     </div>
   )

@@ -1,8 +1,9 @@
 'use client'
 import styles from "@/styles/home.module.css"
-import { Button, Spacer } from "@nextui-org/react"
+import { Spacer } from "@nextui-org/react"
 import { useRouter } from 'next/navigation'
 import { appFont } from "../fonts"
+import { PrimaryButton } from "@/components/buttons"
 
 export default function Page() {
     const router = useRouter()
@@ -24,7 +25,7 @@ export default function Page() {
                         Got questions or ideas? Drop us a line anytime!
                     </div>
                     <Spacer y={5} />
-                    <div className="flex justify-center items-center"><Button size='md' className='font-medium' color='primary' radius='sm' onClick={() => router.push('/')}>Get Started</Button></div>
+                    <div className="flex justify-center items-center"><PrimaryButton className='font-medium' onPress={() => router.push('/')}>Get Started</PrimaryButton></div>
                 </div>
             </section>
         </>
