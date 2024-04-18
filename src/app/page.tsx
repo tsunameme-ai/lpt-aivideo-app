@@ -19,7 +19,7 @@ export default function Home() {
   }
 
   return (
-    <div className={`${styles.main} ${appFont.className} w-full f-full min-h-screen bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
+    <div className={`${styles.main} ${appFont.className} w-full min-h-svh bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
       <div className={`h-32 w-full flex bg-img bg-repeat-x ${styles.wave}`} />
       <div className={styles.centerLanding}>
         <Spacer y={4} />

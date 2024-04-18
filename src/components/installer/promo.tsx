@@ -23,7 +23,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
 
     return (
 
-        <div className={`${styles.main} ${appFont.className} w-full h-screen bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
+        <div className={`${styles.main} ${appFont.className} w-full min-h-svh bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
             <div className={`h-20 w-full flex bg-img bg-repeat-x ${styles.wave}`} />
             <div className={`${styles.centerLanding} text-white`}>
                 <LandingPromoComponent />
@@ -31,6 +31,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 {dynamicMSG}
                 <Spacer y={1} />
                 <FaAnglesDown className="m-auto" />
+                <Spacer y={1} />
             </div>
         </div>
     )
