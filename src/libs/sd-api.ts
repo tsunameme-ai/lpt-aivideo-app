@@ -139,11 +139,11 @@ export class SDStaticAPI {
     }
 
     public async img2vid(): Promise<Array<GenerationOutputItem>> {
-        await Utils.delay(10000)
+        await Utils.delay(12000)
         return [{
             id: 'static',
-            // url: 'https://lpt-aivideo-dst.s3.amazonaws.com/T1EjNmQU2x.gif',
-            url: 'https://lpt-aivideo-dst.s3.amazonaws.com/CZrV2ezwGx.gif',
+            url: 'https://lpt-aivideo-dst.s3.amazonaws.com/T1EjNmQU2x.gif',
+            // url: 'https://lpt-aivideo-dst.s3.amazonaws.com/CZrV2ezwGx.gif',
             seed: 1773116098
         }]
     }

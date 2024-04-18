@@ -2,40 +2,37 @@ import { img2vid, txt2img } from "@/actions/stable-diffusion";
 import { GenerationManager } from "@/libs/generation-manager";
 import { GenerationRequest, GenerationType } from "@/libs/types";
 import { NextRequest } from "next/server";
+import { StreamResponse, StreamStatus } from "./types";
 
 export const dynamic = 'force-dynamic'
 
+
 interface Notify {
-    log: (message: string) => void;
-    complete: (message: string) => void;
+    log: (response: StreamResponse) => void;
+    complete: (response: StreamResponse) => void;
     error: (error: Error) => void;
     close: () => void;
 }
 
 const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest) => {
-    notify.log(JSON.stringify({ "data": `Sending to the cloud` }))
+    notify.log({ status: StreamStatus.START })
     let count = 0
     const intervalId = setInterval(() => {
         count += 1
-        const segs = []
-        for (let i = 0; i < count % 9; i++) {
-            segs.push('💨')
-        }
-        notify.log(JSON.stringify({ "data": `Rendering the gif ${segs.join(' ')}` }))
+        notify.log({ status: StreamStatus.PING, data: count })
     }, 1000);
 
     try {
         const output = await exec(gr.input)
         output.id = gr.id
-        notify.complete(JSON.stringify({ "data": output, complete: true }))
+        notify.complete({ status: StreamStatus.COMPLETE, data: output })
         GenerationManager.getInstance().removeGenerationRequest(gr.id)
     } catch (error) {
         console.error(error);
     } finally {
-        clearInterval(intervalId); // Clear the interval when finished
+        clearInterval(intervalId);
     }
-};
-// export async function GET(req: NextApiRequest, res: NextApiResponse)
+}
 
 export async function GET(req: Request | NextRequest) {
     const url = new URL(req.url!)
@@ -59,20 +56,18 @@ export async function GET(req: Request | NextRequest) {
     else {
         throw new Error(`Generation type ${generationRequest.type} has no exectuion details.`)
     }
-    // const take = url.searchParams.get("take")
 
-    let responseStream = new TransformStream();
-    const writer = responseStream.writable.getWriter();
-    const encoder = new TextEncoder();
+    let responseStream = new TransformStream()
+    const writer = responseStream.writable.getWriter()
+    const encoder = new TextEncoder()
     let closed = false;
-
     // Invoke long running process
     longRunning({
-        log: (msg: string) => {
-            writer.write(encoder.encode(`data: ${msg}\n\n`))
+        log: (response: StreamResponse) => {
+            writer.write(encoder.encode(`data: ${JSON.stringify(response)}\n\n`))
         },
-        complete: (msg: string) => {
-            writer.write(encoder.encode(`data: ${msg}\n\n`))
+        complete: (response: StreamResponse) => {
+            writer.write(encoder.encode(`data: ${JSON.stringify(response)}\n\n`))
             if (!closed) {
                 writer.close();
                 closed = true;
@@ -106,7 +101,7 @@ export async function GET(req: Request | NextRequest) {
         headers: {
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "text/event-stream; charset=utf-8",
-            Connection: "keep-alive",
+            "Connection": "keep-alive",
             "Cache-Control": "no-cache, no-transform",
             "X-Accel-Buffering": "no",
             "Content-Encoding": "none",

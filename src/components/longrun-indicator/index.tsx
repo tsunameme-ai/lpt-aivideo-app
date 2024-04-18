@@ -1,3 +1,4 @@
+import { StreamResponse, StreamStatus } from '@/app/api/stream/types'
 import { GenerationOutputItem, GenerationRequest } from '@/libs/types'
 import { useEffect, useState } from 'react'
 
@@ -14,7 +15,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
     useEffect(() => {
         const connectToStream = () => {
             const id = props.request.id
-            setConnectStatus('')
+            setConnectStatus('🟢')
             console.log(`connectToStream ${id}`)
             // https://developer.mozilla.org/en-US/docs/Web/API/EventSource/message_event#examples
             const eventSource = new EventSource(`/api/stream?id=${id}`)
@@ -24,20 +25,29 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
                 props.onError?.(new Error('Something just went wrong. Try it later?'))
             }
             eventSource.onmessage = (ev: MessageEvent) => {
-                const data = JSON.parse(ev.data)
-                if (data.complete === true) {
-                    eventSource.close()
-                    //setConnectStatus('✅')
-                    props.onComplete?.(data.data)
-                }
-                else {
-                    setConnectStatus(`🟢 ${data.data}`)
+                const data = JSON.parse(ev.data) as StreamResponse
+                switch (data.status) {
+                    case StreamStatus.START:
+                        setConnectStatus('🟢')
+                        break
+                    case StreamStatus.PING:
+                        const count = (data.data || 0)
+                        const segs = []
+                        for (let i = 0; i < count % 8; i++) {
+                            segs.push('💨')
+                        }
+                        setConnectStatus(`🟢 It might take a while ${segs.join('')}`)
+                        break
+                    case StreamStatus.COMPLETE:
+                        eventSource.close()
+                        setConnectStatus('')
+                        props.onComplete?.(data.data)
+                        break
                 }
             }
             eventSource.onopen = () => {
                 setConnectStatus('🟢')
             }
-            // eventSource.send(JSON.stringify({ param1: 'value1', param2: 'value2' }));
             return eventSource
         }
 
@@ -52,7 +62,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
 
 
     return <>
-        {connectStatus}
+        {connectStatus.length > 0 && <span>{connectStatus}</span>}
     </>
 }
 
