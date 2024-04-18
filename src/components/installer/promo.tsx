@@ -24,7 +24,6 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
 
         <div className={`${styles.main} ${appFont.className} w-full f-full min-h-screen bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
             <div className={`h-32 w-full flex bg-img bg-repeat-x ${styles.wave}`} />
-            {/* <div className={`${styles.main} ${appFont.className} w-full h-full flex items-center min-h-screen bg-gradient-to-b from-primary to-[#98CDB1]`}> */}
             <div className={`${styles.centerLanding} text-white`}>
                 <LandingPromoComponent />
                 <Spacer y={6} />
