@@ -43,7 +43,7 @@ export class SDAPI {
             "overlay_base64": params.overlayBase64,
             "overlay_text": params.overlayText,
             "image_generation_id": params.imageGenerationId,
-            "output_width": 384,
+            "output_width": 512,
             "user_id": params.userId
         }
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT_IMG2VID!
