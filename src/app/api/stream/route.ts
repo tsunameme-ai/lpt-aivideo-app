@@ -13,16 +13,15 @@ interface Notify {
 }
 
 const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest) => {
-    notify.log(JSON.stringify({ "data": "Started" }));
-    let count = 0
 
+    let count = 0
     const intervalId = setInterval(() => {
         count += 1
         const segs = []
         for (let i = 0; i < count % 10; i++) {
             segs.push('💨')
         }
-        notify.log(JSON.stringify({ "data": `Rendering ${segs.join(' ')}` }))
+        notify.log(JSON.stringify({ "data": `Rendering the gif ${segs.join(' ')}` }))
     }, 1000);
 
     try {
