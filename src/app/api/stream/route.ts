@@ -27,8 +27,7 @@ const longRunning = async (notify: Notify, exec: Function, gr: GenerationRequest
     try {
         const output = await exec(gr.input)
         output.id = gr.id
-        //notify.complete(JSON.stringify({ "data": output, complete: true }))
-        notify.log(JSON.stringify({ "data": `` }))
+        notify.complete(JSON.stringify({ "data": output, complete: true }))
         GenerationManager.getInstance().removeGenerationRequest(gr.id)
     } catch (error) {
         console.error(error);
