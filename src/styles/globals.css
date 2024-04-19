@@ -41,3 +41,8 @@ body {
     font-family: Helvetica;
     overscroll-behavior: none;
 }
+
+.bottom-align-slider .slick-initialized .slick-list .slick-track {
+    display: flex;
+    align-items: flex-end;
+}
