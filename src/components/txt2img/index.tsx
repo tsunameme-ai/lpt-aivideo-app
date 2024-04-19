@@ -20,6 +20,7 @@ interface Txt2ImgComponentProps {
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
+    const MAX_OUTPUT_COUNT = 9
     const { authenticated, user } = usePrivy()
     const gContext = useGenerationContext()
     const defaultBaseModel = gContext.config.models.find(item => { return item.default === true })?.value!
@@ -110,13 +111,12 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             setIsLoading(false)
         }
     }
-
     const renderGenerateButton = () => {
         switch (genType) {
             case GenRequestType.FIRSTTIME:
                 return <PrimaryButton isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Generate</PrimaryButton>
             case GenRequestType.REQUEST_MORE:
-                return <PrimaryButton variant="light" isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Generate More</PrimaryButton>
+                return <PrimaryButton variant="light" isDisabled={pPromptValue.length === 0 || gContext.t2iOutputs.length >= MAX_OUTPUT_COUNT} isLoading={isLoading} onPress={generateImage}>Generate More</PrimaryButton>
             case GenRequestType.REGENERATE:
                 return <PrimaryButton variant="light" isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Regenerate</PrimaryButton>
             default:
@@ -203,6 +203,3 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
 };
 
 export default Txt2ImgComponent
-
-
-
