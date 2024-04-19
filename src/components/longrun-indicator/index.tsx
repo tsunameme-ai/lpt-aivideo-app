@@ -33,10 +33,10 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
                     case StreamStatus.PING:
                         const count = (data.data || 0)
                         const segs = []
-                        for (let i = 0; i < count % 8; i++) {
+                        for (let i = 0; i < count % 4; i++) {
                             segs.push('💨')
                         }
-                        setConnectStatus(`🟢 It might take a while ${segs.join('')}`)
+                        setConnectStatus(`🟢 Keep app open. Working on it ${segs.join('')} `)
                         break
                     case StreamStatus.COMPLETE:
                         eventSource.close()

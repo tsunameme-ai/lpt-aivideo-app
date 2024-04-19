@@ -24,7 +24,6 @@ export default function Page() {
     const { authenticated, user } = usePrivy()
     const router = useRouter()
     const gContext = useGenerationContext()
-    const [t2iInput] = useState<Txt2imgInput | undefined>(gContext.t2iInput)
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
     const [authPrompt, setAuthPrompt] = useState<boolean>(false)
 
@@ -87,16 +86,14 @@ export default function Page() {
             <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
                     <div className='font-medium'>Step 2 of 3: Add your caption</div>
-                    <Spacer y={2}></Spacer>
-                    {(t2iOutput && t2iInput) ?
+                    <Spacer y={2} />
+                    {t2iOutput &&
                         <Editor
                             width={DEFAULT_VIDEO_WIDTH}
                             height={DEFAULT_VIDEO_HEIGHT}
                             onImagesRendered={onImagesRendered}
                             imageUrl={t2iOutput.url}
-                        />
-                        : <>
-                        </>}
+                        />}
                 </div>
 
                 {t2iOutput &&
