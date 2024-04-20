@@ -30,7 +30,7 @@ const LandingPromoComponent = () => {
             </div>
             <Spacer y={8} />
             <Slider className={styles.slider} {...sliderGIFSettings}>
-                <div key={0}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/EtXjqe36bZ.gif' alt='' /> </div >
+                <div key={0}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/kQu1NZFLKj.gif' alt='' /> </div >
                 <div key={1}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/E5J8VQLt1X.gif' alt='' /></div>
                 <div key={2}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/jJ5VujUbMn.gif' alt='' /></div>
                 <div key={3}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/GH1Exd8DcI.gif' alt='' /></div>
