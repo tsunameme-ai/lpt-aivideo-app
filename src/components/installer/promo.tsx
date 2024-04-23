@@ -42,7 +42,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 <span>button on your browser</span>
             </div>
             <div> and choose <strong>Add to Home Screen</strong> to install the app on your phone</div>
-            <div>{props.isChrome.toString()} {props.isSafari.toString()} {props.isFireFox.toString()} {props.isBrave.toString()}</div>
+            <div>{props.isChrome.toString()} {props.isSafari.toString()} {props.isFireFox.toString()} {props.isBrave.toString()} <br />{navigator.userAgent}</div>
         </>
     }
 
