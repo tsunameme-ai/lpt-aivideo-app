@@ -1,7 +1,7 @@
 import { Spacer, Image } from "@nextui-org/react"
 import styles from '@/styles/home.module.css'
 import { appFont } from "@/app/fonts"
-import { SecondaryButton } from "../buttons"
+import { PrimaryButton } from "../buttons"
 import { LuShare, LuAlignJustify } from "react-icons/lu"
 import { FaAnglesDown, FaAnglesUp } from "react-icons/fa6"
 
@@ -18,7 +18,9 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
     if (!props.isMobile)
         dynamicMSG = <p>Please open this page from your mobile phone</p>
     else if (props.hasInstallPrompt) {
-        dynamicMSG = <SecondaryButton onPress={props.onInstallRequested}>Install</SecondaryButton >
+        dynamicMSG = <>
+            <Spacer y={4} /><PrimaryButton onPress={props.onInstallRequested}>Install</PrimaryButton>
+        </>
     } else {
         dynamicMSG = <div>
             <div className='flex justify-center items-center flex-wrap' >
