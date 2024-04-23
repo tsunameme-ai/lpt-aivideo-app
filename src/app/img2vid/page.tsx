@@ -24,7 +24,7 @@ export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const { authenticated, user } = usePrivy()
-    const [videoOutput, setVideoOutput] = useState<GenerationOutputItem | undefined>(undefined)
+    const [i2vOutput, setI2vOutput] = useState<GenerationOutputItem | undefined>(undefined)
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
     const [isButtonNew, setIsButtonNew] = useState<boolean>(false)
@@ -42,7 +42,10 @@ export default function Page() {
     const onVideoGenerated = async (outputs: Array<GenerationOutputItem>) => {
         Analytics.trackEvent({ 'event': 'vidgen-complete' })
         if (outputs.length > 0) {
-            setVideoOutput(outputs[0])
+            setI2vOutput(outputs[0])
+            if (process.env.NEXT_PUBLIC_USERGEN === 'local') {
+                gContext.setI2vOutputs(outputs.concat(gContext.i2vOutputs))
+            }
         }
         setIsGeneratingVideo(false)
         setIsButtonNew(true)
@@ -54,10 +57,10 @@ export default function Page() {
     }
 
     const handleShare = () => {
-        if (!videoOutput)
+        if (!i2vOutput)
             return
         share({
-            url: videoOutput.url,
+            url: i2vOutput.url,
             toastTitle: "GIF link is copied. Send it!"
         }, toastId)
     }
@@ -139,13 +142,13 @@ export default function Page() {
                     <div className='font-medium'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
                     <Spacer y={4} />
                     <div>
-                        {videoOutput && <div className='flex justify-center'>
-                            <MediaPlayerComponent src={videoOutput.url} className={styles.videoPreview} />
+                        {i2vOutput && <div className='flex justify-center'>
+                            <MediaPlayerComponent src={i2vOutput.url} className={styles.videoPreview} />
                             <FaShare className={styles.shareIcon} onClick={handleShare} />
                         </div>}
 
                         {gContext.overlayImageData && <>
-                            {!videoOutput && <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />}
+                            {!i2vOutput && <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />}
                             {<Img2VidComponent
                                 isAdvancedView={gContext.isAdvancedView}
                                 sdConfig={gContext.config}
