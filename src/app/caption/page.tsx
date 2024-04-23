@@ -7,7 +7,6 @@ import { useGenerationContext } from "@/context/generation-context"
 import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem, Txt2imgInput } from "@/libs/types"
 import styles from '@/styles/home.module.css'
 import { Analytics } from "@/libs/analytics"
-import { AuthPromo } from "@/components/auth-indicator";
 import { StartOutputEvent } from "@/components/editor/types";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
