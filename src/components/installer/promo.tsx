@@ -76,7 +76,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 {dynamicMSG}
 
                 {props.isChrome && props.isMobile &&
-                    <><div><FaAnglesUp className="fixed top-1 right-7 text-[#FF4429]" /></div></>
+                    <><div><FaAnglesUp className="fixed top-1 right-6 text-[#FF4429]" /></div></>
                 }
 
                 {props.isFireFox && props.isMobile &&
