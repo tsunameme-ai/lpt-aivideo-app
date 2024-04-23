@@ -60,6 +60,7 @@ export type LocalImageData = {
 export type SDConfig = {
     models: Array<{ value: string, label: string, default?: boolean }>
     videoModels: Array<{ value: string, label: string, default?: boolean }>
+    promptSuggestions: Array<string>
 }
 
 export const DEFAULT_IMG_WIDTH = 1024

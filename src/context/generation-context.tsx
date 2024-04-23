@@ -111,6 +111,11 @@ export default function GenerationContextProvider({ children }: { children: Reac
             'videoModels': [
                 { value: 'stable-video-diffusion-img2vid-xt', label: 'SVD' },
                 { value: 'stabilityai/stable-video-diffusion-img2vid-xt-1-1', label: 'SVD 1.1', default: true }
+            ],
+            'promptSuggestions': [
+                'Eating break first in front of a scary tsunami',
+                'An astronaut riding a green horse',
+                'A majestic lion jumping from a big stone at night',
             ]
         }
     };
