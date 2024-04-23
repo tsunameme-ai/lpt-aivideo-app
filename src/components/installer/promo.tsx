@@ -18,7 +18,7 @@ interface InstallPromoProps {
 export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoProps) => {
     let dynamicMSG
     if (!props.isMobile)
-        dynamicMSG = <p>Please open this page from your mobile phone.</p>
+        dynamicMSG = <p>Please open this page from your mobile phone</p>
     else if (props.hasInstallPrompt) {
         dynamicMSG = <SecondaryButton onPress={props.onInstallRequested}>Install</SecondaryButton >
     } else if (props.isFireFox) {
@@ -32,8 +32,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
             </div>
             <div> and choose <strong>Add to Home Screen</strong> to install the app on your phone</div>
         </>
-    }
-    else {
+    } else {
         dynamicMSG = <>
             <div className='flex items-center' >
                 <span>Please tap the</span>
@@ -43,6 +42,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 <span>button on your browser</span>
             </div>
             <div> and choose <strong>Add to Home Screen</strong> to install the app on your phone</div>
+            <div>{props.isChrome.toString()} {props.isSafari.toString()} {props.isFireFox.toString()} {props.isBrave.toString()}</div>
         </>
     }
 
@@ -62,24 +62,19 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                     <Image className="w-64" src='https://lpt-aivideo-dst.s3.amazonaws.com/bSO9pFGHzV.gif' alt='dog' />
                 </div>
                 <Spacer y={4} />
+
                 {dynamicMSG}
-                {props.isSafari &&
-                    <>
-                        <Spacer y={8} />
-                        <div><FaAnglesDown className="m-auto text-[#FF4429]" /></div>
-                    </>
+
+                {props.isSafari && props.isMobile &&
+                    <><Spacer y={8} /><div><FaAnglesDown className="m-auto text-[#FF4429]" /></div></>
                 }
 
-                {props.isChrome &&
-                    <>
-                        <div><FaAnglesUp className="fixed top-1 right-1 text-[#FF4429]" /></div>
-                    </>
+                {props.isChrome && props.isMobile &&
+                    <><div><FaAnglesUp className="fixed top-1 right-1 text-[#FF4429]" /></div></>
                 }
 
-                {props.isFireFox &&
-                    <>
-                        <div><FaAnglesDown className="fixed bottom-2 right-5 text-[#FF4429]" /></div>
-                    </>
+                {props.isFireFox && props.isMobile &&
+                    <><div><FaAnglesDown className="fixed bottom-2 right-5 text-[#FF4429]" /></div></>
                 }
             </div>
         </div >
