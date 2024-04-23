@@ -1,13 +1,13 @@
 'use client'
 import { Txt2imgInput, GenerationOutputItem, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
-import { Input, Spacer, Textarea, SelectItem, Select, Button, DropdownMenu, DropdownTrigger, DropdownItem, Dropdown } from '@nextui-org/react'
+import { Input, Spacer, Textarea, SelectItem, Select, Button } from '@nextui-org/react'
 import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
 import { Analytics } from "@/libs/analytics";
 import { usePrivy } from "@privy-io/react-auth"
 import { PrimaryButton } from "../buttons";
 import { useState } from "react";
-import { FaLightbulb } from "react-icons/fa";
+import { FaDice } from "react-icons/fa6";
 import styles from '@/styles/home.module.css'
 
 enum GenRequestType {
@@ -29,7 +29,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const outputFromContext: GenerationOutputItem | undefined = gContext.t2iOutputs ? gContext.t2iOutputs[gContext.t2iOutputSelectedIndex] : undefined
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
     const [genType, setGenType] = useState<GenRequestType>((outputFromContext?.input as Txt2imgInput)?.pPrompt === undefined ? GenRequestType.FIRSTTIME : GenRequestType.REQUEST_MORE)
-    const [pPromptValue, setPPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.pPrompt || gContext.config.promptSuggestions[0])
+    const [pPromptValue, setPPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.pPrompt || gContext.shufflePrompt())
     const [nPromptValue, setNPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
     const [seedValue, setSeedValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.seed?.toString() || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -144,21 +144,9 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         inputWrapper: "border-primary"
                     }}
                 />
-                <Dropdown>
-                    <DropdownTrigger>
-                        <Button isIconOnly size="lg" variant="light" className={styles.renderBtn}>
-                            <FaLightbulb size={20} />
-                        </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                        aria-label="Prompt Suggestions"
-                        onAction={(key: string | number) => { setPPromptValue(key as string) }}
-                    >
-                        {gContext.config.promptSuggestions.map((prompt) => (
-                            <DropdownItem key={prompt}>{prompt}</DropdownItem>
-                        ))}
-                    </DropdownMenu>
-                </Dropdown>
+                <Button isIconOnly size="lg" variant="light" className={styles.renderBtn} onPress={() => { setPPromptValue(gContext.shufflePrompt()) }}>
+                    <FaDice size={20} />
+                </Button>
 
             </div>
             <Spacer y={4} />

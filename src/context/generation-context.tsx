@@ -14,6 +14,8 @@ interface GenerationContextType {
 
     get t2iSelectedOutput(): GenerationOutputItem | undefined
 
+    shufflePrompt(): string
+
     overlayText: string
     setOverlayText: (value: string) => void
     overlayImageData: LocalImageData | undefined
@@ -111,14 +113,22 @@ export default function GenerationContextProvider({ children }: { children: Reac
             'videoModels': [
                 { value: 'stable-video-diffusion-img2vid-xt', label: 'SVD' },
                 { value: 'stabilityai/stable-video-diffusion-img2vid-xt-1-1', label: 'SVD 1.1', default: true }
-            ],
-            'promptSuggestions': [
-                'Eating break first in front of a scary tsunami',
-                'An astronaut riding a green horse',
-                'A majestic lion jumping from a big stone at night',
             ]
         }
     };
+    const shufflePrompt = (): string => {
+        //From https://civitai.com/images/1777449
+        const prompts = [
+            'photo realistic, ultra details, natural light ultra detailed portrait of a female necromancer, skeleton face volumetric fog, Hyperrealism, breathtaking, ultra realistic, ultra detailed, cyber background, cinematic lighting, highly detailed, breathtaking, photography, stunning environment, wide-angle", "text_l": "photo realistic, ultra details, natural light ultra detailed portrait of a female necromancer, skeleton face volumetric fog, Hyperrealism, breathtaking, ultra realistic, ultra detailed, cyber background, cinematic lighting, highly detailed, breathtaking, photography, stunning environment, wide-angle',
+            'masterpiece, best quality, gorgeous pale american cute girl, smiling, (crop top), red hair loose braided hair, short polca skirt, lean against a tree, field, flowers smiling, perfectly symmetrical face, detailed skin, elegant, alluring, attractive, amazing photograph, masterpiece, best quality, 8K, high quality, photorealistic, realism, art photography, Nikon D850, 16k, sharp focus, masterpiece, breathtaking, atmospheric perspective, diffusion, pore correlation, skin imperfections, DSLR, 80mm Sigma f2, depth of field, intricate natural lighting, looking at camara',
+            'cinematic still, filmed by Guillermo del Toro, Amidst a deep dark forest, an enigmatic being appears--an amalgamation of flora and fauna, with vines for hair, eyes gleaming like embers, and skin adorned with iridescent scales',
+            'masterpiece, best quality, greg rutkowski, fire, no humans, open mouth, wings, dragon, sharp teeth, teeth, tail, solo, breathing fire, horns, monster, claws, smoke , very detailed, high resolution, sharp, sharp image, 4k, 8k',
+            'Victorian man, London, (sharp focus:1.2), extremely detailed, (photorealistic:1.4), (RAW image, 8k high resolution:1.2), RAW candid cinema, 16mm, color graded Portra 400 film, ultra realistic, cinematic film still, subsurface scattering, ray tracing, (volumetric lighting)',
+            'closeup of woman wearing gothic clothes, braided pigtails, in a castle, sharp focus, looking at the night time, Mystical atmosphere, cinematic',
+            '"Cinematic still, filmed by Alfonso Cuar\u00f3n, wide-shot, a creature adorned with luminescent feathers that cascade like a vibrant waterfall, their iridescent glow casting an enchanting shimmer upon the surroundings, mythical creature had stepped into our world, exuding an aura of otherworldly beauty and intrigue',
+        ]
+        return prompts[Math.floor(Math.random() * prompts.length)]
+    }
 
     const getT2iSelectedOutput = (): GenerationOutputItem | undefined => {
         if (t2iOutputs) {
@@ -142,6 +152,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 get config() {
                     return generationConfig()
                 },
+                shufflePrompt,
                 get t2iSelectedOutput() {
                     return getT2iSelectedOutput()
                 },
