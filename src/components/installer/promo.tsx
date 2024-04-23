@@ -9,8 +9,6 @@ interface InstallPromoProps {
     hasInstallPrompt: boolean
     isMobile: boolean
     isChrome: boolean
-    isSafari: boolean
-    isBrave: boolean
     isFireFox: boolean
     onInstallRequested: () => void
 }
@@ -21,29 +19,41 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
         dynamicMSG = <p>Please open this page from your mobile phone</p>
     else if (props.hasInstallPrompt) {
         dynamicMSG = <SecondaryButton onPress={props.onInstallRequested}>Install</SecondaryButton >
-    } else if (props.isFireFox) {
-        dynamicMSG = <>
-            <div className='flex items-center' >
-                <span>Please tap the</span>
-                &nbsp;
-                <LuAlignJustify />
-                &nbsp;
-                <span>button on your browser</span>
-            </div>
-            <div> and choose <strong>Add to Home Screen</strong> to install the app on your phone</div>
-        </>
     } else {
-        dynamicMSG = <>
-            <div className='flex items-center' >
-                <span>Please tap the</span>
+        dynamicMSG = <div>
+            <div className='flex justify-center items-center flex-wrap' >
+                <span>For Safari, tap</span>
                 &nbsp;
                 <LuShare />
+                &nbsp;button and choose
+                <span><strong>Add to Home Screen</strong> to install the app</span>
+            </div >
+            <Spacer y={4} />
+            <div className='flex justify-center items-center flex-wrap' >
+                <span>For Chrome, tap</span>
                 &nbsp;
-                <span>button on your browser</span>
+                <LuShare />
+                &nbsp;button and choose
+                <span><strong>Add to Home Screen</strong> to install the app</span>
+            </div >
+            <Spacer y={4} />
+            <div className='flex justify-center items-center flex-wrap' >
+                <span>For Firefox, tap</span>
+                &nbsp;
+                <LuAlignJustify />
+                &nbsp;button and choose
+                <span><strong>Share</strong> and then <strong>Add to Home Screen</strong></span>
             </div>
-            <div> and choose <strong>Add to Home Screen</strong> to install the app on your phone</div>
-            <div>{props.isChrome.toString()} {props.isSafari.toString()} {props.isFireFox.toString()} {props.isBrave.toString()} <br />{navigator.userAgent}</div>
-        </>
+            <Spacer y={4} />
+            <div className='flex justify-center items-center flex-wrap' >
+                <span>For Brave, tap</span>
+                &nbsp;
+                <LuShare />
+                &nbsp;button and choose
+                <span><strong>Open in Chrome</strong> and then install the app from Chrome</span>
+            </div>
+
+        </div>
     }
 
     return (
@@ -59,15 +69,11 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 </div>
                 <Spacer y={4} />
                 <div className='flex justify-center items-center'>
-                    <Image className="w-64" src='https://lpt-aivideo-dst.s3.amazonaws.com/bSO9pFGHzV.gif' alt='dog' />
+                    <Image className="w-64" src='https://lpt-aivideo-dst.s3.amazonaws.com/kQu1NZFLKj.gif' alt='bear' />
                 </div>
                 <Spacer y={4} />
 
                 {dynamicMSG}
-
-                {props.isSafari && props.isMobile &&
-                    <><Spacer y={8} /><div><FaAnglesDown className="m-auto text-[#FF4429]" /></div></>
-                }
 
                 {props.isChrome && props.isMobile &&
                     <><div><FaAnglesUp className="fixed top-1 right-1 text-[#FF4429]" /></div></>

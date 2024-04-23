@@ -18,9 +18,9 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     const [installPromtEvent, setInstallPromtEvent] = useState<Event | undefined>(undefined)
     const [displayMode, setDisplayMode] = useState<DisplayMode>()
     const [isMobile, setIsMobile] = useState<boolean>(false)
-    const [isSafari, setIsSafari] = useState<boolean>(false)
+    //const [isSafari, setIsSafari] = useState<boolean>(false)
     const [isChrome, setIsChrome] = useState<boolean>(false)
-    const [isBrave, setIsBrave] = useState<boolean>(false)
+    //const [isBrave, setIsBrave] = useState<boolean>(false)
     const [isFireFox, setIsFireFox] = useState<boolean>(false)
 
     const handleBeforeInstallPromptEvt = (evt: Event) => {
@@ -70,19 +70,11 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     }
 
     const checkIsChrome = () => {
-        return /Chrome/.test(navigator.userAgent)
-    }
-
-    const checkIsBrave = () => {
-        return /Brave/.test(navigator.userAgent)
-    }
-
-    const checkIsSafari = () => {
-        return /Safari/.test(navigator.userAgent)
+        return /Chrome|CriOS/.test(navigator.userAgent)
     }
 
     const checkIsFireFox = () => {
-        return /Firefox/.test(navigator.userAgent)
+        return /Firefox|FxiOS/.test(navigator.userAgent)
     }
 
     useEffect(() => {
@@ -95,13 +87,9 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         handleResizeEvent()
         const ism = checkIsMobile()
         const isc = checkIsChrome()
-        const isb = checkIsBrave()
-        const iss = checkIsSafari()
         const isf = checkIsFireFox()
         setIsMobile(ism)
         setIsChrome(isc)
-        setIsBrave(isb)
-        setIsSafari(iss)
         setIsFireFox(isf)
         props.onAppReadyChange((process.env.NEXT_PUBLIC_DEBUG === 'browser') || (displayMode !== DisplayMode.BROWSER))
         setIsLoading(false)
@@ -123,8 +111,6 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
                     hasInstallPrompt={installPromtEvent !== undefined}
                     onInstallRequested={handleInstallRequest}
                     isChrome={isChrome}
-                    isSafari={isSafari}
-                    isBrave={isBrave}
                     isFireFox={isFireFox}
                 />
             }</>
