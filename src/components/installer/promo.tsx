@@ -44,7 +44,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 &nbsp;
                 <LuAlignJustify />
                 &nbsp;button and choose
-                <span><strong>Share</strong> and then <strong>Add to Home Screen</strong> to install</span>
+                <span><strong>Share</strong> then <strong>Add to Home Screen</strong> to install</span>
             </div>
         </div>
     }
