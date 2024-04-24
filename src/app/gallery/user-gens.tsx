@@ -29,7 +29,7 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
         setIsFetchinData(true)
 
         try {
-            if (props.userId === LOCAL_USERID) {
+            if (process.env.NEXT_PUBLIC_USERGEN === 'local' && props.userId === LOCAL_USERID) {
                 const itemsPerPage = 12
                 const startPos = nextPage === undefined ? 0 : parseInt(nextPage)
                 const outputs = gContext.i2vOutputs.slice(startPos, itemsPerPage)

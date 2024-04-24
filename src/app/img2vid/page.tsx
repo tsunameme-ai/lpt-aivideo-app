@@ -43,9 +43,7 @@ export default function Page() {
         Analytics.trackEvent({ 'event': 'vidgen-complete' })
         if (outputs.length > 0) {
             setI2vOutput(outputs[0])
-            if (process.env.NEXT_PUBLIC_USERGEN === 'local') {
-                gContext.setI2vOutputs(outputs.concat(gContext.i2vOutputs))
-            }
+            gContext.setI2vOutputs(outputs.concat(gContext.i2vOutputs))
         }
         setIsGeneratingVideo(false)
         setIsButtonNew(true)
