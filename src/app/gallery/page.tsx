@@ -26,7 +26,7 @@ export default function Page() {
         if (authenticated && user) {
             setUserId(user.id)
         }
-        else if (gContext.i2vOutputs.length > 0) {
+        else if (gContext.i2vOutputs.length > 0 && process.env.NEXT_PUBLIC_USERGEN === 'local') {
             setUserId(LOCAL_USERID)
         }
         else {
