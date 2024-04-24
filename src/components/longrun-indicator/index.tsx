@@ -31,7 +31,7 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
                         setConnectStatus('🟢 Magic starts...')
                         break
                     case StreamStatus.PING:
-                        setConnectStatus(`🟢 Please stay in the app as we paint`)
+                        setConnectStatus(`🟢 Please stay in the app as we fantasize`)
                         break
                     case StreamStatus.COMPLETE:
                         eventSource.close()
