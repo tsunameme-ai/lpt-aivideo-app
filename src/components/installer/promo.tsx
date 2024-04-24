@@ -28,7 +28,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 &nbsp;
                 <LuShare />
                 &nbsp;button and choose
-                <span><strong>Add to Home Screen</strong> to install the app</span>
+                <span><strong>Add to Home Screen</strong> to install</span>
             </div >
             <Spacer y={4} />
             <div className='flex justify-center items-center flex-wrap' >
@@ -36,7 +36,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 &nbsp;
                 <LuShare />
                 &nbsp;button and choose
-                <span><strong>Add to Home Screen</strong> to install the app</span>
+                <span><strong>Add to Home Screen</strong> to install</span>
             </div >
             <Spacer y={4} />
             <div className='flex justify-center items-center flex-wrap' >
@@ -44,17 +44,8 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
                 &nbsp;
                 <LuAlignJustify />
                 &nbsp;button and choose
-                <span><strong>Share</strong> and then <strong>Add to Home Screen</strong></span>
+                <span><strong>Share</strong> and then <strong>Add to Home Screen</strong> to install</span>
             </div>
-            <Spacer y={4} />
-            <div className='flex justify-center items-center flex-wrap' >
-                <span>For Brave, tap</span>
-                &nbsp;
-                <LuShare />
-                &nbsp;button and choose
-                <span><strong>Open in Chrome</strong> and then install the app from Chrome</span>
-            </div>
-
         </div>
     }
 
