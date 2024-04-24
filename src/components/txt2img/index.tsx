@@ -20,7 +20,7 @@ interface Txt2ImgComponentProps {
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
-    const MAX_OUTPUT_COUNT = 9
+    const MAX_OUTPUT_COUNT = 12
     const { authenticated, user } = usePrivy()
     const gContext = useGenerationContext()
     const defaultBaseModel = gContext.config.models.find(item => { return item.default === true })?.value!
@@ -127,8 +127,6 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     return (
         <>
             <Textarea
-                color="primary"
-                variant="bordered"
                 radius="sm"
                 maxRows={3}
                 label=''
@@ -138,7 +136,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 onValueChange={handlePPromptValueChange}
                 classNames={{
                     input: "text-lg",
-                    inputWrapper: "border-primary"
+                    inputWrapper: "border-primary",
                 }}
             />
             <Spacer y={4} />

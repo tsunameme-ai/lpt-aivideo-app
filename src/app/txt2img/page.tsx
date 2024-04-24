@@ -42,7 +42,7 @@ export default function Page() {
                     <Txt2ImgComponent
                         isAdvancedView={gContext.isAdvancedView}
                         onImagesGenerated={onImagesGenerated} />
-                    <Spacer y={2} />
+                    <Spacer y={4} />
                     {imageOutputs.length > 0 && <PrimaryButton onPress={handleClickNext}>Next</PrimaryButton>}
                 </div>
             </section >
