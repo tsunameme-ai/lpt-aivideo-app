@@ -116,7 +116,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             case GenRequestType.FIRSTTIME:
                 return <PrimaryButton isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Generate</PrimaryButton>
             case GenRequestType.REQUEST_MORE:
-                return <PrimaryButton variant="bordered" isDisabled={pPromptValue.length === 0 || gContext.t2iOutputs.length >= MAX_OUTPUT_COUNT} isLoading={isLoading} onPress={generateImage}>Fetch more pictures</PrimaryButton>
+                return <PrimaryButton variant="bordered" isDisabled={pPromptValue.length === 0 || gContext.t2iOutputs.length >= MAX_OUTPUT_COUNT} isLoading={isLoading} onPress={generateImage}>Fetch more images</PrimaryButton>
             case GenRequestType.REGENERATE:
                 return <PrimaryButton variant="bordered" isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Regenerate</PrimaryButton>
             default:
