@@ -1,12 +1,14 @@
 'use client'
 import { Txt2imgInput, GenerationOutputItem, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
-import { Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
+import { Input, Spacer, Textarea, SelectItem, Select, Button } from '@nextui-org/react'
 import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
 import { Analytics } from "@/libs/analytics";
 import { usePrivy } from "@privy-io/react-auth"
 import { PrimaryButton } from "../buttons";
 import { useState } from "react";
+import styles from '@/styles/home.module.css'
+import { FaDice } from "react-icons/fa6";
 
 enum GenRequestType {
     FIRSTTIME = 'FIRSTTIME',
@@ -27,7 +29,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const outputFromContext: GenerationOutputItem | undefined = gContext.t2iOutputs ? gContext.t2iOutputs[gContext.t2iOutputSelectedIndex] : undefined
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
     const [genType, setGenType] = useState<GenRequestType>((outputFromContext?.input as Txt2imgInput)?.pPrompt === undefined ? GenRequestType.FIRSTTIME : GenRequestType.REQUEST_MORE)
-    const [pPromptValue, setPPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.pPrompt || '')
+    const [pPromptValue, setPPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.pPrompt || gContext.shufflePrompt())
     const [nPromptValue, setNPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
     const [seedValue, setSeedValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.seed?.toString() || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -126,19 +128,25 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
 
     return (
         <>
-            <Textarea
-                radius="sm"
-                maxRows={3}
-                label=''
-                placeholder='Try "eating breakfast in front of a scary tsunami"'
-                value={pPromptValue}
-                errorMessage={errorMessage}
-                onValueChange={handlePPromptValueChange}
-                classNames={{
-                    input: "text-lg",
-                    inputWrapper: "border-primary",
-                }}
-            />
+
+            <div className='relative'>
+                <Textarea
+                    radius="sm"
+                    maxRows={3}
+                    label=''
+                    value={pPromptValue}
+                    errorMessage={errorMessage}
+                    onValueChange={handlePPromptValueChange}
+                    classNames={{
+                        input: "text-lg",
+                        inputWrapper: "border-primary",
+                    }}
+                />
+                <Button isIconOnly size="lg" variant="light" className={styles.renderBtn} onPress={() => { setPPromptValue(gContext.shufflePrompt()) }}>
+                    <FaDice size={20} />
+                </Button>
+
+            </div>
             <Spacer y={4} />
             {renderGenerateButton()}
             <Spacer y={1} />
