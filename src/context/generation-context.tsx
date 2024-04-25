@@ -19,6 +19,8 @@ interface GenerationContextType {
     overlayImageData: LocalImageData | undefined
     setOverlayImageData: (value: LocalImageData | undefined) => void
 
+    shufflePrompt: () => string
+
     i2vInput: Img2vidInput | undefined
     setI2vInput: (value: Img2vidInput | undefined) => void
 
@@ -99,9 +101,6 @@ export default function GenerationContextProvider({ children }: { children: Reac
         updateValueFromLocalStorage('overlayImageData')
         updateValueFromLocalStorage('i2vInput')
         updateValueFromLocalStorage('i2vOutputs')
-        // return () => {
-        //     setT2iInput(undefined)
-        // };
     }, []);
 
     const generationConfig = (): SDConfig => {
@@ -122,6 +121,20 @@ export default function GenerationContextProvider({ children }: { children: Reac
             ]
         }
     };
+    const shufflePrompt = (): string => {
+        const prompts = [
+            "Kyoto Animation stylized anime mixed with tradition Chinese artworks~ A dragon flying at modern cyberpunk fantasy world. Cinematic Lighting, incredible details, aerial view",
+            "A strikingly mystical creature, reminiscent of a large, magical female monster, takes center stage in this vintagepunk artwork. The image, possibly a captivating painting or a carefully captured photograph, showcases an awe-inspiring big white creature with an ethereal aura. Its mottled shade of white encompasses a weathered yet mesmerizing appearance, emanating an air of enigmatic beauty.",
+            "HDR photo of woman, spiral curls, long auburn hair, (freckles:0.6), beautiful low cut blouse, long skirt, sitting on a chair in a dark room, amazing smile, perfect eyes . High dynamic range, vivid, rich details, clear shadows and highlights, realistic, intense, enhanced contrast, highly detailed",
+            "90's aesthetic, boy, Anime",
+            "hajime sorayama 80s retro futurism sci-fi concept contemporary illustration fantasy landscape sky clouds robot cyborg girl futuristic city skyline aurora borealis stars space ocean beach palm trees biome island night gliter sparkly metallic irridescent holographic neon (jacket miniskirt stockings high heels:1.5) uniform revealing pose long flowing hair",
+            "i have nowhere to go in this destroyed world, digital illustration, emotionally profound, expressionism, dramatic, gloomy, dark, 8k, high quality",
+            "Lots of bunnies smiling with flowers and hearts in the background",
+            "A clown in a green suit is running away from a tornado"
+        ]
+        return prompts[Math.floor(Math.random() * prompts.length)]
+
+    }
 
     const getT2iSelectedOutput = (): GenerationOutputItem | undefined => {
         if (t2iOutputs) {
@@ -142,6 +155,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 isAdvancedView, setIsAdvancedView,
                 t2iOutputs, setT2iOutputs,
                 t2iOutputSelectedIndex, setT2iOutputSelectedIndex,
+                shufflePrompt,
                 get config() {
                     return generationConfig()
                 },
