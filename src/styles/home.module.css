@@ -132,13 +132,5 @@
 }
 
 .wave {
-    background-image: url('/wave.png');
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (min-resolution: 192dpi) {
-    .wave {
-        background-image: url('/wave@2x.png');
-        background-size: auto 100%;
-    }
+    background-image: url('/wave.svg');
 }

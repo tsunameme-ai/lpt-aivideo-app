@@ -21,6 +21,9 @@ interface GenerationContextType {
 
     i2vInput: Img2vidInput | undefined
     setI2vInput: (value: Img2vidInput | undefined) => void
+
+    i2vOutputs: Array<GenerationOutputItem>
+    setI2vOutputs: (outputs: Array<GenerationOutputItem>) => void
     reset: () => void
 }
 
@@ -77,6 +80,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [overlayText, setOverlayText] = useLocalStorage('overlayText', '')
     const [overlayImageData, setOverlayImageData] = useLocalStorage('overlayImageData', undefined)
     const [i2vInput, setI2vInput] = useLocalStorage('i2vInput', undefined)
+    const [i2vOutputs, setI2vOutputs] = useLocalStorage('i2vOutputs', [])
 
     const updateValueFromLocalStorage = (key: string) => {
         if (typeof (window) === 'undefined') {
@@ -94,6 +98,10 @@ export default function GenerationContextProvider({ children }: { children: Reac
         updateValueFromLocalStorage('overlayText')
         updateValueFromLocalStorage('overlayImageData')
         updateValueFromLocalStorage('i2vInput')
+        updateValueFromLocalStorage('i2vOutputs')
+        // return () => {
+        //     setT2iInput(undefined)
+        // };
     }, []);
 
     const generationConfig = (): SDConfig => {
@@ -143,6 +151,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 overlayText, setOverlayText,
                 overlayImageData, setOverlayImageData,
                 i2vInput, setI2vInput,
+                i2vOutputs, setI2vOutputs,
                 reset
             }}>
             {children}
