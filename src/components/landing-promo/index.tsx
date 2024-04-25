@@ -2,7 +2,7 @@ import styles from '@/styles/home.module.css'
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
-import { Spacer, Image } from '@nextui-org/react'
+import { Image } from '@nextui-org/react'
 
 
 const LandingPromoComponent = () => {
@@ -22,15 +22,8 @@ const LandingPromoComponent = () => {
 
     return (
         <>
-            <div className='font-bold text-background text-5xl'>TSUNAMEME</div>
-            <Spacer y={4} />
-            <div className='font-semibold text-background text-base'>
-                <p>Making GIF expressions</p>
-                <p>with generative AI</p>
-            </div>
-            <Spacer y={8} />
             <Slider className={styles.slider} {...sliderGIFSettings}>
-                <div key={0}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/EtXjqe36bZ.gif' alt='' /> </div >
+                <div key={0}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/kQu1NZFLKj.gif' alt='' /> </div >
                 <div key={1}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/E5J8VQLt1X.gif' alt='' /></div>
                 <div key={2}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/jJ5VujUbMn.gif' alt='' /></div>
                 <div key={3}><Image radius='sm' src='https://lpt-aivideo-dst.s3.amazonaws.com/GH1Exd8DcI.gif' alt='' /></div>

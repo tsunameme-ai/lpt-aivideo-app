@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { Spacer } from "@nextui-org/react"
 import { useGenerationContext } from "@/context/generation-context"
-import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem, Txt2imgInput } from "@/libs/types"
+import { DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem } from "@/libs/types"
 import styles from '@/styles/home.module.css'
 import { Analytics } from "@/libs/analytics"
 import { StartOutputEvent } from "@/components/editor/types";
@@ -21,7 +21,6 @@ const Editor = dynamic(() => import("@/components/editor"), {
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
-    const [t2iInput] = useState<Txt2imgInput | undefined>(gContext.t2iInput)
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
 
     const handleClickToVideo = () => {
@@ -79,16 +78,14 @@ export default function Page() {
             <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
                     <div className='font-medium'>Step 2 of 3: Add your caption</div>
-                    <Spacer y={2}></Spacer>
-                    {(t2iOutput && t2iInput) ?
+                    <Spacer y={2} />
+                    {t2iOutput &&
                         <Editor
                             width={DEFAULT_VIDEO_WIDTH}
                             height={DEFAULT_VIDEO_HEIGHT}
                             onImagesRendered={onImagesRendered}
                             imageUrl={t2iOutput.url}
-                        />
-                        : <>
-                        </>}
+                        />}
                 </div>
 
                 {t2iOutput &&

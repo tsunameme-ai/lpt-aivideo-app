@@ -31,7 +31,7 @@ export default function Page() {
                 </div>
 
                 <div className={styles.centerSection}>
-                    <Spacer y={1} />
+                    <Spacer y={4} />
                     <PrimaryButton onPress={() => {
                         window.dispatchEvent(new Event(StartOutputEvent))
                     }}>GIF it</PrimaryButton>

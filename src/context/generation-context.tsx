@@ -1,14 +1,11 @@
 'use client'
-import { LocalImageData, GenerationOutputItem, Txt2imgInput, Img2vidInput, SDConfig } from '@/libs/types';
+import { LocalImageData, GenerationOutputItem, Img2vidInput, SDConfig } from '@/libs/types';
 import { createContext, useState, useEffect, useContext } from 'react';
 
 interface GenerationContextType {
     config: SDConfig
     isAdvancedView: boolean
     setIsAdvancedView: (value: boolean) => void
-
-    t2iInput: Txt2imgInput | undefined
-    setT2iInput: (value: Txt2imgInput | undefined) => void
     t2iOutputs: Array<GenerationOutputItem>
     setT2iOutputs: (outputs: Array<GenerationOutputItem>) => void
 
@@ -78,7 +75,6 @@ const useLocalStorage = (key: string, defaultValue: any) => {
 
 export default function GenerationContextProvider({ children }: { children: React.ReactNode }) {
     const [isAdvancedView, setIsAdvancedView] = useLocalStorage('isAdvancedView', false)
-    const [t2iInput, setT2iInput] = useLocalStorage('t2iInput', undefined)
     const [t2iOutputs, setT2iOutputs] = useLocalStorage('t2iOutputs', [])
     const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useLocalStorage('t2iOutputSelectedIndex', 0)
     const [overlayText, setOverlayText] = useLocalStorage('overlayText', '')
@@ -97,14 +93,12 @@ export default function GenerationContextProvider({ children }: { children: Reac
 
     useEffect(() => {
         updateValueFromLocalStorage('isAdvancedView')
-        updateValueFromLocalStorage('t2iInput')
         updateValueFromLocalStorage('t2iOutputs')
         updateValueFromLocalStorage('t2iOutputSelectedIndex')
         updateValueFromLocalStorage('overlayText')
         updateValueFromLocalStorage('overlayImageData')
         updateValueFromLocalStorage('i2vInput')
         updateValueFromLocalStorage('i2vOutputs')
-
         // return () => {
         //     setT2iInput(undefined)
         // };
@@ -136,19 +130,16 @@ export default function GenerationContextProvider({ children }: { children: Reac
         return undefined
     }
     const reset = () => {
-        setT2iInput(undefined)
         setT2iOutputs([])
         setT2iOutputSelectedIndex(0)
         setOverlayText('')
         setOverlayImageData(undefined)
         setI2vInput(undefined)
-
     }
     return (
         <GenerationContext.Provider
             value={{
                 isAdvancedView, setIsAdvancedView,
-                t2iInput, setT2iInput,
                 t2iOutputs, setT2iOutputs,
                 t2iOutputSelectedIndex, setT2iOutputSelectedIndex,
                 get config() {

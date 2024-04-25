@@ -28,10 +28,10 @@ const LongrunIndicator: React.FC<LongrunIndicatorProps> = (props: LongrunIndicat
                 const data = JSON.parse(ev.data) as StreamResponse
                 switch (data.status) {
                     case StreamStatus.START:
-                        setConnectStatus('🟢 The magic starts...')
+                        setConnectStatus('🟢 Magic starts...')
                         break
                     case StreamStatus.PING:
-                        setConnectStatus(`🟢 Please stay in the app as we paint`)
+                        setConnectStatus(`🟢 Please stay in the app as we fantasize`)
                         break
                     case StreamStatus.COMPLETE:
                         eventSource.close()

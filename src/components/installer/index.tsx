@@ -18,6 +18,10 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     const [installPromtEvent, setInstallPromtEvent] = useState<Event | undefined>(undefined)
     const [displayMode, setDisplayMode] = useState<DisplayMode>()
     const [isMobile, setIsMobile] = useState<boolean>(false)
+    //const [isSafari, setIsSafari] = useState<boolean>(false)
+    const [isChrome, setIsChrome] = useState<boolean>(false)
+    //const [isBrave, setIsBrave] = useState<boolean>(false)
+    const [isFireFox, setIsFireFox] = useState<boolean>(false)
 
     const handleBeforeInstallPromptEvt = (evt: Event) => {
         evt.preventDefault()
@@ -48,6 +52,7 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         if ((evt as any).matches) {
             setDisplayMode(DisplayMode.STANDALONE)
             props.onAppReadyChange(isMobile)
+
         }
     }
     const handleResizeEvent = () => {
@@ -61,6 +66,14 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         return check
     }
 
+    const checkIsChrome = () => {
+        return /Chrome|CriOS/.test(navigator.userAgent)
+    }
+
+    const checkIsFireFox = () => {
+        return /Firefox|FxiOS/.test(navigator.userAgent)
+    }
+
     useEffect(() => {
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPromptEvt)
         window.addEventListener('appinstalled', handleAppInstalledEvt);
@@ -70,7 +83,11 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         setDisplayMode(displayMode)
         handleResizeEvent()
         const ism = checkIsMobile()
+        const isc = checkIsChrome()
+        const isf = checkIsFireFox()
         setIsMobile(ism)
+        setIsChrome(isc)
+        setIsFireFox(isf)
         props.onAppReadyChange((process.env.NEXT_PUBLIC_DEBUG === 'browser') || (displayMode !== DisplayMode.BROWSER))
         setIsLoading(false)
         return () => {
@@ -86,7 +103,13 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         {isLoading ? <></> :
             <>{
                 (!isMobile || displayMode === DisplayMode.BROWSER) &&
-                <InstallPromo isMobile={isMobile} hasInstallPrompt={installPromtEvent !== undefined} onInstallRequested={handleInstallRequest} />
+                <InstallPromo
+                    isMobile={isMobile}
+                    hasInstallPrompt={installPromtEvent !== undefined}
+                    onInstallRequested={handleInstallRequest}
+                    isChrome={isChrome}
+                    isFireFox={isFireFox}
+                />
             }</>
         }
     </>)

@@ -18,7 +18,7 @@ import { Analytics } from "@/libs/analytics"
 import { usePrivy } from "@privy-io/react-auth";
 import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
-import { PrimaryButton, SecondaryButton } from "@/components/buttons"
+import { PrimaryButton } from "@/components/buttons"
 
 export default function Page() {
     const router = useRouter()
@@ -184,9 +184,10 @@ export default function Page() {
                     {isButtonNew &&
                         <>
                             <Spacer y={4} />
-                            <SecondaryButton
+                            <PrimaryButton
+                                variant="bordered"
                                 isLoading={isGeneratingVideo}
-                                onPress={() => { router.push('/gallery') }}>Gallery</SecondaryButton>
+                                onPress={() => { router.push('/gallery') }}>Gallery</PrimaryButton>
                         </>
                     }
 

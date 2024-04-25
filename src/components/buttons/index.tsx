@@ -13,7 +13,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({ children, ...props }) => {
 
 const SecondaryButton: React.FC<ButtonProps> = ({ children, ...props }) => {
     return (
-        <Button size='md' className='w-full font-medium' color='primary' radius='sm' variant='ghost' {...props}>
+        <Button size='md' className='w-full font-medium' color='primary' radius='sm' variant='flat' {...props}>
             {children}
         </Button>
     );

@@ -1,43 +1,48 @@
 'use client'
 import { Txt2imgInput, GenerationOutputItem, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
-import { useState } from "react";
-import ErrorComponent from "../error";
-import { Button, Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
+import { Input, Spacer, Textarea, SelectItem, Select } from '@nextui-org/react'
 import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
-import styles from "@/styles/home.module.css";
-import { FaArrowRotateRight } from "react-icons/fa6"
 import { Analytics } from "@/libs/analytics";
-import { usePrivy } from "@privy-io/react-auth";
-import { appFont } from "@/app/fonts";
+import { usePrivy } from "@privy-io/react-auth"
+import { PrimaryButton } from "../buttons";
+import { useState } from "react";
+
+enum GenRequestType {
+    FIRSTTIME = 'FIRSTTIME',
+    REQUEST_MORE = 'REQUEST_MORE',
+    REGENERATE = 'REGENERATE'
+}
 
 interface Txt2ImgComponentProps {
     isAdvancedView: boolean
-    onImagesGenerated: (generationOutput: Array<GenerationOutputItem>) => void
-    onImagesError: (error: any) => void
+    onImagesGenerated: (outputs: Array<GenerationOutputItem>, resetSelectedIndex: number) => void
 }
 
 const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgComponentProps) => {
+    const MAX_OUTPUT_COUNT = 12
     const { authenticated, user } = usePrivy()
     const gContext = useGenerationContext()
     const defaultBaseModel = gContext.config.models.find(item => { return item.default === true })?.value!
+    const outputFromContext: GenerationOutputItem | undefined = gContext.t2iOutputs ? gContext.t2iOutputs[gContext.t2iOutputSelectedIndex] : undefined
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
-    const [pPromptValue, setPPromptValue] = useState<string>(gContext.t2iInput?.pPrompt || '')
-    const [nPromptValue, setNPromptValue] = useState<string>(gContext.t2iInput?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
-    const [seedValue, setSeedValue] = useState<string>(gContext.t2iInput?.seed?.toString() || '')
+    const [genType, setGenType] = useState<GenRequestType>((outputFromContext?.input as Txt2imgInput)?.pPrompt === undefined ? GenRequestType.FIRSTTIME : GenRequestType.REQUEST_MORE)
+    const [pPromptValue, setPPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.pPrompt || '')
+    const [nPromptValue, setNPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
+    const [seedValue, setSeedValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.seed?.toString() || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [pPromptErrorMessage, setPPromptErrorMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
     const [numOutput, setNumOutput] = useState<string>(DEFAULT_IMG_NUM_OUTPUT.toString())
     const [width, setWidth] = useState<string>(DEFAULT_IMG_WIDTH.toString())
     const [height, setHeight] = useState<string>(DEFAULT_IMG_HEIGHT.toString())
-    const [isEmptyPrompt, setIsEmptyPrompt] = useState<boolean>(true)
 
     const handlePPromptValueChange = (value: string) => {
-        setIsEmptyPrompt(value.length <= 0)
         setPPromptValue(value)
-        setPPromptErrorMessage('')
+
+        if (genType === GenRequestType.REQUEST_MORE) {
+            setGenType(GenRequestType.REGENERATE)
+        }
     }
 
     const handleSetBaseModel = (key: any) => {
@@ -57,13 +62,11 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         gContext.setT2iOutputSelectedIndex(0)
         gContext.setOverlayImageData(undefined)
         gContext.setOverlayText('')
-        gContext.setT2iInput(undefined)
         gContext.setT2iOutputs([])
         gContext.setI2vInput(undefined)
 
         const pPrompt = pPromptValue
         if (pPrompt.length === 0) {
-            //setPPromptErrorMessage('Please set prompt message')
             return
         }
 
@@ -78,47 +81,66 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             numOutput: parseInt(numOutput),
             userId: authenticated && user ? user.id : undefined
         }
-        gContext.setT2iInput(params)
         setIsLoading(true)
         try {
             const outputs = await txt2img(params)
             if (outputs.length > 0) {
-                gContext.setT2iOutputs(outputs)
-                props.onImagesGenerated(outputs)
+                for (let output of outputs) {
+                    output.input = params
+                }
+                let resultOutputs
+                let resetSelectedIndex
+                if (genType === GenRequestType.REQUEST_MORE) {
+                    resultOutputs = gContext.t2iOutputs.concat(outputs)
+                    resetSelectedIndex = gContext.t2iOutputs.length
+                }
+                else {
+                    resultOutputs = outputs
+                    resetSelectedIndex = 0
+                }
+                gContext.setT2iOutputs(resultOutputs)
+                gContext.setT2iOutputSelectedIndex(resetSelectedIndex)
+                props.onImagesGenerated(resultOutputs, resetSelectedIndex)
             }
+            setGenType(GenRequestType.REQUEST_MORE)
         }
         catch (error: any) {
             setErrorMessage(error.message || 'Something went wrong.')
-            props.onImagesError(error)
         }
         finally {
             setIsLoading(false)
         }
     }
+    const renderGenerateButton = () => {
+        switch (genType) {
+            case GenRequestType.FIRSTTIME:
+                return <PrimaryButton isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Generate</PrimaryButton>
+            case GenRequestType.REQUEST_MORE:
+                return <PrimaryButton variant="bordered" isDisabled={pPromptValue.length === 0 || gContext.t2iOutputs.length >= MAX_OUTPUT_COUNT} isLoading={isLoading} onPress={generateImage}>Fetch more pictures</PrimaryButton>
+            case GenRequestType.REGENERATE:
+                return <PrimaryButton variant="bordered" isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Regenerate</PrimaryButton>
+            default:
+                return <></>
+        }
+    }
 
     return (
         <>
-            <div className={`relative ${appFont.className}`}>
-                <Textarea
-                    color="primary"
-                    variant="bordered"
-                    radius="sm"
-                    maxRows={3}
-                    label=''
-                    placeholder='Try "eating breakfast in front of a scary tsunami"'
-                    value={pPromptValue}
-                    errorMessage={pPromptErrorMessage}
-                    onValueChange={handlePPromptValueChange}
-                    classNames={{
-                        input: "text-lg",
-                        inputWrapper: "border-primary"
-                    }}
-                />
-                <Button isIconOnly isDisabled={isEmptyPrompt} size="lg" variant="light" className={styles.renderBtn} onPress={generateImage} isLoading={isLoading}>
-                    <FaArrowRotateRight size={25} />
-                </Button>
-                <ErrorComponent errorMessage={errorMessage} />
-            </div>
+            <Textarea
+                radius="sm"
+                maxRows={3}
+                label=''
+                placeholder='Try "eating breakfast in front of a scary tsunami"'
+                value={pPromptValue}
+                errorMessage={errorMessage}
+                onValueChange={handlePPromptValueChange}
+                classNames={{
+                    input: "text-lg",
+                    inputWrapper: "border-primary",
+                }}
+            />
+            <Spacer y={4} />
+            {renderGenerateButton()}
             <Spacer y={1} />
             <div hidden={!props.isAdvancedView}>
                 <Textarea
@@ -174,13 +196,8 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 </div>
                 <Spacer y={4} />
             </div>
-
         </>
-
     )
 };
 
 export default Txt2ImgComponent
-
-
-

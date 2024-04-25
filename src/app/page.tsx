@@ -22,9 +22,14 @@ export default function Home() {
     <div className={`${styles.main} ${appFont.className} w-full min-h-svh bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
       <div className={`h-32 w-full flex bg-img bg-repeat-x ${styles.wave}`} />
       <div className={styles.centerLanding}>
+        <div className='font-bold text-background text-5xl'>TSUNAMEME</div>
+        <div className='font-semibold text-background text-base'>
+          <p>Making GIF expressions</p>
+          <p>with generative AI</p>
+        </div>
         <Spacer y={4} />
         <LandingPromoComponent />
-        <Spacer y={10} />
+        <Spacer y={8} />
         <PrimaryButton onPress={handleTxt2img}>Get Started</PrimaryButton>
       </div >
     </div>

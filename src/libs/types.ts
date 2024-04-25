@@ -36,7 +36,8 @@ export type GenerationOutput = {
 export type GenerationOutputItem = {
     id: string,
     url: string,
-    seed: number
+    seed: number,
+    input?: Txt2imgInput | Img2vidInput
 }
 export enum GenerationType {
     TXT2IMG = 'txt2img',
