@@ -187,7 +187,7 @@ export default function Page() {
                                 onPress={() => { router.push('/gallery') }}>Gallery</PrimaryButton>
                         </>
                     }
-
+                    <Spacer y={4} />
                 </div >
             </section >
         </>
