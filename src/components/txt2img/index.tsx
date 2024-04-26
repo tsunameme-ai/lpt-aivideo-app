@@ -159,20 +159,18 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 />
                 <Spacer y={4} />
                 <div className='grid grid-cols-2 gap-4'>
-                    {/* Hide width and height input */}
-                    {/* <Input
-                        label='Width'
-                        type='number'
-                        value={width}
-                        onValueChange={setWidth}
-                    />
-                    <Input
-                        label='Height'
-                        type='number'
-                        value={height}
-                        onValueChange={setHeight}
-                    /> */}
-
+                    <Select
+                        defaultSelectedKeys={[baseModel]}
+                        onSelectionChange={handleSetBaseModel}
+                        label="Use a model"
+                        errorMessage={baseModel === undefined ? `Must select base model` : ''}
+                    >
+                        {gContext.config.models.map((model) => (
+                            <SelectItem key={model.value} value={model.value}>
+                                {model.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
                     <Input
                         label='Seed'
                         type='number'
@@ -190,18 +188,22 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         label='Num of Images'
                         value={numOutput}
                         onValueChange={setNumOutput} />
-                    <Select
-                        defaultSelectedKeys={[baseModel]}
-                        onSelectionChange={handleSetBaseModel}
-                        label="Use a model"
-                        errorMessage={baseModel === undefined ? `Must select base model` : ''}
-                    >
-                        {gContext.config.models.map((model) => (
-                            <SelectItem key={model.value} value={model.value}>
-                                {model.label}
-                            </SelectItem>
-                        ))}
-                    </Select>
+
+                    {/* Disable width and height input */}
+                    <Input
+                        isDisabled={true}
+                        label='Width'
+                        type='number'
+                        value={width}
+                        onValueChange={setWidth}
+                    />
+                    <Input
+                        isDisabled={true}
+                        label='Height'
+                        type='number'
+                        value={height}
+                        onValueChange={setHeight}
+                    />
                 </div>
                 <Spacer y={4} />
             </div>

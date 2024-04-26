@@ -56,11 +56,13 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
             <Spacer y={4} />
             <div className='grid grid-cols-2 gap-4'>
                 <Input
+                    isDisabled={true}
                     label='Width'
                     type='number'
                     value={width}
                     onValueChange={updateWidth} />
                 <Input
+                    isDisabled={true}
                     label='Height'
                     type='number'
                     value={height}
