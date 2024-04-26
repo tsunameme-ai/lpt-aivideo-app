@@ -41,7 +41,11 @@ export default function Page() {
                         isAdvancedView={gContext.isAdvancedView}
                         onImagesGenerated={onImagesGenerated} />
                     <Spacer y={4} />
-                    {imageOutputs.length > 0 && <PrimaryButton onPress={handleClickNext}>Next</PrimaryButton>}
+                    {imageOutputs.length > 0 &&
+                        <>
+                            <PrimaryButton onPress={handleClickNext}>Next</PrimaryButton>
+                            <Spacer y={4} />
+                        </>}
                 </div>
             </section >
         </>
