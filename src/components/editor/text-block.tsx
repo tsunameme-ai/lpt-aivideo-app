@@ -31,6 +31,7 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
     const tagRef = useRef<any>()
     const [blockWidth, setBlockWidth] = useState<number>(0)
     const [blockHeight, setBlockHeight] = useState<number>(0)
+    const [anchors, setAnchors] = useState<string[]>(['bottom-right'])
     const DRAG_BOUND_X = 329
     const DRAG_BOUND_Y = 329
 
@@ -103,16 +104,11 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
         <Fragment>
             <Label
                 ref={shapeRef}
-                draggable
+                // draggable
+                draggable={props.isSelected}
                 onClick={() => { props.onSelect?.(props.id) }}
                 onTap={() => { props.onSelect?.(props.id) }}
-                onMouseDown={() => { props.onSelect?.(props.id) }}
-                onDragStart={(e) => { props.onDragStart?.(e) }}
-                onDragMove={(e) => { props.onDragging?.(e) }}
-                onDragEnd={(e) => { props.onDragEnd?.(e) }}
                 dragBoundFunc={onHandleBound}
-                x={props.x}
-                y={props.y}
             >
                 <Tag
                     ref={tagRef}
@@ -135,25 +131,42 @@ const TextBlock: React.FC<TextBlockProps> = (props: TextBlockProps) => {
                     wrap='words'
                 />
             </Label>
-            {props.isSelected && (
-                <Transformer
-                    ref={trRef}
-                    keepRatio={true}
-                    rotationSnaps={[0, 90, 180]}
-                    rotateAnchorOffset={30}
-                    anchorCornerRadius={5}
-                    enabledAnchors={['top-left', 'bottom-right']}
-                    flipEnabled={false}
-                    boundBoxFunc={(_, newBox) => {
-                        newBox.width = Math.max(20, newBox.width)
-                        newBox.height = Math.max(20, newBox.height)
-                        setBlockWidth(newBox.width)
-                        setBlockHeight(newBox.height)
-                        return newBox
-                    }}
-                />
-            )}
-        </Fragment>
+            {
+                props.isSelected && (
+                    <Transformer
+                        ref={trRef}
+                        keepRatio={true}
+                        rotationSnaps={[0, 90, 180]}
+                        rotateAnchorOffset={50}
+                        anchorCornerRadius={15}
+                        anchorSize={30}
+                        enabledAnchors={anchors}
+                        flipEnabled={false}
+                        centeredScaling
+                        onDragStart={props.onDragStart}
+                        onDragMove={(e) => {
+                            const x = trRef.current.getX()
+                            console.log(x)
+                            if (x >= props.stageWidth! - trRef.current.getWidth() - 30) {
+                                setAnchors(['top-left'])
+                            }
+                            if (x < 30) {
+                                setAnchors(['bottom-right'])
+                            }
+                            props.onDragging?.(e)
+                        }}
+                        onDragEnd={props.onDragEnd}
+                        boundBoxFunc={(_, newBox) => {
+                            newBox.width = Math.max(20, newBox.width)
+                            newBox.height = Math.max(20, newBox.height)
+                            setBlockWidth(newBox.width)
+                            setBlockHeight(newBox.height)
+                            return newBox
+                        }}
+                    />
+                )
+            }
+        </Fragment >
     );
 };
 

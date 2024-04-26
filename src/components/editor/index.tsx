@@ -39,17 +39,11 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const DELETE_ZONE_X = 305
     const DELETE_ZONE_Y = 150
     const handleMouseDown = (e: any) => {
-        try {
-            e.preventDefault()
-        }
-        catch (e) {
-
-        }
+        preventEventDefault(e)
         const clickedOnEmpty = e.target === e.target.getStage()
         if (clickedOnEmpty) {
             setSelectedId(undefined)
         }
-
     }
 
     const resize = (inputWidth: number, inputHeight: number) => {
@@ -153,7 +147,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
     }, [isOutputRequested])
 
-
     useEffect(() => {
         const onResize = () => {
             resize((image || props).width, (image || props).height)
@@ -174,6 +167,17 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
     }, [])
 
+    const preventEventDefault = (e: any) => {
+        console.log(e.evt)
+        try {
+            e.evt.preventDefault()
+        }
+        catch (error: any) {
+            console.log(error)
+
+        }
+    }
+
     return (
         <>
             <ToastContainer />
@@ -190,7 +194,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             <Skeleton isLoaded={image !== undefined}>
                 <div className='flex' style={{
                     width: `${canvasDimension.width}px`,
-                    height: `${canvasDimension.height}px`,
+                    height: `${canvasDimension.height}px`
                 }}>
                     {image && <>
                         <Stage
@@ -199,7 +203,12 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                             width={canvasDimension.width}
                             height={canvasDimension.height}
                             onMouseDown={handleMouseDown}
-                            onTouchStart={handleMouseDown}>
+                            onTouchStart={handleMouseDown}
+                            onTouchMove={(e) => {
+                                console.log(`???onTouchMove`)
+                                e.evt.preventDefault()
+                            }}
+                        >
                             <Layer>
                                 <KonvaImage listening={false} x={0} y={0} width={canvasDimension.width} height={canvasDimension.height} image={image} />
                             </Layer>
@@ -220,16 +229,20 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                     handleOpenModal()
                                                 }}
                                                 onDragging={(e) => {
+                                                    preventEventDefault(e)
+                                                    console.log(`??? onDragging`)
                                                     handleTextBlockDragging(e)
                                                 }}
                                                 onDragStart={(e) => {
+                                                    preventEventDefault(e)
+                                                    console.log(`??? onDragStart`)
                                                     setSelectedId(rect.id)
                                                     setIsTextBlockDragging(true)
-                                                    e
                                                 }}
                                                 onDragEnd={(e) => {
+                                                    preventEventDefault(e)
+                                                    console.log(`??? onDragEnd`)
                                                     setIsTextBlockDragging(false)
-                                                    setSelectedId(undefined)
                                                     handleTextBlockDragEnd(e)
                                                 }}
 
