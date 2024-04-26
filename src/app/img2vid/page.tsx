@@ -176,8 +176,17 @@ export default function Page() {
                     </div>
                 </div>
                 <div className={styles.centerSection}>
+
+                    {isButtonNew &&
+                        <>
+                            <PrimaryButton
+                                isLoading={isGeneratingVideo}
+                                onPress={handleShare}>Share</PrimaryButton>
+                        </>
+                    }
                     <Spacer y={4} />
                     <PrimaryButton
+                        variant="bordered"
                         isLoading={isGeneratingVideo}
                         onPress={handleGenerateVideoClick}>{isButtonNew ? 'Create New' : 'Render'}</PrimaryButton>
 
