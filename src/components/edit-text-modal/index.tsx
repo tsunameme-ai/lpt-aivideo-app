@@ -2,7 +2,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, Textarea } from "@nextui-o
 import { useEffect, useRef, useState } from "react"
 import styles from '@/styles/home.module.css'
 import { appFont } from "@/app/fonts"
-import { PrimaryButton } from "../buttons"
+import { SecondaryButton } from "../buttons"
 
 interface EditTextModalComponentProps {
     imageUrl: string
@@ -79,9 +79,9 @@ const EditTextModalComponent: React.FC<EditTextModalComponentProps> = (props: Ed
                         <>
                             <ModalHeader className="font-normal">
                                 <div>{labelValue}</div>
-                                <PrimaryButton variant="bordered" className="font-medium" style={{ position: 'absolute', top: '10px', right: '16px' }} onPress={handleClickClose}>
+                                <SecondaryButton className="font-medium" style={{ position: 'absolute', top: '10px', right: '16px' }} onPress={handleClickClose}>
                                     Done
-                                </PrimaryButton>
+                                </SecondaryButton>
                             </ModalHeader>
                             <ModalBody className="items-center">
                                 <div style={{ width: `${props.width}px`, height: `${props.height}px` }}>
