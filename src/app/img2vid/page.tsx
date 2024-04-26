@@ -7,7 +7,6 @@ import { Spacer, Image, Link } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
 import React from "react"
 import { useGenerationContext } from "@/context/generation-context"
-import AdvancedIndicator from "@/components/advanced-indicator"
 import ErrorComponent from "@/components/error"
 import LongrunIndicator from "@/components/longrun-indicator"
 import { FaShare } from "react-icons/fa"
@@ -37,7 +36,6 @@ export default function Page() {
         modelId: gContext.config.videoModels.find(item => { return item.default === true })?.value!
     })
 
-    const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
     const toastId = "copy-success"
     const onVideoGenerated = async (outputs: Array<GenerationOutputItem>) => {
         Analytics.trackEvent({ 'event': 'vidgen-complete' })
@@ -137,7 +135,7 @@ export default function Page() {
             <ToastContainer />
             <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div className='font-medium'>Step 3 of 3: Make it a GIF {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div className='font-medium'>Step 3 of 3: Make it a GIF </div>
                     <Spacer y={4} />
                     <div>
                         {i2vOutput && <div className='flex justify-center'>
@@ -147,8 +145,7 @@ export default function Page() {
 
                         {gContext.overlayImageData && <>
                             {!i2vOutput && <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />}
-                            {<Img2VidComponent
-                                isAdvancedView={gContext.isAdvancedView}
+                            {gContext.isAdvancedView && <Img2VidComponent
                                 sdConfig={gContext.config}
                                 width={i2vInput.width}
                                 height={i2vInput.height}

@@ -7,7 +7,7 @@ const AdvancedIndicator: React.FC = () => {
     const { isAdvancedView, setIsAdvancedView } = useGenerationContext()
     return (
         <>
-            <Switch defaultSelected={isAdvancedView} aria-label="Advanced View" onValueChange={setIsAdvancedView}>Advanced Settings</Switch>
+            <Switch defaultSelected={isAdvancedView} aria-label="Advanced View" onValueChange={setIsAdvancedView}>dev-adv-settings</Switch>
         </>
     );
 };

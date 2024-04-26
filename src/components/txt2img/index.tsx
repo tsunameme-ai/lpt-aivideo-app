@@ -159,7 +159,8 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 />
                 <Spacer y={4} />
                 <div className='grid grid-cols-2 gap-4'>
-                    <Input
+                    {/* Hide width and height input */}
+                    {/* <Input
                         label='Width'
                         type='number'
                         value={width}
@@ -170,7 +171,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         type='number'
                         value={height}
                         onValueChange={setHeight}
-                    />
+                    /> */}
 
                     <Input
                         label='Seed'

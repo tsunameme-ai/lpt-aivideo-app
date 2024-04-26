@@ -1,5 +1,5 @@
 import { SDConfig } from "@/libs/types"
-import { Input, Select, SelectItem } from "@nextui-org/react"
+import { Input, Select, SelectItem, Spacer } from "@nextui-org/react"
 import { useState } from "react"
 
 interface Img2VidComponentProps {
@@ -10,7 +10,6 @@ interface Img2VidComponentProps {
     modelId: string
     sdConfig: SDConfig
     seed?: number
-    isAdvancedView: boolean
     onI2VInputChange?: (w: number, h: number, mbi: number, nas: number, seed: number | undefined, modelId: string) => void
 }
 
@@ -53,56 +52,51 @@ const Img2VidComponent: React.FC<Img2VidComponentProps> = (props: Img2VidCompone
     }
 
     return (
-        <>
-            <section className='flex flex-col items-center justify-center'>
-                <div>
-                    {props.isAdvancedView &&
-                        <div className='grid grid-cols-2 gap-4'>
-                            <Input
-                                label='Width'
-                                type='number'
-                                value={width}
-                                onValueChange={updateWidth} />
-                            <Input
-                                label='Height'
-                                type='number'
-                                value={height}
-                                onValueChange={updateHeight} />
-                            {props.sdConfig.videoModels &&
-                                <Select
-                                    defaultSelectedKeys={[props.modelId]}
-                                    value={[modelId || '']}
-                                    onSelectionChange={handleSelectModel}
-                                    label='Model'>
-                                    {props.sdConfig.videoModels.map((item) => (
-                                        <SelectItem key={item.value} value={item.value}>
-                                            {item.label}
-                                        </SelectItem>
-                                    ))}
-                                </Select>}
-                            <Input
-                                label='Motion Bucket Id'
-                                type='number'
-                                value={motionBucketId}
-                                onValueChange={updateMotionBucketId} />
-                            <Input
-                                label='Noise Aug Strength'
-                                type='number'
-                                value={noiseAugStrength}
-                                onValueChange={updateNoiseAugStrength}
-                            />
-                            <Input
-                                label='Seed'
-                                type='number'
-                                value={seed}
-                                onValueChange={updateSeed}
-                            />
-                        </div>}
-                </div>
+        <section className='flex flex-col items-center justify-center'>
+            <Spacer y={4} />
+            <div className='grid grid-cols-2 gap-4'>
+                <Input
+                    label='Width'
+                    type='number'
+                    value={width}
+                    onValueChange={updateWidth} />
+                <Input
+                    label='Height'
+                    type='number'
+                    value={height}
+                    onValueChange={updateHeight} />
+                {props.sdConfig.videoModels &&
+                    <Select
+                        defaultSelectedKeys={[props.modelId]}
+                        value={[modelId || '']}
+                        onSelectionChange={handleSelectModel}
+                        label='Model'>
+                        {props.sdConfig.videoModels.map((item) => (
+                            <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                            </SelectItem>
+                        ))}
+                    </Select>}
+                <Input
+                    label='Motion Bucket Id'
+                    type='number'
+                    value={motionBucketId}
+                    onValueChange={updateMotionBucketId} />
+                <Input
+                    label='Noise Aug Strength'
+                    type='number'
+                    value={noiseAugStrength}
+                    onValueChange={updateNoiseAugStrength}
+                />
+                <Input
+                    label='Seed'
+                    type='number'
+                    value={seed}
+                    onValueChange={updateSeed}
+                />
+            </div>
 
-            </section>
-
-        </>
+        </section>
     );
 };
 

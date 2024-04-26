@@ -1,11 +1,12 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand, Button } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenuItem, Link, NavbarMenu, NavbarBrand, Button, Switch, Divider } from "@nextui-org/react";
 import { useGenerationContext } from "@/context/generation-context";
 import { AuthIndicator } from "../auth-indicator"
 import { appFont } from "@/app/fonts";
 import { FaAngleLeft } from "react-icons/fa6";
 import { useRouter, usePathname } from "next/navigation";
+import AdvancedIndicator from "../advanced-indicator";
 
 
 enum NavIcon {
@@ -36,20 +37,6 @@ const NavigationComponent: React.FC = () => {
     }
     const [navIcon, setNavIcon] = useState<NavIcon>(selectNavIcon(pathname))
 
-
-
-    useEffect(() => {
-        if (process.env.NEXT_PUBLIC_DEBUG === 'browser') {
-            const items = [
-                ['Create', '/txt2img'],
-                ['Gallery', '/gallery'],
-                ['About', '/about'],
-                ['dev-editor', '/text-demo'],
-                ['dev-home', '/']
-            ]
-            setMenuItems(items)
-        }
-    }, [])
     useEffect(() => {
         setNavIcon(selectNavIcon(pathname))
     }, [pathname]);
@@ -102,9 +89,24 @@ const NavigationComponent: React.FC = () => {
                                 </Link>
                             </NavbarMenuItem>
                         ))}
-                        < NavbarMenuItem key={`authentication`}>
+                        <NavbarMenuItem key={`authentication`}>
                             <AuthIndicator />
                         </NavbarMenuItem>
+                        {process.env.NEXT_PUBLIC_DEBUG === 'browser' &&
+                            <>
+                                <Divider className="my-4" />
+                                <NavbarMenuItem key='dev-editor'>
+                                    <Link color="foreground" className={`${appFont.className} font-medium w-full leading-10`} href='/text-demo' size="lg">dev-editor</Link>
+                                </NavbarMenuItem>
+                                <NavbarMenuItem key='dev-home'>
+                                    <Link color="foreground" className={`${appFont.className} font-medium w-full leading-10`} href='/' size="lg">dev-home</Link>
+                                </NavbarMenuItem>
+
+                                <NavbarMenuItem>
+                                    <AdvancedIndicator />
+                                </NavbarMenuItem>
+                            </>
+                        }
                     </NavbarMenu>
                 </Navbar >
             </header>
