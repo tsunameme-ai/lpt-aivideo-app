@@ -5,7 +5,7 @@ import { txt2img } from "@/actions/stable-diffusion";
 import { useGenerationContext } from "@/context/generation-context";
 import { Analytics } from "@/libs/analytics";
 import { usePrivy } from "@privy-io/react-auth"
-import { PrimaryButton } from "../buttons";
+import { PrimaryButton, SecondaryButton } from "../buttons";
 import { useState } from "react";
 
 enum GenRequestType {
@@ -116,9 +116,9 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             case GenRequestType.FIRSTTIME:
                 return <PrimaryButton isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Generate</PrimaryButton>
             case GenRequestType.REQUEST_MORE:
-                return <PrimaryButton variant="bordered" isDisabled={pPromptValue.length === 0 || gContext.t2iOutputs.length >= MAX_OUTPUT_COUNT} isLoading={isLoading} onPress={generateImage}>Fetch more images</PrimaryButton>
+                return <SecondaryButton isDisabled={pPromptValue.length === 0 || gContext.t2iOutputs.length >= MAX_OUTPUT_COUNT} isLoading={isLoading} onPress={generateImage}>Fetch more images</SecondaryButton>
             case GenRequestType.REGENERATE:
-                return <PrimaryButton variant="bordered" isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Regenerate</PrimaryButton>
+                return <SecondaryButton isDisabled={pPromptValue.length === 0} isLoading={isLoading} onPress={generateImage}>Regenerate</SecondaryButton>
             default:
                 return <></>
         }
