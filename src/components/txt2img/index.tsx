@@ -142,7 +142,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         inputWrapper: "border-primary",
                     }}
                 />
-                <Button isIconOnly size="lg" variant="light" className={styles.renderBtn} onPress={() => { handlePPromptValueChange(gContext.shufflePrompt()) }}>
+                <Button isDisabled={isLoading} isIconOnly size="lg" variant="light" className={styles.renderBtn} onPress={() => { handlePPromptValueChange(gContext.shufflePrompt()) }}>
                     <FaDice size={20} />
                 </Button>
 
