@@ -6,7 +6,6 @@ import Txt2ImgComponent from '@/components/txt2img'
 import { useState } from 'react'
 import React from 'react'
 import { useGenerationContext } from '@/context/generation-context'
-import AdvancedIndicator from '@/components/advanced-indicator'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from '@/styles/home.module.css'
@@ -20,7 +19,6 @@ export default function Page() {
     const gContext = useGenerationContext()
     const [imageOutputs, setImageOutputs] = useState<Array<GenerationOutputItem>>(gContext.t2iOutputs)
     const [selectedOutputIndex, setSelectedOutputIndex] = useState<number>(gContext.t2iOutputSelectedIndex)
-    const showAdvIndicator = process.env.NEXT_PUBLIC_ADV_IND === "on"
 
     const onImagesGenerated = (outputs: Array<GenerationOutputItem>, resetSelectedIndex: number) => {
         setImageOutputs(outputs)
@@ -36,7 +34,7 @@ export default function Page() {
         <>
             <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
-                    <div className='font-medium'>Step 1 of 3: Write the prompt &nbsp; &nbsp; {showAdvIndicator && <AdvancedIndicator />} </div>
+                    <div className='font-medium'>Step 1 of 3: Write the prompt</div>
                     <Spacer y={2} />
                     {imageOutputs.length > 0 && <Carousel imageOutputs={imageOutputs} selectedOutputIndex={selectedOutputIndex} onImageOutputSelected={setSelectedOutputIndex} />}
                     <Txt2ImgComponent

@@ -107,13 +107,8 @@ export default function GenerationContextProvider({ children }: { children: Reac
         return {
             'models': [
                 { value: 'ByteDance/SDXL-Lightning', label: 'SDXL Lightning', default: true },
-                { value: 'ByteDance/SDXL-Lightning-4step', label: 'SDXL Lightning 4step' },
-                { value: 'ByteDance/SDXL-Lightning-8step', label: 'SDXL Lightning 8step' },
-                { value: 'stabilityai/sd-turbo', label: 'SD Turbo' },
-                { value: 'runwayml/stable-diffusion-v1-5', label: 'SD v1.5', },
+                { value: 'SG161222/RealVisXL_V4.0', label: 'RealVisXL' },
                 { value: 'stabilityai/sdxl-turbo', label: 'SDXL Turbo' },
-                { value: 'stabilityai/stable-diffusion-xl-base-1.0', label: 'SDXL 1.0' },
-                { value: 'prompthero/openjourney-v4', label: 'MidJourney V4' }
             ],
             'videoModels': [
                 { value: 'stable-video-diffusion-img2vid-xt', label: 'SVD' },
