@@ -1,5 +1,5 @@
 'use client'
-import { Tabs, Card, CardBody, Tab } from "@nextui-org/react"
+import { Tabs, Card, CardBody, Tab, Spacer } from "@nextui-org/react"
 import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
@@ -40,18 +40,27 @@ export default function Page() {
             <ToastContainer />
             <section className={`flex flex-col items-center justify-center ${appFont.className}`}>
                 <div className="w-full">
-                    <Card className="max-w-full">
-                        <CardBody className="overflow-hidden">
-                            <Tabs fullWidth classNames={{
-                                tabContent: "group-data-[selected=true]:text-[#f1faee]",
-                                cursor: "w-full bg-[#ffc303]",
-                                tab: "text-[20px]"
-                            }} >
-                                <Tab key='community' title='Community'><CommunityList handleShare={handleShare} /></Tab>
-                                {userId && <Tab key='me' title='Me'><UserGenList userId={userId} handleShare={handleShare} /></Tab>}
-                            </Tabs>
-                        </CardBody>
-                    </Card>
+                    {
+                        !userId ? <>
+                            <div className='font-medium text-center'>What the community is creating</div>
+                            <Spacer y={2} />
+                            <CommunityList handleShare={handleShare} />
+                        </> : <>
+                            <Card className="max-w-full">
+                                <CardBody className="overflow-hidden">
+                                    <Tabs fullWidth classNames={{
+                                        tabContent: "group-data-[selected=true]:text-[#f1faee]",
+                                        cursor: "w-full bg-[#ffc303]",
+                                        tab: "text-[20px]"
+                                    }} >
+                                        <Tab key='community' title='Community'><CommunityList handleShare={handleShare} /></Tab>
+                                        <Tab key='me' title='Me'><UserGenList userId={userId} handleShare={handleShare} /></Tab>
+                                    </Tabs>
+                                </CardBody>
+                            </Card>
+                        </>
+                    }
+
                 </div>
             </section>
         </>
