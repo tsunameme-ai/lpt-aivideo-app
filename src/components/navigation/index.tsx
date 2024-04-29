@@ -30,7 +30,7 @@ const NavigationComponent: React.FC = () => {
         if (['/img2vid', '/caption'].includes(path)) {
             return NavIcon.BACK
         }
-        if ('/' === path) {
+        if (['/', '/welcome'].includes(path)) {
             return NavIcon.NONE
         }
         return NavIcon.TOGGLE
@@ -62,7 +62,7 @@ const NavigationComponent: React.FC = () => {
 
     return (<>
 
-        {pathname != '/' &&
+        {navIcon != NavIcon.NONE &&
             <header className='py-1'>
                 <Navbar className="text-primary" onMenuOpenChange={setIsMenuOpen}>
                     <NavbarContent>

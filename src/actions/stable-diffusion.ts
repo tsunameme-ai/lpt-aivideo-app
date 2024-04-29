@@ -73,9 +73,9 @@ export async function fetchGenerationData(urlGid: string): Promise<GenerationReq
     return parseGenerationRequest(data)
 }
 
-export async function fetchGallery(pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
-    const pageQuery = pageKey ? `?page=${pageKey}` : ''
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generations${pageQuery}`)
+export async function fetchGallery(limit: number, pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
+    const pageQuery = pageKey ? `&page=${pageKey}` : ''
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generations?limit=${limit}${pageQuery}`)
     if (!res.ok) {
         throw new Error(`Error fetch generation data ${res.status} ${pageKey}`)
     }
@@ -89,9 +89,9 @@ export async function fetchGallery(pageKey?: string): Promise<{ nextPage?: strin
 
 }
 
-export async function fetchAssetsByUser(userId: string, pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
-    const pageQuery = pageKey ? `?page=${pageKey}` : ''
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/user/${userId}/generations${pageQuery}`)
+export async function fetchAssetsByUser(userId: string, limit: number = 10, pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
+    const pageQuery = pageKey ? `&page=${pageKey}` : ''
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/user/${userId}/generations?limit=${limit}${pageQuery}`)
     if (!res.ok) {
         throw new Error(`Error fetch generation data ${res.status} ${pageKey}`)
     }

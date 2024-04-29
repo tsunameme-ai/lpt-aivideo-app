@@ -1,5 +1,5 @@
 'use client'
-import { Tabs, Tab, Spacer } from "@nextui-org/react"
+import { Tabs, Tab, Spacer, Button } from "@nextui-org/react"
 import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
@@ -38,8 +38,8 @@ export default function Page() {
     return (
         <>
             <ToastContainer />
-            <section className={`flex flex-col items-center justify-center ${appFont.className}`}>
-                <div className="w-full">
+            <div className="flex w-full h-[calc(100vh-64px)]" style={{ border: '10px solid #f00', overflow: 'scroll' }}>
+                <div className={`${appFont.className}`}>
                     {
                         !userId ? <>
                             <div className='font-medium text-center'>What the community is creating</div>
@@ -56,9 +56,9 @@ export default function Page() {
                             </Tabs>
                         </>
                     }
-
                 </div>
-            </section>
+                <Button className="right absolute bottom-0 right-0 m-4">Create</Button>
+            </div>
         </>
     )
 }
