@@ -1,5 +1,5 @@
 'use client'
-import { Tabs, Card, CardBody, Tab, Spacer } from "@nextui-org/react"
+import { Tabs, Tab, Spacer } from "@nextui-org/react"
 import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
@@ -46,18 +46,14 @@ export default function Page() {
                             <Spacer y={2} />
                             <CommunityList handleShare={handleShare} />
                         </> : <>
-                            <Card className="max-w-full">
-                                <CardBody className="overflow-hidden">
-                                    <Tabs fullWidth classNames={{
-                                        tabContent: "group-data-[selected=true]:text-[#f1faee]",
-                                        cursor: "w-full bg-[#ffc303]",
-                                        tab: "text-[20px]"
-                                    }} >
-                                        <Tab key='community' title='Community'><CommunityList handleShare={handleShare} /></Tab>
-                                        <Tab key='me' title='Me'><UserGenList userId={userId} handleShare={handleShare} /></Tab>
-                                    </Tabs>
-                                </CardBody>
-                            </Card>
+                            <Tabs fullWidth classNames={{
+                                tabContent: "group-data-[selected=true]:text-[#f1faee]",
+                                cursor: "w-full bg-[#ffc303]",
+                                tab: "text-[20px]"
+                            }} >
+                                <Tab key='community' title='Community'><CommunityList handleShare={handleShare} /></Tab>
+                                <Tab key='me' title='Me'><UserGenList userId={userId} handleShare={handleShare} /></Tab>
+                            </Tabs>
                         </>
                     }
 

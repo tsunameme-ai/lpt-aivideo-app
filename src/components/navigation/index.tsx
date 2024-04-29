@@ -101,7 +101,9 @@ const NavigationComponent: React.FC = () => {
                                 <NavbarMenuItem key='dev-home'>
                                     <Link color="foreground" className={`${appFont.className} font-medium w-full leading-10`} href='/' size="lg">dev-home</Link>
                                 </NavbarMenuItem>
-
+                                <NavbarMenuItem key='dev-welcome'>
+                                    <Link color="foreground" className={`${appFont.className} font-medium w-full leading-10`} href='/welcome' size="lg">dev-home</Link>
+                                </NavbarMenuItem>
                                 <NavbarMenuItem>
                                     <AdvancedIndicator />
                                 </NavbarMenuItem>
