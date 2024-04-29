@@ -58,7 +58,7 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
         <>
             {selectedCell && <CellModal imgUrl={selectedCell} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />}
             {isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
-            <div className="grid grid-cols-3 gap-1">
+            <div className="grid grid-cols-2 gap-1">
                 {items.map((item, index) => (
                     <div key={index}>
                         <Image radius="sm" src={item.outputs?.[0].url!} alt={item.outputs?.[0].url!} onClick={() => { handleOpenModal(item.outputs?.[0].url!) }} />
