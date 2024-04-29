@@ -17,7 +17,7 @@ import { Analytics } from "@/libs/analytics"
 import { usePrivy } from "@privy-io/react-auth";
 import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
-import { PrimaryButton } from "@/components/buttons"
+import { PrimaryButton, SecondaryButton } from "@/components/buttons"
 
 export default function Page() {
     const router = useRouter()
@@ -173,18 +173,33 @@ export default function Page() {
                     </div>
                 </div>
                 <div className={styles.centerSection}>
+
+                    {isButtonNew &&
+                        <>
+                            <PrimaryButton
+                                isLoading={isGeneratingVideo}
+                                onPress={handleShare}>Share</PrimaryButton>
+                        </>
+                    }
                     <Spacer y={4} />
-                    <PrimaryButton
-                        isLoading={isGeneratingVideo}
-                        onPress={handleGenerateVideoClick}>{isButtonNew ? 'Create New' : 'Render'}</PrimaryButton>
+                    {isButtonNew ?
+                        <SecondaryButton
+                            isLoading={isGeneratingVideo}
+                            onPress={handleGenerateVideoClick}>Create New
+                        </SecondaryButton>
+                        :
+                        <PrimaryButton
+                            isLoading={isGeneratingVideo}
+                            onPress={handleGenerateVideoClick}>Render
+                        </PrimaryButton>
+                    }
 
                     {isButtonNew &&
                         <>
                             <Spacer y={4} />
-                            <PrimaryButton
-                                variant="bordered"
+                            <SecondaryButton
                                 isLoading={isGeneratingVideo}
-                                onPress={() => { router.push('/gallery') }}>Gallery</PrimaryButton>
+                                onPress={() => { router.push('/gallery') }}>Gallery</SecondaryButton>
                         </>
                     }
                     <Spacer y={4} />
