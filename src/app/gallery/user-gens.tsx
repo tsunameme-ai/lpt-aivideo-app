@@ -94,19 +94,14 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
             {isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
             {
                 items.length > 0 ?
-                    <div className="grid grid-cols-3 gap-1">
+                    <div className="grid grid-cols-2 gap-1">
                         {items.map((item, index) => (
                             <div key={index}>
                                 <Image radius="sm" src={item.outputs?.[0].url!} alt={index.toString()} onClick={() => { handleOpenModal(item.outputs?.[0].url!) }} />
                             </div>
                         ))}
                     </div>
-                    : <>
-                        {!isFetchinData && <div className={styles.center}>
-                            <Spacer y={1} />
-                            <SecondaryButton onPress={handleTxt2img}>Get Started</SecondaryButton>
-                        </div>}
-                    </>
+                    : <></>
             }
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>

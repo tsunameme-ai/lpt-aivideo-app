@@ -9,6 +9,7 @@ import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
 import { useGenerationContext } from "@/context/generation-context"
 import { useEffect, useState } from "react"
+import { IoMdCreate } from "react-icons/io";
 
 export default function Page() {
     const { authenticated, user } = usePrivy()
@@ -39,7 +40,7 @@ export default function Page() {
         <>
             <ToastContainer />
             <div className="flex w-full h-[calc(100vh-64px)]" style={{ border: '10px solid #f00', overflow: 'scroll' }}>
-                <div className={`${appFont.className}`}>
+                <div className={`${appFont.className} w-full`}>
                     {
                         !userId ? <>
                             <div className='font-medium text-center'>What the community is creating</div>
@@ -57,7 +58,10 @@ export default function Page() {
                         </>
                     }
                 </div>
-                <Button className="right absolute bottom-0 right-0 m-4">Create</Button>
+
+                <Button className="right absolute bottom-0 right-0 m-4" color="primary" size='lg' isIconOnly={true}>
+                    <IoMdCreate size={64} />
+                </Button>
             </div>
         </>
     )

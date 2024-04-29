@@ -143,7 +143,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                     }}
                 />
                 <Button isDisabled={isLoading} isIconOnly size="lg" variant="light" className={styles.renderBtn} onPress={() => { handlePPromptValueChange(gContext.shufflePrompt()) }}>
-                    <FaDice size={20} />
+                    <FaDice size={26} />
                 </Button>
 
             </div>
