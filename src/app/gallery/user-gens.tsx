@@ -1,15 +1,12 @@
 import { fetchAssetsByUser } from "@/actions/stable-diffusion"
-import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutputItem, GenerationRequest, GenerationType, Img2vidInput } from "@/libs/types"
 import { Spacer, Spinner, Image, useDisclosure } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
-import { useRouter } from 'next/navigation'
-import { useGenerationContext } from '@/context/generation-context'
 import CellModal from "./cell-modal"
-import { PrimaryButton, SecondaryButton } from "@/components/buttons"
+import { SecondaryButton } from "@/components/buttons"
+import { GenerationRequest } from "@/libs/types"
 
-export const LOCAL_USERID = 'localuser'
 interface UserGenListProps {
     userId: string
     handleShare: (url: string) => void
@@ -20,8 +17,6 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
     const [items, setItems] = useState<GenerationRequest[]>([])
     const [isFetchinData, setIsFetchinData] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
-    const router = useRouter()
-    const gContext = useGenerationContext()
     const [selectedCell, setSelectedCell] = useState<string>('')
 
     const fetchData = async (pageKey?: string) => {
@@ -29,32 +24,9 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
         setIsFetchinData(true)
 
         try {
-            if (props.userId === LOCAL_USERID) {
-                const itemsPerPage = 12
-                const startPos = nextPage === undefined ? 0 : parseInt(nextPage)
-                const outputs = gContext.i2vOutputs.slice(startPos, itemsPerPage)
-                const data = outputs.map((output: GenerationOutputItem): GenerationRequest => {
-                    return {
-                        id: 'local',
-                        type: GenerationType.IMG2VID,
-                        input: {
-                            modelId: 'unknown',
-                            motionBucketId: DEFAULT_MOTION_BUCKET_ID,
-                            noiseAugStrength: DEFAULT_NOISE_AUG_STRENGTH,
-                            width: DEFAULT_VIDEO_WIDTH,
-                            height: DEFAULT_VIDEO_HEIGHT,
-                        } as Img2vidInput,
-                        outputs: [output]
-                    }
-                })
-                setItems(data)
-                setNextPage((startPos + itemsPerPage).toString())
-            }
-            else {
-                const data = await fetchAssetsByUser(props.userId, 10, pageKey)
-                setNextPage(data.nextPage)
-                setItems(items.concat(data.items))
-            }
+            const data = await fetchAssetsByUser(props.userId, 10, pageKey)
+            setNextPage(data.nextPage)
+            setItems(items.concat(data.items))
         }
         catch (e: any) {
             setErrorMessage(`Fetch gallery data failed ${e.message}`)
@@ -82,31 +54,25 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
         fetchData(undefined)
     }, [])
 
-    const handleTxt2img = () => {
-
-        gContext.reset()
-        router.push('/txt2img')
-    }
-
     return (
         <>
             <CellModal imgUrl={selectedCell} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />
             {isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
             {
-                items.length > 0 ?
-                    <div className="grid grid-cols-2 gap-1">
-                        {items.map((item, index) => (
-                            <div key={index}>
-                                <Image radius="sm" src={item.outputs?.[0].url!} alt={index.toString()} onClick={() => { handleOpenModal(item.outputs?.[0].url!) }} />
-                            </div>
-                        ))}
-                    </div>
-                    : <></>
+                items.length > 0 &&
+                <div className="grid grid-cols-2 gap-1">
+                    {items.map((item, index) => (
+                        <div key={index}>
+                            <Image radius="sm" src={item.outputs?.[0].url!} alt={index.toString()} onClick={() => { handleOpenModal(item.outputs?.[0].url!) }} />
+                        </div>
+                    ))}
+                </div>
             }
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
                 <Spacer y={4} />
-                {nextPage && <PrimaryButton onPress={() => fetchData(nextPage)} className='font-medium'>Load More</PrimaryButton>}
+                {nextPage && <SecondaryButton onPress={() => fetchData(nextPage)} className='font-medium'>Load More</SecondaryButton>}
+                <Spacer y={4} />
             </div >
         </>
     )

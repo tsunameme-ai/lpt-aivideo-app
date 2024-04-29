@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
 import CellModal from "./cell-modal"
-import { PrimaryButton } from "@/components/buttons"
+import { SecondaryButton } from "@/components/buttons"
 
 interface CommunityListProps {
     handleShare: (url: string) => void
@@ -68,7 +68,8 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
                 <Spacer y={4} />
-                {nextPage && <PrimaryButton onPress={() => fetchData(nextPage)} className='font-medium'>Load More</PrimaryButton>}
+                {nextPage && <SecondaryButton onPress={() => fetchData(nextPage)} className='font-medium'>Load More</SecondaryButton>}
+                <Spacer y={4} />
             </div>
         </>
     )

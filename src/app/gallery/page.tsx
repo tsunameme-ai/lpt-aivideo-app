@@ -3,17 +3,15 @@ import { Tabs, Tab, Spacer, Button } from "@nextui-org/react"
 import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
-import UserGenList, { LOCAL_USERID } from "./user-gens"
+import UserGenList from "./user-gens"
 import { ToastContainer } from 'react-toastify'
 import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
-import { useGenerationContext } from "@/context/generation-context"
 import { useEffect, useState } from "react"
 import { IoMdCreate } from "react-icons/io";
 
 export default function Page() {
     const { authenticated, user } = usePrivy()
-    const gContext = useGenerationContext()
     const [userId, setUserId] = useState<string | undefined>(undefined)
 
     const toastId = "gallery-copy-success"
@@ -27,19 +25,16 @@ export default function Page() {
         if (authenticated && user) {
             setUserId(user.id)
         }
-        else if (gContext.i2vOutputs.length > 0 && process.env.NEXT_PUBLIC_USERGEN === 'local') {
-            setUserId(LOCAL_USERID)
-        }
         else {
             setUserId(undefined)
         }
-    }, [gContext.i2vOutputs, authenticated])
+    }, [authenticated, user])
 
 
     return (
         <>
             <ToastContainer />
-            <div className="flex w-full h-[calc(100vh-64px)]" style={{ border: '10px solid #f00', overflow: 'scroll' }}>
+            <div className="flex w-full h-[calc(100vh-66px)]" style={{ overflow: 'scroll' }}>
                 <div className={`${appFont.className} w-full`}>
                     {
                         !userId ? <>
@@ -58,10 +53,12 @@ export default function Page() {
                         </>
                     }
                 </div>
+                <div className="right absolute bottom-0 right-0 m-4 z-20 w-24 h-24">
 
-                <Button className="right absolute bottom-0 right-0 m-4" color="primary" size='lg' isIconOnly={true}>
-                    <IoMdCreate size={64} />
-                </Button>
+                    <Button className="w-full h-full" variant="shadow" color="primary" size='lg' radius="full" isIconOnly={true}>
+                        <IoMdCreate size={60} />
+                    </Button>
+                </div>
             </div>
         </>
     )
