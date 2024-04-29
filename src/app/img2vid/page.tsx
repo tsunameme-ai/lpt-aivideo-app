@@ -182,9 +182,18 @@ export default function Page() {
                         </>
                     }
                     <Spacer y={4} />
-                    <SecondaryButton
-                        isLoading={isGeneratingVideo}
-                        onPress={handleGenerateVideoClick}>{isButtonNew ? 'Create New' : 'Render'}</SecondaryButton>
+                    {isButtonNew ?
+                        <SecondaryButton
+                            isLoading={isGeneratingVideo}
+                            onPress={handleGenerateVideoClick}>Create New
+                        </SecondaryButton>
+                        :
+                        <PrimaryButton
+                            isLoading={isGeneratingVideo}
+                            onPress={handleGenerateVideoClick}>Render
+                        </PrimaryButton>
+
+                    }
 
                     {isButtonNew &&
                         <>
