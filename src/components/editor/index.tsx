@@ -12,6 +12,7 @@ import { MdDelete } from "react-icons/md"
 import styles from "@/styles/home.module.css"
 import { StartOutputEvent } from "./types"
 import { appFont } from "@/app/fonts"
+import { preventEventDefault } from "./utils"
 
 
 interface EditorProps {
@@ -36,20 +37,13 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
     const [isTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
     const [isOutputRequested, setIsOutputRequested] = useState<boolean>(false)
-    const DELETE_ZONE_X = 305
-    const DELETE_ZONE_Y = 150
+    const DELETE_ZONE_SIZE = 50
     const handleMouseDown = (e: any) => {
-        try {
-            e.preventDefault()
-        }
-        catch (e) {
-
-        }
+        preventEventDefault(e)
         const clickedOnEmpty = e.target === e.target.getStage()
         if (clickedOnEmpty) {
             setSelectedId(undefined)
         }
-
     }
 
     const resize = (inputWidth: number, inputHeight: number) => {
@@ -105,16 +99,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             stageHeight: canvasDimension.height,
             fontFamily: `__Work_Sans_${segs[segs.length - 1]}`
         }
+        setSelectedId(key)
         onClose()
     }
+    const isInDeleteZone = (x: number, y: number): boolean => {
+        return x >= canvasDimension.width - DELETE_ZONE_SIZE && y <= DELETE_ZONE_SIZE
+    }
 
-    const handleTextBlockDragging = (e: any) => {
-
-        if (!canvasDimension)
-            return
-
+    const handleTextBlockDragging = (x: number, y: number) => {
         //move to the deletion zone
-        if (e.evt.touches[0].clientX >= DELETE_ZONE_X && e.evt.touches[0].clientY <= DELETE_ZONE_Y) {
+        if (isInDeleteZone(x, y)) {
             setDeleteBtnVariant('bordered')
             setDeleteBtnColor('danger')
         } else {
@@ -123,20 +117,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
     }
 
-    const handleTextBlockDragEnd = (e: any) => {
-
+    const handleTextBlockDragEnd = (x: number, y: number) => {
         //Inside the deletion zone when drag ends
-        if (e.evt.changedTouches[0]?.clientX >= DELETE_ZONE_X && e.evt.changedTouches[0]?.clientY <= DELETE_ZONE_Y) {
-            if (selectedId) {
-                delete textBlocks[selectedId]
-                setSelectedId(undefined)
-                toast.warning("Caption deleted", {
-                    toastId: 'delete notification',
-                    autoClose: 1200,
-                    hideProgressBar: true
-                })
-            }
-
+        if (selectedId && isInDeleteZone(x, y)) {
+            delete textBlocks[selectedId]
+            setSelectedId(undefined)
+            toast.warning("Caption deleted", {
+                toastId: 'delete notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
         }
     }
     const onRenderRequested = () => {
@@ -152,7 +142,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             setIsOutputRequested(false)
         }
     }, [isOutputRequested])
-
 
     useEffect(() => {
         const onResize = () => {
@@ -190,7 +179,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             <Skeleton isLoaded={image !== undefined}>
                 <div className='flex' style={{
                     width: `${canvasDimension.width}px`,
-                    height: `${canvasDimension.height}px`,
+                    height: `${canvasDimension.height}px`
                 }}>
                     {image && <>
                         <Stage
@@ -219,18 +208,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                 onRequestEdit={() => {
                                                     handleOpenModal()
                                                 }}
-                                                onDragging={(e) => {
-                                                    handleTextBlockDragging(e)
+                                                onDragging={(x: number, y: number) => {
+                                                    handleTextBlockDragging(x, y)
                                                 }}
-                                                onDragStart={(e) => {
+                                                onDragStart={() => {
                                                     setSelectedId(rect.id)
                                                     setIsTextBlockDragging(true)
-                                                    e
                                                 }}
-                                                onDragEnd={(e) => {
+                                                onDragEnd={(x: number, y: number) => {
                                                     setIsTextBlockDragging(false)
-                                                    setSelectedId(undefined)
-                                                    handleTextBlockDragEnd(e)
+                                                    handleTextBlockDragEnd(x, y)
                                                 }}
 
                                             />
