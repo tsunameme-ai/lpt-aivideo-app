@@ -12,6 +12,7 @@ import { MdDelete } from "react-icons/md"
 import styles from "@/styles/home.module.css"
 import { StartOutputEvent } from "./types"
 import { appFont } from "@/app/fonts"
+import { preventEventDefault } from "./utils"
 
 
 interface EditorProps {
@@ -36,8 +37,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
     const [isTextBlockDragging, setIsTextBlockDragging] = useState<boolean>(false)
     const [isOutputRequested, setIsOutputRequested] = useState<boolean>(false)
-    const DELETE_ZONE_X = 305
-    const DELETE_ZONE_Y = 150
+    const DELETE_ZONE_SIZE = 50
     const handleMouseDown = (e: any) => {
         preventEventDefault(e)
         const clickedOnEmpty = e.target === e.target.getStage()
@@ -99,16 +99,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             stageHeight: canvasDimension.height,
             fontFamily: `__Work_Sans_${segs[segs.length - 1]}`
         }
+        setSelectedId(key)
         onClose()
     }
+    const isInDeleteZone = (x: number, y: number): boolean => {
+        return x >= canvasDimension.width - DELETE_ZONE_SIZE && y <= canvasDimension.height - DELETE_ZONE_SIZE
+    }
 
-    const handleTextBlockDragging = (e: any) => {
-
-        if (!canvasDimension)
-            return
-
+    const handleTextBlockDragging = (x: number, y: number) => {
         //move to the deletion zone
-        if (e.evt.touches[0].clientX >= DELETE_ZONE_X && e.evt.touches[0].clientY <= DELETE_ZONE_Y) {
+        if (isInDeleteZone(x, y)) {
             setDeleteBtnVariant('bordered')
             setDeleteBtnColor('danger')
         } else {
@@ -117,20 +117,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
     }
 
-    const handleTextBlockDragEnd = (e: any) => {
-
+    const handleTextBlockDragEnd = (x: number, y: number) => {
         //Inside the deletion zone when drag ends
-        if (e.evt.changedTouches[0]?.clientX >= DELETE_ZONE_X && e.evt.changedTouches[0]?.clientY <= DELETE_ZONE_Y) {
-            if (selectedId) {
-                delete textBlocks[selectedId]
-                setSelectedId(undefined)
-                toast.warning("Text deleted", {
-                    toastId: 'delete notification',
-                    autoClose: 1200,
-                    hideProgressBar: true
-                })
-            }
-
+        if (selectedId && isInDeleteZone(x, y)) {
+            delete textBlocks[selectedId]
+            setSelectedId(undefined)
+            toast.warning("Text deleted", {
+                toastId: 'delete notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
         }
     }
     const onRenderRequested = () => {
@@ -167,17 +163,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         }
     }, [])
 
-    const preventEventDefault = (e: any) => {
-        console.log(e.evt)
-        try {
-            e.evt.preventDefault()
-        }
-        catch (error: any) {
-            console.log(error)
-
-        }
-    }
-
     return (
         <>
             <ToastContainer />
@@ -203,12 +188,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                             width={canvasDimension.width}
                             height={canvasDimension.height}
                             onMouseDown={handleMouseDown}
-                            onTouchStart={handleMouseDown}
-                            onTouchMove={(e) => {
-                                console.log(`???onTouchMove`)
-                                e.evt.preventDefault()
-                            }}
-                        >
+                            onTouchStart={handleMouseDown}>
                             <Layer>
                                 <KonvaImage listening={false} x={0} y={0} width={canvasDimension.width} height={canvasDimension.height} image={image} />
                             </Layer>
@@ -228,22 +208,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
                                                 onRequestEdit={() => {
                                                     handleOpenModal()
                                                 }}
-                                                onDragging={(e) => {
-                                                    preventEventDefault(e)
-                                                    console.log(`??? onDragging`)
-                                                    handleTextBlockDragging(e)
+                                                onDragging={(x: number, y: number) => {
+                                                    handleTextBlockDragging(x, y)
                                                 }}
-                                                onDragStart={(e) => {
-                                                    preventEventDefault(e)
-                                                    console.log(`??? onDragStart`)
+                                                onDragStart={() => {
                                                     setSelectedId(rect.id)
                                                     setIsTextBlockDragging(true)
                                                 }}
-                                                onDragEnd={(e) => {
-                                                    preventEventDefault(e)
-                                                    console.log(`??? onDragEnd`)
+                                                onDragEnd={(x: number, y: number) => {
                                                     setIsTextBlockDragging(false)
-                                                    handleTextBlockDragEnd(e)
+                                                    handleTextBlockDragEnd(x, y)
                                                 }}
 
                                             />
