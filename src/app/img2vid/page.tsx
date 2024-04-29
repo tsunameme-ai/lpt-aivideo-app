@@ -192,7 +192,6 @@ export default function Page() {
                             isLoading={isGeneratingVideo}
                             onPress={handleGenerateVideoClick}>Render
                         </PrimaryButton>
-
                     }
 
                     {isButtonNew &&
