@@ -130,7 +130,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             if (selectedId) {
                 delete textBlocks[selectedId]
                 setSelectedId(undefined)
-                toast.warning("Text deleted", {
+                toast.warning("Caption deleted", {
                     toastId: 'delete notification',
                     autoClose: 1200,
                     hideProgressBar: true
