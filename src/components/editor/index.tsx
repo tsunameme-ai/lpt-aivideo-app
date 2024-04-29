@@ -103,7 +103,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         onClose()
     }
     const isInDeleteZone = (x: number, y: number): boolean => {
-        return x >= canvasDimension.width - DELETE_ZONE_SIZE && y <= canvasDimension.height - DELETE_ZONE_SIZE
+        return x >= canvasDimension.width - DELETE_ZONE_SIZE && y <= DELETE_ZONE_SIZE
     }
 
     const handleTextBlockDragging = (x: number, y: number) => {
