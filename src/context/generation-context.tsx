@@ -106,8 +106,8 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const generationConfig = (): SDConfig => {
         return {
             'models': [
-                { value: 'ByteDance/SDXL-Lightning', label: 'SDXL Lightning', default: true },
-                { value: 'SG161222/RealVisXL_V4.0', label: 'RealVisXL' },
+                { value: 'ByteDance/SDXL-Lightning', label: 'SDXL Lightning' },
+                { value: 'SG161222/RealVisXL_V4.0', label: 'RealVisXL', default: true },
                 { value: 'stabilityai/sdxl-turbo', label: 'SDXL Turbo' },
             ],
             'videoModels': [
