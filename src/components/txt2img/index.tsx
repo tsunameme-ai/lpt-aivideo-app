@@ -30,7 +30,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
     const [genType, setGenType] = useState<GenRequestType>((outputFromContext?.input as Txt2imgInput)?.pPrompt === undefined ? GenRequestType.FIRSTTIME : GenRequestType.REQUEST_MORE)
     const [pPromptValue, setPPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.pPrompt || gContext.shufflePrompt())
-    const [nPromptValue, setNPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.nPrompt || 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
+    const [nPromptValue, setNPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.nPrompt || 'lowres, bad anatomy, bad hands, bad fingers, bad legs, bad feet, bad arms, text, error, missing hands, missing fingers, missing legs, missing feet, missing arms, extra digit, extra hands, extra fingers, extra legs, extra arms, extra feet, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
     const [seedValue, setSeedValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.seed?.toString() || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
