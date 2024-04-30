@@ -1,22 +1,53 @@
-import { GenerationRequest } from '@/libs/types';
-import { Image } from "@nextui-org/react"
-
+'use client'
+import { GenerationRequest } from "@/libs/types"
+import { Spacer, Spinner, useDisclosure } from "@nextui-org/react"
+import { useEffect, useState } from "react"
+import styles from "@/styles/home.module.css"
+import ErrorComponent from "@/components/error"
+import CellModal from "./cell-modal"
+import { PrimaryButton } from "@/components/buttons"
+import Grid from "./grid"
 
 interface ImageGridProps {
+    isFetchinData: boolean
     items: GenerationRequest[]
-    onClickItem?: (url: string) => void
+    errorMessage?: string
+    nextPage?: string
+    handleShare: (url: string) => void
+    fetchData: (pageKey?: string) => void
 }
-
 const ImageGrid: React.FC<ImageGridProps> = (props: ImageGridProps) => {
-    return (
-        <div className="grid grid-cols-2 gap-1">
-            {props.items.map((item, index) => (
-                <div key={index}>
-                    <Image radius="sm" loading='lazy' src={item.outputs?.[0].url!} alt={item.outputs?.[0].url!} onClick={() => { props.onClickItem?.(item.outputs?.[0].url!) }} />
-                </div>
-            ))}
-        </div>
-    );
-};
+    const [selectedCell, setSelectedCell] = useState<string>('')
 
-export default ImageGrid;
+    const { onOpen, isOpen, onClose } = useDisclosure()
+    const handleOpenModal = (url: string) => {
+        setSelectedCell(url)
+        onOpen()
+    }
+
+    const handleCloseModal = () => {
+        onClose()
+    }
+
+    const handleShare = (itemurl: string) => {
+        props.handleShare(itemurl)
+    }
+
+    useEffect(() => {
+        props.fetchData(undefined)
+    }, [])
+
+    return (
+        <>
+            {selectedCell && <CellModal imgUrl={selectedCell} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />}
+            {props.isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
+            <Grid items={props.items} onClickItem={handleOpenModal} />
+            {props.errorMessage && <ErrorComponent errorMessage={props.errorMessage} />}
+            <div className={styles.center}>
+                <Spacer y={4} />
+                {props.nextPage && <PrimaryButton onPress={() => props.fetchData(props.nextPage)} className='font-medium'>Load More</PrimaryButton>}
+            </div>
+        </>
+    )
+}
+export default ImageGrid
