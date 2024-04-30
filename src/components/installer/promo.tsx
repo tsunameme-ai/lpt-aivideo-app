@@ -52,10 +52,9 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
     return (
 
         <div className={`${styles.main} ${appFont.className} w-full min-h-svh bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
-            <div className={`h-20 w-full flex bg-img bg-repeat-x ${styles.wave}`} />
+            <div className={`h-28 w-full flex bg-img bg-repeat-x ${styles.wave}`} />
             <div className={`${styles.centerLanding} text-white`}>
                 <div className='font-bold text-background text-5xl'>TSUNAMEME</div>
-                <Spacer y={4} />
                 <div className='font-semibold text-background text-base'>
                     <p>Making GIF expressions</p>
                     <p>with generative AI</p>
