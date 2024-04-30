@@ -1,12 +1,13 @@
 'use client'
 import { fetchGallery } from "@/actions/stable-diffusion"
 import { GenerationRequest } from "@/libs/types"
-import { Spacer, Spinner, Image, useDisclosure } from "@nextui-org/react"
+import { Spacer, Spinner, useDisclosure } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import styles from "@/styles/home.module.css"
 import ErrorComponent from "@/components/error"
 import CellModal from "./cell-modal"
 import { PrimaryButton } from "@/components/buttons"
+import ImageGrid from "../../components/image-grid"
 
 interface CommunityListProps {
     handleShare: (url: string) => void
@@ -58,13 +59,7 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
         <>
             {selectedCell && <CellModal imgUrl={selectedCell} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />}
             {isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
-            <div className="grid grid-cols-2 gap-1">
-                {items.map((item, index) => (
-                    <div key={index}>
-                        <Image radius="sm" src={item.outputs?.[0].url!} alt={item.outputs?.[0].url!} onClick={() => { handleOpenModal(item.outputs?.[0].url!) }} />
-                    </div>
-                ))}
-            </div>
+            <ImageGrid items={items} onClickItem={handleOpenModal} />
             {errorMessage && <ErrorComponent errorMessage={errorMessage} />}
             <div className={styles.center}>
                 <Spacer y={4} />

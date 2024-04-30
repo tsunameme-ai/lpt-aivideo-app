@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useGenerationContext } from '@/context/generation-context'
 import CellModal from "./cell-modal"
 import { PrimaryButton, SecondaryButton } from "@/components/buttons"
+import ImageGrid from "../../components/image-grid"
 
 export const LOCAL_USERID = 'localuser'
 interface UserGenListProps {
@@ -94,13 +95,7 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
             {isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
             {
                 items.length > 0 ?
-                    <div className="grid grid-cols-3 gap-1">
-                        {items.map((item, index) => (
-                            <div key={index}>
-                                <Image radius="sm" src={item.outputs?.[0].url!} alt={index.toString()} onClick={() => { handleOpenModal(item.outputs?.[0].url!) }} />
-                            </div>
-                        ))}
-                    </div>
+                    <ImageGrid items={items} onClickItem={handleOpenModal} />
                     : <>
                         {!isFetchinData && <div className={styles.center}>
                             <Spacer y={1} />
