@@ -9,7 +9,7 @@ import { appFont, inter } from './fonts'
 export const metadata: Metadata = {
   manifest: '/manifest.json',
   title: 'Tsunameme',
-  description: 'Tsunameme brings revolutions to meme',
+  description: 'Tsunameme gives anyone the superpower to create impressive gifs with a couple lines of text.',
 }
 
 export const viewport: Viewport = {

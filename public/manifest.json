@@ -2,7 +2,7 @@
     "id": "tsunameme",
     "name": "Tsunameme",
     "short_name": "Tsunameme",
-    "description": "We bring revolutions to the world of memes",
+    "description": "Tsunameme gives anyone the superpower to create impressive gifs with a couple lines of text",
     "start_url": "/",
     "scope": ".",
     "display": "standalone",
