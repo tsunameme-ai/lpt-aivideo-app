@@ -45,7 +45,8 @@ const ImageGrid: React.FC<ImageGridProps> = (props: ImageGridProps) => {
             {props.errorMessage && <ErrorComponent errorMessage={props.errorMessage} />}
             <div className={styles.center}>
                 <Spacer y={4} />
-                {props.nextPage && <PrimaryButton onPress={() => props.fetchData(props.nextPage)} className='font-medium'>Load More</PrimaryButton>}
+                {props.nextPage && <PrimaryButton isDisabled={props.isFetchinData} onPress={() => props.fetchData(props.nextPage)} className='font-medium'>Load More</PrimaryButton>}
+                <Spacer y={4} />
             </div>
         </>
     )
