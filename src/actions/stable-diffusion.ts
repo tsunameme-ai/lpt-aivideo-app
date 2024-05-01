@@ -91,7 +91,7 @@ export async function fetchGallery(limit: number, pageKey?: string): Promise<{ n
 
 export async function fetchAssetsByUser(userId: string, limit: number = 10, pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
     const pageQuery = pageKey ? `&page=${pageKey}` : ''
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/user/${userId}/generations?limit=${limit}${pageQuery}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/usergens/${userId}?limit=${limit}${pageQuery}`)
     if (!res.ok) {
         throw new Error(`Error fetch generation data ${res.status} ${pageKey}`)
     }
@@ -102,5 +102,25 @@ export async function fetchAssetsByUser(userId: string, limit: number = 10, page
             return parseGenerationRequest(item)
         })
     }
+}
 
+
+export async function claim(userId: string, assetId: string): Promise<{ success: boolean }> {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/claim/${userId}?asset=${assetId}`)
+    if (!res.ok) {
+        throw new Error(`Error claim ${assetId} ${res.status}`)
+    }
+    return {
+        success: res.status === 200
+    }
+}
+
+export async function publish(userId: string, assetId: string): Promise<{ success: boolean }> {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/publish/${userId}?asset=${assetId}`)
+    if (!res.ok) {
+        throw new Error(`Error publish ${assetId} ${res.status}`)
+    }
+    return {
+        success: res.status === 200
+    }
 }
