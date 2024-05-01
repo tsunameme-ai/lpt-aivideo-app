@@ -29,7 +29,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const outputFromContext: GenerationOutputItem | undefined = gContext.t2iOutputs ? gContext.t2iOutputs[gContext.t2iOutputSelectedIndex] : undefined
     const [baseModel, setBaseModel] = useState<string>(defaultBaseModel)
     const [genType, setGenType] = useState<GenRequestType>((outputFromContext?.input as Txt2imgInput)?.pPrompt === undefined ? GenRequestType.FIRSTTIME : GenRequestType.REQUEST_MORE)
-    const [pPromptValue, setPPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.pPrompt || gContext.shufflePrompt())
+    const [pPromptValue, setPPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.pPrompt || '')
     const [nPromptValue, setNPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.nPrompt || 'lowres, bad anatomy, bad hands, bad fingers, bad legs, bad feet, bad arms, text, error, missing hands, missing fingers, missing legs, missing feet, missing arms, extra digit, extra hands, extra fingers, extra legs, extra arms, extra feet, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
     const [seedValue, setSeedValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.seed?.toString() || '')
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -134,12 +134,13 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                     radius="sm"
                     maxRows={3}
                     label=''
+                    placeholder="Enter prompt or roll the dice"
                     value={pPromptValue}
                     errorMessage={errorMessage}
                     onValueChange={handlePPromptValueChange}
                     classNames={{
                         input: "text-lg",
-                        inputWrapper: "border-primary",
+                        inputWrapper: "border-primary pb-8",
                     }}
                 />
                 <Button isDisabled={isLoading} isIconOnly size="lg" variant="light" className={styles.renderBtn} onPress={() => { handlePPromptValueChange(gContext.shufflePrompt()) }}>
