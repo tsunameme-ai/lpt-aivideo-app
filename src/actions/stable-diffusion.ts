@@ -106,7 +106,7 @@ export async function fetchAssetsByUser(userId: string, limit: number = 10, page
 
 
 export async function claim(userId: string, assetId: string): Promise<{ success: boolean }> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/claim/${userId}?asset=${assetId}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/claim/${assetId}?asset=${userId}`)
     if (!res.ok) {
         throw new Error(`Error claim ${assetId} ${res.status}`)
     }
@@ -116,7 +116,7 @@ export async function claim(userId: string, assetId: string): Promise<{ success:
 }
 
 export async function publish(userId: string, assetId: string): Promise<{ success: boolean }> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/publish/${userId}?asset=${assetId}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/publish/${assetId}?user=${userId}`)
     if (!res.ok) {
         throw new Error(`Error publish ${assetId} ${res.status}`)
     }
