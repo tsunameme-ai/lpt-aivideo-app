@@ -106,8 +106,6 @@ export async function fetchAssetsByUser(userId: string, limit: number = 10, page
 
 
 export async function claim(userId: string, assetId: string, accessToken: string, salt: string): Promise<{ success: boolean }> {
-    console.log(`??? claim userId:${userId} assetId:${assetId.split(':')[0]} salt:${salt}`)
-    console.log(accessToken)
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/claim/${assetId.split(':')[0]}?user=${userId}&salt=${salt}`, {
         headers: {
             Authorization: `Bear ${accessToken}`

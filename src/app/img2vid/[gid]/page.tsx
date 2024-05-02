@@ -39,7 +39,7 @@ export default function Page() {
     return (
         <>
             <ToastContainer />
-            <section className={`${styles.main} ${appFont.className}`}>
+            {gContext.isReady && <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
                     <div className='font-medium'>Step 3 of 3: Make it a GIF </div>
                     <Spacer y={4} />
@@ -66,6 +66,7 @@ export default function Page() {
                             <Spacer y={4} />
                             <AuthInline
                                 onLoginComplete={async (userId: string, accessToken: string) => {
+                                    console.log(`????onLoginComplete ${userId} ${i2vOutput.id}`)
                                     const result = await claim(userId, i2vOutput?.id, accessToken, gContext.userSalt)
                                     console.log(result)
                                 }}
@@ -80,7 +81,7 @@ export default function Page() {
                     <Spacer y={4} />
                     <Button>Publish</Button>
                 </div>
-            </section>
+            </section>}
         </>
     )
 }

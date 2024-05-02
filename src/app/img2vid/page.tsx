@@ -112,7 +112,7 @@ export default function Page() {
         <>
             <ToastContainer />
             <section className={`${styles.main} ${appFont.className}`}>
-                <div className={styles.centerSection}>
+                {gContext.isReady && <div className={styles.centerSection}>
                     <div className='font-medium'>Step 3 of 3: Make it a GIF </div>
                     <Spacer y={4} />
                     <div>
@@ -150,7 +150,7 @@ export default function Page() {
                         onPress={handleGenerateVideoClick}>Render
                     </PrimaryButton>
                     <Spacer y={4} />
-                </div>
+                </div>}
             </section>
         </>
     )

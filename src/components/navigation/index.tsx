@@ -27,7 +27,7 @@ const NavigationComponent: React.FC = () => {
     ])
 
     const selectNavIcon = (path: string): NavIcon => {
-        if (['/img2vid', '/caption'].includes(path)) {
+        if (['img2vid', 'caption'].includes(path.split('/')[1])) {
             return NavIcon.BACK
         }
         if (['/', '/welcome'].includes(path)) {

@@ -33,7 +33,7 @@ export default function Page() {
     return (
         <>
             <section className={`${styles.main} ${appFont.className}`}>
-                <div className={styles.centerSection}>
+                {gContext.isReady && <div className={styles.centerSection}>
                     <div className='font-medium'>Step 1 of 3: Write the prompt</div>
                     <Spacer y={2} />
                     {imageOutputs.length > 0 && <Carousel imageOutputs={imageOutputs} selectedOutputIndex={selectedOutputIndex} onImageOutputSelected={setSelectedOutputIndex} />}
@@ -46,8 +46,8 @@ export default function Page() {
                             <PrimaryButton onPress={handleClickNext}>Next</PrimaryButton>
                             <Spacer y={4} />
                         </>}
-                </div>
-            </section >
+                </div>}
+            </section>
         </>
     )
 }

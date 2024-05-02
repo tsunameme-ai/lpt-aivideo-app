@@ -75,7 +75,7 @@ export default function Page() {
     return (
         <>
             <ToastContainer />
-            <section className={`${styles.main} ${appFont.className}`}>
+            {gContext.isReady && <section className={`${styles.main} ${appFont.className}`}>
                 <div className={styles.centerSection}>
                     <div className='font-medium'>Step 2 of 3: Add your caption</div>
                     <Spacer y={2} />
@@ -95,7 +95,7 @@ export default function Page() {
                             <PrimaryButton onPress={handleClickToVideo}>GIF it</PrimaryButton>
                         </div>
                     </>}
-            </section >
+            </section >}
         </>
     )
 }
