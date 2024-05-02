@@ -35,9 +35,9 @@ export default function Page() {
         Analytics.trackEvent({ 'event': 'vidgen-complete' })
         if (outputs.length > 0) {
             gContext.setI2vOutputs(outputs)
+            router.replace(`/img2vid/${outputs[0].id}`)
         }
         setIsGeneratingVideo(false)
-        router.replace('/postgen')
     }
 
     const onError = () => {

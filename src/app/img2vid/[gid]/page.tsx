@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react"
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { GenerationOutputItem } from "@/libs/types"
 import { Spacer, Link, Button } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
@@ -11,18 +11,20 @@ import { FaShare } from "react-icons/fa"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MediaPlayerComponent from "@/components/media-player"
-import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
 import { PrimaryButton, SecondaryButton } from "@/components/buttons"
 import { AuthInline } from "@/components/auth-indicator"
 import { claim } from "@/actions/stable-diffusion"
 import { usePrivy } from "@privy-io/react-auth"
+import { appFont } from "@/app/fonts"
 
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const { authenticated, user } = usePrivy()
-    const [i2vOutput] = useState<GenerationOutputItem | undefined>(gContext.i2vOutputs.length > 0 ? gContext.i2vOutputs[gContext.i2vOutputs.length - 1] : undefined)
+    const params = useParams()
+    const { gid } = params
+    const [i2vOutput] = useState<GenerationOutputItem | undefined>(gContext.i2vOutputs.find((item) => { return item.id === gid }) ?? undefined)
 
     const handleShare = () => {
         if (!i2vOutput) {

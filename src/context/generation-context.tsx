@@ -99,6 +99,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
     }
 
     useEffect(() => {
+        console.log(`???updateValueFromLocalStorage`)
         updateValueFromLocalStorage('isAdvancedView')
         updateValueFromLocalStorage('t2iOutputs')
         updateValueFromLocalStorage('t2iOutputSelectedIndex')
