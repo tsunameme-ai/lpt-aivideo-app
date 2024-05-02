@@ -4,6 +4,7 @@ import { Spinner, Link } from '@nextui-org/react';
 import AuthPromo from './promo';
 import { appFont } from '@/app/fonts';
 import { useEffect } from 'react';
+import AuthInline from './inline';
 
 const AuthIndicator: React.FC = () => {
     const { ready, authenticated, login, user, logout } = usePrivy()
@@ -70,5 +71,6 @@ const AuthIndicator: React.FC = () => {
 }
 export {
     AuthIndicator,
-    AuthPromo
+    AuthPromo,
+    AuthInline
 }

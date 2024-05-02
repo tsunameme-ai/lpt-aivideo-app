@@ -87,7 +87,12 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [overlayImageData, setOverlayImageData] = useLocalStorage('overlayImageData', undefined)
     const [i2vInput, setI2vInput] = useLocalStorage('i2vInput', undefined)
     const [i2vOutputs, setI2vOutputs] = useLocalStorage('i2vOutputs', [])
-    const [userSalt] = useState<string>(new ShortUniqueId({ length: 6 }).rnd())
+    const initUserSalt = (): string => {
+        const salt = new ShortUniqueId({ length: 6 }).rnd()
+        console.log(`??? init salt ${salt}`)
+        return salt
+    }
+    const [userSalt, setUserSalt] = useState<string>()
 
     const updateValueFromLocalStorage = (key: string) => {
         if (typeof (window) === 'undefined') {
@@ -99,6 +104,8 @@ export default function GenerationContextProvider({ children }: { children: Reac
     }
 
     useEffect(() => {
+        setUserSalt(initUserSalt())
+        // setSaltintiializeUserSalt()
         updateValueFromLocalStorage('isAdvancedView')
         updateValueFromLocalStorage('t2iOutputs')
         updateValueFromLocalStorage('t2iOutputSelectedIndex')

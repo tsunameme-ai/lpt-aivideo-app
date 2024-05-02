@@ -10,10 +10,12 @@ import { share } from "@/libs/share-utils"
 import { useEffect, useState } from "react"
 import { IoMdCreate } from "react-icons/io";
 import { useRouter } from "next/navigation"
+import { useGenerationContext } from "@/context/generation-context"
 
 export default function Page() {
     const { authenticated, user, ready } = usePrivy()
     const [userId, setUserId] = useState<string | undefined>(undefined)
+    const gContext = useGenerationContext()
     const router = useRouter()
 
     const toastId = "gallery-copy-success"
@@ -56,7 +58,11 @@ export default function Page() {
                     }
                 </div>}
                 <div className="right absolute bottom-0 right-0 m-4 z-20 w-24 h-24">
-                    <Button onPress={() => { router.push('/txt2img') }} className="w-full h-full" variant="shadow" color="primary" size='lg' radius="full" isIconOnly={true}>
+                    <Button onPress={() => {
+                        console.log('??? create')
+                        gContext.reset()
+                        router.push('/txt2img')
+                    }} className="w-full h-full" variant="shadow" color="primary" size='lg' radius="full" isIconOnly={true}>
                         <IoMdCreate size={60} />
                     </Button>
                 </div>

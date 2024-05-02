@@ -9,26 +9,19 @@ import React from "react"
 import { useGenerationContext } from "@/context/generation-context"
 import ErrorComponent from "@/components/error"
 import LongrunIndicator from "@/components/longrun-indicator"
-import { FaShare } from "react-icons/fa"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import MediaPlayerComponent from "@/components/media-player"
 import { Analytics } from "@/libs/analytics"
-import { getAccessToken, usePrivy } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
 import { appFont } from "../fonts"
-import { share } from "@/libs/share-utils"
-import { PrimaryButton, SecondaryButton } from "@/components/buttons"
-import { AuthPromo } from "@/components/auth-indicator"
-import { claim } from "@/actions/stable-diffusion"
+import { PrimaryButton } from "@/components/buttons"
 
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const { authenticated, user } = usePrivy()
-    const [i2vOutput, setI2vOutput] = useState<GenerationOutputItem | undefined>(undefined)
     const [img2VidRequest, setImg2VidRequest] = useState<GenerationRequest>()
     const [isGeneratingVideo, setIsGeneratingVideo] = useState<boolean>(false)
-    const [isButtonNew, setIsButtonNew] = useState<boolean>(false)
     const [i2vInput, setI2vInput] = useState<Img2vidInput>(gContext.i2vInput || {
         imageUrl: gContext.overlayImageData?.remoteURL || '',
         width: gContext.overlayImageData?.width || DEFAULT_VIDEO_WIDTH,
@@ -41,26 +34,14 @@ export default function Page() {
     const onVideoGenerated = async (outputs: Array<GenerationOutputItem>) => {
         Analytics.trackEvent({ 'event': 'vidgen-complete' })
         if (outputs.length > 0) {
-            setI2vOutput(outputs[0])
-            gContext.setI2vOutputs(gContext.i2vOutputs)
+            gContext.setI2vOutputs(outputs)
         }
         setIsGeneratingVideo(false)
-        setIsButtonNew(true)
+        router.replace('/postgen')
     }
 
     const onError = () => {
         setIsGeneratingVideo(false)
-        setIsButtonNew(false)
-    }
-
-    const handleShare = () => {
-        if (!i2vOutput) {
-            return
-        }
-        share({
-            url: i2vOutput.url,
-            toastTitle: "GIF link is copied. Send it!"
-        }, 'copy-success')
     }
 
 
@@ -109,7 +90,6 @@ export default function Page() {
 
         } catch (e) {
             setIsGeneratingVideo(false)
-            setIsButtonNew(false)
         }
     }
     const onI2VInputChange = (w: number, h: number, mbi: number, nas: number, seed: number | undefined, model: string) => {
@@ -136,13 +116,8 @@ export default function Page() {
                     <div className='font-medium'>Step 3 of 3: Make it a GIF </div>
                     <Spacer y={4} />
                     <div>
-                        {i2vOutput && <div className='flex justify-center'>
-                            <MediaPlayerComponent src={i2vOutput.url} className={styles.videoPreview} />
-                            <FaShare className={styles.shareIcon} onClick={handleShare} />
-                        </div>}
-
                         {gContext.overlayImageData && <>
-                            {!i2vOutput && <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />}
+                            <Image className={styles.imagePreview} src={gContext.overlayImageData.dataURL} alt={gContext.overlayImageData.dataURL} />
                             {gContext.isAdvancedView && <Img2VidComponent
                                 sdConfig={gContext.config}
                                 width={i2vInput.width}
@@ -169,40 +144,13 @@ export default function Page() {
                             </div>
                         }
                     </div>
-                </div>
-
-                {isButtonNew &&
-                    <PrimaryButton
-                        isLoading={isGeneratingVideo}
-                        onPress={handleShare}>Share</PrimaryButton>
-                }
-                <Spacer y={4} />
-                {isButtonNew ?
-                    <SecondaryButton
-                        isLoading={isGeneratingVideo}
-                        onPress={() => { router.replace('/') }}>Create New
-                    </SecondaryButton>
-                    :
+                    <Spacer y={4} />
                     <PrimaryButton
                         isLoading={isGeneratingVideo}
                         onPress={handleGenerateVideoClick}>Render
                     </PrimaryButton>
-                }
-
-                {isButtonNew &&
-                    <>
-                        <Spacer y={4} />
-                        <SecondaryButton
-                            isLoading={isGeneratingVideo}
-                            onPress={() => { router.push('/gallery') }}>Gallery</SecondaryButton>
-                    </>
-                }
-                <Spacer y={4} />
-                {i2vOutput && <AuthPromo
-                    onLoginComplete={async (userId: string, accessToken: string) => {
-                        await claim(userId, i2vOutput?.id, accessToken, gContext.userSalt)
-                    }}
-                    onContinueWOLogin={() => { }} />}
+                    <Spacer y={4} />
+                </div>
             </section>
         </>
     )
