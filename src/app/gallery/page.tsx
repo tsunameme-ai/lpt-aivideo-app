@@ -9,10 +9,12 @@ import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
 import { useEffect, useState } from "react"
 import { IoMdCreate } from "react-icons/io";
+import { useRouter } from "next/navigation"
 
 export default function Page() {
-    const { authenticated, user } = usePrivy()
+    const { authenticated, user, ready } = usePrivy()
     const [userId, setUserId] = useState<string | undefined>(undefined)
+    const router = useRouter()
 
     const toastId = "gallery-copy-success"
     const handleShare = (itemurl: string) => {
@@ -35,10 +37,10 @@ export default function Page() {
         <>
             <ToastContainer />
             <div className="flex w-full h-[calc(100vh-66px)]" style={{ overflow: 'scroll' }}>
-                <div className={`${appFont.className} w-full`}>
+                {ready && <div className={`${appFont.className} w-full`}>
                     {
                         !userId ? <>
-                            <div className='font-medium text-center'>What the community is creating</div>
+                            <div className='font-medium text-center'>What the community has created</div>
                             <Spacer y={2} />
                             <CommunityList handleShare={handleShare} />
                         </> : <>
@@ -52,10 +54,9 @@ export default function Page() {
                             </Tabs>
                         </>
                     }
-                </div>
+                </div>}
                 <div className="right absolute bottom-0 right-0 m-4 z-20 w-24 h-24">
-
-                    <Button className="w-full h-full" variant="shadow" color="primary" size='lg' radius="full" isIconOnly={true}>
+                    <Button onPress={() => { router.push('/txt2img') }} className="w-full h-full" variant="shadow" color="primary" size='lg' radius="full" isIconOnly={true}>
                         <IoMdCreate size={60} />
                     </Button>
                 </div>

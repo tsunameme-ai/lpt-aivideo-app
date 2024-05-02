@@ -105,16 +105,18 @@ export async function fetchAssetsByUser(userId: string, limit: number = 10, page
 }
 
 
-export async function claim(userId: string, assetId: string, accessToken: string): Promise<{ success: boolean }> {
+export async function claim(userId: string, assetId: string, accessToken: string, salt: string): Promise<{ success: boolean }> {
     console.log(accessToken)
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/claim/${assetId}?asset=${userId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/claim/${assetId}?user=${userId}&salt=${salt}`, {
         headers: {
             Authorization: `Bear ${accessToken}`
         }
     })
     if (!res.ok) {
-        throw new Error(`Error claim ${assetId} ${res.status}`)
+        console.log(res)
+        return { success: false }
     }
+
     return {
         success: res.status === 200
     }
@@ -122,8 +124,9 @@ export async function claim(userId: string, assetId: string, accessToken: string
 
 export async function publish(userId: string, assetId: string): Promise<{ success: boolean }> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/publish/${assetId}?user=${userId}`)
+
     if (!res.ok) {
-        throw new Error(`Error publish ${assetId} ${res.status}`)
+        return { success: false }
     }
     return {
         success: res.status === 200

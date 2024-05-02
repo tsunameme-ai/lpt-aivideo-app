@@ -7,6 +7,7 @@ import { appFont } from "@/app/fonts";
 import { FaAngleLeft } from "react-icons/fa6";
 import { useRouter, usePathname } from "next/navigation";
 import AdvancedIndicator from "../advanced-indicator";
+import { claim } from "@/actions/stable-diffusion";
 
 
 enum NavIcon {

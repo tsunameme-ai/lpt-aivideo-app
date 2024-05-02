@@ -1,12 +1,12 @@
 'use client'
-import { useLogin } from '@privy-io/react-auth'
+import { User, getAccessToken, useLogin } from '@privy-io/react-auth'
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
 import { useState } from 'react';
 import { appFont } from '@/app/fonts';
 
 interface AuthPromoProps {
     onContinueWOLogin: () => void
-    onLoginComplete: () => void
+    onLoginComplete: (userId: string, accessToken: string) => void
 }
 const AuthPromo: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
     const [isOpen] = useState<boolean>(true)
@@ -15,8 +15,14 @@ const AuthPromo: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
         props.onContinueWOLogin()
     }
     const { login } = useLogin({
-        onComplete: () => {
-            props.onLoginComplete()
+        onComplete: async (user: User) => {
+            const accessToken = await getAccessToken()
+            if (accessToken) {
+                props.onLoginComplete(user.id, accessToken)
+            }
+            else {
+                setErrorMessage(`Oops. Unable to get accessToken.`)
+            }
         },
         onError: (error: any) => {
             console.log(error);

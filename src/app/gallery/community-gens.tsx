@@ -24,7 +24,7 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
             setItems(items.concat(data.items))
         }
         catch (e: any) {
-            setErrorMessage(`Fetch gallery data failed ${e.message}`)
+            setErrorMessage(`Fetch gallery data failed ${e?.message}`)
         }
         finally {
             setIsFetchinData(false)

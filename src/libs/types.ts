@@ -17,6 +17,7 @@ export type Img2vidInput = {
     overlayText?: string
     imageGenerationId?: string
     userId?: string
+    salt?: string
 }
 export type Txt2imgInput = {
     pPrompt: string,

@@ -30,6 +30,7 @@ const AuthIndicator: React.FC = () => {
     useEffect(() => {
         readAccessToken()
     }, [ready, authenticated, user])
+
     return (
         <>
             {
