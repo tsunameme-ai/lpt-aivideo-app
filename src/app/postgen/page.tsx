@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { GenerationOutputItem } from "@/libs/types"
 import { Spacer, Link, Button } from "@nextui-org/react"
@@ -14,7 +14,7 @@ import MediaPlayerComponent from "@/components/media-player"
 import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
 import { PrimaryButton, SecondaryButton } from "@/components/buttons"
-import { AuthInline, AuthPromo } from "@/components/auth-indicator"
+import { AuthInline } from "@/components/auth-indicator"
 import { claim } from "@/actions/stable-diffusion"
 import { usePrivy } from "@privy-io/react-auth"
 
@@ -22,7 +22,6 @@ export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const { authenticated, user } = usePrivy()
-    const [authStatus, setAuthStatus] = useState<string>('')
     const [i2vOutput] = useState<GenerationOutputItem | undefined>(gContext.i2vOutputs.length > 0 ? gContext.i2vOutputs[gContext.i2vOutputs.length - 1] : undefined)
 
     const handleShare = () => {
@@ -65,12 +64,10 @@ export default function Page() {
                             <Spacer y={4} />
                             <AuthInline
                                 onLoginComplete={async (userId: string, accessToken: string) => {
-                                    setAuthStatus('success')
-                                    const success = await claim(userId, i2vOutput?.id, accessToken, gContext.userSalt)
-                                    console.log(success)
+                                    const result = await claim(userId, i2vOutput?.id, accessToken, gContext.userSalt)
+                                    console.log(result)
                                 }}
                                 onLoginFailed={() => {
-                                    setAuthStatus('failed')
                                     toast.error('Login failed', {
                                         toastId: 'login-failed',
                                         autoClose: 1200,
