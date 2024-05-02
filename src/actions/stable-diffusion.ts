@@ -105,8 +105,13 @@ export async function fetchAssetsByUser(userId: string, limit: number = 10, page
 }
 
 
-export async function claim(userId: string, assetId: string): Promise<{ success: boolean }> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/claim/${assetId}?asset=${userId}`)
+export async function claim(userId: string, assetId: string, accessToken: string): Promise<{ success: boolean }> {
+    console.log(accessToken)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/claim/${assetId}?asset=${userId}`, {
+        headers: {
+            Authorization: `Bear ${accessToken}`
+        }
+    })
     if (!res.ok) {
         throw new Error(`Error claim ${assetId} ${res.status}`)
     }

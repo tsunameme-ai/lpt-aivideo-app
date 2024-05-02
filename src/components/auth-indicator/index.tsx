@@ -3,9 +3,11 @@ import { usePrivy, User } from '@privy-io/react-auth'
 import { Spinner, Link } from '@nextui-org/react';
 import AuthPromo from './promo';
 import { appFont } from '@/app/fonts';
+import { useEffect } from 'react';
 
 const AuthIndicator: React.FC = () => {
     const { ready, authenticated, login, user, logout } = usePrivy()
+    const { getAccessToken } = usePrivy();
     const formatUserInfo = (user: User): string => {
         if (user.wallet) {
             return `${user.wallet.address.substring(0, 6).toLowerCase()}...${user.wallet.address.substring(user.wallet.address.length - 4, user.wallet.address.length).toLowerCase()}`
@@ -13,14 +15,21 @@ const AuthIndicator: React.FC = () => {
         if (user.email) {
             return user.email.address
         }
-        if (user.discord) {
-            return user.discord.username || user.discord.email || user.discord.subject
-        }
         if (user.google) {
             return user.google.name || user.google.email || user.google.subject
         }
         return user.id
     }
+    const readAccessToken = async () => {
+        if (authenticated && user) {
+            const accessToken = await getAccessToken()
+            console.log(accessToken)
+        }
+
+    }
+    useEffect(() => {
+        readAccessToken()
+    }, [ready, authenticated, user])
     return (
         <>
             {
