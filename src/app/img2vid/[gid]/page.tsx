@@ -57,7 +57,10 @@ export default function Page() {
                     <Spacer y={4} />
                     <PrimaryButton onPress={handleShare}>Share</PrimaryButton>
                     <Spacer y={4} />
-                    <SecondaryButton onPress={() => { router.replace('/') }}>Create New</SecondaryButton>
+                    <SecondaryButton onPress={() => {
+                        gContext.reset()
+                        router.replace('/txt2img')
+                    }}>Create New</SecondaryButton>
                     <Spacer y={4} />
                     <SecondaryButton onPress={() => { router.push('/gallery') }}>Gallery</SecondaryButton>
                     <Spacer y={4} />

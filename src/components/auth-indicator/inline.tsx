@@ -1,6 +1,7 @@
 'use client'
 import { Button } from '@nextui-org/react';
-import { User, getAccessToken, useLogin, usePrivy } from '@privy-io/react-auth'
+import { getAccessToken, useLogin, usePrivy } from '@privy-io/react-auth'
+import { useEffect } from 'react';
 
 interface AuthPromoProps {
     onLoginComplete: (userId: string, accessToken: string) => void
@@ -9,8 +10,9 @@ interface AuthPromoProps {
 const AuthInline: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
     const { authenticated, user } = usePrivy()
     const { login } = useLogin({
-        onComplete: async (user: User) => {
-            onLoginComplete(user.id)
+        onComplete: async () => {
+            console.log(`??????login complete`)
+            // onLoginComplete(user.id)
         },
         onError: (error: any) => {
             console.log('???? login failed')
@@ -18,6 +20,12 @@ const AuthInline: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
             props.onLoginFailed(`Oops. Login failed.`)
         },
     });
+    useEffect(() => {
+        if (authenticated && user) {
+            onLoginComplete(user.id)
+        }
+
+    }, [authenticated, user])
     const onLoginComplete = async (userId: string) => {
         const accessToken = await getAccessToken()
         if (accessToken) {
