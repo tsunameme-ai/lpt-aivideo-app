@@ -20,7 +20,8 @@ export class SDAPI {
             'width': params.width,
             'height': params.height,
             'num_images_per_prompt': params.numOutput,
-            "user_id": params.userId
+            "user_id": params.userId,
+            "safety_check": true
         }
         return await this.sendRequest(url, {
             method: 'POST',

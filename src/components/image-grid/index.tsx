@@ -1,5 +1,5 @@
 'use client'
-import { GenerationRequest } from "@/libs/types"
+import { GenerationOutput, GenerationRequest } from "@/libs/types"
 import { Spacer, Spinner, useDisclosure } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import styles from "@/styles/home.module.css"
@@ -9,6 +9,7 @@ import { PrimaryButton } from "@/components/buttons"
 import Grid from "./grid"
 
 interface ImageGridProps {
+    loggedInUserId?: string
     isFetchinData: boolean
     items: GenerationRequest[]
     errorMessage?: string
@@ -17,11 +18,11 @@ interface ImageGridProps {
     fetchData: (pageKey?: string) => void
 }
 const ImageGrid: React.FC<ImageGridProps> = (props: ImageGridProps) => {
-    const [selectedCell, setSelectedCell] = useState<string>('')
+    const [selectedAsset, setSelectedAsset] = useState<GenerationRequest>()
 
     const { onOpen, isOpen, onClose } = useDisclosure()
-    const handleOpenModal = (url: string) => {
-        setSelectedCell(url)
+    const handleOpenModal = (item: GenerationRequest) => {
+        setSelectedAsset(item)
         onOpen()
     }
 
@@ -39,7 +40,7 @@ const ImageGrid: React.FC<ImageGridProps> = (props: ImageGridProps) => {
 
     return (
         <>
-            {selectedCell && <CellModal imgUrl={selectedCell} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />}
+            {selectedAsset && <CellModal loggedInUserId={props.loggedInUserId} asset={selectedAsset} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />}
             {props.isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
             <Grid items={props.items} onClickItem={handleOpenModal} />
             {props.errorMessage && <ErrorComponent errorMessage={props.errorMessage} />}

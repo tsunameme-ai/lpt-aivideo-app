@@ -121,13 +121,24 @@ export async function claim(userId: string, assetId: string, accessToken: string
     }
 }
 
-export async function publish(userId: string, assetId: string): Promise<{ success: boolean }> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/publish/${assetId}?user=${userId}`)
+export async function togglePublish(userId: string, assetId: string, accessToken: string, publishOn: boolean): Promise<{ success: boolean, visibility?: string }> {
+    console.log(`??? togglePublish ${userId} ${assetId} ${publishOn}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/publish/${assetId}?user=${userId}`, {
+        method: publishOn ? 'GET' : 'DELETE',
+        headers: {
+            Authorization: `Bear ${accessToken}`
+        }
+    })
+    const resultVisibility = publishOn ? 'community' : 'none'
 
     if (!res.ok) {
+        const result = await res.json()
+        console.log(res.status)
+        console.log(result)
         return { success: false }
     }
     return {
-        success: res.status === 200
+        success: res.status === 200,
+        visibility: resultVisibility
     }
 }

@@ -38,6 +38,7 @@ export type GenerationOutputItem = {
     id: string,
     url: string,
     seed: number,
+    visibility?: string
     input?: Txt2imgInput | Img2vidInput
 }
 export enum GenerationType {

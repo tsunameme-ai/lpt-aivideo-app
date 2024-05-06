@@ -15,13 +15,11 @@ import { share } from "@/libs/share-utils"
 import { PrimaryButton, SecondaryButton } from "@/components/buttons"
 import { AuthInline } from "@/components/auth-indicator"
 import { claim } from "@/actions/stable-diffusion"
-import { usePrivy } from "@privy-io/react-auth"
 import { appFont } from "@/app/fonts"
 
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
-    const { authenticated, user } = usePrivy()
     const params = useParams()
     const { gid } = params
     const [i2vOutput] = useState<GenerationOutputItem | undefined>(gContext.i2vOutputs.find((item) => { return item.id === gid }) ?? undefined)
@@ -56,17 +54,9 @@ export default function Page() {
                     </div>
                     <Spacer y={4} />
                     <PrimaryButton onPress={handleShare}>Share</PrimaryButton>
-                    <Spacer y={4} />
-                    <SecondaryButton onPress={() => {
-                        gContext.reset()
-                        router.replace('/txt2img')
-                    }}>Create New</SecondaryButton>
-                    <Spacer y={4} />
-                    <SecondaryButton onPress={() => { router.push('/gallery') }}>Gallery</SecondaryButton>
-                    <Spacer y={4} />
-                    {i2vOutput && (!authenticated || !user) &&
+
+                    {i2vOutput &&
                         <>
-                            <Spacer y={4} />
                             <AuthInline
                                 onLoginComplete={async (userId: string, accessToken: string) => {
                                     console.log(`????onLoginComplete ${userId} ${i2vOutput.id}`)
@@ -82,7 +72,13 @@ export default function Page() {
                                 }} />
                         </>}
                     <Spacer y={4} />
-                    <Button>Publish</Button>
+                    <SecondaryButton onPress={() => {
+                        gContext.reset()
+                        router.replace('/txt2img')
+                    }}>Create New</SecondaryButton>
+                    <Spacer y={4} />
+                    <SecondaryButton onPress={() => { router.push('/gallery') }}>Gallery</SecondaryButton>
+                    <Spacer y={4} />
                 </div>
             </section>}
         </>

@@ -20,8 +20,10 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
 
         try {
             const data = await fetchAssetsByUser(props.userId, 10, pageKey)
-            setNextPage(data.nextPage)
-            setItems(items.concat(data.items))
+            if (!nextPage || data.nextPage !== nextPage) {
+                setNextPage(data.nextPage)
+                setItems(items.concat(data.items))
+            }
         }
         catch (e: any) {
             setErrorMessage(`Fetch gallery data failed ${e.message}`)
@@ -32,6 +34,7 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
     }
     return (
         <ImageGrid
+            loggedInUserId={props.userId}
             isFetchinData={isFetchinData}
             items={items}
             errorMessage={errorMessage}
