@@ -1,5 +1,5 @@
 'use client'
-import { GenerationOutput, GenerationRequest } from "@/libs/types"
+import { GenerationRequest } from "@/libs/types"
 import { Spacer, Spinner, useDisclosure } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import styles from "@/styles/home.module.css"
