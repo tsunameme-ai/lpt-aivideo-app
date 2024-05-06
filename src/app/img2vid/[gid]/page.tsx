@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { useParams, useRouter } from 'next/navigation'
 import { GenerationOutputItem } from "@/libs/types"
-import { Spacer, Link, Button } from "@nextui-org/react"
+import { Spacer, Link } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
 import React from "react"
 import { useGenerationContext } from "@/context/generation-context"
