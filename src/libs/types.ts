@@ -17,6 +17,7 @@ export type Img2vidInput = {
     overlayText?: string
     imageGenerationId?: string
     userId?: string
+    salt?: string
 }
 export type Txt2imgInput = {
     pPrompt: string,
@@ -37,6 +38,7 @@ export type GenerationOutputItem = {
     id: string,
     url: string,
     seed: number,
+    visibility?: string
     input?: Txt2imgInput | Img2vidInput
 }
 export enum GenerationType {

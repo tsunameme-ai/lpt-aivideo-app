@@ -1,19 +1,22 @@
 'use client'
-import { Tabs, Card, CardBody, Tab, Spacer } from "@nextui-org/react"
+import { Tabs, Tab, Spacer, Button } from "@nextui-org/react"
 import 'react-toastify/dist/ReactToastify.css'
 import { usePrivy } from "@privy-io/react-auth"
 import CommunityList from "./community-gens"
-import UserGenList, { LOCAL_USERID } from "./user-gens"
+import UserGenList from "./user-gens"
 import { ToastContainer } from 'react-toastify'
 import { appFont } from "../fonts"
 import { share } from "@/libs/share-utils"
-import { useGenerationContext } from "@/context/generation-context"
 import { useEffect, useState } from "react"
+import { IoMdCreate } from "react-icons/io";
+import { useRouter } from "next/navigation"
+import { useGenerationContext } from "@/context/generation-context"
 
 export default function Page() {
-    const { authenticated, user } = usePrivy()
-    const gContext = useGenerationContext()
+    const { authenticated, user, ready } = usePrivy()
     const [userId, setUserId] = useState<string | undefined>(undefined)
+    const gContext = useGenerationContext()
+    const router = useRouter()
 
     const toastId = "gallery-copy-success"
     const handleShare = (itemurl: string) => {
@@ -26,43 +29,44 @@ export default function Page() {
         if (authenticated && user) {
             setUserId(user.id)
         }
-        else if (gContext.i2vOutputs.length > 0 && process.env.NEXT_PUBLIC_USERGEN === 'local') {
-            setUserId(LOCAL_USERID)
-        }
         else {
             setUserId(undefined)
         }
-    }, [gContext.i2vOutputs, authenticated])
+    }, [authenticated, user])
 
 
     return (
         <>
             <ToastContainer />
-            <section className={`flex flex-col items-center justify-center ${appFont.className}`}>
-                <div className="w-full">
+            <div className="flex w-full h-[calc(100vh-66px)]" style={{ overflow: 'scroll' }}>
+                {ready && <div className={`${appFont.className} w-full`}>
                     {
                         !userId ? <>
-                            <div className='font-medium text-center'>What the community is creating</div>
+                            <div className='font-medium text-center'>What the community has created</div>
                             <Spacer y={2} />
                             <CommunityList handleShare={handleShare} />
                         </> : <>
-                            <Card className="max-w-full">
-                                <CardBody className="overflow-hidden">
-                                    <Tabs fullWidth classNames={{
-                                        tabContent: "group-data-[selected=true]:text-[#f1faee]",
-                                        cursor: "w-full bg-[#ffc303]",
-                                        tab: "text-[20px]"
-                                    }} >
-                                        <Tab key='community' title='Community'><CommunityList handleShare={handleShare} /></Tab>
-                                        <Tab key='me' title='Me'><UserGenList userId={userId} handleShare={handleShare} /></Tab>
-                                    </Tabs>
-                                </CardBody>
-                            </Card>
+                            <Tabs fullWidth classNames={{
+                                tabContent: "group-data-[selected=true]:text-[#f1faee]",
+                                cursor: "w-full bg-[#ffc303]",
+                                tab: "text-[20px]"
+                            }} >
+                                <Tab key='community' title='Community'><CommunityList handleShare={handleShare} /></Tab>
+                                <Tab key='me' title='Me'><UserGenList userId={userId} handleShare={handleShare} /></Tab>
+                            </Tabs>
                         </>
                     }
-
+                </div>}
+                <div className="right absolute bottom-0 right-0 m-4 z-20 w-24 h-24">
+                    <Button onPress={() => {
+                        console.log('??? create')
+                        gContext.reset()
+                        router.push('/txt2img')
+                    }} className="w-full h-full" variant="shadow" color="primary" size='lg' radius="full" isIconOnly={true}>
+                        <IoMdCreate size={60} />
+                    </Button>
                 </div>
-            </section>
+            </div>
         </>
     )
 }

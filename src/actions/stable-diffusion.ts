@@ -73,9 +73,9 @@ export async function fetchGenerationData(urlGid: string): Promise<GenerationReq
     return parseGenerationRequest(data)
 }
 
-export async function fetchGallery(pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
-    const pageQuery = pageKey ? `?page=${pageKey}` : ''
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generations${pageQuery}`)
+export async function fetchGallery(limit: number, pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
+    const pageQuery = pageKey ? `&page=${pageKey}` : ''
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/generations?limit=${limit}${pageQuery}`)
     if (!res.ok) {
         throw new Error(`Error fetch generation data ${res.status} ${pageKey}`)
     }
@@ -89,9 +89,9 @@ export async function fetchGallery(pageKey?: string): Promise<{ nextPage?: strin
 
 }
 
-export async function fetchAssetsByUser(userId: string, pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
-    const pageQuery = pageKey ? `?page=${pageKey}` : ''
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/user/${userId}/generations${pageQuery}`)
+export async function fetchAssetsByUser(userId: string, limit: number = 10, pageKey?: string): Promise<{ nextPage?: string, items: GenerationRequest[] }> {
+    const pageQuery = pageKey ? `&page=${pageKey}` : ''
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/usergens/${userId}?limit=${limit}${pageQuery}`)
     if (!res.ok) {
         throw new Error(`Error fetch generation data ${res.status} ${pageKey}`)
     }
@@ -102,5 +102,43 @@ export async function fetchAssetsByUser(userId: string, pageKey?: string): Promi
             return parseGenerationRequest(item)
         })
     }
+}
 
+
+export async function claim(userId: string, assetId: string, accessToken: string, salt: string): Promise<{ success: boolean }> {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/claim/${assetId.split(':')[0]}?user=${userId}&salt=${salt}`, {
+        headers: {
+            Authorization: `Bear ${accessToken}`
+        }
+    })
+    if (!res.ok) {
+        // console.log(res)
+        return { success: false }
+    }
+
+    return {
+        success: res.status === 200
+    }
+}
+
+export async function togglePublish(userId: string, assetId: string, accessToken: string, publishOn: boolean): Promise<{ success: boolean, visibility?: string }> {
+    console.log(`??? togglePublish ${userId} ${assetId} ${publishOn}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/publish/${assetId}?user=${userId}`, {
+        method: publishOn ? 'GET' : 'DELETE',
+        headers: {
+            Authorization: `Bear ${accessToken}`
+        }
+    })
+    const resultVisibility = publishOn ? 'community' : 'none'
+
+    if (!res.ok) {
+        const result = await res.json()
+        console.log(res.status)
+        console.log(result)
+        return { success: false }
+    }
+    return {
+        success: res.status === 200,
+        visibility: resultVisibility
+    }
 }

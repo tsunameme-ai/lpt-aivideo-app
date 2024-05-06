@@ -1,6 +1,7 @@
 'use client'
 import { LocalImageData, GenerationOutputItem, Img2vidInput, SDConfig } from '@/libs/types';
 import { createContext, useState, useEffect, useContext } from 'react';
+import ShortUniqueId from 'short-unique-id';
 
 interface GenerationContextType {
     config: SDConfig
@@ -26,6 +27,10 @@ interface GenerationContextType {
 
     i2vOutputs: Array<GenerationOutputItem>
     setI2vOutputs: (outputs: Array<GenerationOutputItem>) => void
+
+    userSalt: string
+    isReady: boolean
+
     reset: () => void
 }
 
@@ -76,6 +81,7 @@ const useLocalStorage = (key: string, defaultValue: any) => {
 
 
 export default function GenerationContextProvider({ children }: { children: React.ReactNode }) {
+    const [isReady, setIsReady] = useState<boolean>(false)
     const [isAdvancedView, setIsAdvancedView] = useLocalStorage('isAdvancedView', false)
     const [t2iOutputs, setT2iOutputs] = useLocalStorage('t2iOutputs', [])
     const [t2iOutputSelectedIndex, setT2iOutputSelectedIndex] = useLocalStorage('t2iOutputSelectedIndex', 0)
@@ -83,6 +89,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [overlayImageData, setOverlayImageData] = useLocalStorage('overlayImageData', undefined)
     const [i2vInput, setI2vInput] = useLocalStorage('i2vInput', undefined)
     const [i2vOutputs, setI2vOutputs] = useLocalStorage('i2vOutputs', [])
+    const [userSalt] = useLocalStorage('userSalt', new ShortUniqueId({ length: 6 }).rnd())
 
     const updateValueFromLocalStorage = (key: string) => {
         if (typeof (window) === 'undefined') {
@@ -94,6 +101,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
     }
 
     useEffect(() => {
+        console.log(`???updateValueFromLocalStorage`)
         updateValueFromLocalStorage('isAdvancedView')
         updateValueFromLocalStorage('t2iOutputs')
         updateValueFromLocalStorage('t2iOutputSelectedIndex')
@@ -101,6 +109,8 @@ export default function GenerationContextProvider({ children }: { children: Reac
         updateValueFromLocalStorage('overlayImageData')
         updateValueFromLocalStorage('i2vInput')
         updateValueFromLocalStorage('i2vOutputs')
+        updateValueFromLocalStorage('userSalt')
+        setIsReady(true)
     }, []);
 
     const generationConfig = (): SDConfig => {
@@ -162,6 +172,8 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 overlayImageData, setOverlayImageData,
                 i2vInput, setI2vInput,
                 i2vOutputs, setI2vOutputs,
+                userSalt,
+                isReady,
                 reset
             }}>
             {children}

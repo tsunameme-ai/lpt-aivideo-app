@@ -19,12 +19,14 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
         setIsFetchinData(true)
 
         try {
-            const data = await fetchGallery(pageKey)
-            setNextPage(data.nextPage)
-            setItems(items.concat(data.items))
+            const data = await fetchGallery(10, pageKey)
+            if (!nextPage || data.nextPage !== nextPage) {
+                setNextPage(data.nextPage)
+                setItems(items.concat(data.items))
+            }
         }
         catch (e: any) {
-            setErrorMessage(`Fetch gallery data failed ${e.message}`)
+            setErrorMessage(`Fetch gallery data failed ${e?.message}`)
         }
         finally {
             setIsFetchinData(false)

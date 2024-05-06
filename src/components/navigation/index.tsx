@@ -27,10 +27,10 @@ const NavigationComponent: React.FC = () => {
     ])
 
     const selectNavIcon = (path: string): NavIcon => {
-        if (['/img2vid', '/caption'].includes(path)) {
+        if (['img2vid', 'caption'].includes(path.split('/')[1])) {
             return NavIcon.BACK
         }
-        if ('/' === path) {
+        if (['/', '/welcome'].includes(path)) {
             return NavIcon.NONE
         }
         return NavIcon.TOGGLE
@@ -62,7 +62,7 @@ const NavigationComponent: React.FC = () => {
 
     return (<>
 
-        {pathname != '/' &&
+        {navIcon != NavIcon.NONE &&
             <header className='py-1'>
                 <Navbar className="text-primary" onMenuOpenChange={setIsMenuOpen}>
                     <NavbarContent>
@@ -101,7 +101,9 @@ const NavigationComponent: React.FC = () => {
                                 <NavbarMenuItem key='dev-home'>
                                     <Link color="foreground" className={`${appFont.className} font-medium w-full leading-10`} href='/' size="lg">dev-home</Link>
                                 </NavbarMenuItem>
-
+                                <NavbarMenuItem key='dev-welcome'>
+                                    <Link color="foreground" className={`${appFont.className} font-medium w-full leading-10`} href='/welcome' size="lg">dev-home</Link>
+                                </NavbarMenuItem>
                                 <NavbarMenuItem>
                                     <AdvancedIndicator />
                                 </NavbarMenuItem>

@@ -20,7 +20,8 @@ export class SDAPI {
             'width': params.width,
             'height': params.height,
             'num_images_per_prompt': params.numOutput,
-            "user_id": params.userId
+            "user_id": params.userId,
+            "safety_check": true
         }
         return await this.sendRequest(url, {
             method: 'POST',
@@ -44,7 +45,8 @@ export class SDAPI {
             "overlay_text": params.overlayText,
             "image_generation_id": params.imageGenerationId,
             "output_width": 512,
-            "user_id": params.userId
+            "user_id": params.userId,
+            salt: params.salt
         }
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT_IMG2VID!
         return await this.sendRequest(url, {
@@ -138,8 +140,7 @@ export class SDStaticAPI {
         await Utils.delay(12000)
         return [{
             id: 'static',
-            url: 'https://lpt-aivideo-dst.s3.amazonaws.com/T1EjNmQU2x.gif',
-            // url: 'https://lpt-aivideo-dst.s3.amazonaws.com/CZrV2ezwGx.gif',
+            url: 'https://lpt-aivideo-dst.s3.amazonaws.com/Mav6NCGbx0.gif',
             seed: 1773116098
         }]
     }
