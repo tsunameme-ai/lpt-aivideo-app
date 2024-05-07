@@ -50,6 +50,7 @@ export type GenerationRequest = {
     type: GenerationType,
     input: Txt2imgInput | Img2vidInput
     outputs?: GenerationOutputItem[]
+    visibility?: string
 }
 export type LocalImageData = {
     remoteURL: string,
