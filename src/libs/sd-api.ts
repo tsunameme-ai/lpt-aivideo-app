@@ -119,7 +119,7 @@ export class SDAPI {
 
 export class SDStaticAPI {
     public async txt2img(): Promise<Array<GenerationOutputItem>> {
-        await Utils.delay(1000)
+        await Utils.delay(200)
         return [{
             id: 'static',
             seed: 1773116098,
@@ -137,9 +137,9 @@ export class SDStaticAPI {
     }
 
     public async img2vid(): Promise<Array<GenerationOutputItem>> {
-        await Utils.delay(12000)
+        await Utils.delay(1000)
         return [{
-            id: 'static',
+            id: 'static:0',
             url: 'https://lpt-aivideo-dst.s3.amazonaws.com/Mav6NCGbx0.gif',
             seed: 1773116098
         }]
