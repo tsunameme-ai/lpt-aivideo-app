@@ -41,11 +41,6 @@ const ImageGrid: React.FC<ImageGridProps> = (props: ImageGridProps) => {
     return (
         <>
             {selectedAsset && <CellModal
-                onAssetVisibilityChange={(assetId: string, visibility: string) => {
-                    if (selectedAsset.id === assetId) {
-                        selectedAsset.visibility = visibility
-                    }
-                }}
                 loggedInUserId={props.loggedInUserId}
                 asset={selectedAsset}
                 isOpen={isOpen}

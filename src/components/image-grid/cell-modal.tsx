@@ -6,12 +6,12 @@ import { GenerationRequest } from "@/libs/types"
 import { togglePublish } from "@/actions/stable-diffusion"
 import { getAccessToken } from "@privy-io/react-auth"
 import { SecondaryButton } from "../buttons"
+import { useState } from "react"
 
 interface CellModalProps {
     loggedInUserId?: string
     asset: GenerationRequest
     isOpen: boolean,
-    onAssetVisibilityChange?: (assetId: string, visibility: string) => void
     onClose?: () => void
     handleShare?: (url: string) => void
 }
@@ -27,7 +27,7 @@ const CellModal: React.FC<CellModalProps> = (props: CellModalProps) => {
             }
             const data = await togglePublish(props.loggedInUserId!, props.asset.id, accessToken, props.asset.visibility !== 'community')
             if (data.success) {
-                props.onAssetVisibilityChange?.(props.asset.id, data.visibility!)
+                props.asset.visibility = data.visibility
             }
         }
         catch (e) {
