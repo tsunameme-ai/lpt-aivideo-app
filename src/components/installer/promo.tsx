@@ -15,9 +15,7 @@ interface InstallPromoProps {
 
 export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoProps) => {
     let dynamicMSG
-    if (!props.isMobile)
-        dynamicMSG = <p>Please open this page from your mobile phone</p>
-    else if (props.hasInstallPrompt) {
+    if (props.hasInstallPrompt) {
         dynamicMSG = <>
             <Spacer y={4} /><PrimaryButton onPress={props.onInstallRequested}>Install</PrimaryButton>
         </>

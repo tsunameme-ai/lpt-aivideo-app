@@ -24,6 +24,7 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     const [isFireFox, setIsFireFox] = useState<boolean>(false)
 
     const handleBeforeInstallPromptEvt = (evt: Event) => {
+        console.log(`??? handleBeforeInstallPromptEvt`)
         evt.preventDefault()
         setInstallPromtEvent(evt)
     }
@@ -31,6 +32,7 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         Analytics.trackEvent({ 'event': 'app-installed' })
     }
     const handleInstallRequest = async () => {
+        console.log(`??? handleInstallRequest`)
         if (installPromtEvent) {
             (installPromtEvent as any).prompt()
             const { outcome } = await (installPromtEvent as any).userChoice
@@ -49,9 +51,11 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     }
 
     const handleDisplayModeChangeEvt = (evt: Event) => {
+        console.log(`??handleDisplayModeChangeEvt`)
+        console.log(evt)
         if ((evt as any).matches) {
             setDisplayMode(DisplayMode.STANDALONE)
-            props.onAppReadyChange(isMobile)
+            props.onAppReadyChange(true)
 
         }
     }
@@ -102,7 +106,7 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     return (<>
         {isLoading ? <></> :
             <>{
-                (!isMobile || displayMode === DisplayMode.BROWSER) &&
+                (displayMode === DisplayMode.BROWSER) &&
                 <InstallPromo
                     isMobile={isMobile}
                     hasInstallPrompt={installPromtEvent !== undefined}
