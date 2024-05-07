@@ -40,7 +40,12 @@ const ImageGrid: React.FC<ImageGridProps> = (props: ImageGridProps) => {
 
     return (
         <>
-            {selectedAsset && <CellModal loggedInUserId={props.loggedInUserId} asset={selectedAsset} isOpen={isOpen} onClose={handleCloseModal} handleShare={handleShare} />}
+            {selectedAsset && <CellModal
+                loggedInUserId={props.loggedInUserId}
+                asset={selectedAsset}
+                isOpen={isOpen}
+                onClose={handleCloseModal}
+                handleShare={handleShare} />}
             {props.isFetchinData && <div className={styles.center}><Spacer y={4} /><Spinner color="warning" /></div>}
             <Grid items={props.items} onClickItem={handleOpenModal} />
             {props.errorMessage && <ErrorComponent errorMessage={props.errorMessage} />}

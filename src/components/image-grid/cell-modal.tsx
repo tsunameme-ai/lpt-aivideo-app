@@ -3,10 +3,10 @@ import { FaShare } from "react-icons/fa"
 import styles from "@/styles/home.module.css"
 import MediaPlayerComponent from "@/components/media-player"
 import { GenerationRequest } from "@/libs/types"
-import { useState } from "react"
 import { togglePublish } from "@/actions/stable-diffusion"
 import { getAccessToken } from "@privy-io/react-auth"
 import { SecondaryButton } from "../buttons"
+import { useState } from "react"
 
 interface CellModalProps {
     loggedInUserId?: string
@@ -19,18 +19,15 @@ interface CellModalProps {
 const CellModal: React.FC<CellModalProps> = (props: CellModalProps) => {
     const [isUpdatingVisibility, setIsUpdatingVisibility] = useState<boolean>(false)
     const updatePublish = async () => {
-        props.asset.outputs?.[0].visibility === 'community'
         setIsUpdatingVisibility(true)
         try {
             const accessToken = await getAccessToken()
             if (!accessToken) {
                 throw new Error(`Invalid accessToken`)
             }
-            const data = await togglePublish(props.loggedInUserId!, props.asset.id, accessToken, props.asset.outputs?.[0].visibility !== 'community')
-            console.log(`???? ${data.success}`)
-            if (data.success && (props.asset.outputs || []).length > 0) {
-                props.asset.outputs![0].visibility = data.visibility
-                console.log(`??? ${props.asset.outputs![0].visibility} `)
+            const data = await togglePublish(props.loggedInUserId!, props.asset.id, accessToken, props.asset.visibility !== 'community')
+            if (data.success) {
+                props.asset.visibility = data.visibility
             }
         }
         catch (e) {
@@ -39,7 +36,6 @@ const CellModal: React.FC<CellModalProps> = (props: CellModalProps) => {
         finally {
             setIsUpdatingVisibility(false)
         }
-
     }
 
     return (
@@ -49,7 +45,7 @@ const CellModal: React.FC<CellModalProps> = (props: CellModalProps) => {
                     <MediaPlayerComponent src={props.asset.outputs?.[0].url!} key={props.asset.outputs?.[0].url!} className={"w-full"} />
                     <FaShare className={styles.galleryShareIcon} onClick={() => props.handleShare?.(props.asset.outputs?.[0].url!)} />
                     {props.loggedInUserId && <ModalFooter>
-                        <SecondaryButton isLoading={isUpdatingVisibility} onPress={updatePublish}>{props.asset.outputs?.[0].visibility === 'community' ? 'Remove from Community' : 'Share with Community'}</SecondaryButton>
+                        <SecondaryButton isLoading={isUpdatingVisibility} onPress={updatePublish}>{props.asset.visibility === 'community' ? 'Remove from Community' : 'Share with Community'}</SecondaryButton>
                     </ModalFooter>}
                 </ModalContent>
             </Modal>

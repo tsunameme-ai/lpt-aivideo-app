@@ -56,7 +56,8 @@ const parseGenerationRequest = (data: any): GenerationRequest => {
         id: data.id,
         type: type,
         input: input,
-        outputs: data.outputs
+        outputs: data.outputs,
+        visibility: data.visibility
     }
 }
 
@@ -122,7 +123,6 @@ export async function claim(userId: string, assetId: string, accessToken: string
 }
 
 export async function togglePublish(userId: string, assetId: string, accessToken: string, publishOn: boolean): Promise<{ success: boolean, visibility?: string }> {
-    console.log(`??? togglePublish ${userId} ${assetId} ${publishOn}`)
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/publish/${assetId}?user=${userId}`, {
         method: publishOn ? 'GET' : 'DELETE',
         headers: {
