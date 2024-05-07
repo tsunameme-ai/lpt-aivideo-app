@@ -20,9 +20,6 @@ const UserGenList: React.FC<UserGenListProps> = (props: UserGenListProps) => {
 
         try {
             const data = await fetchAssetsByUser(props.userId, 10, pageKey)
-            for (let item of data.items) {
-                console.log(`??? UserGenList ${item.id} ${item.visibility}`)
-            }
             if (!nextPage || data.nextPage !== nextPage) {
                 setNextPage(data.nextPage)
                 setItems(items.concat(data.items))

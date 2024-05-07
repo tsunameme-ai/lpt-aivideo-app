@@ -3,7 +3,6 @@ import { FaShare } from "react-icons/fa"
 import styles from "@/styles/home.module.css"
 import MediaPlayerComponent from "@/components/media-player"
 import { GenerationRequest } from "@/libs/types"
-import { useEffect, useState } from "react"
 import { togglePublish } from "@/actions/stable-diffusion"
 import { getAccessToken } from "@privy-io/react-auth"
 import { SecondaryButton } from "../buttons"
@@ -38,9 +37,6 @@ const CellModal: React.FC<CellModalProps> = (props: CellModalProps) => {
             setIsUpdatingVisibility(false)
         }
     }
-    useEffect(() => {
-        console.log(`??? visibility ${props.asset.id} ${props.asset.visibility}`)
-    }, [props.asset.visibility])
 
     return (
         <>
