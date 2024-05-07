@@ -22,7 +22,7 @@ export default function Page() {
     const gContext = useGenerationContext()
     const params = useParams()
     const { gid } = params
-    const [i2vOutput] = useState<GenerationOutputItem | undefined>(gContext.i2vOutputs.find((item) => { return item.id === gid }) ?? undefined)
+    const [i2vOutput] = useState<GenerationOutputItem | undefined>(gContext.i2vOutputs.find((item) => { return item.id === `${gid}:0` }) ?? undefined)
 
     const handleShare = () => {
         if (!i2vOutput) {
@@ -42,12 +42,10 @@ export default function Page() {
                     <div className='font-medium'>Step 3 of 3: Make it a GIF </div>
                     <Spacer y={4} />
                     <div>
-                        {i2vOutput && <div className='flex justify-center'>
+                        {i2vOutput ? <div className='flex justify-center'>
                             <MediaPlayerComponent src={i2vOutput.url} className={styles.videoPreview} />
                             <FaShare className={styles.shareIcon} onClick={handleShare} />
-                        </div>}
-
-                        {!gContext.overlayImageData && <>
+                        </div> : <>
                             <ErrorComponent errorMessage="No Image" />
                             <Link href='/'>Start Over</Link>
                         </>}
