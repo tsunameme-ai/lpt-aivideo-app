@@ -38,7 +38,7 @@ export default function Page() {
     return (
         <>
             <ToastContainer />
-            <div className="flex w-full h-[calc(100vh-66px)]" style={{ overflow: 'scroll' }}>
+            <div className="flex w-11/12 h-[calc(100vh-66px)] m-auto" style={{ overflow: 'scroll' }}>
                 {ready && <div className={`${appFont.className} w-full`}>
                     {
                         !userId ? <>
