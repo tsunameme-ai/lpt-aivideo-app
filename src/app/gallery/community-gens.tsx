@@ -20,6 +20,7 @@ const CommunityList: React.FC<CommunityListProps> = (props: CommunityListProps) 
 
         try {
             const data = await fetchGallery(10, pageKey)
+            console.log(`?? ${data.nextPage}`)
             if (!nextPage || data.nextPage !== nextPage) {
                 setNextPage(data.nextPage)
                 setItems(items.concat(data.items))

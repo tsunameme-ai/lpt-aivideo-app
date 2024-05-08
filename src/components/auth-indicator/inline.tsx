@@ -14,8 +14,13 @@ const AuthInline: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
         onComplete: async (user: User) => {
             onLoginComplete(user.id)
         },
-        onError: () => {
-            props.onLoginFailed(`Oops. Login failed.`)
+        onError: (e: any) => {
+            if (e === 'exited_auth_flow') {
+                //user cancelled
+            }
+            else {
+                props.onLoginFailed(`Oops. Login failed.`)
+            }
         },
     });
     useEffect(() => {
