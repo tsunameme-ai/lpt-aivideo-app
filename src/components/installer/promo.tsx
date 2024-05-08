@@ -17,7 +17,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
     let dynamicMSG
     if (props.hasInstallPrompt) {
         dynamicMSG = <>
-            <Spacer y={4} /><PrimaryButton onPress={props.onInstallRequested}>Install</PrimaryButton>
+            <Spacer y={4} /><PrimaryButton className="w-1/2" onPress={props.onInstallRequested}>Install</PrimaryButton>
         </>
     } else {
         dynamicMSG = <div>
