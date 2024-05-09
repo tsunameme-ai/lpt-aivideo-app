@@ -14,20 +14,26 @@ interface InstallPromoProps {
 }
 
 export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoProps) => {
-    let dynamicMSG = <div>The app is already installed. <br /> Go to chrome://apps to open it {props.hasInstallPrompt}</div>
-    console.log("isMobile: " + props.isMobile)
-    console.log("hasInstallPrompt: " + props.hasInstallPrompt)
+    let dynamicMSG = <div>The app is already installed. <br /> Go to chrome://apps to open it</div>
     if (!props.isMobile) {
         if (props.hasInstallPrompt) {
             dynamicMSG = <>
                 <Spacer y={4} /><PrimaryButton className="w-1/2" onPress={props.onInstallRequested}>Install</PrimaryButton>
             </>
         } else {
-            dynamicMSG = <>
-                <div className='flex justify-center items-center flex-wrap' >
-                    Please open Google Chrome (not Incognito), Brave  <br />or Microsoft Edge browser to download the app
-                </div>
-            </>
+            if (props.isChrome) {
+                dynamicMSG = <>
+                    <div className='flex justify-center items-center flex-wrap' >
+                        The app is already installed. <br /> Go to chrome://apps to open it
+                    </div>
+                </>
+            } else {
+                dynamicMSG = <>
+                    <div className='flex justify-center items-center flex-wrap' >
+                        Please open Google Chrome (not Incognito), Brave  <br />or Microsoft Edge browser to download the app
+                    </div>
+                </>
+            }
         }
     } else {
         dynamicMSG = <div>
