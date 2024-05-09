@@ -25,7 +25,7 @@ export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoPro
         } else {
             dynamicMSG = <>
                 <div className='flex justify-center items-center flex-wrap' >
-                    Please open Google Chrome (not Incognito) <br /> or Microsoft Edge browser to download the app
+                    Please open Google Chrome (not Incognito), Brave  <br />or Microsoft Edge browser to download the app
                 </div>
             </>
         }
