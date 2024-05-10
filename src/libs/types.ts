@@ -32,12 +32,13 @@ export type Txt2imgInput = {
 }
 export type GenerationOutput = {
     id: string,
+    status: 'pending' | 'success' | 'failed',
     outputs: Array<GenerationOutputItem>
 }
 export type GenerationOutputItem = {
     id: string,
     url: string,
-    seed: number,
+    seed: number
     visibility?: string
     input?: Txt2imgInput | Img2vidInput
 }
