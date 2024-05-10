@@ -85,7 +85,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
         }
         setIsLoading(true)
         try {
-            const outputs = await txt2img(params)
+            const { outputs } = await txt2img(params)
             if (outputs.length > 0) {
                 for (let output of outputs) {
                     output.input = params

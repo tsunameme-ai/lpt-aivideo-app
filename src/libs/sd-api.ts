@@ -1,4 +1,4 @@
-import { GenerationOutputItem, Img2vidInput, Txt2imgInput } from './types'
+import { GenerationOutput, Img2vidInput, Txt2imgInput } from './types'
 import { Utils } from './utils'
 
 export class SDAPI {
@@ -9,7 +9,7 @@ export class SDAPI {
         return { width: newWidth, height: newHeight };
     }
 
-    public async txt2img(params: Txt2imgInput): Promise<Array<GenerationOutputItem>> {
+    public async txt2img(params: Txt2imgInput): Promise<GenerationOutput> {
         const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/text-to-image`
         const postBody = {
             'model_id': params.modelId,
@@ -33,7 +33,7 @@ export class SDAPI {
         })
     }
 
-    public async img2vid(params: Img2vidInput): Promise<Array<GenerationOutputItem>> {
+    public async img2vid(params: Img2vidInput): Promise<GenerationOutput> {
         const postBody = {
             "image_url": params.imageUrl,
             "model_id": params.modelId,
@@ -48,15 +48,14 @@ export class SDAPI {
             "user_id": params.userId,
             salt: params.salt
         }
-        const url = process.env.NEXT_PUBLIC_API_ENDPOINT_IMG2VID!
-        return await this.sendRequest(url, {
+        return await this.sendRequest(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/async/image-to-video`, {
             cache: 'no-cache',
             method: 'POST',
             body: JSON.stringify(postBody)
         }, 600000)
     }
 
-    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<Array<GenerationOutputItem>> {
+    private async sendRequest(url: string, init: RequestInit, timeoutMs: number = 40000): Promise<GenerationOutput> {
         const t = new Date().getTime()
         let resError
         let resOutput
@@ -88,17 +87,21 @@ export class SDAPI {
         }
     }
 
-    private async parseResponse(res: Response): Promise<Array<GenerationOutputItem>> {
+    private async parseResponse(res: Response): Promise<GenerationOutput> {
         if (res.ok) {
             const data = await res.json()
             if (data && data.images) {
-                return data.images.map((item: { url: string, seed?: number }, index: number) => {
-                    return {
-                        id: `${data.id}:${index}`,
-                        url: item.url,
-                        seed: item.seed
-                    }
-                })
+                return {
+                    id: data.id,
+                    status: data.status,
+                    outputs: data.images.map((item: { url: string, seed?: number }, index: number) => {
+                        return {
+                            id: `${data.id}:${index}`,
+                            url: item.url,
+                            seed: item.seed
+                        }
+                    })
+                }
             }
             else {
                 throw new Error(`Empty data`)
@@ -118,30 +121,38 @@ export class SDAPI {
 }
 
 export class SDStaticAPI {
-    public async txt2img(): Promise<Array<GenerationOutputItem>> {
+    public async txt2img(): Promise<GenerationOutput> {
         await Utils.delay(200)
-        return [{
+        return {
             id: 'static',
-            seed: 1773116098,
-            url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
-        }, {
-            id: 'static',
-            seed: 1773116098,
-            url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/1-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
-        }, {
-            id: 'static',
-            seed: 1773116098,
-            url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/2-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
-        }]
+            status: 'success',
+            outputs: [{
+                id: 'static:0',
+                seed: 1773116098,
+                url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
+            }, {
+                id: 'static:1',
+                seed: 1773116098,
+                url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/1-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
+            }, {
+                id: 'static:2',
+                seed: 1773116098,
+                url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/2-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
+            }]
+        }
 
     }
 
-    public async img2vid(): Promise<Array<GenerationOutputItem>> {
+    public async img2vid(success: boolean = false): Promise<GenerationOutput> {
         await Utils.delay(1000)
-        return [{
-            id: 'static:0',
-            url: 'https://lpt-aivideo-dst.s3.amazonaws.com/Mav6NCGbx0.gif',
-            seed: 1773116098
-        }]
+        return {
+            id: 'static',
+            status: success ? 'success' : 'pending',
+            outputs: [{
+                id: 'static:0',
+                url: 'https://lpt-aivideo-dst.s3.amazonaws.com/Mav6NCGbx0.gif',
+                seed: 1773116098
+            }]
+        }
     }
 }
