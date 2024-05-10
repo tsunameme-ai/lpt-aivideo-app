@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
-import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutput, GenerationOutputItem, GenerationRequest, GenerationType, Img2vidInput } from "@/libs/types"
+import { DEFAULT_MOTION_BUCKET_ID, DEFAULT_NOISE_AUG_STRENGTH, DEFAULT_VIDEO_HEIGHT, DEFAULT_VIDEO_WIDTH, GenerationOutput, GenerationOutputItem, Img2vidInput } from "@/libs/types"
 import Img2VidComponent from "@/components/img2vid"
 import { Spacer, Image, Link } from "@nextui-org/react"
 import styles from "@/styles/home.module.css"
@@ -76,7 +76,6 @@ export default function Page() {
                 salt: gContext.userSalt
             }
             const genOutput = await img2vid(input)
-            console.log(genOutput)
             if (genOutput.status === 'success') {
                 setI2vGenOutput(undefined)
                 onVideoGenerated(genOutput.outputs)
@@ -98,7 +97,6 @@ export default function Page() {
     }
 
     const pollAndShouldRetry = async (): Promise<boolean> => {
-        console.log(`???? fetchI2vGen ${i2vGenOutput}`)
         if (i2vGenOutput) {
             const result = await fetchGenerationData(i2vGenOutput.id)
             if (result.outputs && result.outputs.length > 0) {

@@ -1,4 +1,4 @@
-import { GenerationOutput, GenerationOutputItem, Img2vidInput, Txt2imgInput } from './types'
+import { GenerationOutput, Img2vidInput, Txt2imgInput } from './types'
 import { Utils } from './utils'
 
 export class SDAPI {

@@ -11,14 +11,15 @@ const PollingIndicator: React.FC<PollingIndicatorProps> = (props: PollingIndicat
     const [pollingStatus, setPollingStatus] = useState<string>('🟢 Magic starts...')
 
     const poll = async () => {
+        setPollingStatus('🟢 Magic starts...')
         console.log('??? polling')
         setPollingStatus('')
         const t = new Date().getTime()
         while (true) {
+            setPollingStatus(`🟡 Please stay in the app as we fantasize`)
             await Utils.delay(props.interval)
-            const shouldRetry = await props.pollAndShouldRetry()
-            // assetData = data
             setPollingStatus(`🟢 Please stay in the app as we fantasize`)
+            const shouldRetry = await props.pollAndShouldRetry()
             if (!shouldRetry) {
                 console.log(`exit`)
                 break
@@ -32,8 +33,6 @@ const PollingIndicator: React.FC<PollingIndicatorProps> = (props: PollingIndicat
 
     useEffect(() => {
         poll()
-        console.log('??? poll')
-
     }, [])
     return (
         <>
