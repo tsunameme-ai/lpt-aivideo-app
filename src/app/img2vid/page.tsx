@@ -152,10 +152,14 @@ export default function Page() {
                         </>}
                         {
                             i2vGenOutput && i2vGenOutput.status === 'pending' &&
-                            <PollingIndicator
-                                interval={10000} //10s
-                                maxWaitMS={60000} //1min
-                                pollAndShouldRetry={pollAndShouldRetry} />
+
+                            <div className={styles.longrunIndicator}>
+                                <Spacer y={4} />
+                                <PollingIndicator
+                                    interval={10000} //10s
+                                    maxWaitMS={60000} //1min
+                                    pollAndShouldRetry={pollAndShouldRetry} />
+                            </div>
                         }
                     </div>
                     <Spacer y={4} />

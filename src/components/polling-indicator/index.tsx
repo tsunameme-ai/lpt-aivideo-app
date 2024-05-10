@@ -8,7 +8,7 @@ interface PollingIndicatorProps {
 }
 
 const PollingIndicator: React.FC<PollingIndicatorProps> = (props: PollingIndicatorProps) => {
-    const [pollingStatus, setPollingStatus] = useState<string>('🟢 Magic starts...')
+    const [pollingStatus, setPollingStatus] = useState<string>('')
 
     const poll = async () => {
         setPollingStatus('🟢 Magic starts...')
@@ -16,7 +16,6 @@ const PollingIndicator: React.FC<PollingIndicatorProps> = (props: PollingIndicat
         setPollingStatus('')
         const t = new Date().getTime()
         while (true) {
-            setPollingStatus(`🟡 Please stay in the app as we fantasize`)
             await Utils.delay(props.interval)
             setPollingStatus(`🟢 Please stay in the app as we fantasize`)
             const shouldRetry = await props.pollAndShouldRetry()
