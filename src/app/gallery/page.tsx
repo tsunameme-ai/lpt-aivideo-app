@@ -38,7 +38,7 @@ export default function Page() {
     return (
         <>
             <ToastContainer />
-            <div className="flex w-full h-[calc(100vh-66px)]" style={{ overflow: 'scroll' }}>
+            <div className="flex w-11/12 h-[calc(100vh-66px)] m-auto" style={{ overflow: 'scroll' }}>
                 {ready && <div className={`${appFont.className} w-full`}>
                     {
                         !userId ? <>
@@ -59,7 +59,6 @@ export default function Page() {
                 </div>}
                 <div className="right absolute bottom-0 right-0 m-4 z-20 w-24 h-24">
                     <Button onPress={() => {
-                        console.log('??? create')
                         gContext.reset()
                         router.push('/txt2img')
                     }} className="w-full h-full" variant="shadow" color="primary" size='lg' radius="full" isIconOnly={true}>
