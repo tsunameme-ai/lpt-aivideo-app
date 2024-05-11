@@ -13,15 +13,10 @@ export async function share(shareData: { url: string, toastTitle: string }, toas
             }
         }
     }
-    try {
-        navigator.clipboard.writeText(shareData.url)
-        toast.success(shareData.toastTitle, {
-            toastId: toastId,
-            autoClose: 1200,
-            hideProgressBar: true
-        })
-    }
-    catch (e) {
-        console.error(e)
-    }
+    navigator.clipboard.writeText(shareData.url)
+    toast.success(shareData.toastTitle, {
+        toastId: toastId,
+        autoClose: 1200,
+        hideProgressBar: true
+    })
 }

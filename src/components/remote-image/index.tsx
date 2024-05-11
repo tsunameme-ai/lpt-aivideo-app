@@ -15,8 +15,7 @@ const RemoteImage: React.FC<RemoteImageProps> = (props: RemoteImageProps) => {
                 props.onLoadingState(true)
             }
             try {
-                const res = await fetch(`/api/image?url=${props.src}`);
-                console.log('??? downloading')
+                const res = await fetch(`/api/image?url=${props.src}`)
                 if (!res.ok) {
                     throw new Error(`Image download failed with status ${res.status}`);
                 }
