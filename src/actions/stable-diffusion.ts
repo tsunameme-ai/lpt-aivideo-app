@@ -58,7 +58,7 @@ const parseGenerationRequest = (data: any): GenerationRequest => {
         input: input,
         outputs: data.outputs.map((item: any, index: number) => {
             return {
-                id: `${item.id}:${index}`,
+                id: `${data.id}:${index}`,
                 url: item.url,
                 seed: item.seed,
                 visibility: data.visibility,
