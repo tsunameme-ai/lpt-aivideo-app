@@ -52,7 +52,7 @@ const AuthInline: React.FC<AuthPromoProps> = (props: AuthPromoProps) => {
             {(!authenticated || !user) &&
                 <>
                     <Spacer y={4} />
-                    <SecondaryButton onPress={logInIfNot}>{authenticated && user ? 'save' : 'Login to save'}</SecondaryButton>
+                    <SecondaryButton onPress={logInIfNot}>{authenticated && user ? 'Save' : 'Login to save'}</SecondaryButton>
                 </>
             }
         </>
