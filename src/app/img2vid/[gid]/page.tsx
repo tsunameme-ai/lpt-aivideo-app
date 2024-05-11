@@ -14,7 +14,7 @@ import MediaPlayerComponent from "@/components/media-player"
 import { share } from "@/libs/share-utils"
 import { PrimaryButton, SecondaryButton } from "@/components/buttons"
 import { AuthInline } from "@/components/auth-indicator"
-import { claim } from "@/actions/stable-diffusion"
+import { claim } from "@/actions"
 import { appFont } from "@/app/fonts"
 
 export default function Page() {

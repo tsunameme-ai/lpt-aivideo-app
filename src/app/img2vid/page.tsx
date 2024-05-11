@@ -14,7 +14,7 @@ import { Analytics } from "@/libs/analytics"
 import { usePrivy } from "@privy-io/react-auth";
 import { appFont } from "../fonts"
 import { PrimaryButton } from "@/components/buttons"
-import { fetchGenerationData, img2vid } from "@/actions/stable-diffusion"
+import { fetchGenerationData, img2vid } from "@/actions"
 import PollingIndicator from "@/components/polling-indicator"
 
 export default function Page() {

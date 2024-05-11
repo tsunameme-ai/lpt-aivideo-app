@@ -11,24 +11,33 @@ import { StartOutputEvent } from "@/components/editor/types";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { appFont } from "../fonts";
-import { PrimaryButton } from "@/components/buttons";
+import { PrimaryButton, SecondaryButton } from "@/components/buttons";
+import { uploadImage } from "@/actions";
+import { share } from "@/libs/share-utils";
 
 
 const Editor = dynamic(() => import("@/components/editor"), {
     ssr: false,
 });
 
+const toastId = "caption-copy-success"
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
+    const [renderRequestFrom, setRenderRequestFrom] = useState<'vidgen' | 'share' | ''>('')
+    const [isPrepShare, setIsPrepShare] = useState<boolean>(false)
 
     const handleClickToVideo = () => {
-        proceedToVideo()
-    }
-    const proceedToVideo = () => {
+        setRenderRequestFrom('vidgen')
         window.dispatchEvent(new Event(StartOutputEvent))
     }
+
+    const handleShare = () => {
+        setRenderRequestFrom('share')
+        window.dispatchEvent(new Event(StartOutputEvent))
+    }
+
     const onImagesRendered = (imgDataUrl: string, coverDataUrl: string, width: number, height: number) => {
         if (!imgDataUrl) {
             toast.error('Image dataURL cannot be generated', {
@@ -39,6 +48,14 @@ export default function Page() {
 
             return
         }
+        if (renderRequestFrom === 'vidgen') {
+            generateVideo(imgDataUrl, coverDataUrl, width, height)
+        }
+        else if (renderRequestFrom === 'share') {
+            shareImage(imgDataUrl)
+        }
+    }
+    const generateVideo = (imgDataUrl: string, coverDataUrl: string, width: number, height: number) => {
 
         if (!imgDataUrl) {
             toast.error('Cover image dataURL cannot be generated', {
@@ -71,6 +88,29 @@ export default function Page() {
         Analytics.trackEvent({ 'event': 'click-img2vid' })
         router.push('img2vid')
     }
+    const shareImage = async (imgDataUrl: string) => {
+        try {
+            setIsPrepShare(true)
+            const { url } = await uploadImage(imgDataUrl)
+            console.log(url)
+            if (url) {
+                share({
+                    url: url,
+                    toastTitle: "Image link is copied. Send it!"
+                }, 'copy-success')
+            }
+        }
+        catch (e) {
+            toast.error(`Failed to get image ready for sharing`, {
+                toastId: 'Error notification',
+                autoClose: 1200,
+                hideProgressBar: true
+            })
+        }
+        finally {
+            setIsPrepShare(false)
+        }
+    }
 
     return (
         <>
@@ -89,12 +129,12 @@ export default function Page() {
                 </div>
 
                 {t2iOutput &&
-                    <>
+                    <div className={styles.centerSection}>
                         <Spacer y={4} />
-                        <div className={styles.centerSection}>
-                            <PrimaryButton onPress={handleClickToVideo}>GIF it</PrimaryButton>
-                        </div>
-                    </>}
+                        <PrimaryButton onPress={handleClickToVideo}>GIF it</PrimaryButton>
+                        <Spacer y={4} />
+                        <SecondaryButton isLoading={isPrepShare} onPress={handleShare}>Share</SecondaryButton>
+                    </div>}
             </section >}
         </>
     )
