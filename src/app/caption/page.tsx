@@ -138,9 +138,9 @@ export default function Page() {
                 {t2iOutput &&
                     <div className={styles.centerSection}>
                         <Spacer y={4} />
-                        <PrimaryButton onPress={handleClickToVideo}>GIF it</PrimaryButton>
-                        <Spacer y={4} />
                         <SecondaryButton isLoading={isPrepShare} onPress={handleShare}>Share image</SecondaryButton>
+                        <Spacer y={4} />
+                        <PrimaryButton onPress={handleClickToVideo}>GIF it</PrimaryButton>
                     </div>}
             </section >}
         </>
