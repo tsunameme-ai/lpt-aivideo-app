@@ -1,6 +1,6 @@
 'use client'
 import dynamic from "next/dynamic";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 import { Spacer } from "@nextui-org/react"
 import { useGenerationContext } from "@/context/generation-context"
@@ -20,13 +20,13 @@ const Editor = dynamic(() => import("@/components/editor"), {
     ssr: false,
 });
 
-const toastId = "caption-copy-success"
 export default function Page() {
     const router = useRouter()
     const gContext = useGenerationContext()
     const [t2iOutput] = useState<GenerationOutputItem | undefined>(gContext.t2iSelectedOutput)
     const [renderRequestFrom, setRenderRequestFrom] = useState<'vidgen' | 'share' | ''>('')
     const [isPrepShare, setIsPrepShare] = useState<boolean>(false)
+    const [imageShareUrl, setImageShareUrl] = useState<string | undefined>(undefined)
 
     const handleClickToVideo = () => {
         setRenderRequestFrom('vidgen')
@@ -89,15 +89,13 @@ export default function Page() {
         router.push('img2vid')
     }
     const shareImage = async (imgDataUrl: string) => {
+        setImageShareUrl(undefined)
         try {
             setIsPrepShare(true)
             const { url } = await uploadImage(imgDataUrl)
             console.log(url)
             if (url) {
-                share({
-                    url: url,
-                    toastTitle: "Image link is copied. Send it!"
-                }, 'copy-success')
+                setImageShareUrl(url)
             }
         }
         catch (e) {
@@ -111,6 +109,15 @@ export default function Page() {
             setIsPrepShare(false)
         }
     }
+    useEffect(() => {
+        if (imageShareUrl) {
+            share({
+                url: imageShareUrl,
+                toastTitle: "Image link is copied. Send it!"
+            }, 'copy-success')
+        }
+
+    }, [imageShareUrl])
 
     return (
         <>
