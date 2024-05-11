@@ -1,4 +1,4 @@
-import { fetchAssetsByUser } from "@/actions/stable-diffusion"
+import { fetchAssetsByUser } from "@/actions"
 import { useState } from "react"
 import ImageGrid from "../../components/image-grid"
 import { GenerationRequest } from "@/libs/types"

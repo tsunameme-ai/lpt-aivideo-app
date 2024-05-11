@@ -149,3 +149,20 @@ export async function togglePublish(userId: string, assetId: string, accessToken
         visibility: resultVisibility
     }
 }
+
+export async function uploadImage(imgBase64Str: string): Promise<{ url: string }> {
+    const postBody = {
+        image: imgBase64Str
+    }
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/v1/upload/image`, {
+        cache: 'no-cache',
+        method: 'POST',
+        body: JSON.stringify(postBody)
+    })
+    if (res.ok) {
+        return await res.json()
+    }
+    console.log(`upload image failed ${res.status}`)
+    throw new Error(`Failed to upload image.`)
+}

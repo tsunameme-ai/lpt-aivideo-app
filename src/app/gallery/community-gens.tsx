@@ -1,5 +1,5 @@
 'use client'
-import { fetchGallery } from "@/actions/stable-diffusion"
+import { fetchGallery } from "@/actions"
 import { GenerationRequest } from "@/libs/types"
 import { useState } from "react"
 import ImageGrid from "../../components/image-grid"
