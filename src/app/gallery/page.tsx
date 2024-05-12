@@ -57,12 +57,12 @@ export default function Page() {
                         </>
                     }
                 </div>}
-                <div className="right absolute bottom-0 right-0 m-4 z-20 w-24 h-24">
+                <div className="right absolute bottom-0 right-3 m-3 z-20 w-20 h-20">
                     <Button onPress={() => {
                         gContext.reset()
                         router.push('/txt2img')
                     }} className="w-full h-full" variant="shadow" color="primary" size='lg' radius="full" isIconOnly={true}>
-                        <IoMdCreate size={60} />
+                        <IoMdCreate size={48} />
                     </Button>
                 </div>
             </div>
