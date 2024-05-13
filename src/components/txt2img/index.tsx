@@ -1,5 +1,5 @@
 'use client'
-import { Txt2imgInput, GenerationOutputItem, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT } from "@/libs/types";
+import { Txt2imgInput, GenerationOutputItem, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT, DEFAULT_T2I_STEPS } from "@/libs/types";
 import { Input, Spacer, Textarea, SelectItem, Select, Button } from '@nextui-org/react'
 import { txt2img } from "@/actions";
 import { useGenerationContext } from "@/context/generation-context";
@@ -32,6 +32,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [pPromptValue, setPPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.pPrompt || '')
     const [nPromptValue, setNPromptValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.nPrompt || 'lowres, bad anatomy, bad hands, bad fingers, bad legs, bad feet, bad arms, text, error, missing hands, missing fingers, missing legs, missing feet, missing arms, extra digit, extra hands, extra fingers, extra legs, extra arms, extra feet, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name')
     const [seedValue, setSeedValue] = useState<string>((outputFromContext?.input as Txt2imgInput)?.seed?.toString() || '')
+    const [stepsValue, setStepsValue] = useState<string>(((outputFromContext?.input as Txt2imgInput)?.steps || DEFAULT_T2I_STEPS).toString())
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [guidanceScale, setGuidanceScale] = useState<string>('7')
@@ -77,6 +78,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             nPrompt: nPromptValue,
             modelId: baseModel,
             seed: seedValue.length > 0 ? parseInt(seedValue) : undefined,
+            steps: stepsValue.length > 0 ? parseInt(stepsValue) : undefined,
             guidanceScale: parseFloat(guidanceScale),
             width: parseInt(width),
             height: parseInt(height),
@@ -185,6 +187,10 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                         description='1 - 20'
                         value={guidanceScale}
                         onValueChange={setGuidanceScale} />
+                    <Input
+                        label='Steps'
+                        value={stepsValue}
+                        onValueChange={setStepsValue} />
                     <Input
                         label='Num of Images'
                         value={numOutput}
