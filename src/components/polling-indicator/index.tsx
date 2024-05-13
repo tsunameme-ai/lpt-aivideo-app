@@ -12,8 +12,6 @@ const PollingIndicator: React.FC<PollingIndicatorProps> = (props: PollingIndicat
 
     const poll = async () => {
         setPollingStatus('🟢 Magic starts...')
-        console.log('??? polling')
-        setPollingStatus('')
         const t = new Date().getTime()
         while (true) {
             await Utils.delay(props.interval)
