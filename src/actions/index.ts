@@ -61,6 +61,7 @@ const parseGenerationRequest = (data: any): GenerationRequest => {
                 id: `${data.id}:${index}`,
                 url: item.url,
                 seed: item.seed,
+                nsfw: item.nsfw || false,
                 visibility: data.visibility,
                 input: input
             }

@@ -40,6 +40,7 @@ export type GenerationOutputItem = {
     id: string,
     url: string,
     seed: number,
+    nsfw: boolean,
     visibility?: string
     input?: Txt2imgInput | Img2vidInput
 }
