@@ -14,7 +14,7 @@ interface InstallPromoProps {
 }
 
 export const InstallPromo: React.FC<InstallPromoProps> = (props: InstallPromoProps) => {
-    let dynamicMSG = <div>The app is already installed. <br /> Go to chrome://apps to open it</div>
+    let dynamicMSG
     if (!props.isMobile) {
         if (props.hasInstallPrompt) {
             dynamicMSG = <>
