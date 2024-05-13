@@ -19,9 +19,9 @@ export class SDAPI {
             'seed': params.seed,
             'width': params.width,
             'height': params.height,
+            'num_inference_steps': params.steps,
             'num_images_per_prompt': params.numOutput,
-            "user_id": params.userId,
-            "safety_check": true
+            'user_id': params.userId
         }
         return await this.sendRequest(url, {
             method: 'POST',

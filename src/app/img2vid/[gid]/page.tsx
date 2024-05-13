@@ -73,7 +73,7 @@ export default function Page() {
                     <SecondaryButton onPress={() => {
                         gContext.reset()
                         router.replace('/txt2img')
-                    }}>Create New</SecondaryButton>
+                    }}>Create new</SecondaryButton>
                     <Spacer y={4} />
                     <SecondaryButton onPress={() => { router.push('/gallery') }}>Gallery</SecondaryButton>
                     <Spacer y={4} />

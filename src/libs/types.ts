@@ -24,6 +24,7 @@ export type Txt2imgInput = {
     nPrompt: string,
     modelId: string,
     seed?: number
+    steps?: number
     guidanceScale?: number
     width: number,
     height: number,
@@ -38,7 +39,7 @@ export type GenerationOutput = {
 export type GenerationOutputItem = {
     id: string,
     url: string,
-    seed: number
+    seed: number,
     visibility?: string
     input?: Txt2imgInput | Img2vidInput
 }
@@ -73,4 +74,4 @@ export const DEFAULT_VIDEO_HEIGHT = 512
 export const DEFAULT_MOTION_BUCKET_ID = 50
 export const DEFAULT_NOISE_AUG_STRENGTH = 0.05
 export const DEFAULT_IMG_NUM_OUTPUT = 3
-
+export const DEFAULT_T2I_STEPS = 25
