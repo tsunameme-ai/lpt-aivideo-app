@@ -44,7 +44,7 @@ const CellModal: React.FC<CellModalProps> = (props: CellModalProps) => {
                 <ModalContent className="flex items-center">
                     <MediaPlayerComponent src={props.asset.outputs?.[0].url!} key={props.asset.outputs?.[0].url!} className={"w-full"} />
                     <FaShare className={styles.galleryShareIcon} onClick={() => props.handleShare?.(props.asset.outputs?.[0].url!)} />
-                    {props.loggedInUserId && <ModalFooter>
+                    {props.loggedInUserId && ((props.asset.outputs?.[0].nsfw || false) === false) && <ModalFooter>
                         <SecondaryButton isLoading={isUpdatingVisibility} onPress={updatePublish}>{props.asset.visibility === 'community' ? 'Remove from Community' : 'Share with Community'}</SecondaryButton>
                     </ModalFooter>}
                 </ModalContent>
