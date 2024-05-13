@@ -135,7 +135,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
             "I have nowhere to go in this destroyed world, digital illustration, emotionally profound, expressionism, dramatic, gloomy, dark, 8k, high quality",
             "Lots of bunnies smiling with flowers and hearts in the background",
             "A clown in a green suit is running away from a tornado",
-            "A fit girl, athletic, wearing skirt and blue tanktop. She is standing in a park. Chinese water painting style."
+            "A fit girl, athletic, wearing skirt and blue tanktop. She is standing in a park."
         ]
         return prompts[Math.floor(Math.random() * prompts.length)]
 

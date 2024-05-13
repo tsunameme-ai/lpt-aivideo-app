@@ -1,5 +1,5 @@
 'use client'
-import { Txt2imgInput, GenerationOutputItem, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT, DEFAULT_T2I_STEPS } from "@/libs/types";
+import { Txt2imgInput, GenerationOutputItem, DEFAULT_IMG_WIDTH, DEFAULT_IMG_HEIGHT, DEFAULT_IMG_NUM_OUTPUT, DEFAULT_T2I_STEPS, DEFAULT_T2I_CFG } from "@/libs/types";
 import { Input, Spacer, Textarea, SelectItem, Select, Button } from '@nextui-org/react'
 import { txt2img } from "@/actions";
 import { useGenerationContext } from "@/context/generation-context";
@@ -35,7 +35,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [stepsValue, setStepsValue] = useState<string>(((outputFromContext?.input as Txt2imgInput)?.steps || DEFAULT_T2I_STEPS).toString())
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
-    const [guidanceScale, setGuidanceScale] = useState<string>('7')
+    const [guidanceScale, setGuidanceScale] = useState<string>(((outputFromContext?.input as Txt2imgInput)?.guidanceScale || DEFAULT_T2I_CFG).toString())
     const [numOutput, setNumOutput] = useState<string>(DEFAULT_IMG_NUM_OUTPUT.toString())
     const [width, setWidth] = useState<string>(DEFAULT_IMG_WIDTH.toString())
     const [height, setHeight] = useState<string>(DEFAULT_IMG_HEIGHT.toString())
