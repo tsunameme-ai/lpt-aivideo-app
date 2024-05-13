@@ -74,4 +74,4 @@ export const DEFAULT_VIDEO_HEIGHT = 512
 export const DEFAULT_MOTION_BUCKET_ID = 50
 export const DEFAULT_NOISE_AUG_STRENGTH = 0.05
 export const DEFAULT_IMG_NUM_OUTPUT = 3
-export const DEFAULT_T2I_STEPS = 25
+export const DEFAULT_T2I_STEPS = 6
