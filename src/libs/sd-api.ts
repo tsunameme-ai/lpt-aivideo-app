@@ -129,14 +129,17 @@ export class SDStaticAPI {
             outputs: [{
                 id: 'static:0',
                 seed: 1773116098,
+                nsfw: false,
                 url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/0-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
             }, {
                 id: 'static:1',
                 seed: 1773116098,
+                nsfw: false,
                 url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/1-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
             }, {
                 id: 'static:2',
                 seed: 1773116098,
+                nsfw: false,
                 url: 'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/2-5c5efe4b-ec74-4311-9ced-76cc38d80835.png'
             }]
         }
@@ -151,6 +154,7 @@ export class SDStaticAPI {
             outputs: [{
                 id: 'static:0',
                 url: 'https://lpt-aivideo-dst.s3.amazonaws.com/Mav6NCGbx0.gif',
+                nsfw: false,
                 seed: 1773116098
             }]
         }
