@@ -77,3 +77,5 @@ export const DEFAULT_NOISE_AUG_STRENGTH = 0.05
 export const DEFAULT_IMG_NUM_OUTPUT = 3
 export const DEFAULT_T2I_STEPS = 6
 export const DEFAULT_T2I_CFG = 2
+export const DEFAULT_APP_WIDTH = 500
+export const DEFAULT_APP_HEIGHT = 750

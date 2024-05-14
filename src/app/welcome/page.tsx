@@ -20,7 +20,7 @@ export default function Page() {
 
     return (
         <div className={`${styles.main} ${appFont.className} w-full min-h-svh bg-gradient-to-b from-50% from-primary to-[#98CDB1]`}>
-            <div className={`h-32 w-full flex bg-img bg-repeat-x ${styles.wave}`} />
+            <div className={`h-28 w-full flex bg-img bg-repeat-x ${styles.wave}`} />
             <div className={styles.centerLanding}>
                 <div className='font-bold text-background text-5xl'>TSUNAMEME</div>
                 <div className='font-semibold text-background text-base'>
@@ -31,6 +31,7 @@ export default function Page() {
                 <LandingPromoComponent />
                 <Spacer y={8} />
                 <PrimaryButton onPress={handleTxt2img}>Get Started</PrimaryButton>
+                <Spacer y={1} />
             </div >
         </div>
     )
