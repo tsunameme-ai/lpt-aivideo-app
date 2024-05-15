@@ -134,3 +134,20 @@
 .wave {
     background-image: url('/wave.svg');
 }
+
+@media only screen and (min-width: 500px) {
+
+    /* Desktop version */
+    /* Leave them here in case we need to adjust the scale of the UI */
+    .centerLanding {
+        transform: scale(1);
+    }
+
+    .centerSection {
+        transform: scale(1);
+    }
+
+    .main {
+        transform: scale(1);
+    }
+}

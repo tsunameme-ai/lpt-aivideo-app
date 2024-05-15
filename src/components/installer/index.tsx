@@ -1,6 +1,7 @@
 import { Analytics } from "@/libs/analytics"
 import { useEffect, useState } from "react"
 import { InstallPromo } from "./promo"
+import { DEFAULT_APP_WIDTH, DEFAULT_APP_HEIGHT } from "@/libs/types"
 
 export enum DisplayMode {
     STANDALONE = 'standalone',
@@ -60,8 +61,8 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         }
     }
     const handleResizeEvent = () => {
-        if (window.innerWidth > 500) {
-            window.resizeTo(500, window.innerHeight)
+        if (window.innerWidth > DEFAULT_APP_WIDTH) {
+            window.resizeTo(DEFAULT_APP_WIDTH, DEFAULT_APP_HEIGHT)
         }
     }
     const checkIsMobile = () => {
