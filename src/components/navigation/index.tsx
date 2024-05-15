@@ -53,7 +53,7 @@ const NavigationComponent: React.FC = () => {
             case NavIcon.TOGGLE:
                 return <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                    className="sm:hidden"
+                    className="sm:hidden focus:outline-none"
                 />
             default:
                 return <></>
