@@ -18,6 +18,11 @@
     z-index: 2;
 }
 
+.centerGallery {
+    max-width: 512px;
+    width: 100%;
+    margin: auto;
+}
 
 .editorControls {
     width: 70%;
@@ -140,7 +145,7 @@
     /* Desktop version */
     /* Leave them here in case we need to adjust the scale of the UI */
     .centerLanding {
-        transform: scale(1);
+        transform: scale(0.8);
     }
 
     .centerSection {

@@ -53,7 +53,7 @@ const NavigationComponent: React.FC = () => {
             case NavIcon.TOGGLE:
                 return <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                    className="sm:hidden focus:outline-none"
+                    className="focus:outline-none"
                 />
             default:
                 return <></>
@@ -73,7 +73,7 @@ const NavigationComponent: React.FC = () => {
                     </NavbarContent>
                     <NavbarMenu>
                         {menuItems.map((item, index) => (
-                            < NavbarMenuItem key={`${item}-${index}`}>
+                            < NavbarMenuItem key={`${item}-${index}`} className="justify-center">
                                 <Link
                                     onPress={() => {
                                         if (menuItems[index][1] === '/txt2img') {
