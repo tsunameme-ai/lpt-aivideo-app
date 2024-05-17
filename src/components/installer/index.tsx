@@ -19,13 +19,10 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     const [installPromtEvent, setInstallPromtEvent] = useState<Event | undefined>(undefined)
     const [displayMode, setDisplayMode] = useState<DisplayMode>()
     const [isMobile, setIsMobile] = useState<boolean>(false)
-    //const [isSafari, setIsSafari] = useState<boolean>(false)
     const [isChrome, setIsChrome] = useState<boolean>(false)
-    //const [isBrave, setIsBrave] = useState<boolean>(false)
     const [isFireFox, setIsFireFox] = useState<boolean>(false)
 
     const handleBeforeInstallPromptEvt = (evt: Event) => {
-        console.log(`??? handleBeforeInstallPromptEvt`)
         evt.preventDefault()
         setInstallPromtEvent(evt)
     }
@@ -33,7 +30,6 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         Analytics.trackEvent({ 'event': 'app-installed' })
     }
     const handleInstallRequest = async () => {
-        console.log(`??? handleInstallRequest`)
         if (installPromtEvent) {
             (installPromtEvent as any).prompt()
             const { outcome } = await (installPromtEvent as any).userChoice
@@ -52,12 +48,9 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     }
 
     const handleDisplayModeChangeEvt = (evt: Event) => {
-        console.log(`??handleDisplayModeChangeEvt`)
-        console.log(evt)
         if ((evt as any).matches) {
             setDisplayMode(DisplayMode.STANDALONE)
             props.onAppReadyChange(true)
-
         }
     }
     const handleResizeEvent = () => {

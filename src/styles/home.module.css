@@ -138,6 +138,9 @@
 
 .wave {
     background-image: url('/wave.svg');
+    height: 7rem;
+    width: 100%;
+    background-repeat: repeat-x;
 }
 
 @media only screen and (min-width: 500px) {
@@ -145,7 +148,7 @@
     /* Desktop version */
     /* Leave them here in case we need to adjust the scale of the UI */
     .centerLanding {
-        transform: scale(0.8);
+        transform: scale(1);
     }
 
     .centerSection {

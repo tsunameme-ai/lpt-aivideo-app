@@ -12,12 +12,21 @@ const LandingPromoComponent = () => {
         slidesToShow: 1,
         vertical: false,
         initialSlide: 0,
-        rows: 2,
+        rows: 1,
         slidesPerRow: 2,
         autoplaySpeed: 2000,
         autoplay: true,
         speed: 2500,
-        arrows: false
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 501,
+                settings: {
+                    slidesPerRow: 2,
+                    rows: 2,
+                }
+            }
+        ]
     }
     const imgs = ['https://lpt-aivideo-dst.s3.amazonaws.com/kQu1NZFLKj.gif',
         'https://lpt-aivideo-dst.s3.amazonaws.com/E5J8VQLt1X.gif',
