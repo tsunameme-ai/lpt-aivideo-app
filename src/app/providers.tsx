@@ -13,16 +13,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <PrivyProvider
             appId={process.env.NEXT_PUBLIC_PRIVY_ID!}>
             <NextUIProvider>
-                {process.env.NEXT_PUBLIC_DEBUG === 'browser' ?
+                <Installer onAppReadyChange={setIsAppReady} />
+                {
+                    isAppReady &&
                     <React.Fragment>{children}</React.Fragment>
-                    :
-                    <>
-                        <Installer onAppReadyChange={setIsAppReady} />
-                        {
-                            isAppReady &&
-                            <React.Fragment>{children}</React.Fragment>
-                        }
-                    </>
                 }
             </NextUIProvider>
         </PrivyProvider>
