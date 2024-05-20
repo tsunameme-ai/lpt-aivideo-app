@@ -86,7 +86,7 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         setIsMobile(ism)
         setIsChrome(isc)
         setIsFireFox(isf)
-        props.onAppReadyChange((process.env.NEXT_PUBLIC_DEBUG === 'browser') || (displayMode !== DisplayMode.BROWSER))
+        props.onAppReadyChange(!ism || (displayMode !== DisplayMode.BROWSER))
         setIsLoading(false)
         return () => {
             setInstallPromtEvent(undefined)
@@ -100,7 +100,7 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     return (<>
         {isLoading ? <></> :
             <>{
-                (displayMode === DisplayMode.BROWSER) &&
+                (isMobile && displayMode === DisplayMode.BROWSER) &&
                 <InstallPromo
                     isMobile={isMobile}
                     hasInstallPrompt={installPromtEvent !== undefined}
