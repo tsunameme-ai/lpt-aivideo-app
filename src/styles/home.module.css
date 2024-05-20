@@ -143,7 +143,13 @@
     background-repeat: repeat-x;
 }
 
-@media only screen and (min-width: 500px) {
+.menuItemText {
+    font-weight: 500;
+    width: 100%;
+    line-height: 2.5rem;
+}
+
+@media only screen and (min-width: 501px) {
 
     /* Desktop version */
     /* Leave them here in case we need to adjust the scale of the UI */
@@ -157,5 +163,9 @@
 
     .main {
         transform: scale(1);
+    }
+
+    .menuItemText {
+        justify-content: center;
     }
 }
