@@ -32,6 +32,10 @@ interface GenerationContextType {
     isReady: boolean
 
     reset: () => void
+
+    //App installation 
+    installPromtEvt: Event | undefined
+    requestAppInstall: () => void
 }
 
 const GenerationContext = createContext<GenerationContextType | undefined>(undefined)
@@ -90,6 +94,7 @@ export default function GenerationContextProvider({ children }: { children: Reac
     const [i2vInput, setI2vInput] = useLocalStorage('i2vInput', undefined)
     const [i2vOutputs, setI2vOutputs] = useLocalStorage('i2vOutputs', [])
     const [userSalt] = useLocalStorage('userSalt', new ShortUniqueId({ length: 6 }).rnd())
+    const [installPromtEvt, setInstallPromtEvt] = useState<Event | undefined>(undefined)
 
     const updateValueFromLocalStorage = (key: string) => {
         if (typeof (window) === 'undefined') {
@@ -98,6 +103,10 @@ export default function GenerationContextProvider({ children }: { children: Reac
         const localStorageValue = readFromStorage(localStorage, key)
         writeToStorage(localStorage, key, localStorageValue)
 
+    }
+    const handleBeforeInstallPromptEvt = (evt: Event) => {
+        evt.preventDefault()
+        setInstallPromtEvt(evt)
     }
 
     useEffect(() => {
@@ -109,7 +118,12 @@ export default function GenerationContextProvider({ children }: { children: Reac
         updateValueFromLocalStorage('i2vInput')
         updateValueFromLocalStorage('i2vOutputs')
         updateValueFromLocalStorage('userSalt')
+        window.addEventListener('beforeinstallprompt', handleBeforeInstallPromptEvt)
         setIsReady(true)
+        return () => {
+            setInstallPromtEvt(undefined)
+            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPromptEvt)
+        }
     }, []);
 
     const generationConfig = (): SDConfig => {
@@ -154,6 +168,15 @@ export default function GenerationContextProvider({ children }: { children: Reac
         setOverlayImageData(undefined)
         setI2vInput(undefined)
     }
+
+    const requestAppInstall = async () => {
+        if (installPromtEvt) {
+            (installPromtEvt as any).prompt()
+            const { outcome } = await (installPromtEvt as any).userChoice
+            console.log(`??? outcome ${outcome}`)
+            setInstallPromtEvt(undefined)
+        }
+    }
     return (
         <GenerationContext.Provider
             value={{
@@ -173,7 +196,9 @@ export default function GenerationContextProvider({ children }: { children: Reac
                 i2vOutputs, setI2vOutputs,
                 userSalt,
                 isReady,
-                reset
+                reset,
+                installPromtEvt,
+                requestAppInstall,
             }}>
             {children}
         </GenerationContext.Provider>
