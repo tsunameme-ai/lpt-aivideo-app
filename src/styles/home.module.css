@@ -149,6 +149,11 @@
     line-height: 2.5rem;
 }
 
+.installBtn {
+    width: 100%;
+    display: none
+}
+
 @media only screen and (min-width: 501px) {
 
     /* Desktop version */
@@ -167,5 +172,9 @@
 
     .menuItemText {
         justify-content: center;
+    }
+
+    .installBtn {
+        display: inline
     }
 }

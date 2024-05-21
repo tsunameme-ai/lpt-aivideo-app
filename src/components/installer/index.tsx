@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { InstallPromo } from "./promo"
 import { DEFAULT_APP_WIDTH, DEFAULT_APP_HEIGHT } from "@/libs/types"
 
+
 export enum DisplayMode {
     STANDALONE = 'standalone',
     BROWSER = 'browser',
@@ -15,7 +16,6 @@ interface InstallerProps {
 }
 export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
-
     const [installPromtEvent, setInstallPromtEvent] = useState<Event | undefined>(undefined)
     const [displayMode, setDisplayMode] = useState<DisplayMode>()
     const [isMobile, setIsMobile] = useState<boolean>(false)
@@ -25,18 +25,31 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     const handleBeforeInstallPromptEvt = (evt: Event) => {
         evt.preventDefault()
         setInstallPromtEvent(evt)
+        console.log('setInstallPromtEvent ' + evt)
+        if (evt !== undefined)
+            localStorage.setItem('installPrompt', 'true')
+        else
+            localStorage.setItem('installPrompt', 'false')
+
     }
     const handleAppInstalledEvt = () => {
         Analytics.trackEvent({ 'event': 'app-installed' })
     }
     const handleInstallRequest = async () => {
+        console.log('handleInstallRequest ' + installPromtEvent)
         if (installPromtEvent) {
+            console.log('has installPromtEvent');
             (installPromtEvent as any).prompt()
             const { outcome } = await (installPromtEvent as any).userChoice
             Analytics.trackEvent({ 'event': 'app-install-promopt', 'value': outcome })
             setInstallPromtEvent(undefined)
         }
     }
+
+    useEffect(() => {
+        console.log('useEffect ' + installPromtEvent)
+    }, [installPromtEvent])
+
     const getPWADisplayMode = () => {
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
         if (document.referrer.startsWith('android-app://')) {
@@ -73,6 +86,7 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     }
 
     useEffect(() => {
+        window.addEventListener('requestToInstall', handleInstallRequest)
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPromptEvt)
         window.addEventListener('appinstalled', handleAppInstalledEvt);
         window.addEventListener('resize', handleResizeEvent);
@@ -90,6 +104,8 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         setIsLoading(false)
         return () => {
             setInstallPromtEvent(undefined)
+            console.log('setInstallPromtEvent undefined')
+            window.removeEventListener('requestToInstall', handleInstallRequest)
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPromptEvt)
             window.removeEventListener('appinstalled', handleAppInstalledEvt)
             window.removeEventListener('resize', handleResizeEvent)
