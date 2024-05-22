@@ -34,10 +34,11 @@ export default function Page() {
                 <LandingPromoComponent />
                 <Spacer y={8} />
                 <PrimaryButton onPress={handleTxt2img}>Get Started</PrimaryButton>
-                <Spacer y={2} />
+                <Spacer y={4} />
                 {
                     gContext.installPromtEvt && <>
-                        <SecondaryButton onPress={handleDownload} className={styles.installBtn} > Install the desktop app</SecondaryButton>
+                        <SecondaryButton onPress={handleDownload} className={styles.installBtn} > Install the desktop app for better experience</SecondaryButton>
+                        <Spacer y={2} />
                     </>
                 }
             </div >
