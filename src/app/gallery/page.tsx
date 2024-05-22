@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import { IoMdCreate } from "react-icons/io";
 import { useRouter } from "next/navigation"
 import { useGenerationContext } from "@/context/generation-context"
+import styles from "@/styles/home.module.css"
 
 export default function Page() {
     const { authenticated, user, ready } = usePrivy()
@@ -39,10 +40,10 @@ export default function Page() {
         <>
             <ToastContainer />
             <div className="flex w-11/12 h-[calc(100vh-66px)] m-auto" style={{ overflow: 'scroll' }}>
-                {ready && <div className={`${appFont.className} w-full`}>
+                {ready && <div className={`${appFont.className} ${styles.centerGallery}`}>
                     {
                         !userId ? <>
-                            <div className='font-medium text-center'>What the community has created</div>
+                            <div className='font-medium text-center'>What The Community Is Creating</div>
                             <Spacer y={2} />
                             <CommunityList handleShare={handleShare} />
                         </> : <>

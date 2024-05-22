@@ -4,6 +4,7 @@ import { Spinner, Link } from '@nextui-org/react';
 import AuthPromo from './promo';
 import { appFont } from '@/app/fonts';
 import AuthInline from './inline';
+import styles from '@/styles/home.module.css'
 
 const AuthIndicator: React.FC = () => {
     const { ready, authenticated, login, user, logout } = usePrivy()
@@ -33,7 +34,7 @@ const AuthIndicator: React.FC = () => {
                                 size="lg"
                                 href='#'
                             >
-                                <div className={`${appFont.className} font-medium w-full leading-10`}>
+                                <div className={`${appFont.className} ${styles.menuItemText}`}>
                                     Logout (<span className='text-[15px]'>{formatUserInfo(user)}</span>)
                                 </div>
                             </Link>
@@ -43,7 +44,7 @@ const AuthIndicator: React.FC = () => {
                                 <Link
                                     onPress={login}
                                     color="foreground"
-                                    className={`${appFont.className} font-medium w-full leading-10`}
+                                    className={`${appFont.className} ${styles.menuItemText}`}
                                     size="lg"
                                     href='#'>
                                     Login

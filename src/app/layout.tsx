@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import '../styles/globals.css'
 import { Providers } from './providers'
-import GenerationContextProvider from '@/context/generation-context'
 import NavigationComponent from "@/components/navigation"
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { appFont, inter } from './fonts'
@@ -25,10 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`comfort ${inter.className} ${appFont.className}`}>
       <body>
         <Providers>
-          <GenerationContextProvider>
-            <NavigationComponent />
-            {children}
-          </GenerationContextProvider>
+          <NavigationComponent />
+          {children}
         </Providers>
       </body>
 

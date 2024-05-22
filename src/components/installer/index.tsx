@@ -2,6 +2,8 @@ import { Analytics } from "@/libs/analytics"
 import { useEffect, useState } from "react"
 import { InstallPromo } from "./promo"
 import { DEFAULT_APP_WIDTH, DEFAULT_APP_HEIGHT } from "@/libs/types"
+import { useGenerationContext } from "@/context/generation-context"
+
 
 export enum DisplayMode {
     STANDALONE = 'standalone',
@@ -14,33 +16,16 @@ interface InstallerProps {
     onAppReadyChange: (ready: boolean) => void
 }
 export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
+    const gContext = useGenerationContext()
     const [isLoading, setIsLoading] = useState<boolean>(true)
-
-    const [installPromtEvent, setInstallPromtEvent] = useState<Event | undefined>(undefined)
     const [displayMode, setDisplayMode] = useState<DisplayMode>()
     const [isMobile, setIsMobile] = useState<boolean>(false)
-    //const [isSafari, setIsSafari] = useState<boolean>(false)
     const [isChrome, setIsChrome] = useState<boolean>(false)
-    //const [isBrave, setIsBrave] = useState<boolean>(false)
     const [isFireFox, setIsFireFox] = useState<boolean>(false)
-
-    const handleBeforeInstallPromptEvt = (evt: Event) => {
-        console.log(`??? handleBeforeInstallPromptEvt`)
-        evt.preventDefault()
-        setInstallPromtEvent(evt)
-    }
     const handleAppInstalledEvt = () => {
         Analytics.trackEvent({ 'event': 'app-installed' })
     }
-    const handleInstallRequest = async () => {
-        console.log(`??? handleInstallRequest`)
-        if (installPromtEvent) {
-            (installPromtEvent as any).prompt()
-            const { outcome } = await (installPromtEvent as any).userChoice
-            Analytics.trackEvent({ 'event': 'app-install-promopt', 'value': outcome })
-            setInstallPromtEvent(undefined)
-        }
-    }
+
     const getPWADisplayMode = () => {
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
         if (document.referrer.startsWith('android-app://')) {
@@ -52,12 +37,9 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     }
 
     const handleDisplayModeChangeEvt = (evt: Event) => {
-        console.log(`??handleDisplayModeChangeEvt`)
-        console.log(evt)
         if ((evt as any).matches) {
             setDisplayMode(DisplayMode.STANDALONE)
             props.onAppReadyChange(true)
-
         }
     }
     const handleResizeEvent = () => {
@@ -80,7 +62,6 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     }
 
     useEffect(() => {
-        window.addEventListener('beforeinstallprompt', handleBeforeInstallPromptEvt)
         window.addEventListener('appinstalled', handleAppInstalledEvt);
         window.addEventListener('resize', handleResizeEvent);
         window.matchMedia('(display-mode: standalone)').addEventListener('change', handleDisplayModeChangeEvt)
@@ -93,11 +74,9 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
         setIsMobile(ism)
         setIsChrome(isc)
         setIsFireFox(isf)
-        props.onAppReadyChange((process.env.NEXT_PUBLIC_DEBUG === 'browser') || (displayMode !== DisplayMode.BROWSER))
+        props.onAppReadyChange(!ism || (displayMode !== DisplayMode.BROWSER))
         setIsLoading(false)
         return () => {
-            setInstallPromtEvent(undefined)
-            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPromptEvt)
             window.removeEventListener('appinstalled', handleAppInstalledEvt)
             window.removeEventListener('resize', handleResizeEvent)
             window.matchMedia('(display-mode: standalone)').removeEventListener('change', handleDisplayModeChangeEvt)
@@ -107,11 +86,11 @@ export const Installer: React.FC<InstallerProps> = (props: InstallerProps) => {
     return (<>
         {isLoading ? <></> :
             <>{
-                (displayMode === DisplayMode.BROWSER) &&
+                (isMobile && displayMode === DisplayMode.BROWSER) &&
                 <InstallPromo
                     isMobile={isMobile}
-                    hasInstallPrompt={installPromtEvent !== undefined}
-                    onInstallRequested={handleInstallRequest}
+                    hasInstallPrompt={gContext.installPromtEvt !== undefined}
+                    onInstallRequested={gContext.requestAppInstall}
                     isChrome={isChrome}
                     isFireFox={isFireFox}
                 />

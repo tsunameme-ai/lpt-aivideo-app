@@ -7,7 +7,7 @@ import { appFont } from "@/app/fonts";
 import { FaAngleLeft } from "react-icons/fa6";
 import { useRouter, usePathname } from "next/navigation";
 import AdvancedIndicator from "../advanced-indicator";
-
+import styles from '@/styles/home.module.css'
 
 enum NavIcon {
     BACK = 'back',
@@ -53,7 +53,7 @@ const NavigationComponent: React.FC = () => {
             case NavIcon.TOGGLE:
                 return <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                    className="sm:hidden focus:outline-none"
+                    className="focus:outline-none"
                 />
             default:
                 return <></>
@@ -71,7 +71,7 @@ const NavigationComponent: React.FC = () => {
                             TSUNAMEME
                         </NavbarBrand>
                     </NavbarContent>
-                    <NavbarMenu>
+                    <NavbarMenu className="w-full m-auto">
                         {menuItems.map((item, index) => (
                             < NavbarMenuItem key={`${item}-${index}`}>
                                 <Link
@@ -81,7 +81,7 @@ const NavigationComponent: React.FC = () => {
                                         }
                                     }}
                                     color="foreground"
-                                    className={`${appFont.className} font-medium w-full leading-10`}
+                                    className={`${appFont.className} ${styles.menuItemText}`}
                                     href={item[1]}
                                     size="lg"
                                 >
@@ -96,13 +96,13 @@ const NavigationComponent: React.FC = () => {
                             <>
                                 <Divider className="my-4" />
                                 <NavbarMenuItem key='dev-editor'>
-                                    <Link color="foreground" className={`${appFont.className} font-medium w-full leading-10`} href='/text-demo' size="lg">dev-editor</Link>
+                                    <Link color="foreground" className={`${appFont.className} ${styles.menuItemText}`} href='/text-demo' size="lg">dev-editor</Link>
                                 </NavbarMenuItem>
                                 <NavbarMenuItem key='dev-home'>
-                                    <Link color="foreground" className={`${appFont.className} font-medium w-full leading-10`} href='/' size="lg">dev-home</Link>
+                                    <Link color="foreground" className={`${appFont.className} ${styles.menuItemText}`} href='/' size="lg">dev-home</Link>
                                 </NavbarMenuItem>
                                 <NavbarMenuItem key='dev-welcome'>
-                                    <Link color="foreground" className={`${appFont.className} font-medium w-full leading-10`} href='/welcome' size="lg">dev-home</Link>
+                                    <Link color="foreground" className={`${appFont.className} ${styles.menuItemText}`} href='/welcome' size="lg">dev-home</Link>
                                 </NavbarMenuItem>
                                 <NavbarMenuItem>
                                     <AdvancedIndicator />

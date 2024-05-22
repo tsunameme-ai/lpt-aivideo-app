@@ -18,6 +18,11 @@
     z-index: 2;
 }
 
+.centerGallery {
+    max-width: 512px;
+    width: 100%;
+    margin: auto;
+}
 
 .editorControls {
     width: 70%;
@@ -133,9 +138,23 @@
 
 .wave {
     background-image: url('/wave.svg');
+    height: 7rem;
+    width: 100%;
+    background-repeat: repeat-x;
 }
 
-@media only screen and (min-width: 500px) {
+.menuItemText {
+    font-weight: 500;
+    width: 100%;
+    line-height: 2.5rem;
+}
+
+.installBtn {
+    width: 100%;
+    display: none
+}
+
+@media only screen and (min-width: 501px) {
 
     /* Desktop version */
     /* Leave them here in case we need to adjust the scale of the UI */
@@ -149,5 +168,13 @@
 
     .main {
         transform: scale(1);
+    }
+
+    .menuItemText {
+        justify-content: center;
+    }
+
+    .installBtn {
+        display: inline
     }
 }
