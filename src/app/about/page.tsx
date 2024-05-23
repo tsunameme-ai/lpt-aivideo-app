@@ -1,6 +1,6 @@
 'use client'
 import styles from "@/styles/home.module.css"
-import { Spacer } from "@nextui-org/react"
+import { Spacer, Link } from "@nextui-org/react"
 import { useRouter } from 'next/navigation'
 import { appFont } from "../fonts"
 import { PrimaryButton } from "@/components/buttons"
@@ -12,8 +12,8 @@ export default function Page() {
             <section className={`items-center justify-center ${appFont.className}`}>
                 <div className={styles.centerSection}>
                     <div className="justify-center items-center">
-                        First thing first, follow us on Twitter for an upcoming gif contest with large prizes in June:
-                        <span className="text-[#f97216]"> @tsunameme_ai</span>
+                        First thing first, follow us on Twitter for an upcoming gif contest with large prizes in June:&nbsp;
+                        <Link className="text-[#f97216]" href="https://www.x.com/tsunameme_ai">@tsunameme_ai</Link>
                         <br /><br />
                         We love GIFs. For the longest time, we wish we could make jaw-dropping GIFs like professional visual artists.
                         <br /><br />
@@ -25,10 +25,10 @@ export default function Page() {
                         This project is generously supported by Livepeer, a decentralized GPU network that makes video processing
                         much more affordable than traditional cloud services.
                         <br /><br />
-                        Got questions or ideas? Holla or DM us on Twitter:<span className="text-[#f97216]"> @tsunameme_ai</span>
+                        Got questions or ideas? Holla or DM us on Twitter:<Link className="text-[#f97216]" href="https://www.x.com/tsunameme_ai">@tsunameme_ai</Link>
                     </div>
                     <Spacer y={8} />
-                    <div className="flex justify-center items-center"><PrimaryButton size="lg" className='font-medium' onPress={() => router.push('/')}>Get Started</PrimaryButton></div>
+                    <div className="flex justify-center items-center"><PrimaryButton size="lg" className='font-medium' onPress={() => router.push('/txt2img')}>Get Started</PrimaryButton></div>
                 </div>
             </section>
         </>
