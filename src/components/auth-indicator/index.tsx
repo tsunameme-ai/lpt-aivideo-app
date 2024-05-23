@@ -30,11 +30,11 @@ const AuthIndicator: React.FC = () => {
                             <Link
                                 onPress={logout}
                                 color="foreground"
-                                className="w-full"
+                                className={`${appFont.className} ${styles.menuItemText}`}
                                 size="lg"
                                 href='#'
                             >
-                                <div className={`${appFont.className} ${styles.menuItemText}`}>
+                                <div>
                                     Logout (<span className='text-[15px]'>{formatUserInfo(user)}</span>)
                                 </div>
                             </Link>

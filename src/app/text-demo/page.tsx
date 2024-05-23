@@ -35,6 +35,7 @@ export default function Page() {
                     <PrimaryButton onPress={() => {
                         window.dispatchEvent(new Event(StartOutputEvent))
                     }}>GIF it</PrimaryButton>
+                    <Spacer y={4} />
                 </div>
                 {stageImageDataUrl && <img src={stageImageDataUrl} />}
                 {coverImageDataUrl && <img src={coverImageDataUrl} />}
