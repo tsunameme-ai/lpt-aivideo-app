@@ -134,6 +134,12 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         setSelectedId(undefined)
         setIsOutputRequested(true)
     }
+
+    const onVisibilityChange = () => {
+        if (!document.hidden) {
+            stageRef?.current?.getStage()?.batchDraw()
+        }
+    }
     useEffect(() => {
         if (isOutputRequested) {
             const imgDataUrl = stageRef.current?.toDataURL({ pixelRatio: outputDimension.pixelRatio })
@@ -156,10 +162,12 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             setWatermark(wmimg)
         }
         wmimg.src = '/watermark1024.png';
+        document.addEventListener("visibilitychange", onVisibilityChange);
 
         return () => {
             window.removeEventListener('resize', onResize)
             window.removeEventListener(StartOutputEvent, onRenderRequested)
+            document.removeEventListener("visibilitychange", onVisibilityChange);
         }
     }, [])
 
