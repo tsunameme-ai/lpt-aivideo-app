@@ -141,6 +141,7 @@ export default function Page() {
                         <SecondaryButton isLoading={isPrepShare} onPress={handleShare}>Share image</SecondaryButton>
                         <Spacer y={4} />
                         <PrimaryButton onPress={handleClickToVideo}>GIF it</PrimaryButton>
+                        <Spacer y={4} />
                     </div>}
             </section >}
         </>
