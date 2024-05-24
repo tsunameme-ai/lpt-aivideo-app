@@ -44,7 +44,7 @@ export class SDAPI {
             "overlay_base64": params.overlayBase64,
             "overlay_text": params.overlayText,
             "image_generation_id": params.imageGenerationId,
-            "output_width": 512,
+            "output_width": params.width,
             "user_id": params.userId,
             salt: params.salt
         }
