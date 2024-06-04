@@ -14,9 +14,31 @@ export function Providers({ children }: { children: React.ReactNode }) {
     const router = useRouter()
     const [isAppReady, setIsAppReady] = useState<boolean>(false)
     const [promptCompetition, setPromptCompetition] = useState<boolean>(false)
+    const dismissCompetitionPromptTimeKey = 'dismiss-competition-prompt'
+    const competitionPromptSilentDuration = 86400 / 2 //12hours
+    const closePromptCompetition = () => {
+        setPromptCompetition(false)
+        localStorage.setItem(dismissCompetitionPromptTimeKey, Math.floor(new Date().getTime() / 1000).toString())
+
+    }
     useEffect(() => {
         if (isAppReady) {
-            setPromptCompetition(true)
+            let shouldShowCompetitionPrompt = true
+            try {
+                const lastTimeLS = localStorage.getItem(dismissCompetitionPromptTimeKey)
+                if (lastTimeLS !== null) {
+                    const time = parseInt(lastTimeLS)
+                    if (new Date().getTime() / 1000 - time < competitionPromptSilentDuration) {
+                        shouldShowCompetitionPrompt = false
+                    }
+                }
+            }
+            catch (e) {
+
+            }
+            if (shouldShowCompetitionPrompt) {
+                setPromptCompetition(true)
+            }
         }
 
     }, [isAppReady])
@@ -33,12 +55,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
                             <>{
                                 promptCompetition && <CompetitionBanner
                                     onCheckoutDetails={() => {
-                                        setPromptCompetition(false)
+                                        closePromptCompetition()
                                         router.push('/competition')
 
                                     }}
                                     onClose={() => {
-                                        setPromptCompetition(false)
+                                        closePromptCompetition()
                                     }} />
                             }
                             </>
