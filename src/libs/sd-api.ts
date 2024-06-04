@@ -94,10 +94,11 @@ export class SDAPI {
                 return {
                     id: data.id,
                     status: data.status,
-                    outputs: data.images.map((item: { url: string, seed?: number }, index: number) => {
+                    outputs: data.images.map((item: { url: string, nsfw: boolean, seed?: number }, index: number) => {
                         return {
                             id: `${data.id}:${index}`,
                             url: item.url,
+                            nsfw: item.nsfw,
                             seed: item.seed
                         }
                     })
