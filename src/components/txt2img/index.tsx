@@ -39,6 +39,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
     const [numOutput, setNumOutput] = useState<string>(DEFAULT_IMG_NUM_OUTPUT.toString())
     const [width, setWidth] = useState<string>(DEFAULT_IMG_WIDTH.toString())
     const [height, setHeight] = useState<string>(DEFAULT_IMG_HEIGHT.toString())
+    const [nsfw, setNsfw] = useState<boolean>(false)
 
     const handlePPromptValueChange = (value: string) => {
         setPPromptValue(value)
@@ -105,6 +106,13 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 gContext.setT2iOutputs(resultOutputs)
                 gContext.setT2iOutputSelectedIndex(resetSelectedIndex)
                 props.onImagesGenerated(resultOutputs, resetSelectedIndex)
+                for (let ro of resultOutputs) {
+                    if (ro.nsfw) {
+                        setNsfw(true)
+                        break
+                    }
+                    setNsfw(false)
+                }
             }
             setGenType(GenRequestType.REQUEST_MORE)
         }
@@ -153,6 +161,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             <Spacer y={4} />
             {renderGenerateButton()}
             <Spacer y={1} />
+            {nsfw && <div className="text-red-500">Some images are flagged as NSFW. Please be mindful!</div>}
             <div hidden={!props.isAdvancedView}>
                 <Textarea
                     label='Negative Prompt'
