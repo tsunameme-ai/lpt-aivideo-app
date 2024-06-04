@@ -158,6 +158,11 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
                 </Button>
 
             </div>
+            {nsfw &&
+                <>
+                    <div className="text-red-500">Some images are flagged as NSFW. Please be mindful!</div>
+                </>
+            }
             <Spacer y={4} />
             {renderGenerateButton()}
             <Spacer y={1} />
