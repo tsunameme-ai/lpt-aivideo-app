@@ -161,7 +161,7 @@ const Txt2ImgComponent: React.FC<Txt2ImgComponentProps> = (props: Txt2ImgCompone
             <Spacer y={4} />
             {renderGenerateButton()}
             <Spacer y={1} />
-            {nsfw && <div>Some images are flagged as NSFW. Please be mindful!</div>}
+            {nsfw && <div className="text-red-500">Some images are flagged as NSFW. Please be mindful!</div>}
             <div hidden={!props.isAdvancedView}>
                 <Textarea
                     label='Negative Prompt'
