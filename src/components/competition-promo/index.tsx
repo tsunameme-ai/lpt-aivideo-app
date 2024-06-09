@@ -6,11 +6,11 @@ interface CompetitionBannerProps {
 }
 const CompetitionBanner: React.FC<CompetitionBannerProps> = (props: CompetitionBannerProps) => {
     return <>
-        <div id="sticky-banner" tabIndex={1} className={`fixed top-0 start-0 z-50 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 ${appFont.className}`}>
+        <div id="sticky-banner" tabIndex={1} className={`fixed top-0 start-0 z-50 flex justify-between w-full p-4 bg-rose-500  ${appFont.className}`}>
             <div className="flex items-center mx-auto">
-                <p className="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span>Participate 1st Tsunameme GIF Competition and Win $LPT!&nbsp;
-                        <a onClick={() => { props?.onCheckoutDetails?.() }} className="inline font-medium text-blue-600 underline dark:text-blue-500 underline-offset-2 decoration-600 dark:decoration-500 decoration-solid hover:no-underline">See Details</a>
+                <p className="flex items-center text-md font-normal text-white dark:text-gray-400">
+                    <span>Join our GIF contest (from June 10th to 17th) and win Livepeer tokens!&nbsp;
+                        <a onClick={() => { props?.onCheckoutDetails?.() }} className="inline font-medium underline  underline-offset-2 decoration-600 dark:decoration-500 decoration-solid hover:no-underline">More details</a>
                     </span>
                 </p>
             </div>

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { useGenerationContext } from "@/context/generation-context"
 import { PrimaryButton } from "@/components/buttons"
 import { appFont } from '../fonts'
+import { Link } from "@nextui-org/react"
 
 export default function Page() {
     const { authenticated, user, ready, login } = usePrivy()
@@ -30,7 +31,35 @@ export default function Page() {
                 ready &&
                 <div className={styles.centerSection}>
                     <div>
-                        GIF Competition
+                        <p>
+                            Between June 10th and 16th, we invite you to join a GIF creation competition. Those who can come up with the most interesting gifs using the Tsunameme app
+                            will be rewarded handsomely. So bring your A game.
+                        </p>
+                        <br />
+                        <p>
+                            <strong>Awards:</strong>
+                            <ul>
+                                <li>- The most creative gif: 75 LPT</li>
+                                <li>- The most visually stunning gif: 50 LPT </li>
+                                <li>- The most epic fail gif: 25 LPT </li>
+                            </ul>
+                        </p>
+                        <br />
+                        <p>
+                            <strong>Rules:</strong>
+                            <ul>
+                                <li>1. You need to have a Tsunameme account before creating the gif. (That is how we know it is your creation)</li>
+                                <li>2. You can only submit up to 3 entries.</li>
+                            </ul>
+                        </p>
+                        <br />
+                        <p>
+                            <strong>Submission:</strong>
+                            <br />
+                            You can post the creation from your X(Twitter) account publicly and mention <Link className="text-[#f97216]" href="https://www.x.com/tsunameme_ai">@tsunameme_ai</Link> in the post or directly DM <Link className="text-[#f97216]" href="https://www.x.com/tsunameme_ai">@tsunameme_ai</Link> the link of your creation.
+                        </p>
+                        <br />
+
                     </div>
                     {
                         userId ? <>
