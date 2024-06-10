@@ -32,24 +32,25 @@ export default function Page() {
                 <div className={styles.centerSection}>
                     <div>
                         <p>
-                            Between June 10th and 16th, we invite you to join a GIF creation competition. Those who can come up with the most interesting gifs using the Tsunameme app
+                            Between June 10th and 16th, we invite you to join a GIF creation competition. Those who can come up with the most interesting gif expressions with the Tsunameme app
                             will be rewarded handsomely. So bring your A game.
                         </p>
                         <br />
                         <p>
                             <strong>Awards:</strong>
                             <ul>
-                                <li>- The most creative gif: 75 LPT</li>
-                                <li>- The most visually stunning gif: 50 LPT </li>
-                                <li>- The most epic fail gif: 25 LPT </li>
+                                <li>- The most creative gif expression: 75 LPT</li>
+                                <li>- The most visually stunning gif expression: 50 LPT </li>
+                                <li>- The most epic fail gif expression: 25 LPT </li>
                             </ul>
                         </p>
                         <br />
                         <p>
                             <strong>Rules:</strong>
                             <ul>
-                                <li>1. You need to have a Tsunameme account before creating the gif. (That is how we know it is your creation)</li>
+                                <li>1. You need to have a Tsunameme account before creating the gif expression. (That is how we know it is your creation)</li>
                                 <li>2. You can only submit up to 3 entries.</li>
+                                <li>3. Using captions in the GIF is highly encouraged although not absolutely required.</li>
                             </ul>
                         </p>
                         <br />
