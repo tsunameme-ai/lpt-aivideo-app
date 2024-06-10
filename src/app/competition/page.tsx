@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation"
 import { useGenerationContext } from "@/context/generation-context"
 import { PrimaryButton } from "@/components/buttons"
 import { appFont } from '../fonts'
-import { Link } from "@nextui-org/react"
+import { Spacer, Link } from "@nextui-org/react"
 
 export default function Page() {
     const { authenticated, user, ready, login } = usePrivy()
@@ -73,6 +73,7 @@ export default function Page() {
                             :
                             <PrimaryButton onPress={login}>Login</PrimaryButton>
                     }
+                    <Spacer y={2} />
                 </div >
             }
         </section>

@@ -28,7 +28,8 @@ export default function Page() {
                         Got questions or ideas? Holla or DM us on Twitter:<Link className="text-[#f97216]" href="https://www.x.com/tsunameme_ai">@tsunameme_ai</Link>
                     </div>
                     <Spacer y={8} />
-                    <div className="flex justify-center items-center"><PrimaryButton size="lg" className='font-medium' onPress={() => router.push('/txt2img')}>Get Started</PrimaryButton></div>
+                    <div className="flex justify-center items-center"><PrimaryButton onPress={() => router.push('/txt2img')}>Get Started</PrimaryButton></div>
+                    <Spacer y={2} />
                 </div>
             </section>
         </>
