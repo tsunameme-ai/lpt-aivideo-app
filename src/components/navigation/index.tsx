@@ -23,7 +23,6 @@ const NavigationComponent: React.FC = () => {
     const [menuItems] = useState<string[][]>([
         ['Create', '/txt2img'],
         ['Gallery', '/gallery'],
-        ['GIF Competition', '/competition'],
         ['About', '/about']
     ])
 
